@@ -14,12 +14,12 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
-    const { vehicle, pointOfSale } = record;
+    const { vehicle, pointOfSale } = record.content;
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
-        <Link className="link-card" to={`/records/${record.refId}`}>
+        <Link className="link-card" to={`/records/${record.id}`}>
           <Card className="h-100">
-            <div className="status">
+            {/*             <div className="status">
               {record.offers_type === "private" && (
                 <div>
                   <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
@@ -33,22 +33,25 @@ class RecordsElement extends Component {
                   en stock
                 </div>
               )}
-            </div>
+            </div> */}
 
-            <img
+            {/*             <img
               className="card-img-top"
-              src={vehicle.car_picture}
+              src={vehicle.carPictures.front_picture}
               alt={vehicle.brandLabel + " " + vehicle.modelLabel}
-            />
-
+            /> */}
+            {/*
             <RecordsElementGrade grade={vehicle.profile_costs} />
+*/}
 
             <CardBody>
               <CardTitle>
-                {record.price} {vehicle.brandLabel} {vehicle.modelLabel}
+                {/*  {record.price}  */}
+                {vehicle.brandLabel} {vehicle.modelLabel}
               </CardTitle>
+
               <p>{vehicle.versionlabel}</p>
-              <div className="text-center">
+              {/*               <div className="text-center">
                 <span className="tag tag-white">
                   <span className="text-nowrap">{vehicle.year_mec}</span>/
                   <span className="text-nowrap">{vehicle.bodyLabel}</span>/
@@ -56,8 +59,9 @@ class RecordsElement extends Component {
                     {vehicle.mileage.toLocaleString()} Km
                   </span>
                 </span>
-              </div>
+              </div> */}
             </CardBody>
+            {/*  
             <CardFooter>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
@@ -66,6 +70,7 @@ class RecordsElement extends Component {
               />
               {pointOfSale.city} {pointOfSale.zipCode}
             </CardFooter>
+            */}
           </Card>
         </Link>
       </Col>

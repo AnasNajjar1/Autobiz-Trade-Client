@@ -1,7 +1,9 @@
 import React from "react";
 
 const Grade = ({ letter }) => {
+  if (typeof letter !== "string") return <p className="text-center">-</p>;
   let label = "";
+
   switch (letter.toUpperCase()) {
     default:
       return null;

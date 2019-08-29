@@ -5,6 +5,7 @@ import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
 import { QueryParamProvider } from "use-query-params";
+
 function App() {
   return (
     <BrowserRouter>

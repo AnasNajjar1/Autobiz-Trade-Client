@@ -22,10 +22,10 @@ const FilterCheckboxes = ({ data, target, values, updateField, all }) => {
                 key={shortid.generate()}
                 id={`cb_${shortid.generate()}`}
                 type="checkbox"
-                value={item.id}
-                checked={values.includes(item.id) || values.includes("all")}
+                value={item.toString()}
+                checked={values.includes(item) || values.includes("all")}
                 onChange={e => updateField(e, target)}
-                label={item.name}
+                label={item.toString()}
               />
             ))}
           </Col>

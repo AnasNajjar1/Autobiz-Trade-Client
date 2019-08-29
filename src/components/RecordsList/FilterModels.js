@@ -4,10 +4,11 @@ import { FormGroup, Input } from "reactstrap";
 const FilterModels = ({ models, value, updateField }) => {
   let options = "";
 
+  models = models.sort();
   if (models) {
     options = models.map(model => (
-      <option key={model.id} value={model.id}>
-        {model.name}
+      <option key={model} value={model}>
+        {model}
       </option>
     ));
   }
@@ -17,7 +18,7 @@ const FilterModels = ({ models, value, updateField }) => {
       <FormGroup>
         <Input
           type="select"
-          name="model"
+          name="modelLabel"
           value={value}
           className="mb-2 rounded"
           onChange={e => updateField(e)}

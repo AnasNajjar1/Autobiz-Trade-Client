@@ -8,7 +8,7 @@ const CheckList = ({ items }) => {
   return (
     <div className="list-check">
       <Row>
-        {items.values.map((value, index) => (
+        {items.map((value, index) => (
           <Col xs="6" key={index}>
             <div className="item">
               <FontAwesomeIcon icon={faCheckCircle} /> {value}

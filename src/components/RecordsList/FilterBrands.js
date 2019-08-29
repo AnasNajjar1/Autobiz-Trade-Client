@@ -1,10 +1,11 @@
 import React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-const FilterConstructors = ({ constructors, value, updateField }) => {
-  const options = constructors.map(constructor => (
-    <option key={constructor.id} value={constructor.id}>
-      {constructor.name}
+const FilterBrands = ({ brands, value, updateField }) => {
+  brands = brands.sort();
+  const options = brands.map(constructor => (
+    <option key={constructor} value={constructor}>
+      {constructor}
     </option>
   ));
   return (
@@ -12,7 +13,7 @@ const FilterConstructors = ({ constructors, value, updateField }) => {
       <FormGroup>
         <Input
           type="select"
-          name="constructor"
+          name="brandLabel"
           value={value}
           className="mb-2 rounded"
           onChange={e => updateField(e)}
@@ -25,4 +26,4 @@ const FilterConstructors = ({ constructors, value, updateField }) => {
   );
 };
 
-export default FilterConstructors;
+export default FilterBrands;

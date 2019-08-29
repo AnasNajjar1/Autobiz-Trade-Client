@@ -7,7 +7,7 @@ import {
   faFilter
 } from "@fortawesome/free-solid-svg-icons";
 import FilterSearch from "./FilterSearch";
-import FilterConstructors from "./FilterConstructors";
+import FilterBrands from "./FilterBrands";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
@@ -28,16 +28,7 @@ import {
 } from "use-query-params";
 
 const RecordsListContainer = () => {
-  const offers = [
-    {
-      id: "private",
-      name: "Offres à particulier"
-    },
-    {
-      id: "stock",
-      name: "Véhicules en stock"
-    }
-  ];
+  const offers = ["private", "stock"];
 
   const sortList = [
     {
@@ -68,8 +59,8 @@ const RecordsListContainer = () => {
 
   const initialFormState = {
     search: "",
-    constructor: "",
-    model: "",
+    brandLabel: "",
+    modelLabel: "",
     yearMecMin: "",
     yearMecMax: "",
     kmMin: "",
@@ -83,8 +74,8 @@ const RecordsListContainer = () => {
 
   const [query, setQuery] = useQueryParams({
     search: StringParam,
-    constructor: NumberParam,
-    model: NumberParam,
+    brandLabel: StringParam,
+    modelLabel: StringParam,
     yearMecMin: NumberParam,
     yearMecMax: NumberParam,
     kmMin: NumberParam,
@@ -98,8 +89,8 @@ const RecordsListContainer = () => {
 
   const [form, setValues] = useState({
     search: query.search || initialFormState.search,
-    constructor: query.constructor || initialFormState.constructor,
-    model: query.model || initialFormState.model,
+    brandLabel: query.brandLabel || initialFormState.brandLabel,
+    modelLabel: query.modelLabel || initialFormState.modelLabel,
     yearMecMin: query.yearMecMin || initialFormState.yearMecMin,
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
     kmMin: query.kmMin || initialFormState.kmMin,
@@ -112,11 +103,12 @@ const RecordsListContainer = () => {
   });
 
   const [records, setRecords] = useState([]);
-  const [RecordsTotalCount, setRecordsTotalCount] = useState([]);
-  const [constructors, setConstructors] = useState([]);
-  const [pointOfSales, setPointOfSales] = useState([]);
-  const [models, setModels] = useState([]);
-  const [menuMobileOpen, setMmenuMobileOpen] = useState(false);
+  const [RecordsCount, setRecordsCount] = useState([]);
+  const [modelLabels, setModelLabels] = useState([]);
+
+  const [filters, setFilters] = useState([]);
+
+  const [menuMobileOpen, setMenuMobileOpen] = useState(false);
 
   const updateField = e => {
     const { name, value } = e.target;
@@ -163,7 +155,7 @@ const RecordsListContainer = () => {
   };
 
   const handleSubmit = () => {
-    setMmenuMobileOpen(false);
+    setMenuMobileOpen(false);
     setQuery(form);
   };
 
@@ -181,57 +173,37 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await axios(`http://localhost:4000/recordsList`, {
-        params: query
+      const result = await axios(`${process.env.REACT_APP_API}/filters`);
+      setFilters(result.data);
+    };
+    fetchRecords();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const result = await axios(`${process.env.REACT_APP_API}/records`, {
+        params: {
+          ProjectionExpression: "id"
+        }
       });
-      setRecords(result.data.records);
-      setRecordsTotalCount(result.data.recordsTotalCount);
-      setPointOfSales(result.data.pointOfSales);
+      setRecordsCount(result.data.Count);
+      setRecords(result.data.Items);
     };
     fetchRecords();
   }, [query]);
 
   useEffect(() => {
-    const fetchConstructors = async () => {
-      const result = await axios(`http://localhost:4000/marques/`);
-      setConstructors(result.data);
-    };
-    fetchConstructors();
-  }, []);
-
-  useEffect(() => {
-    const fetchModels = async () => {
-      if (form.constructor === "") {
-        setModels([]);
+    const fetchModelLabels = async () => {
+      if (form.brandLabel === "") {
+        setModelLabels([]);
       } else {
-        const result = await axios(
-          `http://localhost:4000/marques/${form.constructor}`
-        );
-        setModels(result.data.models);
+        let modelLabels = Object.keys(filters.modelLabel[form.brandLabel]);
+        setModelLabels(modelLabels);
       }
     };
-    fetchModels();
-  }, [form.constructor]);
+    fetchModelLabels();
+  }, [form.brandLabel]);
 
-  function getConstructorName(id) {
-    const filteredConstructors = constructors.filter(function(constructor) {
-      return constructor.id === id;
-    });
-    if (filteredConstructors.length > 0) {
-      return filteredConstructors[0].name;
-    }
-  }
-
-  function getModelName(id) {
-    if (models.length > 0) {
-      const filteredModels = models.filter(function(model) {
-        return model.id === id;
-      });
-      if (filteredModels.length > 0) {
-        return filteredModels[0].name;
-      }
-    }
-  }
   return (
     <Container>
       <Row>
@@ -246,7 +218,7 @@ const RecordsListContainer = () => {
                   type="button"
                   className="btn btn-block btn-danger-reverse rounded"
                   onClick={() =>
-                    setMmenuMobileOpen(menuMobileOpen ? false : true)
+                    setMenuMobileOpen(menuMobileOpen ? false : true)
                   }
                 >
                   Filtrer <FontAwesomeIcon icon={faFilter} />
@@ -259,18 +231,22 @@ const RecordsListContainer = () => {
           >
             <Section>
               <p className="section-title">Marque et modèle</p>
-              <FilterConstructors
-                constructors={constructors}
-                value={form.constructor}
-                updateField={updateField}
-              />
 
-              <FilterModels
-                models={models}
-                value={form.model}
-                updateField={updateField}
-              />
+              {filters.brandLabel && (
+                <FilterBrands
+                  brands={Object.keys(filters.brandLabel)}
+                  value={form.brandLabel}
+                  updateField={updateField}
+                />
+              )}
 
+              {modelLabels && (
+                <FilterModels
+                  models={modelLabels}
+                  value={form.modelLabel}
+                  updateField={updateField}
+                />
+              )}
               <p className="section-title">Année MEC</p>
               <FilterYears
                 yearMecMin={form.yearMecMin}
@@ -286,13 +262,16 @@ const RecordsListContainer = () => {
               />
 
               <p className="section-title">Lieu de stockage</p>
-              <FilterCheckboxes
-                data={pointOfSales}
-                target="pointOfSales"
-                values={form.pointOfSales}
-                updateField={updateCheckBox}
-                all
-              />
+
+              {filters.city && (
+                <FilterCheckboxes
+                  data={Object.keys(filters.city)}
+                  target="pointOfSales"
+                  values={form.pointOfSales}
+                  updateField={updateCheckBox}
+                  all
+                />
+              )}
 
               <p className="section-title">Types d'offres</p>
               <FilterCheckboxes
@@ -319,15 +298,15 @@ const RecordsListContainer = () => {
               />
               <FilterTag
                 label="Marque"
-                value={getConstructorName(query.constructor)}
-                target="constructor"
+                value={query.brandLabel}
+                target="brandLabel"
                 removeFilter={removeFilter}
               />
 
               <FilterTag
                 label="Modèle"
-                value={getModelName(query.model)}
-                target="model"
+                value={query.modelLabel}
+                target="modelLabel"
                 removeFilter={removeFilter}
               />
 
@@ -357,18 +336,18 @@ const RecordsListContainer = () => {
               />
             </Col>
           </Row>
-          {RecordsTotalCount === 0 && (
+          {RecordsCount === 0 && (
             <Alert color="secondary" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
               Pas de résultats
             </Alert>
           )}
 
-          {RecordsTotalCount > 0 && (
+          {RecordsCount > 0 && (
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">
                 <div className="h5 mb-3">
-                  <b>{RecordsTotalCount}</b> véhicules
+                  <b>{RecordsCount}</b> véhicules
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">
