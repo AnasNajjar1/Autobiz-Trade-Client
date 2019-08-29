@@ -181,11 +181,22 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await axios(`${process.env.REACT_APP_API}/records`, {
-        params: {
-          ProjectionExpression: "id"
+      const data = JSON.stringify({
+        ProjectionExpression:
+          "id, content.vehicle.brandLabel, content.vehicle.modelLabel",
+        FilterExpression:
+          "creationDate between :date1 and :date2 and content.vehicle.brandLabel = :brandLabel",
+        ExpressionAttributeValues: {
+          ":date1": "2000-08-27T17:56",
+          ":date2": "2019-08-27T17:57",
+          ":brandLabel": "PEUGEOT"
         }
       });
+
+      const result = await axios.post(
+        `${process.env.REACT_APP_API}/records`,
+        data
+      );
       setRecordsCount(result.data.Count);
       setRecords(result.data.Items);
     };
@@ -204,6 +215,7 @@ const RecordsListContainer = () => {
     fetchModelLabels();
   }, [form.brandLabel]);
 
+  console.log(records);
   return (
     <Container>
       <Row>

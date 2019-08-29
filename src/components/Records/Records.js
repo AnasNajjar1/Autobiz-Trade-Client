@@ -24,14 +24,14 @@ const Record = props => {
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log(props.refId);
-
   useEffect(() => {
     const fetchRecord = async () => {
+      console.log("ici:", props);
       try {
-        const result = await axios(
+        const result = await axios.get(
           `${process.env.REACT_APP_API}/record?id=${props.refId}`
         );
+        console.log(result.data);
         setRecord(result.data);
         setLoading(false);
       } catch (error) {

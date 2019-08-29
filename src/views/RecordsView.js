@@ -9,8 +9,7 @@ const RecordsView = props => {
       <Header />
       <main>
         <div className="page page-car-detail">
-          {/* <Records refId={props.match.params.refId} /> */}
-          <Records refId="2a0da720-c8e3-11e9-9e46-732d3fce76de" />
+          <Records refId={props.match.params.refId} />
         </div>
       </main>
       <Footer />
