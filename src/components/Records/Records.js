@@ -26,12 +26,10 @@ const Record = props => {
 
   useEffect(() => {
     const fetchRecord = async () => {
-      console.log("ici:", props);
       try {
         const result = await axios.get(
           `${process.env.REACT_APP_API}/record?id=${props.refId}`
         );
-        console.log(result.data);
         setRecord(result.data);
         setLoading(false);
       } catch (error) {
@@ -89,7 +87,6 @@ const Record = props => {
   };
 
   keyPoints = _.keys(_.pickBy(keyPoints));
-  console.log(constructorsEquipments);
   return (
     <>
       <Container className="pb-5">

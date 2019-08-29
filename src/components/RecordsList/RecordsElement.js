@@ -34,43 +34,43 @@ class RecordsElement extends Component {
                 </div>
               )}
             </div> */}
-
-            {/*             <img
-              className="card-img-top"
-              src={vehicle.carPictures.front_picture}
-              alt={vehicle.brandLabel + " " + vehicle.modelLabel}
-            /> */}
-            {/*
-            <RecordsElementGrade grade={vehicle.profile_costs} />
-*/}
+            {vehicle.carPictures && (
+              <img
+                className="card-img-top"
+                src={vehicle.carPictures.front_picture}
+                alt={vehicle.brandLabel + " " + vehicle.modelLabel}
+              />
+            )}
+            <RecordsElementGrade grade={vehicle.profileCosts} />
 
             <CardBody>
               <CardTitle>
-                {/*  {record.price}  */}
                 {vehicle.brandLabel} {vehicle.modelLabel}
               </CardTitle>
 
               <p>{vehicle.versionlabel}</p>
-              {/*               <div className="text-center">
+              <div className="text-center">
                 <span className="tag tag-white">
-                  <span className="text-nowrap">{vehicle.year_mec}</span>/
-                  <span className="text-nowrap">{vehicle.bodyLabel}</span>/
+                  <span className="text-nowrap">
+                    {vehicle.firstRegistrationDate.toString().substr(0, 4)}
+                  </span>
+                  /<span className="text-nowrap">{vehicle.fuelLabel}</span>/
                   <span className="text-nowrap">
                     {vehicle.mileage.toLocaleString()} Km
                   </span>
                 </span>
-              </div> */}
+              </div>
             </CardBody>
-            {/*  
             <CardFooter>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 className="mr-1"
                 size="1x"
               />
-              {pointOfSale.city} {pointOfSale.zipCode}
+              {pointOfSale.city === null && pointOfSale.zipCode === null
+                ? "unknown point of sale"
+                : pointOfSale.city + " " + pointOfSale.zipCode}
             </CardFooter>
-            */}
           </Card>
         </Link>
       </Col>

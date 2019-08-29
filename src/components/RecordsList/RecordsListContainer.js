@@ -15,7 +15,7 @@ import FilterCheckboxes from "./FilterCheckboxes";
 import Sort from "./Sort.js";
 
 import RecordsElement from "./RecordsElement";
-
+import _ from "lodash";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
 import FormActions from "./FormActions";
@@ -181,21 +181,78 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const data = JSON.stringify({
+      let apiQuery = {
         ProjectionExpression:
-          "id, content.vehicle.brandLabel, content.vehicle.modelLabel",
-        FilterExpression:
-          "creationDate between :date1 and :date2 and content.vehicle.brandLabel = :brandLabel",
-        ExpressionAttributeValues: {
-          ":date1": "2000-08-27T17:56",
-          ":date2": "2019-08-27T17:57",
-          ":brandLabel": "PEUGEOT"
-        }
-      });
+          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode"
+      };
+
+      let ExpressionAttributeValues = {};
+      let arrayFilterExpression = [];
+
+      if (query.brandLabel) {
+        ExpressionAttributeValues[":brandLabel"] = query.brandLabel;
+        arrayFilterExpression.push("content.vehicle.brandLabel = :brandLabel");
+      }
+
+      if (query.modelLabel) {
+        ExpressionAttributeValues[":modelLabel"] = query.modelLabel;
+        arrayFilterExpression.push("content.vehicle.modelLabel = :modelLabel");
+      }
+
+      if (query.kmMin) {
+        ExpressionAttributeValues[":mileageMin"] = query.kmMin;
+        arrayFilterExpression.push("content.vehicle.mileage >= :mileageMin");
+      }
+
+      if (query.kmMax) {
+        ExpressionAttributeValues[":mileageMax"] = query.kmMax;
+        arrayFilterExpression.push("content.vehicle.mileage <= :mileageMax");
+      }
+
+      if (query.yearMecMin) {
+        const dateMin = new Date(Date.UTC(query.yearMecMin, 0, 1));
+        ExpressionAttributeValues[":yearMecMin"] = dateMin.toISOString();
+        arrayFilterExpression.push(
+          "content.vehicle.firstRegistrationDate >= :yearMecMin"
+        );
+      }
+
+      if (query.yearMecMax) {
+        const dateMax = new Date(
+          Date.UTC(query.yearMecMax, 11, 31, 23, 59, 59)
+        );
+        ExpressionAttributeValues[":yearMecMax"] = dateMax.toISOString();
+        arrayFilterExpression.push(
+          "content.vehicle.firstRegistrationDate <= :yearMecMax"
+        );
+      }
+
+      console.log(query.pointOfSales);
+
+      if (query.pointOfSales && !query.pointOfSales.includes("all")) {
+        let citiesKeys = [];
+        query.pointOfSales.forEach(function(pointOfSale, key) {
+          ExpressionAttributeValues[`:city_${key}`] = pointOfSale;
+          citiesKeys.push(`:city_${key}`);
+        });
+
+        arrayFilterExpression.push(
+          `content.pointOfSale.city IN(${citiesKeys.join(",")})`
+        );
+      }
+
+      if (arrayFilterExpression.length > 0) {
+        apiQuery.FilterExpression = arrayFilterExpression.join(" and ");
+      }
+      if (!_.isEmpty(ExpressionAttributeValues)) {
+        apiQuery.ExpressionAttributeValues = ExpressionAttributeValues;
+      }
+
+      console.log(apiQuery);
 
       const result = await axios.post(
         `${process.env.REACT_APP_API}/records`,
-        data
+        JSON.stringify(apiQuery)
       );
       setRecordsCount(result.data.Count);
       setRecords(result.data.Items);
@@ -208,14 +265,15 @@ const RecordsListContainer = () => {
       if (form.brandLabel === "") {
         setModelLabels([]);
       } else {
-        let modelLabels = Object.keys(filters.modelLabel[form.brandLabel]);
-        setModelLabels(modelLabels);
+        if (filters.modelLabel) {
+          let modelLabels = Object.keys(filters.modelLabel[form.brandLabel]);
+          setModelLabels(modelLabels);
+        }
       }
     };
     fetchModelLabels();
   }, [form.brandLabel]);
 
-  console.log(records);
   return (
     <Container>
       <Row>

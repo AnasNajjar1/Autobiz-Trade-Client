@@ -23,7 +23,7 @@ const FilterModels = ({ models, value, updateField }) => {
           className="mb-2 rounded"
           onChange={e => updateField(e)}
         >
-          <option>---</option>
+          <option value="">---</option>
           {options}
         </Input>
       </FormGroup>

@@ -1,6 +1,8 @@
 import React from "react";
 
 const RecordsElementGrade = props => {
+  if (props.grade === null) return null;
+
   const classes = `grade grade-${props.grade.toLowerCase()}`;
 
   let label = "";
