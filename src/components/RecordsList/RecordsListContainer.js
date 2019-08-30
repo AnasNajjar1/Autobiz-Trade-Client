@@ -286,11 +286,15 @@ const RecordsListContainer = () => {
     <Container>
       <Row>
         <div className="search-record-nav">
-          <Section>
+          <div className="section d-md-none">
+            {" "}
+            {/* replace by <Section> when filterSearch is active */}
             <Row>
+              {/*
               <Col className="col col-6" sm="8" md="12">
                 <FilterSearch value={form.search} onChange={updateField} />
-              </Col>
+              </Col> 
+              */}
               <Col className="col d-md-none">
                 <button
                   type="button"
@@ -303,7 +307,7 @@ const RecordsListContainer = () => {
                 </button>
               </Col>
             </Row>
-          </Section>
+          </div>
           <div
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
