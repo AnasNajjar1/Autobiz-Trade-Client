@@ -269,6 +269,8 @@ const RecordsListContainer = () => {
   }, [query]);
 
   useEffect(() => {
+    form.modelLabel = "";
+
     const fetchModelLabels = async () => {
       if (form.brandLabel === "") {
         setModelLabels([]);
