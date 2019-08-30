@@ -14,6 +14,8 @@ import FilterKilometers from "./FilterKilometers";
 import FilterCheckboxes from "./FilterCheckboxes";
 import Sort from "./Sort.js";
 
+import Amplify, { API } from 'aws-amplify';
+
 import RecordsElement from "./RecordsElement";
 import _ from "lodash";
 import FilterTag from "./FilterTag";
@@ -173,8 +175,9 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await axios(`${process.env.REACT_APP_API}/filters`);
-      setFilters(result.data);
+      const result = await API.get("b2bPlateform", `/filters`);
+      console.log(result)
+      setFilters(result);
     };
     fetchRecords();
   }, []);
@@ -250,12 +253,14 @@ const RecordsListContainer = () => {
 
       console.log(apiQuery);
 
-      const result = await axios.post(
-        `${process.env.REACT_APP_API}/records`,
-        JSON.stringify(apiQuery)
-      );
-      setRecordsCount(result.data.Count);
-      setRecords(result.data.Items);
+      const result = await API.post("b2bPlateform", `/records`,{body : JSON.stringify(apiQuery)});
+      
+      // axios.post(
+      //   `${process.env.REACT_APP_API}/records`,
+      //   JSON.stringify(apiQuery)
+      // );
+      setRecordsCount(result.Count);
+      setRecords(result.Items);
     };
     fetchRecords();
   }, [query]);
