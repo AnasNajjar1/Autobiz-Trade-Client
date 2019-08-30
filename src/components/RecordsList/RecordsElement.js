@@ -14,26 +14,26 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
-    const { vehicle, pointOfSale } = record.content;
+    const { vehicle, pointOfSale, salesInfo } = record.content;
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
         <Link className="link-card" to={`/records/${record.id}`}>
           <Card className="h-100">
-            {/*             <div className="status">
-              {record.offers_type === "private" && (
+            <div className="status">
+              {salesInfo && salesInfo.type === "private" && (
                 <div>
                   <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                   offre à particulier
                 </div>
               )}
 
-              {record.offers_type === "stock" && (
+              {salesInfo && salesInfo.type === "stock" && (
                 <div>
                   <FontAwesomeIcon icon={faGavel} className="mr-2" size="1x" />
                   en stock
                 </div>
               )}
-            </div> */}
+            </div>
             {vehicle.carPictures && (
               <img
                 className="card-img-top"

@@ -183,9 +183,9 @@ const RecordsListContainer = () => {
     const fetchRecords = async () => {
       let apiQuery = {
         ProjectionExpression:
-          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode"
+          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode, content.salesInfo.#TYPE"
       };
-
+      const ExpressionAttributeNames = { "#TYPE": "type" };
       let ExpressionAttributeValues = {};
       let arrayFilterExpression = [];
 
@@ -227,8 +227,6 @@ const RecordsListContainer = () => {
         );
       }
 
-      console.log(query.pointOfSales);
-
       if (query.pointOfSales && !query.pointOfSales.includes("all")) {
         let citiesKeys = [];
         query.pointOfSales.forEach(function(pointOfSale, key) {
@@ -241,14 +239,25 @@ const RecordsListContainer = () => {
         );
       }
 
+      if (query.offersTypes && !query.offersTypes.includes("all")) {
+        let offersTypeKeys = [];
+        query.offersTypes.forEach(function(type, key) {
+          ExpressionAttributeValues[`:offersType_${key}`] = type;
+          offersTypeKeys.push(`:offersType_${key}`);
+        });
+
+        arrayFilterExpression.push(
+          `content.salesInfo.#TYPE IN(${offersTypeKeys.join(",")})`
+        );
+      }
+
       if (arrayFilterExpression.length > 0) {
         apiQuery.FilterExpression = arrayFilterExpression.join(" and ");
       }
+      apiQuery.ExpressionAttributeNames = ExpressionAttributeNames;
       if (!_.isEmpty(ExpressionAttributeValues)) {
         apiQuery.ExpressionAttributeValues = ExpressionAttributeValues;
       }
-
-      console.log(apiQuery);
 
       const result = await axios.post(
         `${process.env.REACT_APP_API}/records`,
