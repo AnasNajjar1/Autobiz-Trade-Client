@@ -31,28 +31,28 @@ const RecordsListContainer = () => {
   const offers = ["private", "stock"];
 
   const sortList = [
-    {
+    /*     {
       id: "price_asc",
       name: "Tri : Prix croissants"
     },
     {
       id: "price_desc",
       name: "Tri : Prix décroissants"
-    },
+    }, */
     {
-      id: "age_desc",
+      id: "firstRegistrationDate_asc",
       name: "Tri : Plus anciens"
     },
     {
-      id: "age_asc",
+      id: "firstRegistrationDate_desc",
       name: "Tri : Plus récents"
     },
     {
-      id: "km_desc",
+      id: "mileage_desc",
       name: "Tri : Plus kilométrés"
     },
     {
-      id: "km_asc",
+      id: "mileage_asc",
       name: "Tri : Moins kilométrés"
     }
   ];
@@ -67,7 +67,7 @@ const RecordsListContainer = () => {
     kmMax: "",
     offersTypes: ["all"],
     pointOfSales: ["all"],
-    sort: "age_asc",
+    sortBy: "firstRegistrationDate_desc",
     limit: 20,
     page: 1
   };
@@ -82,7 +82,7 @@ const RecordsListContainer = () => {
     kmMax: NumberParam,
     offersTypes: DelimitedArrayParam,
     pointOfSales: DelimitedArrayParam,
-    sort: StringParam,
+    sortBy: StringParam,
     limit: NumberParam,
     page: NumberParam
   });
@@ -97,7 +97,7 @@ const RecordsListContainer = () => {
     kmMax: query.kmMax || initialFormState.kmMax,
     offersTypes: query.offersTypes || initialFormState.offersTypes,
     pointOfSales: query.pointOfSales || initialFormState.pointOfSales,
-    sort: query.sort || initialFormState.sort,
+    sortBy: query.sortBy || initialFormState.sortBy,
     limit: query.limit || initialFormState.limit,
     page: query.page || initialFormState.page
   });
@@ -165,9 +165,8 @@ const RecordsListContainer = () => {
     setQuery(initialFormState);
   };
 
-  const handleSort = e => {
-    const { value } = e.target;
-    form.sort = value;
+  const handleSort = value => {
+    form.sortBy = value;
     setQuery(form);
   };
 
@@ -260,7 +259,7 @@ const RecordsListContainer = () => {
       }
 
       const result = await axios.post(
-        `${process.env.REACT_APP_API}/records`,
+        `${process.env.REACT_APP_API}/records?sortBy=${form.sortBy}`,
         JSON.stringify(apiQuery)
       );
       setRecordsCount(result.data.Count);
@@ -430,11 +429,7 @@ const RecordsListContainer = () => {
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">
-                <Sort
-                  list={sortList}
-                  value={form.sort}
-                  updateField={handleSort}
-                />
+                <Sort list={sortList} value={form.sortBy} sort={handleSort} />
               </Col>
               {records.map((record, index) => (
                 <RecordsElement key={index} record={record} />
