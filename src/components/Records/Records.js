@@ -71,22 +71,55 @@ const Record = props => {
   const {
     vehicle,
     pointOfSale,
-    history,
     administrativeDetails,
-    documents,
     characteristics,
-    constructorsEquipments,
     equipments,
+    history,
     market
+    //keyPoints,
+    //documents,
+    //constructorsEquipments
   } = record.content;
 
+  // exemple keyPoints
   let keyPoints = {
-    vat: history.vat,
-    servicingInBrandNetwork: history.servicingInBrandNetwork,
-    firstHand: administrativeDetails.firstHand
+    values: ["Première main", "Tva Récupérable", "Non accidenté", "Réseau"],
+    country: { label: "France", code: "fr" }
   };
 
-  keyPoints = _.keys(_.pickBy(keyPoints));
+  // exemple documents
+  let documents = [
+    {
+      title: "Télecharger le rapport d'expertise",
+      link:
+        "https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/FR/ConditionsGenerales.pdf"
+    },
+    {
+      title: "Télecharger un autre pdf",
+      link:
+        "https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/FR/ConditionsGenerales.pdf"
+    }
+  ];
+
+  // exemple constructorsEquipments
+  let constructorsEquipments = [
+    "Navigateur GPS",
+    "Phare Xenon",
+    "Volant Cuir",
+    "Crochet attelage",
+    "Prise USB, prise iPod",
+    "Régulateur de vitesse",
+    "Direction assistée",
+    "Airbags Frontaux",
+    "Système Audio général",
+    "Ordinateur de nord",
+    "Volant Multifonctions",
+    "Phares antibrouillard",
+    "Rétroviseurs électriques",
+    "Fermeture centralisée des portes",
+    "Peinture métalisée"
+  ];
+
   return (
     <>
       <Container className="pb-5">
@@ -129,11 +162,13 @@ const Record = props => {
             </div>
           </Col>
           <Col>
+            {/*
             <div className="section radius mb-4 py-4">
-              {/* <Auction values={auction} /> */}
+               <Auction values={auction} /> 
             </div>
+            */}
 
-            {keyPoints.length > 0 && (
+            {keyPoints && (
               <div className="section radius mb-4 py-4">
                 <div className="h2 mb-4 text-center">Points clés</div>
                 <CheckList items={keyPoints} />
@@ -155,14 +190,14 @@ const Record = props => {
               </div>
             </Col>
             <Col xs="12" md="6">
-              {characteristics.length > 0 && (
+              {characteristics && (
                 <>
                   <div className="section-title">Caractéristiques</div>
                   <TableList items={characteristics} />
                 </>
               )}
 
-              {administrativeDetails.length > 0 && (
+              {administrativeDetails && (
                 <>
                   <div className="section-title">
                     Détails administratifs <i>Source Sivin</i>
@@ -172,45 +207,27 @@ const Record = props => {
               )}
             </Col>
             <Col xs="12" md="6">
-              {equipments.length > 0 && (
+              {equipments && equipments.length > 0 && (
                 <>
                   <div className="section-title">Equipements déclarés</div>
                   <EquipmentList items={equipments} />
                 </>
               )}
-              {/*
               {market && (
                 <>
-                  <Row className="align-items-end mb-2">
-                    <Col>
-                      <div className="section-title mb-0">Le marché</div>
-                    </Col>
-                    {market.link && (
-                      <Col className="text-right">
-                        <small>
-                          <a href={market.link} className="gray">
-                            Voir l’analyse de marché du véhicule{" "}
-                            <FontAwesomeIcon
-                              icon={faExternalLinkAlt}
-                              size="1x"
-                            />
-                          </a>
-                        </small>
-                      </Col>
-                    )}
-                  </Row>
-                  <TableList items={market.items} />
+                  <div className="section-title">Le marché</div>
+                  <TableList items={market} />
                 </>
               )}
-                          {history.length > 0 && (
+              {history && (
                 <>
                   <div className="section-title">Historique</div>
                   <TableList items={history} />
                 </>
-              )} */}
+              )}
             </Col>
 
-            {constructorsEquipments && (
+            {constructorsEquipments && constructorsEquipments.length > 0 && (
               <>
                 <Col xs="12">
                   <hr className="mt-5 mb-0" />
