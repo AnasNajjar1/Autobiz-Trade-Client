@@ -69,6 +69,7 @@ const Record = props => {
   }
 
   const {
+    fileNumber,
     vehicle,
     pointOfSale,
     administrativeDetails,
@@ -125,7 +126,7 @@ const Record = props => {
       <Container className="pb-5">
         <Row>
           <Col xs="12">
-            <div className="gray pl-3 mb-1">Référence :</div>
+            <div className="gray pl-3 mb-1">Référence : {fileNumber}</div>
           </Col>
           <Col xs="12" md="6">
             <div className="car-props">
