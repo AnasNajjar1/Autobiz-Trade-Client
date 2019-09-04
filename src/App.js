@@ -5,6 +5,9 @@ import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
 import { QueryParamProvider } from "use-query-params";
+import moment from "moment";
+import "moment/locale/fr";
+moment.locale("fr");
 
 function App() {
   return (

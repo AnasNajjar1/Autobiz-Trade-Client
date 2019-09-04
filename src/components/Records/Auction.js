@@ -1,20 +1,26 @@
 import React from "react";
 import { Row, Col, Form, Button, Input } from "reactstrap";
+import moment from "moment";
+import Countdown from "./Countdown.js";
+
 const Auction = ({ values }) => {
-  var startDateTime = new Date(values.startDateTime);
+  if (!values.auctionInfos) {
+    return null;
+  }
+  const secondsLeft = moment().add(values.secondsLeft, "seconds");
+  const auctionEnd = new Date(values.auctionInfos.auctionEnd);
+
   return (
     <>
       <p className="gray font-italic">
-        début de l’enchère le{" "}
-        <strong>{startDateTime.toLocaleDateString()}</strong> à{" "}
-        <strong>
-          {startDateTime.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })}
-        </strong>
+        <Countdown endDate={secondsLeft} />
+        Fin de l’enchère le {/* {moment().calendar(auctionEnd)} */}
+        {auctionEnd.toLocaleDateString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        })}
       </p>
-      {!values.bestOffer && (
+      {/*       {!values.bestOffer && (
         <div className="section-price text-center">
           <Row>
             <Col>
@@ -22,9 +28,9 @@ const Auction = ({ values }) => {
             </Col>
           </Row>
         </div>
-      )}
+      )} */}
 
-      {values.bestOffer && (
+      {/*       {values.bestOffer && (
         <div className="section-price text-center">
           <Row>
             {values.userOffer && (
@@ -47,18 +53,18 @@ const Auction = ({ values }) => {
             </Col>
           </Row>
         </div>
-      )}
+      )} */}
 
       <Form method="post" className="form-offer mt-4">
         <Row>
           <Col xs="12" lg="7" className="mb-3">
-            <Input
+            {/*             <Input
               type="number"
               min={values.minimumNextOffer}
               name="user-offer"
               className="rounded"
               placeholder={`Votre offre (min ${values.minimumNextOffer.toLocaleString()} €)`}
-            />
+            /> */}
           </Col>
           <Col xs="12" lg="5">
             <Button block color="danger" className="rounded">

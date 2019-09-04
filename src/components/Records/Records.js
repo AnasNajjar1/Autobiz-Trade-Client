@@ -21,6 +21,7 @@ import UlList from "./UlList.js";
 
 const Record = props => {
   const [record, setRecord] = useState([]);
+  const [auction, setAuction] = useState([]);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +39,18 @@ const Record = props => {
     };
     fetchRecord();
   }, []);
+
+  useEffect(() => {
+    const fetchAuction = async () => {
+      try {
+        const result = await axios.get(
+          `${process.env.REACT_APP_API}/auction?id=${props.refId}`
+        );
+        setAuction(result.data);
+      } catch (error) {}
+    };
+    fetchAuction();
+  }, [record]);
 
   if (notFound) {
     return (
@@ -163,11 +176,9 @@ const Record = props => {
             </div>
           </Col>
           <Col>
-            {/*
             <div className="section radius mb-4 py-4">
-               <Auction values={auction} /> 
+              <Auction values={auction} />
             </div>
-            */}
 
             {keyPoints && (
               <div className="section radius mb-4 py-4">
@@ -246,155 +257,6 @@ const Record = props => {
       </div>
     </>
   );
-  /* 
-  const {
-    vehicle,
-    pointOfSale,
-    auction,
-    keyPoints,
-    documents,
-    equipments,
-    characteristics,
-    administrativeDetails,
-    market,
-    history,
-    constructorsEquipments
-  } = record;
-
-  return (
-    <>
-      <Container className="pb-5">
-        <Row>
-          <Col xs="12">
-            <div className="gray pl-3 mb-1">Référence : {record.refHexaId}</div>
-          </Col>
-          <Col xs="12" md="6">
-            <div className="car-props">
-              <div className="section radius">
-                <div className="h1">
-                  {vehicle.brandLabel} {vehicle.modelLabel}
-                </div>
-                <div className="gray mb-1">{vehicle.versionlabel} </div>
-                <Carousel items={vehicle.car_pictures} />
-              </div>
-              <TagsProps
-                tags={[
-                  { label: "Année MEC", value: vehicle.year_mec },
-                  { label: "Énergie", value: vehicle.fuelLabel },
-                  { label: "Km", value: vehicle.mileage.toLocaleString() }
-                ]}
-              />
-              <Row>
-                <Col>
-                  <div className="h3 text-center">État général</div>
-                  <Grade letter={vehicle.profile_costs} />
-                </Col>
-                <Col className="reseller-col">
-                  <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
-                  {pointOfSale.pointOfSaleName} {pointOfSale.city}{" "}
-                  {pointOfSale.zipCode}
-                </Col>
-              </Row>
-            </div>
-          </Col>
-          <Col>
-            <div className="section radius mb-4 py-4">
-              <Auction values={auction} />
-            </div>
-
-            <div className="section radius mb-4 py-4">
-              <div className="h2 mb-4 text-center">Points clés</div>
-              <CheckList items={keyPoints} />
-            </div>
-
-            <Documents items={documents} />
-          </Col>
-        </Row>
-      </Container>
-      <div className="white-container-wrapper">
-        <Container>
-          <Row>
-            <Col xs="12" className="text-center">
-              <div className="container-separator">
-                <div className="container-separator-title">
-                  Description du véhicule
-                </div>
-              </div>
-            </Col>
-            <Col xs="12" md="6">
-              {characteristics.length > 0 && (
-                <>
-                  <div className="section-title">Caractéristiques</div>
-                  <TableList items={characteristics} />
-                </>
-              )}
-
-              {administrativeDetails.length > 0 && (
-                <>
-                  <div className="section-title">
-                    Détails administratifs <i>Source Sivin</i>
-                  </div>
-                  <TableList items={administrativeDetails} />
-                </>
-              )}
-            </Col>
-            <Col xs="12" md="6">
-              {equipments.length > 0 && (
-                <>
-                  <div className="section-title">Equipements déclarés</div>
-                  <EquipmentList items={equipments} />
-                </>
-              )}
-
-              {market.length > 0 && (
-                <>
-                  <Row className="align-items-end mb-2">
-                    <Col>
-                      <div className="section-title mb-0">Le marché</div>
-                    </Col>
-                    {market.link && (
-                      <Col className="text-right">
-                        <small>
-                          <a href={market.link} className="gray">
-                            Voir l’analyse de marché du véhicule{" "}
-                            <FontAwesomeIcon
-                              icon={faExternalLinkAlt}
-                              size="1x"
-                            />
-                          </a>
-                        </small>
-                      </Col>
-                    )}
-                  </Row>
-                  <TableList items={market.items} />
-                </>
-              )}
-              {history.length > 0 && (
-                <>
-                  <div className="section-title">Historique</div>
-                  <TableList items={history} />
-                </>
-              )}
-            </Col>
-
-            {constructorsEquipments.length > 0 && (
-              <>
-                <Col xs="12">
-                  <hr className="mt-5 mb-0" />
-                </Col>
-                <Col xs="12">
-                  <div className="section-title text-center">
-                    Equipements <i>Sources constructeur</i>
-                  </div>
-                  <UlList items={constructorsEquipments} />
-                </Col>
-              </>
-            )}
-          </Row>
-        </Container>
-      </div>
-    </>
-  ); */
 };
 
 export default Record;
