@@ -133,7 +133,6 @@ const Record = props => {
     "Fermeture centralisée des portes",
     "Peinture métalisée"
   ];
-
   return (
     <>
       <Container className="pb-5">
@@ -177,7 +176,7 @@ const Record = props => {
           </Col>
           <Col>
             <div className="section radius mb-4 py-4">
-              <Auction values={auction} />
+              {auction && <Auction values={auction} />}
             </div>
 
             {keyPoints && (
