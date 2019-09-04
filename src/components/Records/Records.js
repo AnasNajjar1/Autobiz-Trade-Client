@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col, Alert } from "reactstrap";
-import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSpinner,
   faExclamationTriangle,
-  faMapMarkerAlt,
-  faExternalLinkAlt
+  faMapMarkerAlt
 } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "./Carousel.js";
 import TagsProps from "./TagsProps.js";
@@ -21,7 +19,7 @@ import UlList from "./UlList.js";
 
 const Record = props => {
   const [record, setRecord] = useState([]);
-  const [auction, setAuction] = useState([]);
+
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -39,18 +37,6 @@ const Record = props => {
     };
     fetchRecord();
   }, []);
-
-  useEffect(() => {
-    const fetchAuction = async () => {
-      try {
-        const result = await axios.get(
-          `${process.env.REACT_APP_API}/auction?id=${props.refId}`
-        );
-        setAuction(result.data);
-      } catch (error) {}
-    };
-    fetchAuction();
-  }, [record]);
 
   if (notFound) {
     return (
@@ -176,7 +162,7 @@ const Record = props => {
           </Col>
           <Col>
             <div className="section radius mb-4 py-4">
-              {auction && <Auction values={auction} />}
+              {<Auction refId={props.refId} />}
             </div>
 
             {keyPoints && (
