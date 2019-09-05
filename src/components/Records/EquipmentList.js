@@ -1,5 +1,5 @@
 import React from "react";
-
+import { t } from "../common/Translate";
 const EquipmentList = ({ items }) => {
   return (
     <div className="list-equipment">
@@ -7,7 +7,7 @@ const EquipmentList = ({ items }) => {
         <div className="cell" key={index}>
           <div className="item">
             <div className={`ico ico-${item}`} />
-            {item}
+            {t(item)}
           </div>
         </div>
       ))}

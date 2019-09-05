@@ -48,7 +48,7 @@ const config = {
             {
                 name: "b2bPlateform",
                 region : 'eu-west-1',
-                endpoint: "https://rnmjiufyvb.execute-api.eu-west-1.amazonaws.com/TEST",
+                endpoint: "https://rnmjiufyvb.execute-api.eu-west-1.amazonaws.com/DEV",
                 // custom_header: async () => { 
                 //     //return { Authorization : 'token' } 
                 //     // Alternatively, with Cognito User Pools use this:

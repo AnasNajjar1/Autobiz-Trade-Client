@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-const Sort = ({ list, value, updateField }) => {
+const Sort = ({ list, value, sort }) => {
   let options = "";
 
   if (list) {
@@ -21,7 +21,7 @@ const Sort = ({ list, value, updateField }) => {
           value={value}
           bsSize="sm"
           className="rounded mb-3"
-          onChange={e => updateField(e)}
+          onChange={e => sort(e.target.value)}
         >
           {options}
         </Input>

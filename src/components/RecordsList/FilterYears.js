@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 const FilterYears = ({ yearMecMin, yearMecMax, updateField }) => {
   const [error, setError] = useState(false);
@@ -18,7 +19,7 @@ const FilterYears = ({ yearMecMin, yearMecMax, updateField }) => {
           <Col>
             <Input
               type="number"
-              placeholder="Min"
+              placeholder={t("min")}
               name="yearMecMin"
               id="yearMecMin"
               className={error ? "is-invalid" : ""}
@@ -26,23 +27,23 @@ const FilterYears = ({ yearMecMin, yearMecMax, updateField }) => {
               onChange={e => updateField(e)}
             />
             <Label for="yearMecMin" className="mini-label">
-              Min
+              <Translate code="min"></Translate>
             </Label>
             <div className="invalid-feedback">
-              L'<b>année min</b> est supérieur à l'<b>année max</b>
+              <Translate code="year_mec_min_is_bigger_than_max" />
             </div>
           </Col>
           <Col>
             <Input
               type="number"
-              placeholder="Max"
+              placeholder={t("max")}
               name="yearMecMax"
               id="yearMecMax"
               value={yearMecMax}
               onChange={e => updateField(e)}
             />
             <Label for="yearMecMax" className="mini-label">
-              Max
+              <Translate code="max"></Translate>
             </Label>
           </Col>
         </Row>

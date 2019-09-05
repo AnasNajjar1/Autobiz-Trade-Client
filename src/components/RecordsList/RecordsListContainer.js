@@ -6,7 +6,7 @@ import {
   faExclamationTriangle,
   faFilter
 } from "@fortawesome/free-solid-svg-icons";
-import FilterSearch from "./FilterSearch";
+import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
@@ -33,29 +33,29 @@ const RecordsListContainer = () => {
   const offers = ["private", "stock"];
 
   const sortList = [
-    {
+    /*     {
       id: "price_asc",
-      name: "Tri : Prix croissants"
+      name: t("sort_price_asc")
     },
     {
       id: "price_desc",
-      name: "Tri : Prix décroissants"
+      name: t("sort_price_desc")
+    }, */
+    {
+      id: "firstRegistrationDate_asc",
+      name: t("sort_date_asc")
     },
     {
-      id: "age_desc",
-      name: "Tri : Plus anciens"
+      id: "firstRegistrationDate_desc",
+      name: t("sort_date_desc")
     },
     {
-      id: "age_asc",
-      name: "Tri : Plus récents"
+      id: "mileage_desc",
+      name: t("sort_mileage_desc")
     },
     {
-      id: "km_desc",
-      name: "Tri : Plus kilométrés"
-    },
-    {
-      id: "km_asc",
-      name: "Tri : Moins kilométrés"
+      id: "mileage_asc",
+      name: t("sort_mileage_asc")
     }
   ];
 
@@ -69,7 +69,7 @@ const RecordsListContainer = () => {
     kmMax: "",
     offersTypes: ["all"],
     pointOfSales: ["all"],
-    sort: "age_asc",
+    sortBy: "firstRegistrationDate_desc",
     limit: 20,
     page: 1
   };
@@ -84,7 +84,7 @@ const RecordsListContainer = () => {
     kmMax: NumberParam,
     offersTypes: DelimitedArrayParam,
     pointOfSales: DelimitedArrayParam,
-    sort: StringParam,
+    sortBy: StringParam,
     limit: NumberParam,
     page: NumberParam
   });
@@ -99,7 +99,7 @@ const RecordsListContainer = () => {
     kmMax: query.kmMax || initialFormState.kmMax,
     offersTypes: query.offersTypes || initialFormState.offersTypes,
     pointOfSales: query.pointOfSales || initialFormState.pointOfSales,
-    sort: query.sort || initialFormState.sort,
+    sortBy: query.sortBy || initialFormState.sortBy,
     limit: query.limit || initialFormState.limit,
     page: query.page || initialFormState.page
   });
@@ -167,17 +167,16 @@ const RecordsListContainer = () => {
     setQuery(initialFormState);
   };
 
-  const handleSort = e => {
-    const { value } = e.target;
-    form.sort = value;
+  const handleSort = value => {
+    form.sortBy = value;
     setQuery(form);
   };
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/filters`);
+      const result = await axios.get(`${process.env.REACT_APP_API}/filters`);
       console.log(result)
-      setFilters(result);
+      setFilters(result.data);
     };
     fetchRecords();
   }, []);
@@ -186,9 +185,9 @@ const RecordsListContainer = () => {
     const fetchRecords = async () => {
       let apiQuery = {
         ProjectionExpression:
-          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode"
+          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode, content.salesInfo.#TYPE"
       };
-
+      const ExpressionAttributeNames = { "#TYPE": "type" };
       let ExpressionAttributeValues = {};
       let arrayFilterExpression = [];
 
@@ -230,8 +229,6 @@ const RecordsListContainer = () => {
         );
       }
 
-      console.log(query.pointOfSales);
-
       if (query.pointOfSales && !query.pointOfSales.includes("all")) {
         let citiesKeys = [];
         query.pointOfSales.forEach(function(pointOfSale, key) {
@@ -244,28 +241,39 @@ const RecordsListContainer = () => {
         );
       }
 
+      if (query.offersTypes && !query.offersTypes.includes("all")) {
+        let offersTypeKeys = [];
+        query.offersTypes.forEach(function(type, key) {
+          ExpressionAttributeValues[`:offersType_${key}`] = type;
+          offersTypeKeys.push(`:offersType_${key}`);
+        });
+
+        arrayFilterExpression.push(
+          `content.salesInfo.#TYPE IN(${offersTypeKeys.join(",")})`
+        );
+      }
+
       if (arrayFilterExpression.length > 0) {
         apiQuery.FilterExpression = arrayFilterExpression.join(" and ");
       }
+      apiQuery.ExpressionAttributeNames = ExpressionAttributeNames;
       if (!_.isEmpty(ExpressionAttributeValues)) {
         apiQuery.ExpressionAttributeValues = ExpressionAttributeValues;
       }
 
-      console.log(apiQuery);
-
-      const result = await API.post("b2bPlateform", `/records`,{body : JSON.stringify(apiQuery)});
-      
-      // axios.post(
-      //   `${process.env.REACT_APP_API}/records`,
-      //   JSON.stringify(apiQuery)
-      // );
-      setRecordsCount(result.Count);
-      setRecords(result.Items);
+      const result = await axios.post(
+        `${process.env.REACT_APP_API}/records?sortBy=${form.sortBy}`,
+        JSON.stringify(apiQuery)
+      );
+      setRecordsCount(result.data.Count);
+      setRecords(result.data.Items);
     };
     fetchRecords();
   }, [query]);
 
   useEffect(() => {
+    form.modelLabel = "";
+
     const fetchModelLabels = async () => {
       if (form.brandLabel === "") {
         setModelLabels([]);
@@ -283,11 +291,15 @@ const RecordsListContainer = () => {
     <Container>
       <Row>
         <div className="search-record-nav">
-          <Section>
+          <div className="section d-md-none">
+            {" "}
+            {/* replace by <Section> when filterSearch is active */}
             <Row>
+              {/*
               <Col className="col col-6" sm="8" md="12">
                 <FilterSearch value={form.search} onChange={updateField} />
-              </Col>
+              </Col> 
+              */}
               <Col className="col d-md-none">
                 <button
                   type="button"
@@ -300,12 +312,14 @@ const RecordsListContainer = () => {
                 </button>
               </Col>
             </Row>
-          </Section>
+          </div>
           <div
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
-              <p className="section-title">Marque et modèle</p>
+              <p className="section-title">
+                <Translate code="brand_and_model" />
+              </p>
 
               {filters.brandLabel && (
                 <FilterBrands
@@ -322,21 +336,27 @@ const RecordsListContainer = () => {
                   updateField={updateField}
                 />
               )}
-              <p className="section-title">Année MEC</p>
+              <p className="section-title">
+                <Translate code="year_mec" />
+              </p>
               <FilterYears
                 yearMecMin={form.yearMecMin}
                 yearMecMax={form.yearMecMax}
                 updateField={updateField}
               />
 
-              <p className="section-title">KM</p>
+              <p className="section-title">
+                <Translate code="km" />
+              </p>
               <FilterKilometers
                 kmMin={form.kmMin}
                 kmMax={form.kmMax}
                 updateField={updateField}
               />
 
-              <p className="section-title">Lieu de stockage</p>
+              <p className="section-title">
+                <Translate code="storage_place" />
+              </p>
 
               {filters.city && (
                 <FilterCheckboxes
@@ -348,7 +368,9 @@ const RecordsListContainer = () => {
                 />
               )}
 
-              <p className="section-title">Types d'offres</p>
+              <p className="section-title">
+                <Translate code="offer_type" />
+              </p>
               <FilterCheckboxes
                 data={offers}
                 target="offersTypes"
@@ -366,45 +388,45 @@ const RecordsListContainer = () => {
           <Row>
             <Col className="tag-list">
               <FilterTag
-                label="Recherche"
+                label={t("search")}
                 value={query.search}
                 target="search"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Marque"
+                label={t("vehicule_brand")}
                 value={query.brandLabel}
                 target="brandLabel"
                 removeFilter={removeFilter}
               />
 
               <FilterTag
-                label="Modèle"
+                label={t("vehicule_model")}
                 value={query.modelLabel}
                 target="modelLabel"
                 removeFilter={removeFilter}
               />
 
               <FilterTag
-                label="Km min"
+                label={t("km_min")}
                 value={query.kmMin}
                 target="kmMin"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Km max"
+                label={t("km_max")}
                 value={query.kmMax}
                 target="kmMax"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Année MEC min"
+                label={t("year_mec_min")}
                 value={query.yearMecMin}
                 target="yearMecMin"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Année MEC max"
+                label={t("year_mec_max")}
                 value={query.yearMecMax}
                 target="yearMecMax"
                 removeFilter={removeFilter}
@@ -414,7 +436,7 @@ const RecordsListContainer = () => {
           {RecordsCount === 0 && (
             <Alert color="secondary" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-              Pas de résultats
+              <Translate code="no_result" />
             </Alert>
           )}
 
@@ -422,15 +444,11 @@ const RecordsListContainer = () => {
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">
                 <div className="h5 mb-3">
-                  <b>{RecordsCount}</b> véhicules
+                  <b>{RecordsCount}</b> <Translate code="vehicules" />
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">
-                <Sort
-                  list={sortList}
-                  value={form.sort}
-                  updateField={handleSort}
-                />
+                <Sort list={sortList} value={form.sortBy} sort={handleSort} />
               </Col>
               {records.map((record, index) => (
                 <RecordsElement key={index} record={record} />

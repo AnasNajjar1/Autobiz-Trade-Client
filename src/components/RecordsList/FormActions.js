@@ -1,4 +1,5 @@
 import React from "react";
+import Translate from "../common/Translate";
 import { Row, Col, Button } from "reactstrap";
 const FormActions = ({ reset, submit }) => {
   return (
@@ -6,12 +7,12 @@ const FormActions = ({ reset, submit }) => {
       <Row>
         <Col>
           <Button color="light" block onClick={reset}>
-            Reset
+            <Translate code="reset"></Translate>
           </Button>
         </Col>
         <Col>
           <Button color="primary" block onClick={submit}>
-            Appliquer
+            <Translate code="apply"></Translate>
           </Button>
         </Col>
       </Row>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
+
 const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
   const [error, setError] = useState(false);
 
@@ -18,7 +20,7 @@ const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
           <Col>
             <Input
               type="number"
-              placeholder="Min"
+              placeholder={t("min")}
               name="kmMin"
               id="kmMin"
               className={error ? "is-invalid" : ""}
@@ -26,23 +28,23 @@ const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
               onChange={e => updateField(e)}
             />
             <Label for="kmMin" className="mini-label">
-              Min
+              <Translate code="min" />
             </Label>
             <div className="invalid-feedback">
-              Le <b>KM min</b> est supérieur au <b>KM max</b>
+              <Translate code="km_min_is_bigger_than_max" />
             </div>
           </Col>
           <Col>
             <Input
               type="number"
-              placeholder="Max"
+              placeholder={t("max")}
               name="kmMax"
               id="kmMax"
               value={kmMax}
               onChange={e => updateField(e)}
             />
             <Label for="kmMax" className="mini-label">
-              Max
+              <Translate code="max" />
             </Label>
           </Col>
         </Row>

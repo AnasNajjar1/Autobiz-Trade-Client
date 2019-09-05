@@ -684,10 +684,17 @@ header {
 	border-radius: .5em;
 	background-color: $card-cap-bg;
 	padding: 10px 15px;
+	text-align: center;
+
+	.h5{
+		@extend .mb-0; 
+		@extend .mt-1;
+	}
 
 	.offer-value {
 		font-size: 2rem;
-		color: $am_gray;
+		//color: $am_gray;
+		@extend .mb-1;
 
 		sup {
 			font-weight: normal;
@@ -961,5 +968,22 @@ footer {
 	font-size: 2rem; 
 
 }
+
+.auction{
+	position: relative;
+	.countdown{
+		background: $blue;
+		@extend .small;
+		@extend .mb-2;
+		padding: 5px 15px;
+		display: inline-block;
+		left: -30px;
+		top: -5px;
+		border-radius: 15px;
+		color: white;
+		position: relative;
+	}
+}
+
 
 @import "carousel";

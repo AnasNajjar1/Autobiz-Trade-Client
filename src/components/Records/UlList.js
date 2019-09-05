@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "../common/Translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,7 +9,7 @@ const UlList = ({ items }) => {
       {items.map((value, index) => (
         <li key={index}>
           <FontAwesomeIcon icon={faCircle} />
-          {value}
+          {t(value)}
         </li>
       ))}
     </ul>

@@ -8,7 +8,6 @@ const FilterTag = ({ label, value, target, removeFilter }) => {
         <img
           src={close}
           className="tag-close"
-          /* onclick="resetField('select_vo_marque');" */
           onClick={() => removeFilter(target)}
           alt="x"
         />
