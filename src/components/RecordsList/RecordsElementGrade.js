@@ -1,5 +1,5 @@
 import React from "react";
-
+import Translate, { t } from "../common/Translate";
 const RecordsElementGrade = props => {
   if (props.grade === null) return null;
 
@@ -8,26 +8,27 @@ const RecordsElementGrade = props => {
   let label = "";
   switch (props.grade.toUpperCase()) {
     case "A":
-      label = "Très bon";
+      label = t("very_good");
       break;
     case "B":
-      label = "Bon";
+      label = t("godd");
       break;
     default:
     case "C":
-      label = "Moyen";
+      label = t("average");
       break;
     case "D":
-      label = "Mauvais";
+      label = t("bad");
       break;
     case "E":
-      label = "Très mauvais";
+      label = t("very_bad");
       break;
   }
 
   return (
     <div className="car-condition">
-      État :<span className={classes}>{props.grade.toUpperCase()}</span>
+      <Translate code="condition"></Translate> :
+      <span className={classes}>{props.grade.toUpperCase()}</span>
       <span className="grade-label">{label}</span>
     </div>
   );

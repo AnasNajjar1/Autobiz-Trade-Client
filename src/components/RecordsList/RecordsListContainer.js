@@ -6,7 +6,7 @@ import {
   faExclamationTriangle,
   faFilter
 } from "@fortawesome/free-solid-svg-icons";
-import FilterSearch from "./FilterSearch";
+import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
@@ -33,27 +33,27 @@ const RecordsListContainer = () => {
   const sortList = [
     /*     {
       id: "price_asc",
-      name: "Tri : Prix croissants"
+      name: t("sort_price_asc")
     },
     {
       id: "price_desc",
-      name: "Tri : Prix décroissants"
+      name: t("sort_price_desc")
     }, */
     {
       id: "firstRegistrationDate_asc",
-      name: "Tri : Plus anciens"
+      name: t("sort_date_asc")
     },
     {
       id: "firstRegistrationDate_desc",
-      name: "Tri : Plus récents"
+      name: t("sort_date_desc")
     },
     {
       id: "mileage_desc",
-      name: "Tri : Plus kilométrés"
+      name: t("sort_mileage_desc")
     },
     {
       id: "mileage_asc",
-      name: "Tri : Moins kilométrés"
+      name: t("sort_mileage_asc")
     }
   ];
 
@@ -314,7 +314,9 @@ const RecordsListContainer = () => {
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
-              <p className="section-title">Marque et modèle</p>
+              <p className="section-title">
+                <Translate code="brand_and_model" />
+              </p>
 
               {filters.brandLabel && (
                 <FilterBrands
@@ -331,21 +333,27 @@ const RecordsListContainer = () => {
                   updateField={updateField}
                 />
               )}
-              <p className="section-title">Année MEC</p>
+              <p className="section-title">
+                <Translate code="year_mec" />
+              </p>
               <FilterYears
                 yearMecMin={form.yearMecMin}
                 yearMecMax={form.yearMecMax}
                 updateField={updateField}
               />
 
-              <p className="section-title">KM</p>
+              <p className="section-title">
+                <Translate code="km" />
+              </p>
               <FilterKilometers
                 kmMin={form.kmMin}
                 kmMax={form.kmMax}
                 updateField={updateField}
               />
 
-              <p className="section-title">Lieu de stockage</p>
+              <p className="section-title">
+                <Translate code="storage_place" />
+              </p>
 
               {filters.city && (
                 <FilterCheckboxes
@@ -357,7 +365,9 @@ const RecordsListContainer = () => {
                 />
               )}
 
-              <p className="section-title">Types d'offres</p>
+              <p className="section-title">
+                <Translate code="offer_type" />
+              </p>
               <FilterCheckboxes
                 data={offers}
                 target="offersTypes"
@@ -375,45 +385,45 @@ const RecordsListContainer = () => {
           <Row>
             <Col className="tag-list">
               <FilterTag
-                label="Recherche"
+                label={t("search")}
                 value={query.search}
                 target="search"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Marque"
+                label={t("vehicule_brand")}
                 value={query.brandLabel}
                 target="brandLabel"
                 removeFilter={removeFilter}
               />
 
               <FilterTag
-                label="Modèle"
+                label={t("vehicule_model")}
                 value={query.modelLabel}
                 target="modelLabel"
                 removeFilter={removeFilter}
               />
 
               <FilterTag
-                label="Km min"
+                label={t("km_min")}
                 value={query.kmMin}
                 target="kmMin"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Km max"
+                label={t("km_max")}
                 value={query.kmMax}
                 target="kmMax"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Année MEC min"
+                label={t("year_mec_min")}
                 value={query.yearMecMin}
                 target="yearMecMin"
                 removeFilter={removeFilter}
               />
               <FilterTag
-                label="Année MEC max"
+                label={t("year_mec_max")}
                 value={query.yearMecMax}
                 target="yearMecMax"
                 removeFilter={removeFilter}
@@ -423,7 +433,7 @@ const RecordsListContainer = () => {
           {RecordsCount === 0 && (
             <Alert color="secondary" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-              Pas de résultats
+              <Translate code="no_result" />
             </Alert>
           )}
 
@@ -431,7 +441,7 @@ const RecordsListContainer = () => {
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">
                 <div className="h5 mb-3">
-                  <b>{RecordsCount}</b> véhicules
+                  <b>{RecordsCount}</b> <Translate code="vehicules" />
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">

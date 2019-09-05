@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormGroup, Input, Button, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Translate, { t } from "../common/Translate";
 import {
   faEnvelope,
   faKey,
@@ -41,7 +42,7 @@ class LoginForm extends Component {
             <Input
               name="username"
               type="text"
-              placeholder="Nom d'utilisateur"
+              placeholder={t("login")}
               className={error ? "is-invalid" : ""}
               value={this.state.username}
               onChange={this.handleChange}
@@ -52,7 +53,7 @@ class LoginForm extends Component {
             <Input
               name="password"
               type="password"
-              placeholder="Mot de passe"
+              placeholder={t("password")}
               className={error ? "is-invalid" : ""}
               value={this.state.password}
               onChange={this.handleChange}
@@ -62,23 +63,25 @@ class LoginForm extends Component {
           {error && (
             <Alert color="danger" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-              Nom d'utilisateur ou mot de passe erroné !
+              <Translate code="user_unauthorized" />
             </Alert>
           )}
 
           <FormGroup>
             <Button color="primary" block>
-              Se connecter
+              <Translate code="connect" />
             </Button>
           </FormGroup>
         </Form>
         <p className="text-center">
-          <a href="#">Mot de passe oublié</a>
+          <a href="#">
+            <Translate code="forgot_password" />
+          </a>
         </p>
 
         <Button outline color="secondary" block>
           <FontAwesomeIcon icon={faShieldAlt} className="icon-info mr-2" />
-          Devenir vendeur/acheteur
+          <Translate code="become_seller_buyer" />
         </Button>
       </>
     );

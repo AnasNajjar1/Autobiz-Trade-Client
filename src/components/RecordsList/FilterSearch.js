@@ -1,12 +1,14 @@
 import React from "react";
+import Translate, { t } from "../common/Translate";
 import { Input } from "reactstrap";
+
 const FilterSearch = ({ value, onChange }) => {
   return (
     <Input
       type="text"
       name="search"
       className="rounded ico-search"
-      placeholder="Recherche"
+      placeholder={t("search")}
       value={value}
       onChange={e => onChange(e)}
     />

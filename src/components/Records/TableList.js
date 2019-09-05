@@ -1,5 +1,6 @@
 import React from "react";
 import { Row } from "reactstrap";
+import { t } from "../common/Translate";
 
 const ListTable = ({ items }) => {
   const renderValue = (key, value) => {
@@ -8,7 +9,7 @@ const ListTable = ({ items }) => {
       case "wheelsBackDimensions":
         return `${value.width}/${value.height} R${value.diameter}`;
       default:
-        return String(value);
+        return t(String(value));
     }
   };
 
@@ -19,7 +20,7 @@ const ListTable = ({ items }) => {
           <React.Fragment key={key}>
             <div className="cell">
               <div className="item">
-                <div className="label">{key}</div>
+                <div className="label">{t(key)}</div>
                 <div className="value" key={key}>
                   {renderValue(key, items[key])}
                 </div>

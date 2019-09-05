@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Translate, { t } from "../common/Translate";
 import axios from "axios";
 import _ from "lodash";
 import { Row, Col, Form, Button, Input } from "reactstrap";
@@ -39,8 +40,8 @@ const Auction = ({ refId }) => {
   }, [refresh]);
 
   useEffect(() => {
-    //setSecondsLeft(5);
-    setSecondsLeft(auction.secondsLeft);
+    setSecondsLeft(90005);
+    //setSecondsLeft(auction.secondsLeft);
   }, [auction]);
 
   useEffect(() => {
@@ -51,12 +52,21 @@ const Auction = ({ refId }) => {
     return () => clearInterval(intervalCountdown);
   }, [secondsLeft]);
 
+  const padLeft = (nr, n, str) => {
+    return Array(n - String(nr).length + 1).join(str || "0") + nr;
+  };
+
   useEffect(() => {
     const dur = moment.duration(secondsLeft, "seconds");
     let text = "";
-    if (dur.days() > 0) countdown = `${dur.days()}j `;
 
-    text += `${dur.hours()}h ${dur.minutes()}m ${dur.seconds()}s`;
+    if (dur.days() === 1) text = `${dur.days()} ${t("day_and")} `;
+    if (dur.days() > 1) text = `${dur.days()} ${t("days_and")} `;
+
+    text += `${padLeft(dur.hours(), 2)}:${padLeft(dur.minutes(), 2)}:${padLeft(
+      dur.seconds(),
+      2
+    )}`;
 
     setCountdown(text);
   }, [secondsLeft]);
@@ -97,7 +107,9 @@ const Auction = ({ refId }) => {
         <Col xs="12" lg="7" xl="6">
           {!isExpired && (
             <div className="countdown">
-              <span className="pr-1">Temps restant :</span>
+              <span className="pr-1">
+                <Translate code="time_left" /> :
+              </span>
               <FontAwesomeIcon
                 icon={faClock}
                 className={isExpired ? "text-danger" : "text-success"}
@@ -108,7 +120,7 @@ const Auction = ({ refId }) => {
         </Col>
         <Col xs="12" lg="5" xl="6">
           <p className="gray font-italic text-right small">
-            {isExpired ? "Enchère terminée le " : "Fin de l’enchère le "}
+            {isExpired ? t("auction_closed_on ") : t("end_of_the_auction ")}
 
             {auctionEnd.toLocaleDateString([], {
               hour: "2-digit",
@@ -118,7 +130,9 @@ const Auction = ({ refId }) => {
         </Col>
       </Row>
       <p>
-        <span className="gray">Mise à prix :</span>{" "}
+        <span className="gray">
+          <Translate code="start_price" /> :
+        </span>{" "}
         <strong>{startPrice.toLocaleString()}</strong> € <sup>TTC</sup>
       </p>
       <div className="section-price">
@@ -131,28 +145,40 @@ const Auction = ({ refId }) => {
               lg="6"
               className={userWin ? "text-success" : "gray"}
             >
-              <p className="h5">Votre offre</p>
+              <p className="h5">
+                <Translate code="your_offer" />
+              </p>
               <div className="offer-value">
                 <span className="font-weight-bold">
                   {lastUserAuctionAmount.toLocaleString()}
                 </span>{" "}
-                €<sup>TTC</sup>
+                €
+                <sup>
+                  <Translate code="ttc" />
+                </sup>
               </div>
             </Col>
           )}
 
           <Col>
             {maxAuction === 0 && (
-              <div className="gray font-italic my-2">aucune offre</div>
+              <div className="gray font-italic my-2">
+                <Translate code="no_offer" />
+              </div>
             )}
             {maxAuction > 0 && (
               <>
-                <p className="h5 gray ">Meilleure offre</p>
+                <p className="h5 gray ">
+                  <Translate code="best_offer" />
+                </p>
                 <div className="offer-value">
                   <span className="dark font-weight-bold">
                     {maxAuction.toLocaleString()}
                   </span>{" "}
-                  €<sup>TTC</sup>
+                  €
+                  <sup>
+                    <Translate code="ttc" />
+                  </sup>
                 </div>
               </>
             )}
@@ -170,7 +196,9 @@ const Auction = ({ refId }) => {
                 className="rounded"
                 onChange={handleChange}
                 disabled={isExpired}
-                placeholder={`Votre offre (min  ${minOffer.toLocaleString()}€)`}
+                placeholder={`${t("your_offer")} (${t(
+                  "min"
+                )}  ${minOffer.toLocaleString()}€)`}
               />
             </Col>
             <Col xs="12" lg="5">
@@ -180,7 +208,7 @@ const Auction = ({ refId }) => {
                 className="rounded"
                 disabled={isExpired}
               >
-                Faire une offre
+                <Translate code="make_an_offer" />
               </Button>
             </Col>
           </Row>

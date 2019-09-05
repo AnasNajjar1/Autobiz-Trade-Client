@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Translate from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
@@ -23,14 +24,14 @@ class RecordsElement extends Component {
               {salesInfo && salesInfo.type === "private" && (
                 <div>
                   <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
-                  offre à particulier
+                  <Translate code="private_offer"></Translate>
                 </div>
               )}
 
               {salesInfo && salesInfo.type === "stock" && (
                 <div>
                   <FontAwesomeIcon icon={faGavel} className="mr-2" size="1x" />
-                  en stock
+                  <Translate code="in_stock"></Translate>
                 </div>
               )}
             </div>

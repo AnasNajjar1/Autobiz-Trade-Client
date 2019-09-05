@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Translate from "../common/Translate";
 import axios from "axios";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,7 +46,7 @@ const Record = props => {
           <Col>
             <Alert color="secondary" className="text-center mb-5">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-              Véhicule inconnu
+              <Translate code="unknown_vehicle" />
             </Alert>
           </Col>
         </Row>
@@ -75,20 +76,20 @@ const Record = props => {
     characteristics,
     equipments,
     history,
-    market
-    //keyPoints,
-    //documents,
-    //constructorsEquipments
+    market,
+    keyPoints,
+    documents,
+    constructorsEquipments
   } = record.content;
 
   // exemple keyPoints
-  let keyPoints = {
+  /*   let keyPoints = {
     values: ["Première main", "Tva Récupérable", "Non accidenté", "Réseau"],
     country: { label: "France", code: "fr" }
-  };
+  }; */
 
   // exemple documents
-  let documents = [
+  /*   let documents = [
     {
       title: "Télecharger le rapport d'expertise",
       link:
@@ -99,10 +100,10 @@ const Record = props => {
       link:
         "https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/FR/ConditionsGenerales.pdf"
     }
-  ];
+  ]; */
 
   // exemple constructorsEquipments
-  let constructorsEquipments = [
+  /*   let constructorsEquipments = [
     "Navigateur GPS",
     "Phare Xenon",
     "Volant Cuir",
@@ -118,7 +119,7 @@ const Record = props => {
     "Rétroviseurs électriques",
     "Fermeture centralisée des portes",
     "Peinture métalisée"
-  ];
+  ]; */
   return (
     <>
       <Container className="pb-5">
@@ -138,16 +139,18 @@ const Record = props => {
               <TagsProps
                 tags={[
                   {
-                    label: "Année MEC",
+                    label: "year_mec",
                     value: vehicle.firstRegistrationDate.substr(0, 4)
                   },
-                  { label: "Énergie", value: vehicle.fuelLabel },
-                  { label: "Km", value: vehicle.mileage.toLocaleString() }
+                  { label: "fuelLabel", value: vehicle.fuelLabel },
+                  { label: "km", value: vehicle.mileage.toLocaleString() }
                 ]}
               />
               <Row>
                 <Col>
-                  <div className="h3 text-center">État général</div>
+                  <div className="h3 text-center">
+                    <Translate code="global_condition"></Translate>
+                  </div>
                   <Grade letter={vehicle.profileCosts} />
                 </Col>
                 {pointOfSale.pointOfSaleName !== null && (
@@ -167,7 +170,9 @@ const Record = props => {
 
             {keyPoints && (
               <div className="section radius mb-4 py-4">
-                <div className="h2 mb-4 text-center">Points clés</div>
+                <div className="h2 mb-4 text-center">
+                  <Translate code="key_points"></Translate>
+                </div>
                 <CheckList items={keyPoints} />
               </div>
             )}
@@ -182,14 +187,16 @@ const Record = props => {
             <Col xs="12" className="text-center">
               <div className="container-separator">
                 <div className="container-separator-title">
-                  Description du véhicule
+                  <Translate code="vehicle_description"></Translate>
                 </div>
               </div>
             </Col>
             <Col xs="12" md="6">
               {characteristics && (
                 <>
-                  <div className="section-title">Caractéristiques</div>
+                  <div className="section-title">
+                    <Translate code="caracteristics"></Translate>
+                  </div>
                   <TableList items={characteristics} />
                 </>
               )}
@@ -197,7 +204,7 @@ const Record = props => {
               {administrativeDetails && (
                 <>
                   <div className="section-title">
-                    Détails administratifs <i>Source Sivin</i>
+                    <Translate code="administrative_details"></Translate>
                   </div>
                   <TableList items={administrativeDetails} />
                 </>
@@ -206,19 +213,25 @@ const Record = props => {
             <Col xs="12" md="6">
               {equipments && equipments.length > 0 && (
                 <>
-                  <div className="section-title">Equipements déclarés</div>
+                  <div className="section-title">
+                    <Translate code="declared_equiments"></Translate>
+                  </div>
                   <EquipmentList items={equipments} />
                 </>
               )}
               {market && (
                 <>
-                  <div className="section-title">Le marché</div>
+                  <div className="section-title">
+                    <Translate code="the_market"></Translate>
+                  </div>
                   <TableList items={market} />
                 </>
               )}
               {history && (
                 <>
-                  <div className="section-title">Historique</div>
+                  <div className="section-title">
+                    <Translate code="history"></Translate>
+                  </div>
                   <TableList items={history} />
                 </>
               )}
@@ -231,7 +244,10 @@ const Record = props => {
                 </Col>
                 <Col xs="12">
                   <div className="section-title text-center">
-                    Equipements <i>Sources constructeur</i>
+                    <Translate code="equiments"></Translate>
+                    <i>
+                      <Translate code="constructor_source"></Translate>
+                    </i>
                   </div>
                   <UlList items={constructorsEquipments} />
                 </Col>
