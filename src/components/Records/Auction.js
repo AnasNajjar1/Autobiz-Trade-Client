@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Translate, { t } from "../common/Translate";
 import axios from "axios";
 import _ from "lodash";
@@ -15,7 +15,7 @@ const Auction = ({ refId }) => {
   const [userAuctionAmout, setUserAuctionAmout] = useState([]);
   const [refresh, setRefresh] = useState(true);
 
-  const refreshTime = 5 * 1000;
+  const refreshTime = 25 * 1000;
 
   useEffect(() => {
     const intervalRefresh = setInterval(() => {
@@ -40,8 +40,7 @@ const Auction = ({ refId }) => {
   }, [refresh]);
 
   useEffect(() => {
-    setSecondsLeft(90005);
-    //setSecondsLeft(auction.secondsLeft);
+    setSecondsLeft(auction.secondsLeft);
   }, [auction]);
 
   useEffect(() => {
@@ -90,11 +89,17 @@ const Auction = ({ refId }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    e.target.reset();
+    const putAuction = async () => {
+      try {
+        const result = await axios.put(
+          `${process.env.REACT_APP_API}/auction?id=${refId}&amount=${userAuctionAmout}`
+        );
 
-    axios.put(`${process.env.REACT_APP_API}/auction`, {
-      id: refId,
-      amount: userAuctionAmout
-    });
+        setAuction(result.data);
+      } catch (error) {}
+    };
+    putAuction();
   };
 
   const handleChange = e => {
