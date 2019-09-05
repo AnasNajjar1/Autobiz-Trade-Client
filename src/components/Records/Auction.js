@@ -40,8 +40,7 @@ const Auction = ({ refId }) => {
   }, [refresh]);
 
   useEffect(() => {
-    setSecondsLeft(90005);
-    //setSecondsLeft(auction.secondsLeft);
+    setSecondsLeft(auction.secondsLeft);
   }, [auction]);
 
   useEffect(() => {
@@ -91,10 +90,9 @@ const Auction = ({ refId }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    axios.put(`${process.env.REACT_APP_API}/auction`, {
-      id: refId,
-      amount: userAuctionAmout
-    });
+    axios.put(
+      `${process.env.REACT_APP_API}/auction?id=${refId}&amount=${userAuctionAmout}`
+    );
   };
 
   const handleChange = e => {
