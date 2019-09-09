@@ -9,7 +9,7 @@ const Header = () => {
   const [username, setUsername] = useState("");
 
   useEffect(()=>{
-    Auth.currentUserInfo().then(user => {
+    Auth.currentAuthenticatedUser({bypassCache:false}).then(user => {
       setUsername(user.username);
     });
   }, [])
