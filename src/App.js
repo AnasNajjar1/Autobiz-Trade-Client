@@ -10,9 +10,10 @@ import moment from "moment";
 import "moment/locale/fr";
 import "moment/locale/de";
 import getTranslations from "./services/getTranslations";
-import Amplify, { Auth, API } from "aws-amplify";
+import Amplify from "aws-amplify";
 import { withAuthenticator } from "aws-amplify-react";
 import awsconfig from "./aws-config";
+import { t } from './components/common/Translate'
 
 moment.locale(process.env.REACT_APP_LANG);
 
@@ -38,4 +39,17 @@ function App() {
   );
 }
 
-export default withAuthenticator(App, true);
+const MyTheme = {
+  googleSignInButton: { backgroundColor: "red", borderColor: "red" },
+  button: { backgroundColor: "green", borderColor: "red" },
+  signInButtonIcon: { display: "none" }
+};
+
+const signUpConfig = {signUpConfig: {
+  hiddenDefaults: ["phone_number"],
+  signUpFields: [
+    { label: t("name"), key: "name", required: true, type: "string", placeholder:t("name_surname") },
+  ]
+}}
+
+export default withAuthenticator(App, signUpConfig, [], null, MyTheme);
