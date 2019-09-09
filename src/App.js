@@ -10,7 +10,7 @@ import moment from "moment";
 import "moment/locale/fr";
 import "moment/locale/de";
 import getTranslations from "./services/getTranslations";
-import Amplify, { Auth, API } from "aws-amplify";
+import Amplify from "aws-amplify";
 import { withAuthenticator } from "aws-amplify-react";
 import awsconfig from "./aws-config";
 
@@ -30,7 +30,7 @@ function App() {
 
             <Route path="/records" component={RecordsListView} />
             <Route path="/login" component={LoginView} />
-            <Redirect from="/" exact to="/login" />
+            <Redirect from="/" exact to="/records" />
           </Switch>
         </QueryParamProvider>
       </LanguageContext.Provider>
@@ -38,4 +38,18 @@ function App() {
   );
 }
 
-export default withAuthenticator(App, true);
+const MyTheme = {
+  googleSignInButton: { backgroundColor: "red", borderColor: "red" },
+  button: { backgroundColor: "green", borderColor: "red" },
+  signInButtonIcon: { display: "none" }
+};
+
+const signUpConfig = {signUpConfig: {
+  hiddenDefaults: ["phone_number"],
+  signUpFields: [
+    { label: "Name", key: "name", required: true, type: "string" },
+    { label: "Referential", key: "Referential", required: true, type: "number" }
+  ]
+}}
+
+export default withAuthenticator(App, signUpConfig, [], null, MyTheme);
