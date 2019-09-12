@@ -1,6 +1,8 @@
 import React from "react";
 import { Row, Col, FormGroup, CustomInput } from "reactstrap";
 import shortid from "shortid";
+import Translate, { t } from "../common/Translate";
+
 const FilterCheckboxes = ({ data, target, values, updateField, all }) => {
   return (
     <>
@@ -14,7 +16,7 @@ const FilterCheckboxes = ({ data, target, values, updateField, all }) => {
                 value="all"
                 checked={values.includes("all")}
                 onChange={e => updateField(e, target)}
-                label="Tous"
+                label={t("all")}
               />
             )}
             {data.map((item, key) => (
