@@ -28,7 +28,7 @@ import {
 } from "use-query-params";
 
 const RecordsListContainer = () => {
-  const offers = ["private", "stock"];
+  const offers = [t("private"), t("stock")];
 
   const sortList = [
     /*     {
