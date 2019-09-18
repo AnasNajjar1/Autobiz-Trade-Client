@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Translate from "../common/Translate";
+import Translate, { t }  from "../common/Translate";
 import axios from "axios";
+import _ from "lodash";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -73,53 +74,22 @@ const Record = props => {
     vehicle,
     pointOfSale,
     administrativeDetails,
-    characteristics,
-    equipments,
+    
+    declaredEquipments,
     history,
     market,
     keyPoints,
     documents,
-    constructorsEquipments
+    constructorEquipments
   } = record.content;
 
-  // exemple keyPoints
-  /*   let keyPoints = {
-    values: ["Première main", "Tva Récupérable", "Non accidenté", "Réseau"],
-    country: { label: "France", code: "fr" }
-  }; */
 
-  // exemple documents
-  /*   let documents = [
-    {
-      title: "Télecharger le rapport d'expertise",
-      link:
-        "https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/FR/ConditionsGenerales.pdf"
-    },
-    {
-      title: "Télecharger un autre pdf",
-      link:
-        "https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/FR/ConditionsGenerales.pdf"
-    }
-  ]; */
+const characteristics = _.omit(record.content.characteristics,["fuelId","gearBoxId"]);
+const { mileage = t("unknown") , fuelLabel = t("unknown") } = characteristics;
+const { firstRegistrationDate = t("unknown") } = vehicle;
 
-  // exemple constructorsEquipments
-  /*   let constructorsEquipments = [
-    "Navigateur GPS",
-    "Phare Xenon",
-    "Volant Cuir",
-    "Crochet attelage",
-    "Prise USB, prise iPod",
-    "Régulateur de vitesse",
-    "Direction assistée",
-    "Airbags Frontaux",
-    "Système Audio général",
-    "Ordinateur de nord",
-    "Volant Multifonctions",
-    "Phares antibrouillard",
-    "Rétroviseurs électriques",
-    "Fermeture centralisée des portes",
-    "Peinture métalisée"
-  ]; */
+
+
   return (
     <>
       <Container className="pb-5">
@@ -139,13 +109,12 @@ const Record = props => {
                 <Carousel items={vehicle.carPictures} />
               </div>
               <TagsProps
-                tags={[
-                  {
+                tags={[{
                     label: "year_mec",
-                    value: vehicle.firstRegistrationDate.substr(0, 4)
+                    value: firstRegistrationDate.substr(0, 4)
                   },
-                  { label: "fuelLabel", value: vehicle.fuelLabel },
-                  { label: "km", value: vehicle.mileage.toLocaleString() }
+                  { label: "fuelLabel", value: fuelLabel },
+                  { label: "km", value: mileage.toLocaleString() }
                 ]}
               />
               <Row>
@@ -158,8 +127,9 @@ const Record = props => {
                 {pointOfSale.pointOfSaleName !== null && (
                   <Col className="reseller-col">
                     <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
-                    {pointOfSale.pointOfSaleName} {pointOfSale.city}{" "}
-                    {pointOfSale.zipCode}
+                    {pointOfSale.pointOfSaleName}<br/>
+                    {pointOfSale.zipCode} {pointOfSale.city}
+                    <br/>{pointOfSale.country}
                   </Col>
                 )}
               </Row>
@@ -179,7 +149,7 @@ const Record = props => {
               </div>
             )}
             {documents &&
-              (documents.length > 0 && <Documents items={documents} />)}
+              ( <Documents items={documents.documents} />)}
           </Col>
         </Row>
       </Container>
@@ -213,12 +183,12 @@ const Record = props => {
               )}
             </Col>
             <Col xs="12" md="6">
-              {equipments && equipments.length > 0 && (
+              {declaredEquipments && declaredEquipments.equipments.length > 0 && (
                 <>
                   <div className="section-title">
                     <Translate code="declared_equiments"></Translate>
                   </div>
-                  <EquipmentList items={equipments} />
+                  <EquipmentList items={declaredEquipments.equipments} />
                 </>
               )}
               {market && (
@@ -239,7 +209,7 @@ const Record = props => {
               )}
             </Col>
 
-            {constructorsEquipments && constructorsEquipments.length > 0 && (
+            {constructorEquipments && constructorEquipments.constructorEquipments.length > 0 && (
               <>
                 <Col xs="12">
                   <hr className="mt-5 mb-0" />
@@ -251,7 +221,7 @@ const Record = props => {
                       <Translate code="constructor_source"></Translate>
                     </i>
                   </div>
-                  <UlList items={constructorsEquipments} />
+                  <UlList items={constructorEquipments.constructorEquipments} />
                 </Col>
               </>
             )}
