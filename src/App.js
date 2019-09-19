@@ -24,7 +24,7 @@ function App() {
 
             <Route path="/records" component={RecordsListView} />
             <Route path="/login" component={LoginView} />
-            <Redirect from="/" exact to="/login" />
+            <Redirect from="/" exact to="/records" />
           </Switch>
         </QueryParamProvider>
       </LanguageContext.Provider>

@@ -145,7 +145,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                 <div className="h2 mb-4 text-center">
                   <Translate code="key_points"></Translate>
                 </div>
-                <CheckList items={keyPoints} />
+                <CheckList items={t(keyPoints)} />
               </div>
             )}
             {documents &&
@@ -169,7 +169,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   <div className="section-title">
                     <Translate code="caracteristics"></Translate>
                   </div>
-                  <TableList items={characteristics} />
+                  <TableList items={t(characteristics)} />
                 </>
               )}
 
@@ -178,7 +178,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   <div className="section-title">
                     <Translate code="administrative_details"></Translate>
                   </div>
-                  <TableList items={administrativeDetails} />
+                  <TableList items={t(administrativeDetails)} />
                 </>
               )}
             </Col>
@@ -188,7 +188,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   <div className="section-title">
                     <Translate code="declared_equiments"></Translate>
                   </div>
-                  <EquipmentList items={declaredEquipments.equipments} />
+                  <EquipmentList items={t(declaredEquipments.equipments)} />
                 </>
               )}
               {market && (
@@ -196,7 +196,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   <div className="section-title">
                     <Translate code="the_market"></Translate>
                   </div>
-                  <TableList items={market} />
+                  <TableList items={t(market)} />
                 </>
               )}
               {history && (
@@ -204,7 +204,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   <div className="section-title">
                     <Translate code="history"></Translate>
                   </div>
-                  <TableList items={history} />
+                  <TableList items={t(history)} />
                 </>
               )}
             </Col>
@@ -221,7 +221,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                       <Translate code="constructor_source"></Translate>
                     </i>
                   </div>
-                  <UlList items={constructorEquipments.constructorEquipments} />
+                  <UlList items={t(constructorEquipments.constructorEquipments)} />
                 </Col>
               </>
             )}
