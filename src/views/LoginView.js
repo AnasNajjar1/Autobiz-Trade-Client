@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import logo from "../assets/img/autobiz-marketplace.png";
+import logo from "../assets/img/autobiz-trade.svg";
 import LoginForm from "../components/LoginForm/LoginForm";
 
 const LoginView = props => {

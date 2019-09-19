@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/autobiz-marketplace.png";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { t } from "../common/Translate"
 
+import logo from "../../assets/img/autobiz-trade.svg";
 const Header = () => {
   const [username, setUsername] = useState("");
 

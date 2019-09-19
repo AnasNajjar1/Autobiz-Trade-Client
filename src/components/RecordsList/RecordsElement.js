@@ -13,22 +13,24 @@ import {
 class RecordsElement extends Component {
   state = {};
 
+
   render() {
     const { record } = this.props;
-    const { vehicle, pointOfSale, salesInfo } = record.content;
+    const { vehicle, pointOfSale, salesInfos } = record.content;
+    console.log(record.content);
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
         <Link className="link-card" to={`/records/${record.id}`}>
           <Card className="h-100">
             <div className="status">
-              {salesInfo && salesInfo.type === "private" && (
+              {salesInfos && salesInfos.type === "private" && (
                 <div>
                   <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                   <Translate code="private_offer"></Translate>
                 </div>
               )}
 
-              {salesInfo && salesInfo.type === "stock" && (
+              {salesInfos && salesInfos.type === "stock" && (
                 <div>
                   <FontAwesomeIcon icon={faGavel} className="mr-2" size="1x" />
                   <Translate code="in_stock"></Translate>

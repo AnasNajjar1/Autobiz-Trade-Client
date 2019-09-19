@@ -104,6 +104,8 @@ const RecordsListContainer = () => {
     page: query.page || initialFormState.page
   });
 
+
+
   const [records, setRecords] = useState([]);
   const [RecordsCount, setRecordsCount] = useState([]);
   const [modelLabels, setModelLabels] = useState([]);
@@ -114,7 +116,6 @@ const RecordsListContainer = () => {
 
   const updateField = e => {
     const { name, value } = e.target;
-
     setValues({
       ...form,
       [name]: value
@@ -178,6 +179,7 @@ const RecordsListContainer = () => {
       console.log(result)
       setFilters(result.data);
     };
+
     fetchRecords();
   }, []);
 
@@ -185,7 +187,7 @@ const RecordsListContainer = () => {
     const fetchRecords = async () => {
       let apiQuery = {
         ProjectionExpression:
-          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode, content.salesInfo.#TYPE"
+          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode, content.salesInfos.#TYPE"
       };
       const ExpressionAttributeNames = { "#TYPE": "type" };
       let ExpressionAttributeValues = {};
@@ -249,7 +251,7 @@ const RecordsListContainer = () => {
         });
 
         arrayFilterExpression.push(
-          `content.salesInfo.#TYPE IN(${offersTypeKeys.join(",")})`
+          `content.salesInfos.#TYPE IN(${offersTypeKeys.join(",")})`
         );
       }
 
@@ -267,6 +269,7 @@ const RecordsListContainer = () => {
       );
       setRecordsCount(result.data.Count);
       setRecords(result.data.Items);
+      console.log(result.data.Items);
     };
     fetchRecords();
   }, [query]);
@@ -286,6 +289,7 @@ const RecordsListContainer = () => {
     };
     fetchModelLabels();
   }, [form.brandLabel]);
+
 
   return (
     <Container>

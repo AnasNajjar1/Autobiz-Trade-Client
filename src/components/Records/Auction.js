@@ -125,7 +125,7 @@ const Auction = ({ refId }) => {
         </Col>
         <Col xs="12" lg="5" xl="6">
           <p className="gray font-italic text-right small">
-            {isExpired ? t("auction_closed_on ") : t("end_of_the_auction")+ " "}
+            {isExpired ? `${t("auction_closed_on")} ` : `${t("end_of_the_auction") }`}
 
             {auctionEnd.toLocaleDateString([], {
               hour: "2-digit",
