@@ -24,7 +24,8 @@ import {
   useQueryParams,
   NumberParam,
   StringParam,
-  DelimitedArrayParam
+  DelimitedArrayParam,
+  ArrayParam
 } from "use-query-params";
 
 const RecordsListContainer = () => {
@@ -40,19 +41,27 @@ const RecordsListContainer = () => {
       name: t("sort_price_desc")
     }, */
     {
-      id: "firstRegistrationDate_asc",
+      value: ["creationDate", "DESC"],
+      name: t("most_recent")
+    },
+    {
+      value: ["creationDate", "ASC"],
+      name: t("less_recent")
+    },
+    {
+      value: ["content.vehicle.firstRegistrationDate", "ASC"],
       name: t("sort_date_asc")
     },
     {
-      id: "firstRegistrationDate_desc",
+      value: ["content.vehicle.firstRegistrationDate", "DESC"],
       name: t("sort_date_desc")
     },
     {
-      id: "mileage_desc",
+      value: ["content.characteristics.mileage", "ASC"],
       name: t("sort_mileage_desc")
     },
     {
-      id: "mileage_asc",
+      value: ["content.characteristics.mileage", "DESC"],
       name: t("sort_mileage_asc")
     }
   ];
@@ -67,7 +76,7 @@ const RecordsListContainer = () => {
     kmMax: "",
     offersTypes: ["all"],
     pointOfSales: ["all"],
-    sortBy: "firstRegistrationDate_desc",
+    sort: ["creationDate", "DESC"],
     limit: 20,
     page: 1
   };
@@ -82,7 +91,7 @@ const RecordsListContainer = () => {
     kmMax: NumberParam,
     offersTypes: DelimitedArrayParam,
     pointOfSales: DelimitedArrayParam,
-    sortBy: StringParam,
+    sort: ArrayParam,
     limit: NumberParam,
     page: NumberParam
   });
@@ -97,12 +106,10 @@ const RecordsListContainer = () => {
     kmMax: query.kmMax || initialFormState.kmMax,
     offersTypes: query.offersTypes || initialFormState.offersTypes,
     pointOfSales: query.pointOfSales || initialFormState.pointOfSales,
-    sortBy: query.sortBy || initialFormState.sortBy,
+    sort: query.sort || initialFormState.sort,
     limit: query.limit || initialFormState.limit,
     page: query.page || initialFormState.page
   });
-
-
 
   const [records, setRecords] = useState([]);
   const [RecordsCount, setRecordsCount] = useState([]);
@@ -167,13 +174,13 @@ const RecordsListContainer = () => {
   };
 
   const handleSort = value => {
-    form.sortBy = value;
+    form.sort = value;
     setQuery(form);
   };
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await axios(`${process.env.REACT_APP_API}/filters`);
+      const result = await axios(`${process.env.REACT_APP_API}/filter`);
       setFilters(result.data);
     };
 
@@ -260,13 +267,14 @@ const RecordsListContainer = () => {
         apiQuery.ExpressionAttributeValues = ExpressionAttributeValues;
       }
 
-      const result = await axios.post(
-        `${process.env.REACT_APP_API}/records?sortBy=${form.sortBy}`,
-        JSON.stringify(apiQuery)
-      );
-      setRecordsCount(result.data.Count);
-      setRecords(result.data.Items);
-      console.log(result.data.Items);
+      const result = await axios.get(`${process.env.REACT_APP_API}/vehicle`, {
+        params: {
+          sort: JSON.stringify(form.sort)
+        }
+      });
+
+      setRecordsCount(result.data.length);
+      setRecords(result.data);
     };
     fetchRecords();
   }, [query]);
@@ -286,7 +294,6 @@ const RecordsListContainer = () => {
     };
     fetchModelLabels();
   }, [form.brandLabel]);
-
 
   return (
     <Container>
