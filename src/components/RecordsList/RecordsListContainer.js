@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Alert } from "reactstrap";
+import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
@@ -28,9 +28,11 @@ import {
   DelimitedArrayParam,
   ArrayParam
 } from "use-query-params";
+import { arrayExpression } from "@babel/types";
 
 const RecordsListContainer = () => {
   const offers = ["private", "stock"];
+  const ItemsPerPage = 12;
 
   const sortList = [
     /*     {
@@ -78,8 +80,7 @@ const RecordsListContainer = () => {
     salesInfosType: ["all"],
     pointOfSaleCity: ["all"],
     sort: ["creationDate", "DESC"],
-    limit: 20,
-    page: 1
+    range: [0, ItemsPerPage - 1]
   };
 
   const [query, setQuery] = useQueryParams({
@@ -93,8 +94,7 @@ const RecordsListContainer = () => {
     salesInfosType: DelimitedArrayParam,
     pointOfSaleCity: DelimitedArrayParam,
     sort: ArrayParam,
-    limit: NumberParam,
-    page: NumberParam
+    range: ArrayParam
   });
 
   const [form, setValues] = useState({
@@ -108,8 +108,7 @@ const RecordsListContainer = () => {
     salesInfosType: query.salesInfosType || initialFormState.salesInfosType,
     pointOfSaleCity: query.pointOfSaleCity || initialFormState.pointOfSaleCity,
     sort: query.sort || initialFormState.sort,
-    limit: query.limit || initialFormState.limit,
-    page: query.page || initialFormState.page
+    range: query.range || initialFormState.range
   });
 
   const [records, setRecords] = useState([]);
@@ -165,6 +164,7 @@ const RecordsListContainer = () => {
 
   const handleSubmit = () => {
     setMenuMobileOpen(false);
+    form.range = initialFormState.range;
     setQuery(form);
   };
 
@@ -176,6 +176,11 @@ const RecordsListContainer = () => {
 
   const handleSort = value => {
     form.sort = value;
+    setQuery(form);
+  };
+
+  const showMore = () => {
+    form.range[1] = form.range[1] + ItemsPerPage;
     setQuery(form);
   };
 
@@ -200,11 +205,13 @@ const RecordsListContainer = () => {
           mileageMin: form.mileageMin,
           mileageMax: form.mileageMax,
           salesInfosType: JSON.stringify(form.salesInfosType),
-          pointOfSaleCity: JSON.stringify(form.pointOfSaleCity)
+          pointOfSaleCity: JSON.stringify(form.pointOfSaleCity),
+          range: JSON.stringify(form.range)
         }
       });
-
-      setRecordsCount(result.data.length);
+      const contentRange = result.headers["content-range"];
+      const contentRangeArray = contentRange.split("/");
+      setRecordsCount(contentRangeArray[1]);
       setRecords(result.data);
     };
     fetchRecords();
@@ -392,6 +399,15 @@ const RecordsListContainer = () => {
               {records.map((record, index) => (
                 <RecordsElement key={index} record={record} />
               ))}
+            </Row>
+          )}
+          {RecordsCount > records.length && (
+            <Row>
+              <Col className="text-center">
+                <Button color="secondary" onClick={showMore}>
+                  Show more
+                </Button>
+              </Col>
             </Row>
           )}
         </Col>
