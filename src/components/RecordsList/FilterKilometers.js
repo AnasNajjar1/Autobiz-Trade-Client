@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 
-const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
+const FilterKilometers = ({ mileageMin, mileageMax, updateField }) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (parseInt(kmMin, 10) > parseInt(kmMax, 10)) {
+    if (parseInt(mileageMin, 10) > parseInt(mileageMax, 10)) {
       setError(true);
     } else {
       setError(false);
     }
-  }, [kmMin, kmMax]);
+  }, [mileageMin, mileageMax]);
 
   return (
     <>
@@ -21,13 +21,13 @@ const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
             <Input
               type="number"
               placeholder={t("min")}
-              name="kmMin"
-              id="kmMin"
+              name="mileageMin"
+              id="mileageMin"
               className={error ? "is-invalid" : ""}
-              value={kmMin}
+              value={mileageMin}
               onChange={e => updateField(e)}
             />
-            <Label for="kmMin" className="mini-label">
+            <Label for="mileageMin" className="mini-label">
               <Translate code="min" />
             </Label>
             <div className="invalid-feedback">
@@ -38,12 +38,12 @@ const FilterKilometers = ({ kmMin, kmMax, updateField }) => {
             <Input
               type="number"
               placeholder={t("max")}
-              name="kmMax"
-              id="kmMax"
-              value={kmMax}
+              name="mileageMax"
+              id="mileageMax"
+              value={mileageMax}
               onChange={e => updateField(e)}
             />
-            <Label for="kmMax" className="mini-label">
+            <Label for="mileageMax" className="mini-label">
               <Translate code="max" />
             </Label>
           </Col>

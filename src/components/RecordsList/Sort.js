@@ -5,8 +5,8 @@ const Sort = ({ list, value, sort }) => {
   let options = "";
 
   if (list) {
-    options = list.map(item => (
-      <option key={item.id} value={item.id}>
+    options = list.map((item, key) => (
+      <option key={key} value={item.value}>
         {item.name}
       </option>
     ));

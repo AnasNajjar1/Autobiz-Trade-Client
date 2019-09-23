@@ -7,7 +7,7 @@ const Documents = ({ items }) => {
       {items.map((item, index) => (
         <div className="cell" key={index}>
           <div className="item">
-            <a href={item.link}>
+            <a href={item.link} target="_blank" rel="noopener noreferrer">
               <img src={pdfIcon} alt="pdf" />
               {item.title}
             </a>
