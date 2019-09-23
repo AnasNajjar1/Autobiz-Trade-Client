@@ -15,7 +15,6 @@ import FilterCheckboxes from "./FilterCheckboxes";
 import Sort from "./Sort.js";
 
 import RecordsElement from "./RecordsElement";
-import _ from "lodash";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
 import FormActions from "./FormActions";
@@ -24,11 +23,9 @@ import {
   useQueryParams,
   NumberParam,
   StringParam,
-  ObjectParam,
   DelimitedArrayParam,
   ArrayParam
 } from "use-query-params";
-import { arrayExpression } from "@babel/types";
 
 const RecordsListContainer = () => {
   const offers = ["private", "stock"];
