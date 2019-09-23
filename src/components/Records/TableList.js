@@ -1,6 +1,7 @@
 import React from "react";
 import { Row } from "reactstrap";
 import { t } from "../common/Translate";
+import { type } from "os";
 
 const ListTable = ({ items }) => {
   const renderValue = (key, value) => {
@@ -8,6 +9,10 @@ const ListTable = ({ items }) => {
       case "wheelsFrontDimensions":
       case "wheelsBackDimensions":
         return `${value.width}/${value.height} R${value.diameter}`;
+      case "mileage":
+      case "b2cMarketValue":
+      case "standardMileage":
+        return parseInt(value).toLocaleString();
       default:
         return t(String(value));
     }
