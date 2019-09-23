@@ -944,6 +944,10 @@ footer {
   }
 }
 
+.page-car-list {
+  @extend .mb-5;
+}
+
 .loading {
   padding: 50vh 0;
   text-align: center;
