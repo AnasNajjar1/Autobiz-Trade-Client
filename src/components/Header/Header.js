@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
-import { t } from "../common/Translate"
+import { t } from "../common/Translate";
 
 import logo from "../../assets/img/autobiz-trade.svg";
 const Header = () => {
   const [username, setUsername] = useState("");
 
-  useEffect(()=>{
-    Auth.currentAuthenticatedUser({bypassCache:false}).then(user => {
+  useEffect(() => {
+    Auth.currentAuthenticatedUser({ bypassCache: false }).then(user => {
       setUsername(user.username);
+      //console.log(user.attributes.sub);
     });
-  }, [])
-  
+  }, []);
+
   const signOut = async function() {
-    await Auth.signOut()
+    await Auth.signOut();
     return;
   };
 
@@ -26,11 +27,13 @@ const Header = () => {
       </Link>
       <div className=" float-right mt-1 mr-2">
         {(username && (
-          <span className="header-username mr-1">{`${t("hello")} ${username}`}</span>
+          <span className="header-username mr-1">{`${t(
+            "hello"
+          )} ${username}`}</span>
         )) || <Spinner className="mr-2" color="primary" size="sm" />}
 
         <button
-          class="btn btn-outline-success"
+          className="btn btn-outline-success"
           type="submit"
           onClick={() => signOut()}
         >
