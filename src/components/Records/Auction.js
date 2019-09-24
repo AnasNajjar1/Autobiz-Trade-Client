@@ -81,7 +81,8 @@ const Auction = ({ refId }) => {
 
   const startPrice = 1;
   const auctionStep = 100;
-  let minOffer = maxAuction > 0 ? maxAuction + auctionStep : startPrice;
+  let minOffer =
+    parseInt(maxAuction) > 0 ? parseInt(maxAuction) + auctionStep : startPrice;
 
   const sortedUserActions = _.orderBy(userAuctions, "timestamp", "desc");
 
