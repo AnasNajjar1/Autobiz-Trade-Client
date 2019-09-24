@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Translate, { t }  from "../common/Translate";
+import Translate, { t } from "../common/Translate";
 import axios from "axios";
+import { API } from 'aws-amplify'
 import _ from "lodash";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,8 +29,8 @@ const Record = props => {
   useEffect(() => {
     const fetchRecord = async () => {
       try {
-        const result = await axios.get(
-          `${process.env.REACT_APP_API}/record?id=${props.refId}`
+        const result = await API.get(
+          "b2bPlateform", `/vehicle/${props.refId}`, {response: true}
         );
         setRecord(result.data);
         setLoading(false);
@@ -72,9 +73,9 @@ const Record = props => {
   const {
     fileNumber,
     vehicle,
-    pointOfSale,
+    pointOfSale = {},
     administrativeDetails,
-    
+
     declaredEquipments,
     history,
     market,
@@ -83,12 +84,12 @@ const Record = props => {
     constructorEquipments
   } = record.content;
 
-
-const characteristics = _.omit(record.content.characteristics,["fuelId","gearBoxId"]);
-const { mileage = t("unknown") , fuelLabel = t("unknown") } = characteristics;
-const { firstRegistrationDate = t("unknown") } = vehicle;
-
-
+  const characteristics = _.omit(record.content.characteristics, [
+    "fuelId",
+    "gearBoxId"
+  ]);
+  const { mileage = t("unknown"), fuelLabel = t("unknown") } = characteristics;
+  const { firstRegistrationDate = t("unknown") } = vehicle;
 
   return (
     <>
@@ -106,10 +107,13 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                   {vehicle.brandLabel} {vehicle.modelLabel}
                 </div>
                 <div className="gray mb-1">{vehicle.versionlabel} </div>
-                <Carousel items={vehicle.carPictures} />
+                {vehicle.carPictures && (
+                  <Carousel items={vehicle.carPictures} />
+                )}
               </div>
               <TagsProps
-                tags={[{
+                tags={[
+                  {
                     label: "year_mec",
                     value: firstRegistrationDate.substr(0, 4)
                   },
@@ -127,9 +131,11 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                 {pointOfSale.pointOfSaleName !== null && (
                   <Col className="reseller-col">
                     <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
-                    {pointOfSale.pointOfSaleName}<br/>
+                    {pointOfSale.pointOfSaleName}
+                    <br />
                     {pointOfSale.zipCode} {pointOfSale.city}
-                    <br/>{pointOfSale.country}
+                    <br />
+                    {pointOfSale.country}
                   </Col>
                 )}
               </Row>
@@ -148,8 +154,7 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
                 <CheckList items={t(keyPoints)} />
               </div>
             )}
-            {documents &&
-              ( <Documents items={documents.documents} />)}
+            {documents && <Documents items={documents.documents} />}
           </Col>
         </Row>
       </Container>
@@ -209,22 +214,25 @@ const { firstRegistrationDate = t("unknown") } = vehicle;
               )}
             </Col>
 
-            {constructorEquipments && constructorEquipments.constructorEquipments.length > 0 && (
-              <>
-                <Col xs="12">
-                  <hr className="mt-5 mb-0" />
-                </Col>
-                <Col xs="12">
-                  <div className="section-title text-center">
-                    <Translate code="equiments"></Translate>
-                    <i>
-                      <Translate code="constructor_source"></Translate>
-                    </i>
-                  </div>
-                  <UlList items={t(constructorEquipments.constructorEquipments)} />
-                </Col>
-              </>
-            )}
+            {constructorEquipments &&
+              constructorEquipments.constructorEquipments.length > 0 && (
+                <>
+                  <Col xs="12">
+                    <hr className="mt-5 mb-0" />
+                  </Col>
+                  <Col xs="12">
+                    <div className="section-title text-center">
+                      <Translate code="equiments"></Translate>
+                      <i>
+                        <Translate code="constructor_source"></Translate>
+                      </i>
+                    </div>
+                    <UlList
+                      items={constructorEquipments.constructorEquipments}
+                    />
+                  </Col>
+                </>
+              )}
           </Row>
         </Container>
       </div>

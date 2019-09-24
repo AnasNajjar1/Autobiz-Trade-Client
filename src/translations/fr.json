@@ -844,5 +844,6 @@
     "smallPrice": "Petit prix",
     "ctLessThan6Months": "Contrôle technique de moins de 6 mois\n",
     "vehicles": "véhicules",
-    "all" : "tous"
+    "all" : "tous",
+    "key_points" : "Points clés"
 }

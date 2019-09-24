@@ -13,11 +13,14 @@ import {
 class RecordsElement extends Component {
   state = {};
 
-
   render() {
     const { record } = this.props;
-    const { vehicle, pointOfSale, salesInfos } = record.content;
-    console.log(record.content);
+    const {
+      vehicle = {},
+      pointOfSale = {},
+      salesInfos = {},
+      characteristics = {}
+    } = record.content;
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
         <Link className="link-card" to={`/records/${record.id}`}>
@@ -44,8 +47,9 @@ class RecordsElement extends Component {
                 alt={vehicle.brandLabel + " " + vehicle.modelLabel}
               />
             )}
-            <RecordsElementGrade grade={vehicle.profileCosts} />
-
+            {vehicle.profileCosts && (
+              <RecordsElementGrade grade={vehicle.profileCosts} />
+            )}
             <CardBody>
               <CardTitle>
                 {vehicle.brandLabel} {vehicle.modelLabel}
@@ -55,11 +59,14 @@ class RecordsElement extends Component {
               <div className="text-center">
                 <span className="tag tag-white">
                   <span className="text-nowrap">
-                    {vehicle.firstRegistrationDate.toString().substr(0, 4)}
+                    {vehicle.firstRegistrationDate &&
+                      vehicle.firstRegistrationDate.toString().substr(0, 4)}
                   </span>
                   /<span className="text-nowrap">{vehicle.fuelLabel}</span>/
                   <span className="text-nowrap">
-                    {vehicle.mileage.toLocaleString()} Km
+                    {characteristics.mileage &&
+                      characteristics.mileage.toLocaleString()}{" "}
+                    Km
                   </span>
                 </span>
               </div>

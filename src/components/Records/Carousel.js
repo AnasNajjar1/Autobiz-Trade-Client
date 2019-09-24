@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from "react-router-dom";
 
 class Carousel extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class Carousel extends Component {
     this.state = {
       nav1: null,
       nav2: null,
-      currentSlide: 1
+      currentSlide: 1,
+      overlay: false
     };
   }
 
@@ -19,14 +21,26 @@ class Carousel extends Component {
       nav2: this.slider2
     });
   }
-
-  openOverlay(event) {
-    document.getElementById("mainSliderWrapper").classList.add("overlay");
+  componentDidUpdate() {
+    if (this.props.history.location.hash === "#overlay") {
+      document.getElementById("mainSliderWrapper").classList.add("overlay");
+    } else {
+      document.getElementById("mainSliderWrapper").classList.remove("overlay");
+    }
   }
 
-  closeOverlay(event) {
-    document.getElementById("mainSliderWrapper").classList.remove("overlay");
-  }
+  openOverlay = () => {
+    this.setState({
+      overlay: true
+    });
+  };
+
+  closeOverlay = () => {
+    this.props.history.goBack();
+    this.setState({
+      overlay: false
+    });
+  };
 
   render() {
     if (Object.keys(this.props.items).length === 0) {
@@ -48,11 +62,9 @@ class Carousel extends Component {
           >
             {Object.keys(this.props.items).map((value, index) => (
               <div key={index}>
-                <img
-                  src={this.props.items[value]}
-                  alt=""
-                  onClick={this.openOverlay}
-                />
+                <a href="#overlay" onClick={this.openOverlay}>
+                  <img src={this.props.items[value]} alt="" />
+                </a>
               </div>
             ))}
           </Slider>
@@ -80,4 +92,4 @@ class Carousel extends Component {
   }
 }
 
-export default Carousel;
+export default withRouter(Carousel);

@@ -945,7 +945,10 @@ footer {
 }
 
 .header-username {
-	color : $blue
+  color : $blue
+}
+.page-car-list {
+  @extend .mb-5;
 }
 
 .loading {

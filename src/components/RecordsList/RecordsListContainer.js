@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Alert } from "reactstrap";
+import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
@@ -14,10 +14,9 @@ import FilterKilometers from "./FilterKilometers";
 import FilterCheckboxes from "./FilterCheckboxes";
 import Sort from "./Sort.js";
 
-import Amplify, { API } from 'aws-amplify';
+import { API } from "aws-amplify";
 
 import RecordsElement from "./RecordsElement";
-import _ from "lodash";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
 import FormActions from "./FormActions";
@@ -26,11 +25,13 @@ import {
   useQueryParams,
   NumberParam,
   StringParam,
-  DelimitedArrayParam
+  DelimitedArrayParam,
+  ArrayParam
 } from "use-query-params";
 
 const RecordsListContainer = () => {
   const offers = ["private", "stock"];
+  const ItemsPerPage = 12;
 
   const sortList = [
     /*     {
@@ -42,19 +43,27 @@ const RecordsListContainer = () => {
       name: t("sort_price_desc")
     }, */
     {
-      id: "firstRegistrationDate_asc",
+      value: ["creationDate", "DESC"],
+      name: t("most_recent")
+    },
+    {
+      value: ["creationDate", "ASC"],
+      name: t("less_recent")
+    },
+    {
+      value: ["content.vehicle.firstRegistrationDate", "ASC"],
       name: t("sort_date_asc")
     },
     {
-      id: "firstRegistrationDate_desc",
+      value: ["content.vehicle.firstRegistrationDate", "DESC"],
       name: t("sort_date_desc")
     },
     {
-      id: "mileage_desc",
+      value: ["content.characteristics.mileage", "ASC"],
       name: t("sort_mileage_desc")
     },
     {
-      id: "mileage_asc",
+      value: ["content.characteristics.mileage", "DESC"],
       name: t("sort_mileage_asc")
     }
   ];
@@ -65,13 +74,12 @@ const RecordsListContainer = () => {
     modelLabel: "",
     yearMecMin: "",
     yearMecMax: "",
-    kmMin: "",
-    kmMax: "",
-    offersTypes: ["all"],
-    pointOfSales: ["all"],
-    sortBy: "firstRegistrationDate_desc",
-    limit: 20,
-    page: 1
+    mileageMin: "",
+    mileageMax: "",
+    salesInfosType: ["all"],
+    pointOfSaleCity: ["all"],
+    sort: ["creationDate", "DESC"],
+    range: [0, ItemsPerPage - 1]
   };
 
   const [query, setQuery] = useQueryParams({
@@ -80,13 +88,12 @@ const RecordsListContainer = () => {
     modelLabel: StringParam,
     yearMecMin: NumberParam,
     yearMecMax: NumberParam,
-    kmMin: NumberParam,
-    kmMax: NumberParam,
-    offersTypes: DelimitedArrayParam,
-    pointOfSales: DelimitedArrayParam,
-    sortBy: StringParam,
-    limit: NumberParam,
-    page: NumberParam
+    mileageMin: NumberParam,
+    mileageMax: NumberParam,
+    salesInfosType: DelimitedArrayParam,
+    pointOfSaleCity: DelimitedArrayParam,
+    sort: ArrayParam,
+    range: ArrayParam
   });
 
   const [form, setValues] = useState({
@@ -95,16 +102,13 @@ const RecordsListContainer = () => {
     modelLabel: query.modelLabel || initialFormState.modelLabel,
     yearMecMin: query.yearMecMin || initialFormState.yearMecMin,
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
-    kmMin: query.kmMin || initialFormState.kmMin,
-    kmMax: query.kmMax || initialFormState.kmMax,
-    offersTypes: query.offersTypes || initialFormState.offersTypes,
-    pointOfSales: query.pointOfSales || initialFormState.pointOfSales,
-    sortBy: query.sortBy || initialFormState.sortBy,
-    limit: query.limit || initialFormState.limit,
-    page: query.page || initialFormState.page
+    mileageMin: query.mileageMin || initialFormState.mileageMin,
+    mileageMax: query.mileageMax || initialFormState.mileageMax,
+    salesInfosType: query.salesInfosType || initialFormState.salesInfosType,
+    pointOfSaleCity: query.pointOfSaleCity || initialFormState.pointOfSaleCity,
+    sort: query.sort || initialFormState.sort,
+    range: query.range || initialFormState.range
   });
-
-
 
   const [records, setRecords] = useState([]);
   const [RecordsCount, setRecordsCount] = useState([]);
@@ -159,6 +163,7 @@ const RecordsListContainer = () => {
 
   const handleSubmit = () => {
     setMenuMobileOpen(false);
+    form.range = initialFormState.range;
     setQuery(form);
   };
 
@@ -169,14 +174,20 @@ const RecordsListContainer = () => {
   };
 
   const handleSort = value => {
-    form.sortBy = value;
+    form.sort = value;
+    setQuery(form);
+  };
+
+  const showMore = () => {
+    form.range[1] = form.range[1] + ItemsPerPage;
     setQuery(form);
   };
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await axios.get(`${process.env.REACT_APP_API}/filters`);
-      console.log(result)
+      const result = await API.get("b2bPlateform", `/filter`, {
+        response: true
+      });
       setFilters(result.data);
     };
 
@@ -185,91 +196,26 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      let apiQuery = {
-        ProjectionExpression:
-          "id, content.vehicle.brandLabel, content.vehicle.modelLabel, content.vehicle.versionLabel, content.vehicle.firstRegistrationDate, content.vehicle.fuelLabel, content.vehicle.mileage, content.vehicle.profileCosts, content.vehicle.carPictures.front_picture, content.pointOfSale.city, content.pointOfSale.zipCode, content.salesInfos.#TYPE"
-      };
-      const ExpressionAttributeNames = { "#TYPE": "type" };
-      let ExpressionAttributeValues = {};
-      let arrayFilterExpression = [];
-
-      if (query.brandLabel) {
-        ExpressionAttributeValues[":brandLabel"] = query.brandLabel;
-        arrayFilterExpression.push("content.vehicle.brandLabel = :brandLabel");
-      }
-
-      if (query.modelLabel) {
-        ExpressionAttributeValues[":modelLabel"] = query.modelLabel;
-        arrayFilterExpression.push("content.vehicle.modelLabel = :modelLabel");
-      }
-
-      if (query.kmMin) {
-        ExpressionAttributeValues[":mileageMin"] = query.kmMin;
-        arrayFilterExpression.push("content.vehicle.mileage >= :mileageMin");
-      }
-
-      if (query.kmMax) {
-        ExpressionAttributeValues[":mileageMax"] = query.kmMax;
-        arrayFilterExpression.push("content.vehicle.mileage <= :mileageMax");
-      }
-
-      if (query.yearMecMin) {
-        const dateMin = new Date(Date.UTC(query.yearMecMin, 0, 1));
-        ExpressionAttributeValues[":yearMecMin"] = dateMin.toISOString();
-        arrayFilterExpression.push(
-          "content.vehicle.firstRegistrationDate >= :yearMecMin"
-        );
-      }
-
-      if (query.yearMecMax) {
-        const dateMax = new Date(
-          Date.UTC(query.yearMecMax, 11, 31, 23, 59, 59)
-        );
-        ExpressionAttributeValues[":yearMecMax"] = dateMax.toISOString();
-        arrayFilterExpression.push(
-          "content.vehicle.firstRegistrationDate <= :yearMecMax"
-        );
-      }
-
-      if (query.pointOfSales && !query.pointOfSales.includes("all")) {
-        let citiesKeys = [];
-        query.pointOfSales.forEach(function(pointOfSale, key) {
-          ExpressionAttributeValues[`:city_${key}`] = pointOfSale;
-          citiesKeys.push(`:city_${key}`);
-        });
-
-        arrayFilterExpression.push(
-          `content.pointOfSale.city IN(${citiesKeys.join(",")})`
-        );
-      }
-
-      if (query.offersTypes && !query.offersTypes.includes("all")) {
-        let offersTypeKeys = [];
-        query.offersTypes.forEach(function(type, key) {
-          ExpressionAttributeValues[`:offersType_${key}`] = type;
-          offersTypeKeys.push(`:offersType_${key}`);
-        });
-
-        arrayFilterExpression.push(
-          `content.salesInfos.#TYPE IN(${offersTypeKeys.join(",")})`
-        );
-      }
-
-      if (arrayFilterExpression.length > 0) {
-        apiQuery.FilterExpression = arrayFilterExpression.join(" and ");
-      }
-      apiQuery.ExpressionAttributeNames = ExpressionAttributeNames;
-      if (!_.isEmpty(ExpressionAttributeValues)) {
-        apiQuery.ExpressionAttributeValues = ExpressionAttributeValues;
-      }
-
-      const result = await axios.post(
-        `${process.env.REACT_APP_API}/records?sortBy=${form.sortBy}`,
-        JSON.stringify(apiQuery)
-      );
-      setRecordsCount(result.data.Count);
-      setRecords(result.data.Items);
-      console.log(result.data.Items);
+      const result = await API.get("b2bPlateform", `/vehicle`, {
+        queryStringParameters: {
+          sort: JSON.stringify(form.sort),
+          brandLabel: form.brandLabel,
+          modelLabel: form.modelLabel,
+          yearMecMin: form.yearMecMin,
+          yearMecMax: form.yearMecMax,
+          mileageMin: form.mileageMin,
+          mileageMax: form.mileageMax,
+          salesInfosType: JSON.stringify(form.salesInfosType),
+          pointOfSaleCity: JSON.stringify(form.pointOfSaleCity),
+          range: JSON.stringify(form.range)
+        },
+        response: true
+      });
+      console.log("result", result);
+      const contentRange = result.headers["content-range"];
+      const contentRangeArray = contentRange.split("/");
+      setRecordsCount(contentRangeArray[1]);
+      setRecords(result.data);
     };
     fetchRecords();
   }, [query]);
@@ -289,7 +235,6 @@ const RecordsListContainer = () => {
     };
     fetchModelLabels();
   }, [form.brandLabel]);
-
 
   return (
     <Container>
@@ -353,8 +298,8 @@ const RecordsListContainer = () => {
                 <Translate code="km" />
               </p>
               <FilterKilometers
-                kmMin={form.kmMin}
-                kmMax={form.kmMax}
+                mileageMin={form.mileageMin}
+                mileageMax={form.mileageMax}
                 updateField={updateField}
               />
 
@@ -365,8 +310,8 @@ const RecordsListContainer = () => {
               {filters.city && (
                 <FilterCheckboxes
                   data={Object.keys(filters.city)}
-                  target="pointOfSales"
-                  values={form.pointOfSales}
+                  target="pointOfSaleCity"
+                  values={form.pointOfSaleCity}
                   updateField={updateCheckBox}
                   all
                 />
@@ -377,8 +322,8 @@ const RecordsListContainer = () => {
               </p>
               <FilterCheckboxes
                 data={offers}
-                target="offersTypes"
-                values={form.offersTypes}
+                target="salesInfosType"
+                values={form.salesInfosType}
                 updateField={updateCheckBox}
                 all
               />
@@ -413,14 +358,14 @@ const RecordsListContainer = () => {
 
               <FilterTag
                 label={t("km_min")}
-                value={query.kmMin}
-                target="kmMin"
+                value={query.mileageMin}
+                target="mileageMin"
                 removeFilter={removeFilter}
               />
               <FilterTag
                 label={t("km_max")}
-                value={query.kmMax}
-                target="kmMax"
+                value={query.mileageMax}
+                target="mileageMax"
                 removeFilter={removeFilter}
               />
               <FilterTag
@@ -457,6 +402,15 @@ const RecordsListContainer = () => {
               {records.map((record, index) => (
                 <RecordsElement key={index} record={record} />
               ))}
+            </Row>
+          )}
+          {RecordsCount > records.length && (
+            <Row>
+              <Col className="text-center">
+                <Button color="secondary" onClick={showMore}>
+                  Show more
+                </Button>
+              </Col>
             </Row>
           )}
         </Col>
