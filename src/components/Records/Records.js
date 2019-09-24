@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
-import axios from "axios";
-import { API } from 'aws-amplify'
+
+import { API } from "aws-amplify";
 import _ from "lodash";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +30,9 @@ const Record = props => {
     const fetchRecord = async () => {
       try {
         const result = await API.get(
-          "b2bPlateform", `/vehicle/${props.refId}`, {response: true}
+          "b2bPlateform",
+          `/vehicle/${props.refId}`,
+          { response: true }
         );
         setRecord(result.data);
         setLoading(false);

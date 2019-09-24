@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Translate, { t } from "../common/Translate";
-import axios from "axios";
+import { API } from "aws-amplify";
 import _ from "lodash";
 import { Row, Col, Form, Button, Input } from "reactstrap";
 import moment from "moment";
@@ -27,9 +27,10 @@ const Auction = ({ refId }) => {
   useEffect(() => {
     const fetchAuction = async () => {
       try {
-        const result = await axios.get(
-          `${process.env.REACT_APP_API}/auction?id=${refId}`
-        );
+        const result = await API.get("b2bPlateform", `/auction/${refId}`, {
+          response: true
+        });
+
         setAuction(result.data);
         setRefresh(false);
       } catch (error) {}
@@ -92,9 +93,12 @@ const Auction = ({ refId }) => {
     e.target.reset();
     const putAuction = async () => {
       try {
-        const result = await axios.put(
-          `${process.env.REACT_APP_API}/auction?id=${refId}&amount=${userAuctionAmout}`
-        );
+        const result = await API.post("b2bPlateform", `/auction/${refId}`, {
+          body: {
+            amount: userAuctionAmout
+          },
+          response: true
+        });
 
         setAuction(result.data);
       } catch (error) {}
@@ -125,7 +129,9 @@ const Auction = ({ refId }) => {
         </Col>
         <Col xs="12" lg="5" xl="6">
           <p className="gray font-italic text-right small">
-            {isExpired ? `${t("auction_closed_on")} ` : `${t("end_of_the_auction") }`}
+            {isExpired
+              ? `${t("auction_closed_on")} `
+              : `${t("end_of_the_auction")}`}
 
             {auctionEnd.toLocaleDateString([], {
               hour: "2-digit",
