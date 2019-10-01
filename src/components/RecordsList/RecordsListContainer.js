@@ -50,19 +50,19 @@ const RecordsListContainer = () => {
       name: t("less_recent")
     },
     {
-      value: ["content.vehicle.firstRegistrationDate", "ASC"],
+      value: ["firstRegistrationDate", "ASC"],
       name: t("sort_date_asc")
     },
     {
-      value: ["content.vehicle.firstRegistrationDate", "DESC"],
+      value: ["firstRegistrationDate", "DESC"],
       name: t("sort_date_desc")
     },
     {
-      value: ["content.characteristics.mileage", "ASC"],
+      value: ["mileage", "ASC"],
       name: t("sort_mileage_desc")
     },
     {
-      value: ["content.characteristics.mileage", "DESC"],
+      value: ["mileage", "DESC"],
       name: t("sort_mileage_asc")
     }
   ];
@@ -75,9 +75,9 @@ const RecordsListContainer = () => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    salesInfosType: ["all"],
-    pointOfSaleCity: ["all"],
-    sort: ["creationDate", "DESC"],
+    type: ["all"],
+    city: ["all"],
+    sort: ["id", "DESC"],
     range: [0, ItemsPerPage - 1]
   };
 
@@ -89,8 +89,8 @@ const RecordsListContainer = () => {
     yearMecMax: NumberParam,
     mileageMin: NumberParam,
     mileageMax: NumberParam,
-    salesInfosType: DelimitedArrayParam,
-    pointOfSaleCity: DelimitedArrayParam,
+    type: DelimitedArrayParam,
+    city: DelimitedArrayParam,
     sort: ArrayParam,
     range: ArrayParam
   });
@@ -103,8 +103,8 @@ const RecordsListContainer = () => {
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
-    salesInfosType: query.salesInfosType || initialFormState.salesInfosType,
-    pointOfSaleCity: query.pointOfSaleCity || initialFormState.pointOfSaleCity,
+    type: query.type || initialFormState.type,
+    city: query.city || initialFormState.city,
     sort: query.sort || initialFormState.sort,
     range: query.range || initialFormState.range
   });
@@ -204,13 +204,13 @@ const RecordsListContainer = () => {
           yearMecMax: form.yearMecMax,
           mileageMin: form.mileageMin,
           mileageMax: form.mileageMax,
-          salesInfosType: JSON.stringify(form.salesInfosType),
-          pointOfSaleCity: JSON.stringify(form.pointOfSaleCity),
+          type: JSON.stringify(form.type),
+          city: JSON.stringify(form.city),
           range: JSON.stringify(form.range)
         },
         response: true
       });
-      console.log("result", result);
+
       const contentRange = result.headers["content-range"];
       const contentRangeArray = contentRange.split("/");
       setRecordsCount(contentRangeArray[1]);
@@ -221,26 +221,17 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     form.modelLabel = "";
-
-    const fetchModelLabels = async () => {
-      if (form.brandLabel === "") {
-        setModelLabels([]);
-      } else {
-        if (filters.modelLabel) {
-          let modelLabels = Object.keys(filters.modelLabel[form.brandLabel]);
-          setModelLabels(modelLabels);
-        }
-      }
-    };
-    fetchModelLabels();
+    if (filters.models) {
+      setModelLabels(filters.models[form.brandLabel]);
+    } else {
+      setModelLabels([]);
+    }
   }, [form.brandLabel]);
-
   return (
     <Container>
       <Row>
         <div className="search-record-nav">
           <div className="section d-md-none">
-            {" "}
             {/* replace by <Section> when filterSearch is active */}
             <Row>
               {/*
@@ -269,9 +260,9 @@ const RecordsListContainer = () => {
                 <Translate code="brand_and_model" />
               </p>
 
-              {filters.brandLabel && (
+              {filters.brands && (
                 <FilterBrands
-                  brands={Object.keys(filters.brandLabel)}
+                  brands={filters.brands}
                   value={form.brandLabel}
                   updateField={updateField}
                 />
@@ -306,11 +297,11 @@ const RecordsListContainer = () => {
                 <Translate code="storage_place" />
               </p>
 
-              {filters.city && (
+              {filters.cities && (
                 <FilterCheckboxes
-                  data={Object.keys(filters.city)}
-                  target="pointOfSaleCity"
-                  values={form.pointOfSaleCity}
+                  data={filters.cities}
+                  target="city"
+                  values={form.city}
                   updateField={updateCheckBox}
                   all
                 />
@@ -321,8 +312,8 @@ const RecordsListContainer = () => {
               </p>
               <FilterCheckboxes
                 data={offers}
-                target="salesInfosType"
-                values={form.salesInfosType}
+                target="type"
+                values={form.type}
                 updateField={updateCheckBox}
                 all
               />
@@ -396,7 +387,7 @@ const RecordsListContainer = () => {
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">
-                <Sort list={sortList} value={form.sortBy} sort={handleSort} />
+                <Sort list={sortList} value={form.sort} sort={handleSort} />
               </Col>
               {records.map((record, index) => (
                 <RecordsElement key={index} record={record} />

@@ -3,6 +3,7 @@ import { FormGroup, Input } from "reactstrap";
 
 const FilterBrands = ({ brands, value, updateField }) => {
   brands = brands.sort();
+
   const options = brands.map(constructor => (
     <option key={constructor} value={constructor}>
       {constructor}

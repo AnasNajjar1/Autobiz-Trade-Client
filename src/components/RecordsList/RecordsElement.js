@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Translate from "../common/Translate";
+import Translate, { t } from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
@@ -15,58 +15,49 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
-    const {
-      vehicle = {},
-      pointOfSale = {},
-      salesInfos = {},
-      characteristics = {}
-    } = record.content;
+    const { vehicle = {} } = record;
+
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
-        <Link className="link-card" to={`/records/${record.id}`}>
+        <Link className="link-card" to={`/records/${record.uuid}`}>
           <Card className="h-100">
             <div className="status">
-              {salesInfos && salesInfos.type === "private" && (
+              {record.type === "private" && (
                 <div>
                   <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                   <Translate code="private_offer"></Translate>
                 </div>
               )}
 
-              {salesInfos && salesInfos.type === "stock" && (
+              {record.type === "stock" && (
                 <div>
                   <FontAwesomeIcon icon={faGavel} className="mr-2" size="1x" />
                   <Translate code="in_stock"></Translate>
                 </div>
               )}
             </div>
-            {vehicle.carPictures && (
+            {record.front_picture && (
               <img
                 className="card-img-top"
-                src={vehicle.carPictures.front_picture}
-                alt={vehicle.brandLabel + " " + vehicle.modelLabel}
+                src={record.front_picture}
+                alt={record.brandLabel + " " + record.modelLabel}
               />
             )}
-            {vehicle.profileCosts && (
-              <RecordsElementGrade grade={vehicle.profileCosts} />
+            {record.profileCosts && (
+              <RecordsElementGrade grade={record.profileCosts} />
             )}
             <CardBody>
               <CardTitle>
-                {vehicle.brandLabel} {vehicle.modelLabel}
+                {record.brandLabel} {record.modelLabel}
               </CardTitle>
 
-              <p>{vehicle.versionlabel}</p>
+              <p>{record.versionlabel}</p>
               <div className="text-center">
                 <span className="tag tag-white">
+                  <span className="text-nowrap">{record.yearMec}</span>/
+                  <span className="text-nowrap">{t(record.fuelLabel)}</span>/
                   <span className="text-nowrap">
-                    {vehicle.firstRegistrationDate &&
-                      vehicle.firstRegistrationDate.toString().substr(0, 4)}
-                  </span>
-                  /<span className="text-nowrap">{vehicle.fuelLabel}</span>/
-                  <span className="text-nowrap">
-                    {characteristics.mileage &&
-                      characteristics.mileage.toLocaleString()}{" "}
-                    Km
+                    {record.mileage && record.mileage.toLocaleString()} Km
                   </span>
                 </span>
               </div>
@@ -77,9 +68,9 @@ class RecordsElement extends Component {
                 className="mr-1"
                 size="1x"
               />
-              {pointOfSale.city === null && pointOfSale.zipCode === null
-                ? "unknown point of sale"
-                : pointOfSale.city + " " + pointOfSale.zipCode}
+              {record.city === null && record.zipCode === null
+                ? t("unknown_point_of_sale")
+                : record.city + " " + record.zipCode}
             </CardFooter>
           </Card>
         </Link>
