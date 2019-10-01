@@ -42,11 +42,11 @@ const RecordsListContainer = () => {
       name: t("sort_price_desc")
     }, */
     {
-      value: ["created_at", "DESC"],
+      value: ["createdAt", "DESC"],
       name: t("most_recent")
     },
     {
-      value: ["created_at", "ASC"],
+      value: ["createdAt", "ASC"],
       name: t("less_recent")
     },
     {
@@ -77,7 +77,7 @@ const RecordsListContainer = () => {
     mileageMax: "",
     type: ["all"],
     city: ["all"],
-    sort: ["id", "DESC"],
+    sort: ["createdAt", "DESC"],
     range: [0, ItemsPerPage - 1]
   };
 
