@@ -15,7 +15,6 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
-    const { vehicle = {} } = record;
 
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
