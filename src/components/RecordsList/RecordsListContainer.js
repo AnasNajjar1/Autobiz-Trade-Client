@@ -51,7 +51,7 @@ const RecordsListContainer = () => {
     mileageMax: "",
     type: ["all"],
     city: ["all"],
-    sort: ["createdAt", "DESC"],
+    sort: "sort_date_desc",
     range: [0, ItemsPerPage - 1]
   };
 
