@@ -186,10 +186,17 @@ const RecordsListContainer = () => {
       });
 
       const contentRange = result.headers["content-range"];
-      const contentRangeArray = contentRange.split("/");
-      setRecordsCount(contentRangeArray[1]);
-      setRecords(result.data);
+
+      if (result.data && result.data.length > 0) {
+        const contentRangeArray = contentRange.split("/");
+        setRecordsCount(contentRangeArray[1]);
+        setRecords(result.data);
+      } else {
+        setRecordsCount(0);
+        setRecords([]);
+      }
     };
+
     fetchRecords();
   }, [query]);
 
@@ -363,9 +370,10 @@ const RecordsListContainer = () => {
               <Col xs="12" sm="6" lg="4">
                 <Sort list={sortList} value={form.sort} sort={handleSort} />
               </Col>
-              {records.map((record, index) => (
-                <RecordsElement key={index} record={record} />
-              ))}
+              {records &&
+                records.map((record, index) => (
+                  <RecordsElement key={index} record={record} />
+                ))}
             </Row>
           )}
           {RecordsCount > records.length && (
