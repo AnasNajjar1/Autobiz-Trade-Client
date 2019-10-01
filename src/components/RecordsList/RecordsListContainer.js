@@ -33,38 +33,12 @@ const RecordsListContainer = () => {
   const ItemsPerPage = 12;
 
   const sortList = [
-    /*     {
-      id: "price_asc",
-      name: t("sort_price_asc")
-    },
-    {
-      id: "price_desc",
-      name: t("sort_price_desc")
-    }, */
-    {
-      value: ["createdAt", "DESC"],
-      name: t("most_recent")
-    },
-    {
-      value: ["createdAt", "ASC"],
-      name: t("less_recent")
-    },
-    {
-      value: ["firstRegistrationDate", "ASC"],
-      name: t("sort_date_asc")
-    },
-    {
-      value: ["firstRegistrationDate", "DESC"],
-      name: t("sort_date_desc")
-    },
-    {
-      value: ["mileage", "ASC"],
-      name: t("sort_mileage_asc")
-    },
-    {
-      value: ["mileage", "DESC"],
-      name: t("sort_mileage_desc")
-    }
+    /* "sort_price_asc",
+    "sort_price_desc", */
+    "sort_date_asc",
+    "sort_date_desc",
+    "sort_mileage_asc",
+    "sort_mileage_desc"
   ];
 
   const initialFormState = {
@@ -91,7 +65,7 @@ const RecordsListContainer = () => {
     mileageMax: NumberParam,
     type: DelimitedArrayParam,
     city: DelimitedArrayParam,
-    sort: ArrayParam,
+    sort: StringParam,
     range: ArrayParam
   });
 
@@ -173,7 +147,7 @@ const RecordsListContainer = () => {
   };
 
   const handleSort = value => {
-    form.sort = value.split(",");
+    form.sort = value;
     setQuery(form);
   };
 
@@ -197,7 +171,7 @@ const RecordsListContainer = () => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
-          sort: JSON.stringify(form.sort),
+          sort: form.sort,
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
           yearMecMin: form.yearMecMin,
