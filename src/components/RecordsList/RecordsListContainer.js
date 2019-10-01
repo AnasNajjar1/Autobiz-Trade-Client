@@ -42,11 +42,11 @@ const RecordsListContainer = () => {
       name: t("sort_price_desc")
     }, */
     {
-      value: ["creationDate", "DESC"],
+      value: ["created_at", "DESC"],
       name: t("most_recent")
     },
     {
-      value: ["creationDate", "ASC"],
+      value: ["created_at", "ASC"],
       name: t("less_recent")
     },
     {
@@ -59,11 +59,11 @@ const RecordsListContainer = () => {
     },
     {
       value: ["mileage", "ASC"],
-      name: t("sort_mileage_desc")
+      name: t("sort_mileage_asc")
     },
     {
       value: ["mileage", "DESC"],
-      name: t("sort_mileage_asc")
+      name: t("sort_mileage_desc")
     }
   ];
 
@@ -173,7 +173,7 @@ const RecordsListContainer = () => {
   };
 
   const handleSort = value => {
-    form.sort = value;
+    form.sort = value.split(",");
     setQuery(form);
   };
 

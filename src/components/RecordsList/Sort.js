@@ -4,10 +4,6 @@ import { FormGroup, Input } from "reactstrap";
 const Sort = ({ list, value, sort }) => {
   let options = "";
 
-  console.log(list);
-
-  options = list.map((item, key) => console.log(item.value));
-
   if (list) {
     options = list.map((item, key) => (
       <option key={key} value={item.value}>
