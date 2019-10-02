@@ -14,6 +14,7 @@ import Amplify from "aws-amplify";
 import { withAuthenticator } from "aws-amplify-react";
 import awsconfig from "./aws-config";
 import { t } from './components/common/Translate'
+import AuthRequiredRoute from './components/LoginForm/AuthRequiredRoute'
 
 moment.locale(process.env.REACT_APP_LANG);
 
@@ -27,11 +28,14 @@ function App() {
       <LanguageContext.Provider value={translationJson}>
         <QueryParamProvider ReactRouterRoute={Route}>
           <Switch>
-            <Route path="/records/:refId" component={RecordsView} />
+          <AuthRequiredRoute
+              path="/records/:refId"
+              component={RecordsView}
+              />
 
-            <Route path="/records" component={RecordsListView} />
+            <AuthRequiredRoute path="/records" component={RecordsListView} />
             <Route path="/login" component={LoginView} />
-            <Redirect from="/" exact to="/records" />
+            <Redirect from="/" exact to="/login" />
           </Switch>
         </QueryParamProvider>
       </LanguageContext.Provider>
@@ -39,17 +43,5 @@ function App() {
   );
 }
 
-const MyTheme = {
-  googleSignInButton: { backgroundColor: "red", borderColor: "red" },
-  button: { backgroundColor: "green", borderColor: "red" },
-  signInButtonIcon: { display: "none" }
-};
+export default App
 
-const signUpConfig = {signUpConfig: {
-  hiddenDefaults: ["phone_number"],
-  signUpFields: [
-    { label: t("name"), key: "name", required: true, type: "string", placeholder:t("name_surname") },
-  ]
-}}
-
-export default withAuthenticator(App, signUpConfig, [], null, MyTheme);

@@ -4,14 +4,14 @@ import { apiB2bPlateform } from "./config";
 const config = {
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-    identityPoolId: "eu-west-1:c7ed857d-d1cd-4459-8329-3b146d3738f1",
+    identityPoolId: "us-east-1:cf4b5832-8146-4ebd-ac3c-1d4dea4261de",
 
     // REQUIRED - Amazon Cognito Region
-    region: "eu-west-1",
+    region: "us-east-1",
 
     // OPTIONAL - Amazon Cognito Federated Identity Pool Region
     // Required only if it's different from Amazon Cognito Region
-    identityPoolRegion: "eu-west-1",
+    identityPoolRegion: "us-east-1",
 
     // OPTIONAL - Amazon Cognito User Pool ID
     userPoolId: "eu-west-1_YYMUabLh6",
