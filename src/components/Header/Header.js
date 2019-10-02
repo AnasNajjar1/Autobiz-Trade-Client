@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { t } from "../common/Translate";
@@ -7,18 +7,22 @@ import { t } from "../common/Translate";
 import logo from "../../assets/img/autobiz-trade.svg";
 const Header = () => {
   const [username, setUsername] = useState("");
+  const [logout, setLogout] = useState(false);
 
   useEffect(() => {
     Auth.currentAuthenticatedUser({ bypassCache: false }).then(user => {
-      setUsername(user.username);
+      setUsername(`${user.firstname} ${user.lastname}`);
       //console.log(user.attributes.sub);
     });
   }, []);
 
   const signOut = async function() {
-    await Auth.signOut();
+    await Auth.signOut()
+    setLogout(true)
     return;
   };
+
+  if(logout) return <Redirect to="/" />
 
   return (
     <header>
