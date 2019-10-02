@@ -72,55 +72,34 @@ const Record = props => {
     );
   }
 
-  const {
-    fileNumber,
-    vehicle,
-    pointOfSale = {},
-    administrativeDetails,
-
-    declaredEquipments,
-    history,
-    market,
-    keyPoints,
-    documents,
-    constructorEquipments
-  } = record.content;
-
-  const characteristics = _.omit(record.content.characteristics, [
-    "fuelId",
-    "gearBoxId"
-  ]);
-  const { mileage = t("unknown"), fuelLabel = t("unknown") } = characteristics;
-  const { firstRegistrationDate = t("unknown") } = vehicle;
-
+  const { pointOfSale = {} } = record;
+  console.log(record.market);
   return (
     <>
       <Container className="pb-5">
         <Row>
           <Col xs="12">
             <div className="gray pl-3 mb-1">
-              <Translate code="reference"></Translate> : {fileNumber}
+              <Translate code="reference"></Translate> : {record.fileNumber}
             </div>
           </Col>
           <Col xs="12" md="6">
             <div className="car-props">
               <div className="section radius">
                 <div className="h1">
-                  {vehicle.brandLabel} {vehicle.modelLabel}
+                  {record.brandLabel} {record.modelLabel}
                 </div>
-                <div className="gray mb-1">{vehicle.versionlabel} </div>
-                {vehicle.carPictures && (
-                  <Carousel items={vehicle.carPictures} />
-                )}
+                <div className="gray mb-1">{record.versionLabel} </div>
+                {record.carPictures && <Carousel items={record.carPictures} />}
               </div>
               <TagsProps
                 tags={[
                   {
                     label: "year_mec",
-                    value: firstRegistrationDate.substr(0, 4)
+                    value: record.yearMec
                   },
-                  { label: "fuelLabel", value: fuelLabel },
-                  { label: "km", value: mileage.toLocaleString() }
+                  { label: "fuelLabel", value: record.fuelLabel },
+                  { label: "km", value: record.mileage.toLocaleString() }
                 ]}
               />
               <Row>
@@ -128,35 +107,34 @@ const Record = props => {
                   <div className="h3 text-center">
                     <Translate code="global_condition"></Translate>
                   </div>
-                  <Grade letter={vehicle.profileCosts} />
+                  <Grade letter={record.profileCosts} />
                 </Col>
-                {pointOfSale.pointOfSaleName !== null && (
+                {pointOfSale.name !== null && (
                   <Col className="reseller-col">
                     <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
-                    {pointOfSale.pointOfSaleName}
+                    {pointOfSale.name}
                     <br />
                     {pointOfSale.zipCode} {pointOfSale.city}
-                    <br />
-                    {pointOfSale.country}
                   </Col>
                 )}
               </Row>
             </div>
           </Col>
           <Col>
+            {/* 
             <div className="section radius mb-4 py-4">
               {<Auction refId={props.refId} />}
             </div>
-
-            {keyPoints && (
+            */}
+            {record.keyPoints && record.keyPoints.length > 0 && (
               <div className="section radius mb-4 py-4">
                 <div className="h2 mb-4 text-center">
                   <Translate code="key_points"></Translate>
                 </div>
-                <CheckList items={t(keyPoints)} />
+                <CheckList items={record.keyPoints} />
               </div>
             )}
-            {documents && <Documents items={documents.documents} />}
+            {record.documents && <Documents items={record.documents} />}
           </Col>
         </Row>
       </Container>
@@ -171,53 +149,53 @@ const Record = props => {
               </div>
             </Col>
             <Col xs="12" md="6">
-              {characteristics && (
+              {record.characteristics && (
                 <>
                   <div className="section-title">
                     <Translate code="caracteristics"></Translate>
                   </div>
-                  <TableList items={t(characteristics)} />
+                  <TableList items={record.characteristics} />
                 </>
               )}
-
-              {administrativeDetails && (
+              {record.administrativeDetails && (
                 <>
                   <div className="section-title">
                     <Translate code="administrative_details"></Translate>
                   </div>
-                  <TableList items={t(administrativeDetails)} />
+                  <TableList items={record.administrativeDetails} />
                 </>
               )}
             </Col>
             <Col xs="12" md="6">
-              {declaredEquipments && declaredEquipments.equipments.length > 0 && (
-                <>
-                  <div className="section-title">
-                    <Translate code="declared_equiments"></Translate>
-                  </div>
-                  <EquipmentList items={t(declaredEquipments.equipments)} />
-                </>
-              )}
-              {market && (
+              {record.declaredEquipments &&
+                record.declaredEquipments.length > 0 && (
+                  <>
+                    <div className="section-title">
+                      <Translate code="declared_equiments"></Translate>
+                    </div>
+                    <EquipmentList items={record.declaredEquipments} />
+                  </>
+                )}
+              {record.market && (
                 <>
                   <div className="section-title">
                     <Translate code="the_market"></Translate>
                   </div>
-                  <TableList items={t(market)} />
+                  <TableList items={record.market} />
                 </>
               )}
-              {history && (
+              {record.history && (
                 <>
                   <div className="section-title">
                     <Translate code="history"></Translate>
                   </div>
-                  <TableList items={t(history)} />
+                  <TableList items={record.history} />
                 </>
               )}
             </Col>
 
-            {constructorEquipments &&
-              constructorEquipments.constructorEquipments.length > 0 && (
+            {record.constructorEquipments &&
+              record.constructorEquipments.length > 0 && (
                 <>
                   <Col xs="12">
                     <hr className="mt-5 mb-0" />
@@ -229,9 +207,7 @@ const Record = props => {
                         <Translate code="constructor_source"></Translate>
                       </i>
                     </div>
-                    <UlList
-                      items={constructorEquipments.constructorEquipments}
-                    />
+                    <UlList items={record.constructorEquipments} />
                   </Col>
                 </>
               )}
