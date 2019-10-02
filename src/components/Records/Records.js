@@ -121,11 +121,10 @@ const Record = props => {
             </div>
           </Col>
           <Col>
-            {/* 
             <div className="section radius mb-4 py-4">
               {<Auction refId={props.refId} />}
             </div>
-            */}
+
             {record.keyPoints && record.keyPoints.length > 0 && (
               <div className="section radius mb-4 py-4">
                 <div className="h2 mb-4 text-center">
