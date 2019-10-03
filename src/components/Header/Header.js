@@ -17,16 +17,16 @@ const Header = () => {
   }, []);
 
   const signOut = async function() {
-    await Auth.signOut()
-    setLogout(true)
+    await Auth.signOut();
+    setLogout(true);
     return;
   };
 
-  if(logout) return <Redirect to="/" />
+  if (logout) return <Redirect to="/" />;
 
   return (
     <header>
-      <Link to="/">
+      <Link to="/records">
         <img alt="autobizTrade" className="logo" src={logo} />
       </Link>
       <div className=" float-right mt-1 mr-2">

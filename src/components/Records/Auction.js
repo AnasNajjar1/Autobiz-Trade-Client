@@ -10,12 +10,12 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 const Auction = ({ refId }) => {
   const [secondsLeft, setSecondsLeft] = useState();
   const [countdown, setCountdown] = useState("");
-  const [isExpired, setIsExpired] = useState(false);
+  const [isExpired, setIsExpired] = useState(true);
   const [auction, setAuction] = useState([]);
   const [userAuctionAmout, setUserAuctionAmout] = useState([]);
-  const [refresh, setRefresh] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
-  const refreshTime = 25 * 1000;
+  const refreshTime = 5 * 1000;
 
   useEffect(() => {
     const intervalRefresh = setInterval(() => {
@@ -27,9 +27,13 @@ const Auction = ({ refId }) => {
   useEffect(() => {
     const fetchAuction = async () => {
       try {
-        const result = await API.get("b2bPlateform", `/auction/${refId}`, {
-          response: true
-        });
+        const result = await API.get(
+          "b2bPlateform",
+          `/vehicle/${refId}/auction`,
+          {
+            response: true
+          }
+        );
 
         setAuction(result.data);
         setRefresh(false);
@@ -46,8 +50,12 @@ const Auction = ({ refId }) => {
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
-      if (secondsLeft <= 0) setIsExpired(true);
-      else setSecondsLeft(secondsLeft - 1);
+      if (secondsLeft <= 0) {
+        setIsExpired(true);
+      } else {
+        setSecondsLeft(secondsLeft - 1);
+        setIsExpired(false);
+      }
     }, 1000);
     return () => clearInterval(intervalCountdown);
   }, [secondsLeft]);
@@ -71,38 +79,36 @@ const Auction = ({ refId }) => {
     setCountdown(text);
   }, [secondsLeft]);
 
-  if (!auction.auctionInfos) {
-    return null;
-  }
-
-  const auctionEnd = new Date(auction.auctionInfos.auctionEnd);
-
-  const { maxAuction, userAuctions, userWin } = auction.auctionInfos;
-
-  const startPrice = 1;
-  const auctionStep = 100;
-  let minOffer =
-    parseInt(maxAuction) > 0 ? parseInt(maxAuction) + auctionStep : startPrice;
-
-  const sortedUserActions = _.orderBy(userAuctions, "timestamp", "desc");
-
-  const lastUserAuctionAmount =
-    sortedUserActions[0] && sortedUserActions[0].amount;
+  const {
+    minimalPrice = 0,
+    bestOffer = 0,
+    stepPrice = 0,
+    userWin = false,
+    bestUserOffer = 0
+  } = auction;
+  const endDateTime = new Date(auction.endDateTime);
+  const minOffer = bestOffer + stepPrice;
 
   const handleSubmit = e => {
     e.preventDefault();
     e.target.reset();
     const putAuction = async () => {
       try {
-        const result = await API.post("b2bPlateform", `/auction/${refId}`, {
-          body: {
-            amount: userAuctionAmout
-          },
-          response: true
-        });
+        const result = await API.post(
+          "b2bPlateform",
+          `/vehicle/${refId}/auction`,
+          {
+            body: {
+              amount: userAuctionAmout
+            },
+            response: true
+          }
+        );
 
         setAuction(result.data);
-      } catch (error) {}
+      } catch (error) {
+        alert(error);
+      }
     };
     putAuction();
   };
@@ -110,6 +116,10 @@ const Auction = ({ refId }) => {
   const handleChange = e => {
     setUserAuctionAmout(e.target.value);
   };
+
+  if (_.isEmpty(auction)) {
+    return null;
+  }
 
   return (
     <div className="auction">
@@ -132,9 +142,8 @@ const Auction = ({ refId }) => {
           <p className="gray font-italic text-right small">
             {isExpired
               ? `${t("auction_closed_on")} `
-              : `${t("end_of_the_auction")}`}
-
-            {auctionEnd.toLocaleDateString([], {
+              : `${t("end_of_the_auction")}`}{" "}
+            {endDateTime.toLocaleDateString([], {
               hour: "2-digit",
               minute: "2-digit"
             })}
@@ -145,11 +154,11 @@ const Auction = ({ refId }) => {
         <span className="gray">
           <Translate code="start_price" /> :
         </span>{" "}
-        <strong>{startPrice.toLocaleString()}</strong> € <sup>TTC</sup>
+        <strong>{minimalPrice.toLocaleString()}</strong> € <sup>TTC</sup>
       </p>
       <div className="section-price">
         <Row>
-          {lastUserAuctionAmount > 0 && (
+          {bestUserOffer > 0 && (
             <Col
               xs="12"
               sm="6"
@@ -162,7 +171,7 @@ const Auction = ({ refId }) => {
               </p>
               <div className="offer-value">
                 <span className="font-weight-bold">
-                  {lastUserAuctionAmount.toLocaleString()}
+                  {bestUserOffer.toLocaleString()}
                 </span>{" "}
                 €
                 <sup>
@@ -173,19 +182,19 @@ const Auction = ({ refId }) => {
           )}
 
           <Col>
-            {maxAuction === 0 && (
+            {bestOffer === 0 && (
               <div className="gray font-italic my-2">
                 <Translate code="no_offer" />
               </div>
             )}
-            {maxAuction > 0 && (
+            {bestOffer > 0 && (
               <>
                 <p className="h5 gray ">
                   <Translate code="best_offer" />
                 </p>
                 <div className="offer-value">
                   <span className="dark font-weight-bold">
-                    {maxAuction.toLocaleString()}
+                    {bestOffer.toLocaleString()}
                   </span>{" "}
                   €
                   <sup>
@@ -202,12 +211,13 @@ const Auction = ({ refId }) => {
           <Row>
             <Col xs="12" lg="7" className="mb-3">
               <Input
-                type="number"
-                min={minOffer}
+                /*                type="number"
+                min={minOffer} */
                 name="user-offer"
                 className="rounded"
                 onChange={handleChange}
                 disabled={isExpired}
+                required={true}
                 placeholder={`${t("your_offer")} (${t(
                   "min"
                 )}  ${minOffer.toLocaleString()}€)`}

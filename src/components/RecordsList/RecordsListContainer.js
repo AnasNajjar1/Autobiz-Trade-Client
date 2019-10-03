@@ -33,38 +33,12 @@ const RecordsListContainer = () => {
   const ItemsPerPage = 12;
 
   const sortList = [
-    /*     {
-      id: "price_asc",
-      name: t("sort_price_asc")
-    },
-    {
-      id: "price_desc",
-      name: t("sort_price_desc")
-    }, */
-    {
-      value: ["created_at", "DESC"],
-      name: t("most_recent")
-    },
-    {
-      value: ["created_at", "ASC"],
-      name: t("less_recent")
-    },
-    {
-      value: ["firstRegistrationDate", "ASC"],
-      name: t("sort_date_asc")
-    },
-    {
-      value: ["firstRegistrationDate", "DESC"],
-      name: t("sort_date_desc")
-    },
-    {
-      value: ["mileage", "ASC"],
-      name: t("sort_mileage_asc")
-    },
-    {
-      value: ["mileage", "DESC"],
-      name: t("sort_mileage_desc")
-    }
+    /* "sort_price_asc",
+    "sort_price_desc", */
+    "sort_date_asc",
+    "sort_date_desc",
+    "sort_mileage_asc",
+    "sort_mileage_desc"
   ];
 
   const initialFormState = {
@@ -77,7 +51,7 @@ const RecordsListContainer = () => {
     mileageMax: "",
     type: ["all"],
     city: ["all"],
-    sort: ["id", "DESC"],
+    sort: "sort_date_desc",
     range: [0, ItemsPerPage - 1]
   };
 
@@ -91,7 +65,7 @@ const RecordsListContainer = () => {
     mileageMax: NumberParam,
     type: DelimitedArrayParam,
     city: DelimitedArrayParam,
-    sort: ArrayParam,
+    sort: StringParam,
     range: ArrayParam
   });
 
@@ -173,7 +147,7 @@ const RecordsListContainer = () => {
   };
 
   const handleSort = value => {
-    form.sort = value.split(",");
+    form.sort = value;
     setQuery(form);
   };
 
@@ -197,7 +171,7 @@ const RecordsListContainer = () => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
-          sort: JSON.stringify(form.sort),
+          sort: form.sort,
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
           yearMecMin: form.yearMecMin,
@@ -212,10 +186,17 @@ const RecordsListContainer = () => {
       });
 
       const contentRange = result.headers["content-range"];
-      const contentRangeArray = contentRange.split("/");
-      setRecordsCount(contentRangeArray[1]);
-      setRecords(result.data);
+
+      if (result.data && result.data.length > 0) {
+        const contentRangeArray = contentRange.split("/");
+        setRecordsCount(contentRangeArray[1]);
+        setRecords(result.data);
+      } else {
+        setRecordsCount(0);
+        setRecords([]);
+      }
     };
+
     fetchRecords();
   }, [query]);
 
@@ -389,9 +370,10 @@ const RecordsListContainer = () => {
               <Col xs="12" sm="6" lg="4">
                 <Sort list={sortList} value={form.sort} sort={handleSort} />
               </Col>
-              {records.map((record, index) => (
-                <RecordsElement key={index} record={record} />
-              ))}
+              {records &&
+                records.map((record, index) => (
+                  <RecordsElement key={index} record={record} />
+                ))}
             </Row>
           )}
           {RecordsCount > records.length && (

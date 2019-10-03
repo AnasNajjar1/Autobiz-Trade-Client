@@ -6,4 +6,5 @@ const apisB2bPlateform = {
 };
 exports.apiB2bPlateform = apisB2bPlateform[ENV];
 
-exports.link_new_password="https://www.autobiz-market.com/fr/mot-de-passe-oublie"
+exports.link_new_password =
+  "https://www.autobiz-market.com/fr/mot-de-passe-oublie";

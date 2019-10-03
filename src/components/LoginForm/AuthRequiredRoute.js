@@ -13,7 +13,7 @@ export default function AuthRequiredRoute(props) {
     })
     .catch(() => setLogged(false));
   Auth.currentUserCredentials().then(credentials => {
-    console.log(credentials);
+    //console.log(credentials);
   });
   if (logged === null) return <Spinner color="primary" />;
   if (logged) return <Route path={path} component={component} />;
