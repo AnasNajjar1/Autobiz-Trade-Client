@@ -15,6 +15,7 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
+    const { auction } = record;
 
     return (
       <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
@@ -49,29 +50,34 @@ class RecordsElement extends Component {
               <CardTitle>
                 {record.brandLabel} {record.modelLabel}
               </CardTitle>
-              {record.auctionId && (
+              {auction && (
                 <>
-                  <div>TimeLeft : {record.secondsLeft}</div>
+                  <div>TimeLeft : {auction.secondsLeft}</div>
                   <div>
                     BestOffer :{" "}
-                    {record.bestOffer ? record.bestOffer : <>no offer</>}
+                    {auction.bestOffer ? auction.bestOffer : <>no offer</>}
+                  </div>
+
+                  <div>
+                    {auction.bestOffer === null && (
+                      <>minimalPrice :{auction.minimalPrice}</>
+                    )}
                   </div>
                   <div>
-                    {" "}
                     MyOffer :{" "}
-                    {record.bestUserOffer ? (
-                      record.bestUserOffer
+                    {auction.bestUserOffer ? (
+                      auction.bestUserOffer
                     ) : (
                       <>no offer</>
                     )}
                   </div>
-                  {record.bestUserOffer &&
-                    record.bestUserOffer === record.bestOffer && (
+                  {auction.bestUserOffer &&
+                    auction.bestUserOffer === auction.bestOffer && (
                       <div>I Win</div>
                     )}
 
-                  {record.bestUserOffer &&
-                    record.bestUserOffer !== record.bestOffer && (
+                  {auction.bestUserOffer &&
+                    auction.bestUserOffer !== auction.bestOffer && (
                       <div>I Loose</div>
                     )}
                 </>
