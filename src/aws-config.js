@@ -4,14 +4,14 @@ import { apiB2bPlateform } from "./config";
 const config = {
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-    identityPoolId: "us-east-1:cf4b5832-8146-4ebd-ac3c-1d4dea4261de",
+    identityPoolId: "eu-west-1:5203c077-e00b-40ea-b653-8cdda9f19d13",
 
     // REQUIRED - Amazon Cognito Region
-    region: "us-east-1",
+    region: "eu-west-1",
 
     // OPTIONAL - Amazon Cognito Federated Identity Pool Region
     // Required only if it's different from Amazon Cognito Region
-    identityPoolRegion: "us-east-1",
+    identityPoolRegion: "eu-west-1",
 
     // OPTIONAL - Amazon Cognito User Pool ID
     userPoolId: "eu-west-1_YYMUabLh6",
@@ -46,7 +46,7 @@ const config = {
     endpoints: [
       {
         name: "b2bPlateform",
-        region: "us-east-1",
+        region: "eu-west-1",
         endpoint: apiB2bPlateform
         // custom_header: async () => {
         //     //return { Authorization : 'token' }
