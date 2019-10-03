@@ -84,7 +84,7 @@ const Auction = ({ refId }) => {
     bestOffer = 0,
     stepPrice = 0,
     userWin = false,
-    lastUserOffer = 0
+    bestUserOffer = 0
   } = auction;
   const endDateTime = new Date(auction.endDateTime);
   const minOffer = bestOffer + stepPrice;
@@ -106,7 +106,9 @@ const Auction = ({ refId }) => {
         );
 
         setAuction(result.data);
-      } catch (error) {}
+      } catch (error) {
+        alert(error);
+      }
     };
     putAuction();
   };
@@ -156,7 +158,7 @@ const Auction = ({ refId }) => {
       </p>
       <div className="section-price">
         <Row>
-          {lastUserOffer > 0 && (
+          {bestUserOffer > 0 && (
             <Col
               xs="12"
               sm="6"
@@ -169,7 +171,7 @@ const Auction = ({ refId }) => {
               </p>
               <div className="offer-value">
                 <span className="font-weight-bold">
-                  {lastUserOffer.toLocaleString()}
+                  {bestUserOffer.toLocaleString()}
                 </span>{" "}
                 €
                 <sup>
@@ -209,8 +211,8 @@ const Auction = ({ refId }) => {
           <Row>
             <Col xs="12" lg="7" className="mb-3">
               <Input
-                type="number"
-                min={minOffer}
+                /*                type="number"
+                min={minOffer} */
                 name="user-offer"
                 className="rounded"
                 onChange={handleChange}

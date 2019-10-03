@@ -49,8 +49,34 @@ class RecordsElement extends Component {
               <CardTitle>
                 {record.brandLabel} {record.modelLabel}
               </CardTitle>
+              {record.auctionId && (
+                <>
+                  <div>TimeLeft : {record.secondsLeft}</div>
+                  <div>
+                    BestOffer :{" "}
+                    {record.bestOffer ? record.bestOffer : <>no offer</>}
+                  </div>
+                  <div>
+                    {" "}
+                    MyOffer :{" "}
+                    {record.bestUserOffer ? (
+                      record.bestUserOffer
+                    ) : (
+                      <>no offer</>
+                    )}
+                  </div>
+                  {record.bestUserOffer &&
+                    record.bestUserOffer === record.bestOffer && (
+                      <div>I Win</div>
+                    )}
 
-              <p>{record.versionlabel}</p>
+                  {record.bestUserOffer &&
+                    record.bestUserOffer !== record.bestOffer && (
+                      <div>I Loose</div>
+                    )}
+                </>
+              )}
+              <p>{record.versionLabel}</p>
               <div className="text-center">
                 <span className="tag tag-white">
                   <span className="text-nowrap">{record.yearMec}</span>/
