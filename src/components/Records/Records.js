@@ -74,6 +74,8 @@ const Record = props => {
 
   const { pointOfSale = {} } = record;
 
+  console.log(record.market, _.isEmpty(record.market));
+
   return (
     <>
       <Container className="pb-5">

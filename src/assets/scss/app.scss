@@ -287,7 +287,8 @@ header {
 
   a.link-card {
     .countdown {
-      @extend .mt-2;
+      top: -15px;
+      margin-bottom: 0;
     }
     .card {
       border: 0;
@@ -967,7 +968,7 @@ footer {
 .countdown {
   background: $blue;
   @extend .small;
-  @extend .mb-2;
+  /* @extend .mb-2; */
   padding: 5px 15px;
   display: inline-block;
   left: -30px;

@@ -80,35 +80,18 @@ class RecordsElement extends Component {
               <RecordsElementGrade grade={record.profileCosts} />
             )}
             <CardBody>
-              <CardTitle>
-                {record.brandLabel} {record.modelLabel}
-              </CardTitle>
-
               {auction && <Countdown secondsLeft={auction.secondsLeft} />}
 
-              {auction && (
-                <>
-                  <div>TimeLeft : {auction.secondsLeft}</div>
-                  <div>
-                    BestOffer :{" "}
-                    {auction.bestOffer ? auction.bestOffer : <>no offer</>}
-                  </div>
+              <CardTitle>
+                {record.brandLabel} {record.modelLabel}
+                {auction && (
+                  <p className="h1 float-right text-primary">
+                    {auction.bestOffer && auction.bestOffer}
+                    {!auction.bestOffer && auction.minimalPrice} {t("€ TTC")}
+                  </p>
+                )}
+              </CardTitle>
 
-                  <div>
-                    {auction.bestOffer === null && (
-                      <>minimalPrice :{auction.minimalPrice}</>
-                    )}
-                  </div>
-                  <div>
-                    MyOffer :{" "}
-                    {auction.bestUserOffer ? (
-                      auction.bestUserOffer
-                    ) : (
-                      <>no offer</>
-                    )}
-                  </div>
-                </>
-              )}
               <p>{record.versionLabel}</p>
               <div className="text-center">
                 <span className="tag tag-white">
