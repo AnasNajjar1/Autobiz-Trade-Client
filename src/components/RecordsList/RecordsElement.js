@@ -5,6 +5,9 @@ import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
+
+import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
+
 import {
   faGavel,
   faUser,
@@ -18,6 +21,8 @@ class RecordsElement extends Component {
   render() {
     const { record } = this.props;
     const { auction } = record;
+
+    console.log(record.front_picture);
 
     return (
       <Col xs="12" lg="6" xl="6" className="mb-4">
@@ -76,6 +81,14 @@ class RecordsElement extends Component {
                 alt={record.brandLabel + " " + record.modelLabel}
               />
             )}
+            {!record.front_picture && (
+              <img
+                className="card-img-top"
+                src={defaultFrontPicture}
+                alt={""}
+              />
+            )}
+
             {record.profileCosts && (
               <RecordsElementGrade grade={record.profileCosts} />
             )}
