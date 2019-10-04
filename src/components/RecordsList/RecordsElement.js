@@ -22,8 +22,6 @@ class RecordsElement extends Component {
     const { record } = this.props;
     const { auction } = record;
 
-    console.log(record.front_picture);
-
     return (
       <Col xs="12" lg="6" xl="6" className="mb-4">
         <Link className="link-card" to={`/records/${record.uuid}`}>
