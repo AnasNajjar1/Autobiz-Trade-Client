@@ -992,4 +992,10 @@ footer {
   position: relative;
 }
 
+.custom-checkbox {
+  label {
+    text-transform: capitalize;
+  }
+}
+
 @import "carousel";
