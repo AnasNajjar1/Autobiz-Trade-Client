@@ -118,9 +118,11 @@ class RecordsElement extends Component {
                       {t(record.fuelLabel)}
                     </span>
                   )}
-                  <span className="text-nowrap after-slash-divider">
-                    {record.mileage.toLocaleString()} {t("Km")}
-                  </span>
+                  {record.mileage !== null && (
+                    <span className="text-nowrap after-slash-divider">
+                      {record.mileage.toLocaleString()} {t("Km")}
+                    </span>
+                  )}
                 </span>
               </div>
             </CardBody>
