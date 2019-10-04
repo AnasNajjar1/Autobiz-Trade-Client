@@ -55,6 +55,7 @@ class Carousel extends Component {
           <Slider
             asNavFor={this.state.nav2}
             ref={slider => (this.slider1 = slider)}
+            infinite={false}
             className="slider-main"
             afterChange={currentSlide => {
               this.setState({ currentSlide: currentSlide + 1 });
@@ -75,7 +76,7 @@ class Carousel extends Component {
         <Slider
           asNavFor={this.state.nav1}
           ref={slider => (this.slider2 = slider)}
-          slidesToShow={3}
+          infinite={false}
           swipeToSlide={true}
           variableWidth={true}
           focusOnSelect={true}
