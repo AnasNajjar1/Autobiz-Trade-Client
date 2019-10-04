@@ -30,9 +30,12 @@ const Auction = ({ refId }) => {
             response: true
           }
         );
-
+        if (result.data.secondsLeft > 0) {
+          setIsExpired(false);
+        } else {
+          setIsExpired(true);
+        }
         setAuction(result.data);
-        setRefresh(false);
       } catch (error) {}
     };
     if (refresh) {
@@ -169,8 +172,8 @@ const Auction = ({ refId }) => {
           <Row>
             <Col xs="12" lg="7" className="mb-3">
               <Input
-                /*                type="number"
-                min={minOffer} */
+                type="number"
+                min={minOffer}
                 name="user-offer"
                 className="rounded"
                 onChange={handleChange}
