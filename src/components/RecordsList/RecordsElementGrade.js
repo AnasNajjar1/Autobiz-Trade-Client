@@ -11,7 +11,7 @@ const RecordsElementGrade = props => {
       label = t("very_good");
       break;
     case "B":
-      label = t("godd");
+      label = t("good");
       break;
     default:
     case "C":
@@ -27,7 +27,7 @@ const RecordsElementGrade = props => {
 
   return (
     <div className="car-condition">
-      <Translate code="condition"></Translate> :
+      <Translate code="global_condition"></Translate> :
       <span className={classes}>{props.grade.toUpperCase()}</span>
       <span className="grade-label">{label}</span>
     </div>

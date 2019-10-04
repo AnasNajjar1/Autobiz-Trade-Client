@@ -3,6 +3,8 @@ import { Row, Col } from "reactstrap";
 import Flag from "react-world-flags";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { t } from "../common/Translate";
+
 
 const CheckList = ({ items }) => {
   return (
@@ -11,7 +13,7 @@ const CheckList = ({ items }) => {
         {items.map((value, index) => (
           <Col xs="6" key={index}>
             <div className="item">
-              <FontAwesomeIcon icon={faCheckCircle} /> {value}
+              <FontAwesomeIcon icon={faCheckCircle} /> {t(value)}
             </div>
           </Col>
         ))}
