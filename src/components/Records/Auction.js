@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
+import Countdown from "../common/Countdown";
 import { API } from "aws-amplify";
 import _ from "lodash";
 import { Row, Col, Form, Button, Input } from "reactstrap";
-import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 const Auction = ({ refId }) => {
-  const [secondsLeft, setSecondsLeft] = useState();
-  const [countdown, setCountdown] = useState("");
   const [isExpired, setIsExpired] = useState(true);
   const [auction, setAuction] = useState([]);
   const [userAuctionAmout, setUserAuctionAmout] = useState([]);
@@ -34,9 +30,12 @@ const Auction = ({ refId }) => {
             response: true
           }
         );
-
+        if (result.data.secondsLeft > 0) {
+          setIsExpired(false);
+        } else {
+          setIsExpired(true);
+        }
         setAuction(result.data);
-        setRefresh(false);
       } catch (error) {}
     };
     if (refresh) {
@@ -44,50 +43,22 @@ const Auction = ({ refId }) => {
     }
   }, [refresh]);
 
-  useEffect(() => {
-    setSecondsLeft(auction.secondsLeft);
-  }, [auction]);
-
-  useEffect(() => {
-    const intervalCountdown = setInterval(() => {
-      if (secondsLeft <= 0) {
-        setIsExpired(true);
-      } else {
-        setSecondsLeft(secondsLeft - 1);
-        setIsExpired(false);
-      }
-    }, 1000);
-    return () => clearInterval(intervalCountdown);
-  }, [secondsLeft]);
-
-  const padLeft = (nr, n, str) => {
-    return Array(n - String(nr).length + 1).join(str || "0") + nr;
-  };
-
-  useEffect(() => {
-    const dur = moment.duration(secondsLeft, "seconds");
-    let text = "";
-
-    if (dur.days() === 1) text = `${dur.days()} ${t("day_and")} `;
-    if (dur.days() > 1) text = `${dur.days()} ${t("days_and")} `;
-
-    text += `${padLeft(dur.hours(), 2)}:${padLeft(dur.minutes(), 2)}:${padLeft(
-      dur.seconds(),
-      2
-    )}`;
-
-    setCountdown(text);
-  }, [secondsLeft]);
-
   const {
     minimalPrice = 0,
+    secondsLeft = 0,
     bestOffer = 0,
     stepPrice = 0,
     userWin = false,
     bestUserOffer = 0
   } = auction;
   const endDateTime = new Date(auction.endDateTime);
-  const minOffer = bestOffer + stepPrice;
+  let minOffer = 0;
+
+  if (bestOffer > 0) {
+    minOffer = bestOffer + stepPrice;
+  } else {
+    minOffer = minimalPrice;
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -124,20 +95,10 @@ const Auction = ({ refId }) => {
   return (
     <div className="auction">
       <Row>
-        <Col xs="12" lg="7" xl="6">
-          {!isExpired && (
-            <div className="countdown">
-              <span className="pr-1">
-                <Translate code="time_left" /> :
-              </span>
-              <FontAwesomeIcon
-                icon={faClock}
-                className={isExpired ? "text-danger" : "text-success"}
-              />
-              <span className="pl-1">{countdown}</span>
-            </div>
-          )}
+        <Col>
+          <Countdown secondsLeft={secondsLeft} />
         </Col>
+
         <Col xs="12" lg="5" xl="6">
           <p className="gray font-italic text-right small">
             {isExpired
@@ -211,8 +172,8 @@ const Auction = ({ refId }) => {
           <Row>
             <Col xs="12" lg="7" className="mb-3">
               <Input
-                /*                type="number"
-                min={minOffer} */
+                type="number"
+                min={minOffer}
                 name="user-offer"
                 className="rounded"
                 onChange={handleChange}

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Translate, { t } from "../common/Translate";
 import { Link } from "react-router-dom";
-import { Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
+import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Countdown from "../common/Countdown";
 import {
   faGavel,
   faUser,
+  faCheck,
   faMapMarkerAlt
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -18,23 +20,54 @@ class RecordsElement extends Component {
     const { auction } = record;
 
     return (
-      <Col xs="12" sm="6" md="12" lg="6" xl="4" className="mb-4">
+      <Col xs="12" lg="6" xl="6" className="mb-4">
         <Link className="link-card" to={`/records/${record.uuid}`}>
           <Card className="h-100">
             <div className="status">
-              {record.type === "private" && (
-                <div>
-                  <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
-                  <Translate code="private_offer"></Translate>
-                </div>
-              )}
+              <Row>
+                {record.type === "private" && (
+                  <Col>
+                    <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
+                    <Translate code="private_offer"></Translate>
+                  </Col>
+                )}
 
-              {record.type === "stock" && (
-                <div>
-                  <FontAwesomeIcon icon={faGavel} className="mr-2" size="1x" />
-                  <Translate code="in_stock"></Translate>
-                </div>
-              )}
+                {record.type === "stock" && (
+                  <Col>
+                    <FontAwesomeIcon
+                      icon={faGavel}
+                      className="mr-2"
+                      size="1x"
+                    />
+                    <Translate code="in_stock"></Translate>
+                  </Col>
+                )}
+                {auction &&
+                  auction.bestUserOffer &&
+                  auction.bestUserOffer === auction.bestOffer && (
+                    <Col className="text-right text-success">
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className="mr-2"
+                        size="1x"
+                      />
+                      Meilleur offrant
+                    </Col>
+                  )}
+
+                {auction &&
+                  auction.bestUserOffer &&
+                  auction.bestUserOffer !== auction.bestOffer && (
+                    <Col className="text-right text-danger">
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className="mr-2"
+                        size="1x"
+                      />
+                      Surenchérir
+                    </Col>
+                  )}
+              </Row>
             </div>
             {record.front_picture && (
               <img
@@ -50,6 +83,9 @@ class RecordsElement extends Component {
               <CardTitle>
                 {record.brandLabel} {record.modelLabel}
               </CardTitle>
+
+              {auction && <Countdown secondsLeft={auction.secondsLeft} />}
+
               {auction && (
                 <>
                   <div>TimeLeft : {auction.secondsLeft}</div>
@@ -71,15 +107,6 @@ class RecordsElement extends Component {
                       <>no offer</>
                     )}
                   </div>
-                  {auction.bestUserOffer &&
-                    auction.bestUserOffer === auction.bestOffer && (
-                      <div>I Win</div>
-                    )}
-
-                  {auction.bestUserOffer &&
-                    auction.bestUserOffer !== auction.bestOffer && (
-                      <div>I Loose</div>
-                    )}
                 </>
               )}
               <p>{record.versionLabel}</p>
