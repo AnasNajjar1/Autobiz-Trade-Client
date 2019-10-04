@@ -402,6 +402,14 @@ header {
   border-radius: 4em;
   position: relative;
 
+  .after-slash-divider:after {
+    content: "/";
+  }
+
+  .after-slash-divider:last-child:after {
+    content: "";
+  }
+
   &.tag-white {
     border: 1px solid $blue;
     color: $blue;

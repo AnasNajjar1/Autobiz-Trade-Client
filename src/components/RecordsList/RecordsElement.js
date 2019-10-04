@@ -108,10 +108,18 @@ class RecordsElement extends Component {
               <p>{record.versionLabel}</p>
               <div className="text-center">
                 <span className="tag tag-white">
-                  <span className="text-nowrap">{record.yearMec}</span>/
-                  <span className="text-nowrap">{t(record.fuelLabel)}</span>/
-                  <span className="text-nowrap">
-                    {record.mileage && record.mileage.toLocaleString()} Km
+                  {record.yearMec && (
+                    <span className="text-nowrap after-slash-divider">
+                      {record.yearMec}
+                    </span>
+                  )}
+                  {record.fuelLabel && (
+                    <span className="text-nowrap after-slash-divider">
+                      {t(record.fuelLabel)}
+                    </span>
+                  )}
+                  <span className="text-nowrap after-slash-divider">
+                    {record.mileage.toLocaleString()} {t("Km")}
                   </span>
                 </span>
               </div>
