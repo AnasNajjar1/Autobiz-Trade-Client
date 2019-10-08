@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
+import FilterSearch from "./FilterSearch";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
@@ -185,6 +186,7 @@ const RecordsListContainer = () => {
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
           sort: form.sort,
+          search: form.search,
           list: form.list,
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
@@ -226,14 +228,12 @@ const RecordsListContainer = () => {
     <Container>
       <Row>
         <div className="search-record-nav">
-          <div className="section d-md-none">
-            {/* replace by <Section> when filterSearch is active */}
+          <div className="section">
             <Row>
-              {/*
               <Col className="col col-6" sm="8" md="12">
                 <FilterSearch value={form.search} onChange={updateField} />
-              </Col> 
-              */}
+              </Col>
+
               <Col className="col d-md-none">
                 <button
                   type="button"
