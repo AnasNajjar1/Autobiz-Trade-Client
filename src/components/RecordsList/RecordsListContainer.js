@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Alert, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Alert,
+  Button,
+  FormGroup,
+  Input
+} from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
@@ -7,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
+import FilterSearch from "./FilterSearch";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
@@ -30,6 +39,7 @@ import {
 
 const RecordsListContainer = () => {
   const offers = ["private", "stock"];
+
   const ItemsPerPage = 12;
 
   const sortList = [
@@ -43,6 +53,7 @@ const RecordsListContainer = () => {
 
   const initialFormState = {
     search: "",
+    list: "all",
     brandLabel: "",
     modelLabel: "",
     yearMecMin: "",
@@ -57,6 +68,7 @@ const RecordsListContainer = () => {
 
   const [query, setQuery] = useQueryParams({
     search: StringParam,
+    list: StringParam,
     brandLabel: StringParam,
     modelLabel: StringParam,
     yearMecMin: NumberParam,
@@ -71,6 +83,7 @@ const RecordsListContainer = () => {
 
   const [form, setValues] = useState({
     search: query.search || initialFormState.search,
+    list: query.list || initialFormState.list,
     brandLabel: query.brandLabel || initialFormState.brandLabel,
     modelLabel: query.modelLabel || initialFormState.modelLabel,
     yearMecMin: query.yearMecMin || initialFormState.yearMecMin,
@@ -93,6 +106,7 @@ const RecordsListContainer = () => {
 
   const updateField = e => {
     const { name, value } = e.target;
+
     setValues({
       ...form,
       [name]: value
@@ -172,6 +186,8 @@ const RecordsListContainer = () => {
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
           sort: form.sort,
+          search: form.search,
+          list: form.list,
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
           yearMecMin: form.yearMecMin,
@@ -212,14 +228,12 @@ const RecordsListContainer = () => {
     <Container>
       <Row>
         <div className="search-record-nav">
-          <div className="section d-md-none">
-            {/* replace by <Section> when filterSearch is active */}
+          <div className="section">
             <Row>
-              {/*
               <Col className="col col-6" sm="8" md="12">
                 <FilterSearch value={form.search} onChange={updateField} />
-              </Col> 
-              */}
+              </Col>
+
               <Col className="col d-md-none">
                 <button
                   type="button"
@@ -237,6 +251,19 @@ const RecordsListContainer = () => {
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
+              <FormGroup>
+                <Input
+                  type="select"
+                  name="list"
+                  value={form.list}
+                  onChange={e => updateField(e)}
+                  className="mb-2 rounded"
+                >
+                  <option value={"all"}>Tous les véhicules</option>
+                  <option value={"my_offers"}>Mes enchéres</option>
+                </Input>
+              </FormGroup>
+
               <p className="section-title">
                 <Translate code="brand_and_model" />
               </p>

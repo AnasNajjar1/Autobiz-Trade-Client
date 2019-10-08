@@ -5,6 +5,9 @@ import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
+
+import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
+
 import {
   faGavel,
   faUser,
@@ -76,48 +79,51 @@ class RecordsElement extends Component {
                 alt={record.brandLabel + " " + record.modelLabel}
               />
             )}
+            {!record.front_picture && (
+              <img
+                className="card-img-top"
+                src={defaultFrontPicture}
+                alt={""}
+              />
+            )}
+
             {record.profileCosts && (
               <RecordsElementGrade grade={record.profileCosts} />
             )}
             <CardBody>
-              <CardTitle>
-                {record.brandLabel} {record.modelLabel}
-              </CardTitle>
-
               {auction && <Countdown secondsLeft={auction.secondsLeft} />}
 
-              {auction && (
-                <>
-                  <div>TimeLeft : {auction.secondsLeft}</div>
-                  <div>
-                    BestOffer :{" "}
-                    {auction.bestOffer ? auction.bestOffer : <>no offer</>}
-                  </div>
+              <CardTitle>
+                {record.brandLabel} {record.modelLabel}
+                {auction && (
+                  <p className="h1 float-right text-primary">
+                    {auction.bestOffer && auction.bestOffer}
+                    {!auction.bestOffer && auction.minimalPrice} {t("€ TTC")}
+                  </p>
+                )}
+              </CardTitle>
 
-                  <div>
-                    {auction.bestOffer === null && (
-                      <>minimalPrice :{auction.minimalPrice}</>
-                    )}
-                  </div>
-                  <div>
-                    MyOffer :{" "}
-                    {auction.bestUserOffer ? (
-                      auction.bestUserOffer
-                    ) : (
-                      <>no offer</>
-                    )}
-                  </div>
-                </>
-              )}
               <p>{record.versionLabel}</p>
               <div className="text-center">
-                <span className="tag tag-white">
-                  <span className="text-nowrap">{record.yearMec}</span>/
-                  <span className="text-nowrap">{t(record.fuelLabel)}</span>/
-                  <span className="text-nowrap">
-                    {record.mileage && record.mileage.toLocaleString()} Km
+                {record.yearMec && record.fuelLabel && record.mileage !== null && (
+                  <span className="tag tag-white">
+                    {record.yearMec && (
+                      <span className="text-nowrap after-slash-divider">
+                        {record.yearMec}
+                      </span>
+                    )}
+                    {record.fuelLabel && (
+                      <span className="text-nowrap after-slash-divider">
+                        {t(record.fuelLabel)}
+                      </span>
+                    )}
+                    {record.mileage !== null && (
+                      <span className="text-nowrap after-slash-divider">
+                        {record.mileage.toLocaleString()} {t("Km")}
+                      </span>
+                    )}
                   </span>
-                </span>
+                )}
               </div>
             </CardBody>
             <CardFooter>

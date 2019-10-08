@@ -6,6 +6,8 @@ import _ from "lodash";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faQuoteLeft,
+  faQuoteRight,
   faSpinner,
   faExclamationTriangle,
   faMapMarkerAlt
@@ -121,7 +123,7 @@ const Record = props => {
             </div>
           </Col>
           <Col>
-            <Auction refId={props.refId} />
+            {/*        <Auction refId={props.refId} /> */}
 
             {record.keyPoints && record.keyPoints.length > 0 && (
               <div className="section radius mb-4 py-4">
@@ -132,6 +134,23 @@ const Record = props => {
               </div>
             )}
             {record.documents && <Documents items={record.documents} />}
+
+            {record.salesComment && (
+              <div className="section radius mb-4 py-4">
+                <p className="text-secondary">Commentaire du vendeur :</p>
+                <p className="mb-0">
+                  <FontAwesomeIcon
+                    icon={faQuoteLeft}
+                    className="mr-2 text-primary"
+                  />
+                   {record.salesComment}
+                  <FontAwesomeIcon
+                    icon={faQuoteRight}
+                    className="ml-2 text-primary"
+                  />
+                </p>
+              </div>
+            )}
           </Col>
         </Row>
       </Container>
