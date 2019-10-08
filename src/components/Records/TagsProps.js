@@ -2,7 +2,6 @@ import React from "react";
 import { t } from "../common/Translate";
 
 const TagsProps = ({ tags }) => {
-  console.log(tags);
   return (
     <div className="text-center">
       <div className="tag-props">
