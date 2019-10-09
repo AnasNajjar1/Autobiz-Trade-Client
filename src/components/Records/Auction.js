@@ -7,41 +7,39 @@ import { Row, Col, Form, Button, Input } from "reactstrap";
 
 const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState(true);
-  const [auction, setAuction] = useState([]);
+  const [auction, setAuction] = useState({});
   const [userAuctionAmout, setUserAuctionAmout] = useState([]);
-  const [refresh, setRefresh] = useState(false);
 
-  const refreshTime = 5 * 1000;
+  const second = 1000;
+  const refreshTime = 5 * second;
 
   useEffect(() => {
+    fetchAuction();
     const intervalRefresh = setInterval(() => {
-      setRefresh(true);
+      if (!isExpired) {
+        fetchAuction();
+      }
     }, refreshTime);
     return () => clearInterval(intervalRefresh);
-  }, [refId]);
+  }, [refId, isExpired]);
 
-  useEffect(() => {
-    const fetchAuction = async () => {
-      try {
-        const result = await API.get(
-          "b2bPlateform",
-          `/vehicle/${refId}/auction`,
-          {
-            response: true
-          }
-        );
-        if (result.data.secondsLeft > 0) {
-          setIsExpired(false);
-        } else {
-          setIsExpired(true);
+  const fetchAuction = async () => {
+    try {
+      const result = await API.get(
+        "b2bPlateform",
+        `/vehicle/${refId}/auction`,
+        {
+          response: true
         }
-        setAuction(result.data);
-      } catch (error) {}
-    };
-    if (refresh) {
-      fetchAuction();
-    }
-  }, [refresh]);
+      );
+      if (result.data.secondsLeft > 0) {
+        setIsExpired(false);
+      } else {
+        setIsExpired(true);
+      }
+      setAuction(result.data);
+    } catch (error) {}
+  };
 
   const {
     minimalPrice = 0,
@@ -77,8 +75,8 @@ const Auction = ({ refId }) => {
         );
 
         setAuction(result.data);
-      } catch (error) {
-        alert(error);
+      } catch (e) {
+        alert(e);
       }
     };
     putAuction();
@@ -144,7 +142,7 @@ const Auction = ({ refId }) => {
             )}
 
             <Col>
-              {bestOffer === 0 && (
+              {bestOffer === null && (
                 <div className="gray font-italic my-2">
                   <Translate code="no_offer" />
                 </div>

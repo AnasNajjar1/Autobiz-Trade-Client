@@ -123,22 +123,11 @@ const Record = props => {
             </div>
           </Col>
           <Col>
-            {/*        <Auction refId={props.refId} /> */}
-
-            {record.keyPoints && record.keyPoints.length > 0 && (
-              <div className="section radius mb-4 py-4">
-                <div className="h2 mb-4 text-center">
-                  <Translate code="key_points"></Translate>
-                </div>
-                <CheckList items={record.keyPoints} />
-              </div>
-            )}
-            {record.documents && <Documents items={record.documents} />}
-
+            <Auction refId={props.refId} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
-                <p className="text-secondary">Commentaire du vendeur :</p>
-                <p className="mb-0">
+                <p className="gray">Commentaire du vendeur :</p>
+                <p className="mb-0 font-italic">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
                     className="mr-2 text-primary"
@@ -151,6 +140,15 @@ const Record = props => {
                 </p>
               </div>
             )}
+            {record.keyPoints && record.keyPoints.length > 0 && (
+              <div className="section radius mb-4 py-4">
+                <div className="h2 mb-4 text-center">
+                  <Translate code="key_points"></Translate>
+                </div>
+                <CheckList items={record.keyPoints} />
+              </div>
+            )}
+            {record.documents && <Documents items={record.documents} />}
           </Col>
         </Row>
       </Container>

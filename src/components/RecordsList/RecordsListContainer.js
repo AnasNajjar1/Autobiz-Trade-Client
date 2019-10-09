@@ -106,11 +106,15 @@ const RecordsListContainer = () => {
 
   const updateField = e => {
     const { name, value } = e.target;
-
     setValues({
       ...form,
       [name]: value
     });
+  };
+
+  const showCustomList = listName => {
+    form.list = listName;
+    setQuery(form);
   };
 
   const updateCheckBox = (e, target) => {
@@ -251,19 +255,6 @@ const RecordsListContainer = () => {
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
-              <FormGroup>
-                <Input
-                  type="select"
-                  name="list"
-                  value={form.list}
-                  onChange={e => updateField(e)}
-                  className="mb-2 rounded"
-                >
-                  <option value={"all"}>Tous les véhicules</option>
-                  <option value={"my_offers"}>Mes enchéres</option>
-                </Input>
-              </FormGroup>
-
               <p className="section-title">
                 <Translate code="brand_and_model" />
               </p>
@@ -332,6 +323,24 @@ const RecordsListContainer = () => {
           </div>
         </div>
         <Col>
+          <Row>
+            <Col className="mb-2">
+              <Button
+                color={form.list === "all" ? "primary" : "secondary"}
+                className="mr-2"
+                onClick={() => showCustomList("all")}
+              >
+                Tous les véhicules
+              </Button>
+
+              <Button
+                color={form.list === "my_offers" ? "primary" : "secondary"}
+                onClick={() => showCustomList("my_offers")}
+              >
+                Mes enchères
+              </Button>
+            </Col>
+          </Row>
           <Row>
             <Col className="tag-list">
               <FilterTag
