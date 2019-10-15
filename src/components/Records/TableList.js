@@ -20,6 +20,22 @@ const ListTable = ({ items }) => {
       case "b2cMarketValue":
       case "standardMileage":
         return parseInt(value).toLocaleString();
+      case "fiscal":
+        return `${value} CV`;
+      case "power":
+        let powerOutput = "";
+        if (showableValue(value.ch)) {
+          powerOutput += `${value.ch} ${t("unit_ch")}`;
+        }
+
+        if (showableValue(value.ch) && showableValue(value.kw)) {
+          powerOutput += " / ";
+        }
+
+        if (showableValue(value.kw)) {
+          powerOutput += `${value.kw} ${t("unit_kw")}`;
+        }
+        return powerOutput;
       case "purchaseInvoice":
         return (
           <>
