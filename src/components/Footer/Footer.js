@@ -16,11 +16,11 @@ const Footer = () => {
             <Translate code="contact_us"></Translate>
           </Link>
         </li>
-        <li>
+        {/*         <li>
           <Link to="/content/SignIn">
             <Translate code="sign_in"></Translate>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </footer>
   );
