@@ -4,7 +4,7 @@ import { t } from "../common/Translate";
 import _ from "lodash";
 
 function showableValue(value) {
-  if (value === null) return false;
+  if (value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   return true;
 }
