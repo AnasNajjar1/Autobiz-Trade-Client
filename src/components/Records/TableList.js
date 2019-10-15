@@ -23,7 +23,10 @@ const ListTable = ({ items }) => {
       case "purchaseInvoice":
         return (
           <>
-            {t("yes")} <a href={value}>{t("download_invoice")}</a>
+            {t("yes")}{" "}
+            <a href={value} target="_blank">
+              {t("download_invoice")}
+            </a>
           </>
         );
       default:
