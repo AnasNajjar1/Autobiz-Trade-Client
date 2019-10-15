@@ -45,6 +45,7 @@ const RecordsListContainer = () => {
   const sortList = [
     /* "sort_price_asc",
     "sort_price_desc", */
+    "sort_sales_ending_soon",
     "sort_date_asc",
     "sort_date_desc",
     "sort_mileage_asc",
@@ -62,7 +63,7 @@ const RecordsListContainer = () => {
     mileageMax: "",
     type: ["all"],
     city: ["all"],
-    sort: "sort_date_desc",
+    sort: "sort_sales_ending_soon",
     range: [0, ItemsPerPage - 1]
   };
 
