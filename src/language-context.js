@@ -1,9 +1,17 @@
 import React from "react";
 
-import translations_fr from "./translations/fr";
-import translations_de from "./translations/de";
+import translationsFr from "./translations/fr";
+import translationsDe from "./translations/de";
 
-export const languages = { fr: translations_fr, de: translations_de };
+import flagFr from "./assets/img/flags/fr.svg";
+import flagDe from "./assets/img/flags/de.svg";
+
+export const dictionnary = {
+  fr: translationsFr,
+  de: translationsDe
+};
+export const flags = { fr: flagFr, de: flagDe };
+
 export const LanguageContext = React.createContext(
-  languages.fr // default value
+  dictionnary.fr // default value
 );
