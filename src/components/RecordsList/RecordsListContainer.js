@@ -331,14 +331,14 @@ const RecordsListContainer = () => {
                 className="mr-2"
                 onClick={() => showCustomList("all")}
               >
-                Tous les véhicules
+                {t("all_vehicles")}
               </Button>
 
               <Button
                 color={form.list === "my_offers" ? "primary" : "secondary"}
                 onClick={() => showCustomList("my_offers")}
               >
-                Mes enchères
+                {t("my_acutions")}
               </Button>
             </Col>
           </Row>
@@ -401,7 +401,7 @@ const RecordsListContainer = () => {
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">
                 <div className="h5 mb-3">
-                  <b>{RecordsCount}</b> <Translate code="vehicules" />
+                  <b>{RecordsCount}</b> <Translate code="vehicles" />
                 </div>
               </Col>
               <Col xs="12" sm="6" lg="4">

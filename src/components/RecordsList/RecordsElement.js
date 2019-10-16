@@ -54,7 +54,7 @@ class RecordsElement extends Component {
                         className="mr-2"
                         size="1x"
                       />
-                      Meilleur offrant
+                      {t("highest_bidder")}
                     </Col>
                   )}
 
@@ -67,7 +67,7 @@ class RecordsElement extends Component {
                         className="mr-2"
                         size="1x"
                       />
-                      Surenchérir
+                      {t("overbid")}
                     </Col>
                   )}
               </Row>

@@ -126,7 +126,7 @@ const Record = props => {
             <Auction refId={props.refId} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
-                <p className="gray">Commentaire du vendeur :</p>
+                <p className="gray">{t("sellers_comment")} :</p>
                 <p className="mb-0 font-italic">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
