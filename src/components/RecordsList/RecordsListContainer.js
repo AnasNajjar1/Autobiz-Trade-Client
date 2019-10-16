@@ -330,7 +330,7 @@ const RecordsListContainer = () => {
                 color={form.list === "my_offers" ? "primary" : "secondary"}
                 onClick={() => showCustomList("my_offers")}
               >
-                {t("my_acutions")}
+                {t("my_auctions")}
               </Button>
             </Col>
           </Row>
