@@ -5,7 +5,6 @@ import Translate, { t } from "../common/Translate";
 import {
   faEnvelope,
   faKey,
-  faShieldAlt,
   faExclamationTriangle
 } from "@fortawesome/free-solid-svg-icons";
 import { Auth, API } from "aws-amplify";

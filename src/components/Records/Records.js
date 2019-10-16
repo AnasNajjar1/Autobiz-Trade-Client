@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 
 import { API } from "aws-amplify";
-import _ from "lodash";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

@@ -1,5 +1,5 @@
 import React from "react";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
 import { Input } from "reactstrap";
 
 const FilterSearch = ({ value, onChange }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, FormGroup, CustomInput } from "reactstrap";
 import shortid from "shortid";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
 
 const FilterCheckboxes = ({ data, target, values, updateField, all }) => {
   return (

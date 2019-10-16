@@ -40,7 +40,7 @@ const ListTable = ({ items }) => {
         return (
           <>
             {t("yes")}{" "}
-            <a href={value} target="_blank">
+            <a href={value} target="_blank" rel="noopener noreferrer">
               {t("download_invoice")}
             </a>
           </>
