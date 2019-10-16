@@ -97,8 +97,8 @@ class RecordsElement extends Component {
                 {record.brandLabel} {record.modelLabel}
                 {auction && (
                   <p className="h1 float-right text-primary">
-                    {auction.bestOffer && auction.bestOffer}
-                    {!auction.bestOffer && auction.minimalPrice} {t("€ TTC")}
+                    {auction.bestOffer && auction.bestOffer.toLocaleString()}
+                    {!auction.bestOffer && auction.minimalPrice} € {t("ttc")}
                   </p>
                 )}
               </CardTitle>

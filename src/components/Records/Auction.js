@@ -156,10 +156,7 @@ const Auction = ({ refId }) => {
                     <span className="dark font-weight-bold">
                       {bestOffer.toLocaleString()}
                     </span>{" "}
-                    €
-                    <sup>
-                      <Translate code="ttc" />
-                    </sup>
+                    €<sup>{t("ttc")}</sup>
                   </div>
                 </>
               )}
