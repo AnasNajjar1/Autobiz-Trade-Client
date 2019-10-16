@@ -30,7 +30,7 @@ import {
 } from "use-query-params";
 
 const RecordsListContainer = () => {
-  const offers = ["private", "stock"];
+  const offers = ["offerToPrivate", "stock"];
 
   const ItemsPerPage = 12;
 

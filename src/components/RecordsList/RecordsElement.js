@@ -28,7 +28,7 @@ class RecordsElement extends Component {
           <Card className="h-100">
             <div className="status">
               <Row>
-                {record.type === "private" && (
+                {record.type === "offerToPrivate" && (
                   <Col>
                     <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                     <Translate code="private_offer"></Translate>
