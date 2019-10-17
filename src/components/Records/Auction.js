@@ -47,8 +47,10 @@ const Auction = ({ refId }) => {
     bestOffer = 0,
     stepPrice = 0,
     userWin = false,
-    bestUserOffer = 0
+    bestUserOffer = 0,
+    statusName
   } = auction;
+
   const endDateTime = new Date(auction.endDateTime);
   let minOffer = 0;
 
@@ -142,12 +144,7 @@ const Auction = ({ refId }) => {
             )}
 
             <Col>
-              {bestOffer === null && (
-                <div className="gray font-italic my-2">
-                  <Translate code="no_offer" />
-                </div>
-              )}
-              {bestOffer > 0 && (
+              {(bestOffer > 0 && (
                 <>
                   <p className="h5 gray ">
                     <Translate code="best_offer" />
@@ -159,11 +156,19 @@ const Auction = ({ refId }) => {
                     €<sup>{t("ttc")}</sup>
                   </div>
                 </>
+              )) || (
+                <div className="gray font-italic my-2">
+                  <Translate code="no_offer" />
+                </div>
               )}
             </Col>
           </Row>
         </div>
-        {!isExpired && (
+        {(isExpired && (
+          <p className="text-center text-danger mt-3 mb-0">
+            {t("too_late_auctions_are_closed")}
+          </p>
+        )) || (
           <Form
             method="post"
             className="form-offer mt-4"
@@ -196,6 +201,12 @@ const Auction = ({ refId }) => {
               </Col>
             </Row>
           </Form>
+        )}
+
+        {statusName === "sold" && (
+          <p className="text-center text-danger mt-1 mb-0">
+            {t("this_vehicle_has_been_sold")}
+          </p>
         )}
       </div>
     </div>

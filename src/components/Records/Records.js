@@ -100,7 +100,10 @@ const Record = props => {
                     value: record.yearMec
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
-                  { label: "km", value: record.mileage.toLocaleString() }
+                  {
+                    label: "km",
+                    value: record.mileage && record.mileage.toLocaleString()
+                  }
                 ]}
               />
               <Row>
