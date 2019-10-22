@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Auth, API } from "aws-amplify";
 import { link_new_password } from "../../config";
+import LanguagePicker from "../common/LanguagePicker";
 
 class LoginForm extends Component {
   state = {
@@ -85,6 +86,8 @@ class LoginForm extends Component {
             <Translate code="forgot_password" />
           </a>
         </p>
+
+        {LanguagePicker()}
 
         {/* <Button outline color="secondary" block>
           <FontAwesomeIcon icon={faShieldAlt} className="icon-info mr-2" />
