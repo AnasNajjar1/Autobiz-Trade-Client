@@ -24,17 +24,19 @@ const ListTable = ({ items }) => {
         return `${value} CV`;
       case "power":
         let powerOutput = "";
-        if (showableValue(value.ch)) {
-          powerOutput += `${value.ch} ${t("unit_ch")}`;
+
+        if (showableValue(value.kw)) {
+          powerOutput += `${value.kw} ${t("unit_kw")}`;
         }
 
         if (showableValue(value.ch) && showableValue(value.kw)) {
           powerOutput += " / ";
         }
 
-        if (showableValue(value.kw)) {
-          powerOutput += `${value.kw} ${t("unit_kw")}`;
+        if (showableValue(value.ch)) {
+          powerOutput += `${value.ch} ${t("unit_ch")}`;
         }
+
         return powerOutput;
       case "purchaseInvoice":
         return (
