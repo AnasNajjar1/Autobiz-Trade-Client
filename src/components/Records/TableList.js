@@ -47,6 +47,7 @@ const ListTable = ({ items }) => {
 
         return powerOutput;
       case "purchaseInvoice":
+      case "servicingManualPicture":
         return (
           <>
             {t("yes")}{" "}

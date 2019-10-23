@@ -125,7 +125,7 @@ const Record = props => {
             </div>
             <Row>
               <Col>
-                <p class="small font-italic text-secondary">
+                <p className="small font-italic text-secondary">
                   * {t("version_warning_message")}
                 </p>
               </Col>
@@ -213,6 +213,14 @@ const Record = props => {
                     <Translate code="history"></Translate>
                   </div>
                   <TableList items={record.history} />
+                </>
+              )}
+              {record.servicing && (
+                <>
+                  <div className="section-title">
+                    <Translate code="servicing"></Translate>
+                  </div>
+                  <TableList items={record.servicing} />
                 </>
               )}
             </Col>
