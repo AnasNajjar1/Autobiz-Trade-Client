@@ -90,7 +90,9 @@ const Record = props => {
                 <div className="h1">
                   {record.brandLabel} {record.modelLabel}
                 </div>
-                <div className="gray mb-1">{record.versionLabel} * </div>
+                {record.versionLabel && (
+                  <div className="gray mb-1">{record.versionLabel} * </div>
+                )}
                 {record.carPictures && <Carousel items={record.carPictures} />}
               </div>
               <TagsProps
@@ -123,13 +125,15 @@ const Record = props => {
                 )}
               </Row>
             </div>
-            <Row>
-              <Col>
-                <p className="small font-italic text-secondary">
-                  * {t("version_warning_message")}
-                </p>
-              </Col>
-            </Row>
+            {record.versionLabel && (
+              <Row>
+                <Col>
+                  <p className="small font-italic text-secondary">
+                    * {t("version_warning_message")}
+                  </p>
+                </Col>
+              </Row>
+            )}
           </Col>
           <Col>
             <Auction refId={props.refId} />
