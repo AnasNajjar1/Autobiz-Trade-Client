@@ -12,7 +12,9 @@ import {
   faGavel,
   faUser,
   faCheck,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faBolt,
+  faTags
 } from "@fortawesome/free-solid-svg-icons";
 
 class RecordsElement extends Component {
@@ -29,33 +31,47 @@ class RecordsElement extends Component {
             <div className="status">
               <Row>
                 {record.type === "offerToPrivate" && (
-                  <Col>
+                  <div className="col-auto">
                     <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                     <Translate code="private_offer"></Translate>
-                  </Col>
+                  </div>
                 )}
 
                 {record.type === "stock" && (
-                  <Col>
+                  <div className="col-auto">
                     <FontAwesomeIcon
                       icon={faGavel}
                       className="mr-2"
                       size="1x"
                     />
                     <Translate code="in_stock"></Translate>
-                  </Col>
+                  </div>
                 )}
                 {auction &&
                   auction.bestUserOffer &&
                   auction.bestUserOffer === auction.bestOffer && (
-                    <Col className="text-right text-success">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="mr-2"
-                        size="1x"
-                      />
-                      {t("highest_bidder")}
-                    </Col>
+                    <div className="col-auto ml-auto text-right text-success">
+                      {auction.salesType === "auction" && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            className="mr-2"
+                            size="1x"
+                          />
+                          {t("highest_bidder")}
+                        </>
+                      )}
+                      {auction.salesType === "immediatePurchase" && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faTags}
+                            className="mr-2"
+                            size="1x"
+                          />
+                          {t("purchase_in_process")}
+                        </>
+                      )}
+                    </div>
                   )}
 
                 {auction &&
@@ -72,38 +88,55 @@ class RecordsElement extends Component {
                   )}
               </Row>
             </div>
-            {record.front_picture && (
-              <img
-                className="card-img-top"
-                src={record.front_picture}
-                alt={record.brandLabel + " " + record.modelLabel}
-              />
-            )}
-            {!record.front_picture && (
-              <img
-                className="card-img-top"
-                src={defaultFrontPicture}
-                alt={""}
-              />
-            )}
-
-            {record.profileCosts && (
+            <div className="card-head">
+              {(record.front_picture && (
+                <img
+                  className="card-img-top"
+                  src={record.front_picture}
+                  alt={record.brandLabel + " " + record.modelLabel}
+                />
+              )) || (
+                <img
+                  className="card-img-top"
+                  src={defaultFrontPicture}
+                  alt={""}
+                />
+              )}
               <RecordsElementGrade grade={record.profileCosts} />
-            )}
+            </div>
+
             <CardBody>
               {auction && <Countdown secondsLeft={auction.secondsLeft} />}
 
               <CardTitle>
-                {record.brandLabel} {record.modelLabel}
-                {auction && (
-                  <p className="h1 float-right text-primary">
-                    {auction.bestOffer && auction.bestOffer.toLocaleString()}
-                    {!auction.bestOffer && auction.minimalPrice} € {t("ttc")}
-                  </p>
-                )}
+                <Row>
+                  <Col xs="7" sm="8" lg="7">
+                    <p className="brand-model">
+                      <span className="text-nowrap">{record.brandLabel}</span>{" "}
+                      <span className="text-nowrap">{record.modelLabel}</span>
+                    </p>
+                    <p className="small">{record.versionLabel}</p>
+                  </Col>
+                  <Col xs="5" sm="4" lg="5">
+                    {auction && (
+                      <p className="price">
+                        {(auction.bestOffer &&
+                          auction.bestOffer.toLocaleString()) ||
+                          auction.minimalPrice.toLocaleString()}{" "}
+                        € <small> {t("ttc")}</small>
+                      </p>
+                    )}
+
+                    {auction.salesType === "immediatePurchase" && (
+                      <p className="immediate-purchase">
+                        <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
+                        {t("immediate_purchase")}
+                      </p>
+                    )}
+                  </Col>
+                </Row>
               </CardTitle>
 
-              <p>{record.versionLabel}</p>
               <div className="text-center">
                 {record.yearMec && record.fuelLabel && record.mileage !== null && (
                   <span className="tag tag-white">
