@@ -5,10 +5,8 @@ import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/img/autobiz-trade.svg";
-import Cookies from "js-cookie";
-import _ from "lodash";
 
-import { dictionnary, flags, LanguageContext } from "../../language-context";
+import LanguagePicker from "../common/LanguagePicker";
 
 const Header = () => {
   const [username, setUsername] = useState("");
@@ -27,37 +25,6 @@ const Header = () => {
   };
 
   if (logout) return <Redirect to="/" />;
-
-  const handleChangeLang = async language => {
-    Cookies.set("appLanguage", language, { expires: 365 });
-    window.dispatchEvent(
-      new CustomEvent("changeLanguage", { detail: { language } })
-    );
-  };
-
-  const languagePicker = () => {
-    const languages = Object.keys(dictionnary);
-    const appLanguage = Cookies.get("appLanguage");
-
-    return (
-      <ul className="languagepicker">
-        <li key={appLanguage}>
-          <img src={flags[appLanguage]} alt={appLanguage} />
-        </li>
-        {_.without(languages, appLanguage).map(lang => {
-          return (
-            <li
-              key={lang}
-              className="pointer"
-              onClick={() => handleChangeLang(lang)}
-            >
-              <img src={flags[lang]} alt={lang} />
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
 
   return (
     <header>
@@ -78,7 +45,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faPowerOff} onClick={() => signOut()} />
           </>
         )) || <Spinner color="primary" size="sm" />}
-        {languagePicker()}
+        {LanguagePicker()}
       </div>
     </header>
   );

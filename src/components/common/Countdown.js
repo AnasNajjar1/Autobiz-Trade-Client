@@ -12,6 +12,11 @@ const Countdown = ({ secondsLeft }) => {
   const [isExpired, setIsExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
 
+  // Function t ne fonctionne pas dans le useEffect ??
+  const translation_day_and = t("day_and");
+  const translation_days_and = t("days_and");
+  // ---
+
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
       setLoading(false);
@@ -23,8 +28,8 @@ const Countdown = ({ secondsLeft }) => {
         const dur = moment.duration(seconds, "seconds");
         let time = "";
 
-        if (dur.days() === 1) time = `${dur.days()} ${t("day_and")} `;
-        if (dur.days() > 1) time = `${dur.days()} ${t("days_and")} `;
+        if (dur.days() === 1) time = `${dur.days()} ${translation_day_and} `;
+        if (dur.days() > 1) time = `${dur.days()} ${translation_days_and} `;
 
         time += `${padLeft(dur.hours(), 2)}:${padLeft(
           dur.minutes(),
@@ -38,7 +43,6 @@ const Countdown = ({ secondsLeft }) => {
 
     return () => clearInterval(intervalCountdown);
   }, [seconds]);
-
   return (
     loading === false && (
       <div className="countdown">

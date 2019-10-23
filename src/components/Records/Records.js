@@ -90,7 +90,7 @@ const Record = props => {
                 <div className="h1">
                   {record.brandLabel} {record.modelLabel}
                 </div>
-                <div className="gray mb-1">{record.versionLabel} </div>
+                <div className="gray mb-1">{record.versionLabel} * </div>
                 {record.carPictures && <Carousel items={record.carPictures} />}
               </div>
               <TagsProps
@@ -123,6 +123,13 @@ const Record = props => {
                 )}
               </Row>
             </div>
+            <Row>
+              <Col>
+                <p className="small font-italic text-secondary">
+                  * {t("version_warning_message")}
+                </p>
+              </Col>
+            </Row>
           </Col>
           <Col>
             <Auction refId={props.refId} />
@@ -206,6 +213,14 @@ const Record = props => {
                     <Translate code="history"></Translate>
                   </div>
                   <TableList items={record.history} />
+                </>
+              )}
+              {record.servicing && (
+                <>
+                  <div className="section-title">
+                    <Translate code="servicing"></Translate>
+                  </div>
+                  <TableList items={record.servicing} />
                 </>
               )}
             </Col>

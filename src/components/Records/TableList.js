@@ -2,10 +2,13 @@ import React from "react";
 import { Row } from "reactstrap";
 import { t } from "../common/Translate";
 import _ from "lodash";
-
-function showableValue(value) {
+import moment from "moment";
+import Cookies from "js-cookie";
+const appLanguage = Cookies.get("appLanguage");
+function showableValue(key, value) {
   if (value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
+  if (key === "fiscal" && appLanguage !== "fr") return false;
   return true;
 }
 
@@ -20,23 +23,31 @@ const ListTable = ({ items }) => {
       case "b2cMarketValue":
       case "standardMileage":
         return parseInt(value).toLocaleString();
+      case "gcDate":
+        return moment(value).format("DD-MM-YYYY");
+      case "lastServicingDate":
+      case "nextTechnicalCheckDate":
+        return moment(value).format("MM-YYYY");
       case "fiscal":
         return `${value} CV`;
       case "power":
         let powerOutput = "";
-        if (showableValue(value.ch)) {
-          powerOutput += `${value.ch} ${t("unit_ch")}`;
+
+        if (showableValue(value.kw)) {
+          powerOutput += `${value.kw} ${t("unit_kw")}`;
         }
 
         if (showableValue(value.ch) && showableValue(value.kw)) {
           powerOutput += " / ";
         }
 
-        if (showableValue(value.kw)) {
-          powerOutput += `${value.kw} ${t("unit_kw")}`;
+        if (showableValue(value.ch)) {
+          powerOutput += `${value.ch} ${t("unit_ch")}`;
         }
+
         return powerOutput;
       case "purchaseInvoice":
+      case "servicingManualPicture":
         return (
           <>
             {t("yes")}{" "}
@@ -55,7 +66,7 @@ const ListTable = ({ items }) => {
       <Row>
         {Object.keys(items).map(
           key =>
-            showableValue(items[key]) && (
+            showableValue(key, items[key]) && (
               <React.Fragment key={key}>
                 <div className="cell">
                   <div className="item">
