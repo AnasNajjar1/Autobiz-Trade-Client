@@ -30,14 +30,14 @@ class RecordsElement extends Component {
           <Card className="h-100">
             <div className="status">
               <Row>
-                {record.type === "offerToPrivate" && (
+                {record.offerType === "offerToPrivate" && (
                   <div className="col-auto">
                     <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
                     <Translate code="private_offer"></Translate>
                   </div>
                 )}
 
-                {record.type === "stock" && (
+                {record.offerType === "stock" && (
                   <div className="col-auto">
                     <FontAwesomeIcon
                       icon={faGavel}

@@ -53,7 +53,7 @@ const RecordsListContainer = () => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    type: ["all"],
+    offerType: ["all"],
     city: ["all"],
     sort: "sort_sales_ending_soon",
     range: [0, ItemsPerPage - 1]
@@ -68,7 +68,7 @@ const RecordsListContainer = () => {
     yearMecMax: NumberParam,
     mileageMin: NumberParam,
     mileageMax: NumberParam,
-    type: DelimitedArrayParam,
+    offerType: DelimitedArrayParam,
     city: DelimitedArrayParam,
     sort: StringParam,
     range: ArrayParam
@@ -83,7 +83,7 @@ const RecordsListContainer = () => {
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
-    type: query.type || initialFormState.type,
+    offerType: query.offerType || initialFormState.offerType,
     city: query.city || initialFormState.city,
     sort: query.sort || initialFormState.sort,
     range: query.range || initialFormState.range
@@ -191,7 +191,7 @@ const RecordsListContainer = () => {
           yearMecMax: form.yearMecMax,
           mileageMin: form.mileageMin,
           mileageMax: form.mileageMax,
-          type: JSON.stringify(form.type),
+          offerType: JSON.stringify(form.offerType),
           city: JSON.stringify(form.city),
           range: JSON.stringify(form.range)
         },
@@ -304,8 +304,8 @@ const RecordsListContainer = () => {
               </p>
               <FilterCheckboxes
                 data={offers}
-                target="type"
-                values={form.type}
+                target="offerType"
+                values={form.offerType}
                 updateField={updateCheckBox}
                 all
               />
