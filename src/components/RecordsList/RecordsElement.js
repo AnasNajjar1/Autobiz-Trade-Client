@@ -33,7 +33,7 @@ class RecordsElement extends Component {
                 {record.offerType === "offerToPrivate" && (
                   <div className="col-auto">
                     <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
-                    <Translate code="private_offer"></Translate>
+                    <Translate code="offerToPrivate"></Translate>
                   </div>
                 )}
 
