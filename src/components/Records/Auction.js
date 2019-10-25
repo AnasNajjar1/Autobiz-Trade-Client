@@ -140,8 +140,6 @@ const Auction = ({ refId }) => {
     return null;
   }
 
-  console.log(auction);
-
   if (auction.salesType === "immediatePurchase") {
     let isPurchaseInProcess = false;
     if (bestOffer >= minimalPrice) {

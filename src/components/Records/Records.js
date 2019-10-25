@@ -93,7 +93,7 @@ const Record = props => {
                 {record.versionLabel && (
                   <div className="gray mb-1">{record.versionLabel} * </div>
                 )}
-                {record.carPictures && <Carousel items={record.carPictures} />}
+                {record.gallery && <Carousel items={record.gallery} />}
               </div>
               <TagsProps
                 tags={[
