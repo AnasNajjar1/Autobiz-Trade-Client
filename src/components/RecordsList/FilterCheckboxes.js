@@ -27,16 +27,7 @@ const FilterCheckboxes = ({ data, target, values, updateField, all }) => {
                 value={item.toString()}
                 checked={values.includes(item) || values.includes("all")}
                 onChange={e => updateField(e, target)}
-                label={t(
-                  item
-                    .toString()
-                    .charAt(0)
-                    .toUpperCase() +
-                    item
-                      .toString()
-                      .slice(1)
-                      .toLowerCase()
-                )}
+                label={t(item)}
               />
             ))}
           </Col>
