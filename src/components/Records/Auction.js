@@ -22,6 +22,7 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState(true);
+
   const [auction, setAuction] = useState({});
   const [userAuctionAmout, setUserAuctionAmout] = useState([]);
 
@@ -142,6 +143,11 @@ const Auction = ({ refId }) => {
   console.log(auction);
 
   if (auction.salesType === "immediatePurchase") {
+    let isPurchaseInProcess = false;
+    if (bestOffer >= minimalPrice) {
+      isPurchaseInProcess = true;
+    }
+
     return (
       <div className="section radius mb-4 py-4">
         <div className="auction">
@@ -169,85 +175,75 @@ const Auction = ({ refId }) => {
               </Col>
             </Row>
           </div>
-          <Row className="mt-3">
-            {statusName === "sold" && (
-              <Col xs="12" className="text-center">
-                <p className="text-center text-danger mt-1 mb-0">
-                  {t("this_vehicle_has_been_sold")}
-                </p>
-              </Col>
-            )}
-            {(bestOffer >= minimalPrice && (
-              <Col xs="12" className="text-center">
-                {(userWin && (
-                  <p class="text-success">
-                    {t("your_purchase_is_being_processed")}
+
+          {statusName === "sold" && (
+            <p className="text-center text-danger mt-3 mb-0">
+              {t("this_vehicle_has_been_sold")}
+            </p>
+          )}
+          {isExpired && (
+            <p className="text-center text-danger mt-3 mb-0">
+              {t("too_late_auctions_are_closed")}
+            </p>
+          )}
+          {isPurchaseInProcess && (
+            <p className="text-center text-danger mt-3 mb-0">
+              {t("purchase_in_process")}
+            </p>
+          )}
+
+          {!isPurchaseInProcess && !isExpired && statusName === "online" && (
+            <div class="text-center mt-3">
+              <Button
+                color="danger"
+                className="rounded px-5"
+                disabled={isExpired}
+                onClick={toggleModal}
+              >
+                {t("buy")}
+              </Button>
+
+              <Modal isOpen={modal} toggle={toggleModal}>
+                <ModalBody>
+                  <p className="text-center">
+                    {t("confirm_message_immediate_purchase")}
                   </p>
-                )) || <p class=" text-danger">{t("purchase_in_process")}</p>}
-              </Col>
-            )) || (
-              <Col className="text-center">
-                {(isExpired && (
-                  <Col xs="12" className="text-center">
-                    <p className="text-center text-danger my-1">
-                      {t("too_late_sale_is_closed")}
-                    </p>
-                  </Col>
-                )) || (
-                  <>
-                    <Button
-                      color="danger"
-                      className="rounded px-5"
-                      disabled={isExpired}
-                      onClick={toggleModal}
-                    >
-                      {t("buy")}
-                    </Button>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="secondary"
+                    className="rounded"
+                    onClick={toggleModal}
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Form method="post" onSubmit={handleSubmit}>
+                    <Button color="danger" className="rounded">
+                      {t("confirm_buy")}
+                    </Button>{" "}
+                  </Form>
+                </ModalFooter>
+              </Modal>
 
-                    <Modal isOpen={modal} toggle={toggleModal}>
-                      <ModalBody>
-                        <p className="text-center">
-                          {t("confirm_message_immediate_purchase")}
-                        </p>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          color="secondary"
-                          className="rounded"
-                          onClick={toggleModal}
-                        >
-                          {t("cancel")}
-                        </Button>
-                        <Form method="post" onSubmit={handleSubmit}>
-                          <Button color="danger" className="rounded">
-                            {t("confirm_buy")}
-                          </Button>{" "}
-                        </Form>
-                      </ModalFooter>
-                    </Modal>
-
-                    <span className="text-left pt-2 ml-2">
-                      <FontAwesomeIcon
-                        icon={faInfoCircle}
-                        className="gray"
-                        size="1x"
-                        id="TooltipWarning"
-                      />
-                      <Tooltip
-                        placement="bottom"
-                        isOpen={tooltipOpen}
-                        f
-                        target="TooltipWarning"
-                        toggle={toggleToolTip}
-                      >
-                        {t("info_immediate_purchase")}
-                      </Tooltip>
-                    </span>
-                  </>
-                )}
-              </Col>
-            )}
-          </Row>
+              <span className="text-left pt-2 ml-2">
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  className="gray"
+                  size="1x"
+                  id="TooltipWarning"
+                />
+                <Tooltip
+                  placement="bottom"
+                  isOpen={tooltipOpen}
+                  f
+                  target="TooltipWarning"
+                  toggle={toggleToolTip}
+                >
+                  {t("info_immediate_purchase")}
+                </Tooltip>
+              </span>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -316,11 +312,7 @@ const Auction = ({ refId }) => {
               </Col>
             </Row>
           </div>
-          {(isExpired && (
-            <p className="text-center text-danger mt-3 mb-0">
-              {t("too_late_auctions_are_closed")}
-            </p>
-          )) || (
+          {!isExpired && statusName === "online" && (
             <Form
               method="post"
               className="form-offer mt-4"
@@ -354,10 +346,14 @@ const Auction = ({ refId }) => {
               </Row>
             </Form>
           )}
-
           {statusName === "sold" && (
-            <p className="text-center text-danger mt-1 mb-0">
+            <p className="text-center text-danger mt-3 mb-0">
               {t("this_vehicle_has_been_sold")}
+            </p>
+          )}
+          {isExpired && (
+            <p className="text-center text-danger mt-3 mb-0">
+              {t("too_late_auctions_are_closed")}
             </p>
           )}
         </div>
