@@ -26,10 +26,12 @@ const RecordsElementGrade = props => {
   }
 
   return (
-    <div className="car-condition">
-      <Translate code="global_condition"></Translate> :
-      <span className={classes}>{props.grade.toUpperCase()}</span>
-      <span className="grade-label">{label}</span>
+    <div className="car-condition-wrapper">
+      <div className="car-condition">
+        <Translate code="global_condition"></Translate> :
+        <span className={classes}>{props.grade.toUpperCase()}</span>
+        <span className="grade-label">{label}</span>
+      </div>
     </div>
   );
 };
