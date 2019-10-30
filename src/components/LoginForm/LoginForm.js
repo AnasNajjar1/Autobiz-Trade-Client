@@ -134,3 +134,26 @@ async function signInAutobiz(username, password) {
       console.log("error", e.message);
     });
 }
+
+async function refreshToken() {
+  // refresh the token here and get the new token info
+  // ......
+  const authAutobiz = await API.post("b2bPlateform", "/auth/refresh");
+  const {
+    token, // the token you get from the provider
+    expiresIn,
+    identity_id
+  } = authAutobiz;
+
+  return {
+      token, // the token from the provider
+      expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
+      identity_id, // optional, the identityId for the credentials
+  }
+}
+
+Auth.configure({
+  refreshHandlers: {
+      'developer': refreshToken
+  }
+})
