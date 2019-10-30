@@ -1,5 +1,7 @@
 import React from "react";
 import pdfIcon from "../../assets/img/ico-pdf.png";
+import { t } from "../common/Translate";
+
 
 const Documents = ({ items }) => {
   return (
@@ -9,7 +11,7 @@ const Documents = ({ items }) => {
           <div className="item">
             <a href={item.link} target="_blank" rel="noopener noreferrer">
               <img src={pdfIcon} alt="pdf" />
-              {item.title}
+              {t(item.title)}
             </a>
           </div>
         </div>
