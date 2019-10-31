@@ -1,4 +1,5 @@
 import React from "react";
+import Translate, { t } from "../common/Translate";
 
 const Grade = ({ letter }) => {
   if (typeof letter !== "string") return <p className="text-center">-</p>;
@@ -8,19 +9,19 @@ const Grade = ({ letter }) => {
     default:
       return null;
     case "A":
-      label = "Très bon";
+      label = t("very_good");
       break;
     case "B":
-      label = "Bon";
+      label = t("good");
       break;
     case "C":
-      label = "Moyen";
+      label = t("average");
       break;
     case "D":
-      label = "Mauvais";
+      label = t("bad");
       break;
     case "E":
-      label = "Très mauvais";
+      label = t("very_bad");
       break;
   }
 
