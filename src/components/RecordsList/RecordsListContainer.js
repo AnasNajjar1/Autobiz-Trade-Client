@@ -145,6 +145,12 @@ const RecordsListContainer = () => {
     handleSubmit();
   };
 
+  const onKeyDown = e => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = () => {
     setMenuMobileOpen(false);
     form.range = initialFormState.range;
@@ -228,7 +234,11 @@ const RecordsListContainer = () => {
           <div className="section">
             <Row>
               <Col className="col col-6" sm="8" md="12">
-                <FilterSearch value={form.search} onChange={updateField} />
+                <FilterSearch
+                  value={form.search}
+                  onChange={updateField}
+                  onKeyDown={onKeyDown}
+                />
               </Col>
 
               <Col className="col d-md-none">
