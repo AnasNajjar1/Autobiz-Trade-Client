@@ -141,9 +141,17 @@ const Auction = ({ refId }) => {
   }
 
   if (auction.salesType === "immediatePurchase") {
-    let isPurchaseInProcess = false;
-    if (bestOffer >= minimalPrice) {
-      isPurchaseInProcess = true;
+    let purchasable = true;
+    if (bestOffer) {
+      purchasable = false;
+    }
+
+    if (isExpired) {
+      purchasable = false;
+    }
+
+    if (statusName !== "online") {
+      purchasable = false;
     }
 
     return (
@@ -168,7 +176,7 @@ const Auction = ({ refId }) => {
                   <span className="dark font-weight-bold">
                     {minimalPrice.toLocaleString()}
                   </span>{" "}
-                  €<sup>ttc</sup>
+                  €<sup>{t("ttc")}</sup>
                 </div>
               </Col>
             </Row>
@@ -181,16 +189,21 @@ const Auction = ({ refId }) => {
           )}
           {isExpired && (
             <p className="text-center text-danger mt-3 mb-0">
-              {t("too_late_auctions_are_closed")}
+              {t("too_late_sale_is_closed")}
             </p>
           )}
-          {isPurchaseInProcess && (
-            <p className="text-center text-danger mt-3 mb-0">
+          {userWin && (
+            <p className="text-center text-success mt-3 mb-0">
               {t("purchase_in_process")}
             </p>
           )}
+          {!userWin && bestOffer && (
+            <p className="text-center text-success mt-3 mb-0">
+              {t("this_vehicle_has_been_sold")}
+            </p>
+          )}
 
-          {!isPurchaseInProcess && !isExpired && statusName === "online" && (
+          {purchasable && (
             <div class="text-center mt-3">
               <Button
                 color="danger"
