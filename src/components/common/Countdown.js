@@ -55,7 +55,9 @@ const Countdown = ({ secondsLeft }) => {
         />
         <span className="pl-1">
           {!isExpired && timeLeft}
-          {isExpired && <span className="text-danger">{t("finish")}</span>}
+          {isExpired && (
+            <span className="text-danger">{t("countdown_over")}</span>
+          )}
         </span>
       </div>
     )
