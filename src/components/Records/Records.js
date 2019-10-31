@@ -129,7 +129,7 @@ const Record = props => {
               <Row>
                 <Col>
                   <p className="small font-italic text-secondary">
-                    * {t("version_warning_message")}
+                    {t("version_warning_message")}
                   </p>
                 </Col>
               </Row>
