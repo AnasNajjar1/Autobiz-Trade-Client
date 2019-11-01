@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
+import Cookies from "js-cookie";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 const padLeft = (nr, n, str) => {
@@ -11,6 +12,8 @@ const Countdown = ({ secondsLeft }) => {
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
+
+  const appLanguage = Cookies.get("appLanguage");
 
   // Function t ne fonctionne pas dans le useEffect ??
   const translation_day_and = t("day_and");
@@ -47,7 +50,9 @@ const Countdown = ({ secondsLeft }) => {
     loading === false && (
       <div className="countdown">
         <span className="pr-1">
-          <Translate code="time_left" /> :
+          {appLanguage === "fr"
+            ? `${t("time_left")} : `
+            : `${t("time_left")}: `}
         </span>
         <FontAwesomeIcon
           icon={faClock}

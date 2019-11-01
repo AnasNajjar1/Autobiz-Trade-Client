@@ -84,7 +84,10 @@ const Record = props => {
         <Row>
           <Col xs="12">
             <div className="gray pl-3 mb-1">
-              <Translate code="reference"></Translate> : {record.fileNumber}
+              {appLanguage === "fr"
+                ? `${t("reference")} : `
+                : `${t("reference")}: `}
+              {record.fileNumber}
             </div>
           </Col>
           <Col xs="12" md="6">
@@ -142,7 +145,11 @@ const Record = props => {
             <Auction refId={props.refId} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
-                <p className="gray">{t("sellers_comment")} :</p>
+                <p className="gray">
+                  {appLanguage === "fr"
+                    ? `${t("sellers_comment")} : `
+                    : `${t("sellers_comment")}: `}
+                </p>
                 <p className="mb-0 font-italic">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
