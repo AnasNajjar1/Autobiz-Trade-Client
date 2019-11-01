@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
+import Cookies from "js-cookie";
 
 import { API } from "aws-amplify";
 import { Container, Row, Col, Alert } from "reactstrap";
@@ -26,6 +27,8 @@ const Record = props => {
 
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const appLanguage = Cookies.get("appLanguage");
 
   useEffect(() => {
     const fetchRecord = async () => {
@@ -145,7 +148,10 @@ const Record = props => {
                     icon={faQuoteLeft}
                     className="mr-2 text-primary"
                   />
-                   {record.salesComment}
+
+                  {(record.salesCommentInt &&
+                    record.salesCommentInt.translation[appLanguage]) ||
+                    record.salesComment}
                   <FontAwesomeIcon
                     icon={faQuoteRight}
                     className="ml-2 text-primary"
