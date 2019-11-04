@@ -13,8 +13,6 @@ const Countdown = ({ secondsLeft }) => {
   const [isExpired, setIsExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
 
-  const appLanguage = Cookies.get("appLanguage");
-
   // Function t ne fonctionne pas dans le useEffect ??
   const translation_day_and = t("day_and");
   const translation_days_and = t("days_and");
@@ -49,11 +47,7 @@ const Countdown = ({ secondsLeft }) => {
   return (
     loading === false && (
       <div className="countdown">
-        <span className="pr-1">
-          {appLanguage === "fr"
-            ? `${t("time_left")} : `
-            : `${t("time_left")}: `}
-        </span>
+        <span className="pr-1">${t("time_left")}</span>
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}
