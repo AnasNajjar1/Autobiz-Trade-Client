@@ -143,13 +143,18 @@ const Record = props => {
             <Auction refId={props.refId} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
-                <p className="gray">{t("sellers_comment")}</p>
+                <p className="gray">
+                  {t("sellers_comment")}
+
+                  {appLanguage !== record.salesCommentInt.sourceLanguage && (
+                    <span>{t("translated")}</span>
+                  )}
+                </p>
                 <p className="mb-0 font-italic">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
                     className="mr-2 text-primary"
                   />
-
                   {(record.salesCommentInt &&
                     record.salesCommentInt.translation[appLanguage]) ||
                     record.salesComment}
@@ -158,6 +163,11 @@ const Record = props => {
                     className="ml-2 text-primary"
                   />
                 </p>
+                {appLanguage !== record.salesCommentInt.sourceLanguage && (
+                  <p className="gray small mt-2">
+                    ({t("original")}) {record.salesComment}
+                  </p>
+                )}
               </div>
             )}
             {record.keyPoints && record.keyPoints.length > 0 && (
