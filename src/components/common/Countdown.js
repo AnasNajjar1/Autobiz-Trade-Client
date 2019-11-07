@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
+import Cookies from "js-cookie";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 const padLeft = (nr, n, str) => {
@@ -46,16 +47,16 @@ const Countdown = ({ secondsLeft }) => {
   return (
     loading === false && (
       <div className="countdown">
-        <span className="pr-1">
-          <Translate code="time_left" /> :
-        </span>
+        <span className="pr-1">{t("time_left")}</span>
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}
         />
         <span className="pl-1">
           {!isExpired && timeLeft}
-          {isExpired && <span className="text-danger">{t("finish")}</span>}
+          {isExpired && (
+            <span className="text-danger">{t("countdown_over")}</span>
+          )}
         </span>
       </div>
     )

@@ -89,10 +89,10 @@ class RecordsElement extends Component {
               </Row>
             </div>
             <div className="card-head">
-              {(record.front_picture && (
+              {(record.three_quarters_front_picture && (
                 <img
                   className="card-img-top"
-                  src={record.front_picture}
+                  src={record.three_quarters_front_picture}
                   alt={record.brandLabel + " " + record.modelLabel}
                 />
               )) || (

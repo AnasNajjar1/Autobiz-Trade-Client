@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
+import Cookies from "js-cookie";
 
 import { API } from "aws-amplify";
 import { Container, Row, Col, Alert } from "reactstrap";
@@ -26,6 +27,8 @@ const Record = props => {
 
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const appLanguage = Cookies.get("appLanguage");
 
   useEffect(() => {
     const fetchRecord = async () => {
@@ -81,7 +84,8 @@ const Record = props => {
         <Row>
           <Col xs="12">
             <div className="gray pl-3 mb-1">
-              <Translate code="reference"></Translate> : {record.fileNumber}
+              {t("reference")}
+              {record.fileNumber}
             </div>
           </Col>
           <Col xs="12" md="6">
@@ -129,7 +133,7 @@ const Record = props => {
               <Row>
                 <Col>
                   <p className="small font-italic text-secondary">
-                    * {t("version_warning_message")}
+                    {t("version_warning_message")}
                   </p>
                 </Col>
               </Row>
@@ -139,18 +143,31 @@ const Record = props => {
             <Auction refId={props.refId} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
-                <p className="gray">{t("sellers_comment")} :</p>
+                <p className="gray">
+                  {t("sellers_comment")}
+
+                  {appLanguage !== record.salesCommentInt.sourceLanguage && (
+                    <span>{t("translated")}</span>
+                  )}
+                </p>
                 <p className="mb-0 font-italic">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
                     className="mr-2 text-primary"
                   />
-                   {record.salesComment}
+                  {(record.salesCommentInt &&
+                    record.salesCommentInt.translation[appLanguage]) ||
+                    record.salesComment}
                   <FontAwesomeIcon
                     icon={faQuoteRight}
                     className="ml-2 text-primary"
                   />
                 </p>
+                {appLanguage !== record.salesCommentInt.sourceLanguage && (
+                  <p className="gray small mt-2">
+                    ({t("original")}) {record.salesComment}
+                  </p>
+                )}
               </div>
             )}
             {record.keyPoints && record.keyPoints.length > 0 && (

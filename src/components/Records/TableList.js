@@ -28,6 +28,14 @@ const renderValue = (key, value) => {
     case "lastServicingDate":
     case "nextTechnicalCheckDate":
       return moment(value).format("MM-YYYY");
+    case "liter":
+      let literStr = "";
+      if (appLanguage === "de") {
+        literStr = `${parseFloat(value) * 1000} ${t("unit_ccm")}`;
+      } else {
+        literStr = `${value} ${t("unit_liter")}`;
+      }
+      return literStr;
     case "fiscal":
       return `${value} CV`;
     case "power":
