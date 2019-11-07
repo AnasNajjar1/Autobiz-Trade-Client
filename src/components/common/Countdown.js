@@ -47,7 +47,7 @@ const Countdown = ({ secondsLeft }) => {
   return (
     loading === false && (
       <div className="countdown">
-        <span className="pr-1">${t("time_left")}</span>
+        <span className="pr-1">{t("time_left")}</span>
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}
