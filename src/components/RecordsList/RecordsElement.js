@@ -9,7 +9,7 @@ import Countdown from "../common/Countdown";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 
 import {
-  faGavel,
+  faShoppingCart,
   faUser,
   faCheck,
   faMapMarkerAlt,
@@ -40,7 +40,7 @@ class RecordsElement extends Component {
                 {record.offerType === "stock" && (
                   <div className="col-auto">
                     <FontAwesomeIcon
-                      icon={faGavel}
+                      icon={faShoppingCart}
                       className="mr-2"
                       size="1x"
                     />

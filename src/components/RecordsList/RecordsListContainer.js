@@ -419,7 +419,7 @@ const RecordsListContainer = () => {
             <Row>
               <Col className="text-center">
                 <Button color="secondary" onClick={showMore}>
-                  Show more
+                  <Translate code="show_more" />
                 </Button>
               </Col>
             </Row>
