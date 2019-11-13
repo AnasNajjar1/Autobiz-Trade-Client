@@ -2,7 +2,6 @@ import React from "react";
 import pdfIcon from "../../assets/img/ico-pdf.png";
 import { t } from "../common/Translate";
 
-
 const Documents = ({ items }) => {
   return (
     <div className="list-document">

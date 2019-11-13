@@ -15,7 +15,7 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-
+import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +34,7 @@ const Auction = ({ refId }) => {
 
   const second = 1000;
   const refreshTime = 5 * second;
+  const lang = Cookies.get("appLanguage");
 
   useEffect(() => {
     fetchAuction();
@@ -128,11 +129,10 @@ const Auction = ({ refId }) => {
     }
     message +=
       " " +
-      endDateTime.toLocaleDateString([], {
+      endDateTime.toLocaleDateString([lang], {
         hour: "2-digit",
         minute: "2-digit"
       });
-
     return message;
   };
 
@@ -204,7 +204,7 @@ const Auction = ({ refId }) => {
           )}
 
           {purchasable && (
-            <div class="text-center mt-3">
+            <div className="text-center mt-3">
               <Button
                 color="danger"
                 className="rounded px-5"
@@ -275,8 +275,8 @@ const Auction = ({ refId }) => {
           </Row>
           <p className="mb-0">
             <span className="gray">
-              <Translate code="start_price" /> :
-            </span>{" "}
+              <Translate code="start_price" />
+            </span>
             <strong>{minimalPrice.toLocaleString()}</strong> €{" "}
             <sup className="text-uppercase">{t("ttc")}</sup>
           </p>
