@@ -67,8 +67,8 @@ const ListTable = ({ items }) => {
       <Row>
         {Object.keys(items).map(
           key =>
-            showableValue(key, items[key]) && (
-              <React.Fragment key={key}>
+            showableValue(key, items[key]) &&
+              key !== 'origin' && <React.Fragment key={key}>
                 <div className="cell">
                   <div className="item">
                     <div className="label">{t(key)}</div>
@@ -79,7 +79,7 @@ const ListTable = ({ items }) => {
                 </div>
               </React.Fragment>
             )
-        )}
+          }
       </Row>
     </div>
   );

@@ -132,7 +132,7 @@ class RecordsElement extends Component {
                         <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                         {t("immediate_purchase")}
                       </p>
-                    )}
+                    ) || <p className="text-right small"><Translate code="auction" /></p>}
                   </Col>
                 </Row>
               </CardTitle>
