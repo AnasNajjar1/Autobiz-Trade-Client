@@ -449,7 +449,7 @@
     "confirm_logout": "Vous allez \u00eatre d\u00e9connect\u00e9 de votre compte. Confirmez-vous cette action ?",
     "logout_unsaved_forms_message": "Vous avez %{notSaved} dossiers en progression non sauvegard\u00e9s et %{notSubmited} complets non soumis. Ces dossiers ne sont pas sauvegard\u00e9s sur le serveur, vos donn\u00e9es vont \u00eatre perdues. \u00cates-vous sur de vouloir vous d\u00e9connecter ?",
     "input_error_value_must_be_between_range": "La valeur doit \u00eatre comprise entre ",
-    "servicing_manual_picture": "Photo(s) des justificatifs d'entretien",
+    "servicing_manual_picture": "Photo du carnet d'entretien",
     "body_back": "Carrosserie arri\u00e8re",
     "photo_gallery": "Galerie",
     "camera": "Appareil photo",
@@ -921,5 +921,5 @@
     "unit_liter": "l",
     "unit_ccm": "centim\u00e8tres cubes",
     "auction": "Ench\u00e8res",
-    "show_more" : "Voir plus"
+    "show_more": "Voir plus"
 }
