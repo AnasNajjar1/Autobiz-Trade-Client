@@ -199,6 +199,7 @@ const RecordsListContainer = () => {
           mileageMax: form.mileageMax,
           offerType: JSON.stringify(form.offerType),
           city: JSON.stringify(form.city),
+          country: form.country,
           range: JSON.stringify(form.range)
         },
         response: true
@@ -398,7 +399,7 @@ const RecordsListContainer = () => {
               <Translate code="no_result" />
             </Alert>
           )}
-
+{console.log(records)}
           {RecordsCount > 0 && (
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">
