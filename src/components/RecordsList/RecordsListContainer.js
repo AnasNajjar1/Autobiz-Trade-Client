@@ -399,7 +399,7 @@ const RecordsListContainer = () => {
               <Translate code="no_result" />
             </Alert>
           )}
-{console.log(records)}
+
           {RecordsCount > 0 && (
             <Row className="car-list">
               <Col xs="12" sm="6" lg="8">

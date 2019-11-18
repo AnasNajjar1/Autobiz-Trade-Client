@@ -4,7 +4,7 @@ import { t } from "../common/Translate";
 
 const Sort = ({ list, value, sort }) => {
   let options = "";
-console.log(list)
+
   if (list) {
     options = list.map((item, key) => (
       <option key={key} value={item}>
