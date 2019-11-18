@@ -188,7 +188,7 @@ body {
 
 header {
   background-color: $white;
-  height: 50px;
+  height: 70px;
   margin-bottom: 50px;
   text-align: center;
   @include media-breakpoint-down(sm) {
@@ -198,8 +198,13 @@ header {
   position: relative;
   img.logo {
     height: 28px;
-    margin: 11px 0;
+    margin: 11px 0 4px 0;
   }
+
+  .tagline {
+    font-size: 14px;
+  }
+
   .right-col {
     @extend .text-primary;
 
