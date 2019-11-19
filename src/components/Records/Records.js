@@ -124,7 +124,8 @@ const Record = props => {
                     <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
                     {pointOfSale.name}
                     <br />
-                    {pointOfSale.zipCode} {pointOfSale.city}
+                    {pointOfSale.zipCode} {pointOfSale.city}<br />
+                    {t(pointOfSale.country)}
                   </Col>
                 )}
               </Row>

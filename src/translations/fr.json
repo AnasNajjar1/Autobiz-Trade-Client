@@ -1024,5 +1024,7 @@
     "puissance": "PUISSANCE",
     "finition": "FINITION",
     "autoEcole": "AUTO ECOLE",
-    "pack": "PACK"
+    "pack": "PACK",
+    "fr" : "France",
+    "de" : "Allemagne"
 }

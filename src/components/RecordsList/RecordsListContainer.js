@@ -199,6 +199,7 @@ const RecordsListContainer = () => {
           mileageMax: form.mileageMax,
           offerType: JSON.stringify(form.offerType),
           city: JSON.stringify(form.city),
+          country: form.country,
           range: JSON.stringify(form.range)
         },
         response: true

@@ -165,9 +165,9 @@ class RecordsElement extends Component {
                 className="mr-1"
                 size="1x"
               />
-              {record.city === null && record.zipCode === null
+              {record.city === null && record.zipCode === null && record.country === null
                 ? t("unknown_point_of_sale")
-                : record.city + " " + record.zipCode}
+                : record.city + " " + record.zipCode + " " + t(record.country)}
             </CardFooter>
           </Card>
         </Link>

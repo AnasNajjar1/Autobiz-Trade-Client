@@ -6,7 +6,7 @@ import Records from "../components/Records/Records";
 const RecordsView = props => {
   return (
     <div className="page page-car-list">
-      <Header />
+      <Header {...props}/>
       <main>
         <div className="page page-car-detail">
           <Records refId={props.match.params.refId} />

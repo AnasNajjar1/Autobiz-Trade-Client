@@ -3,10 +3,10 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import RecordsListContainer from "../components/RecordsList/RecordsListContainer";
 
-const RecordsListView = () => {
+const RecordsListView = props => {
   return (
     <div className="page page-car-list">
-      <Header />
+      <Header {...props} />
       <RecordsListContainer />
       <Footer />
     </div>

@@ -4,16 +4,16 @@ import { t } from "../common/Translate";
 import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
-const appLanguage = Cookies.get("appLanguage");
-function showableValue(key, value) {
+
+function showableValue(key, value, lang) {
   if (value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
-  if (key === "fiscal" && appLanguage !== "fr") return false;
-  if (key === "power" && renderValue("power", value) === "") return false;
+  if (key === "fiscal" && lang !== "fr") return false;
+  if (key === "power" && renderValue("power", value, lang) === "") return false;
   return true;
 }
 
-const renderValue = (key, value) => {
+const renderValue = (key, value, lang) => {
   switch (key) {
     case "wheelsFrontDimensions":
     case "wheelsBackDimensions":
@@ -30,10 +30,10 @@ const renderValue = (key, value) => {
       return moment(value).format("MM-YYYY");
     case "liter":
       let literStr = "";
-      if (appLanguage === "de") {
+      if (lang === "de") {
         literStr = `${parseFloat(value) * 1000} ${t("unit_ccm")}`;
       } else {
-        literStr = `${value} ${t("unit_liter")}`;
+        literStr = `${Math.ceil(value)} ${t("unit_liter")}`;
       }
       return literStr;
     case "fiscal":
@@ -70,18 +70,19 @@ const renderValue = (key, value) => {
 };
 
 const ListTable = ({ items }) => {
+  let lang = Cookies.get("appLanguage");
   return (
     <div className="list-table">
       <Row>
         {Object.keys(items).map(
           key =>
-            showableValue(key, items[key]) &&
+            showableValue(key, items[key], lang) &&
               key !== 'origin' && <React.Fragment key={key}>
                 <div className="cell">
                   <div className="item">
                     <div className="label">{t(key)}</div>
                     <div className="value" key={key}>
-                      {renderValue(key, items[key])}
+                      {renderValue(key, items[key], lang)}
                     </div>
                   </div>
                 </div>

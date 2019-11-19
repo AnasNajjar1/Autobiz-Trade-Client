@@ -3,17 +3,19 @@ import { Link, Redirect } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faPowerOff, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/img/autobiz-trade.svg";
 
 import LanguagePicker from "../common/LanguagePicker";
 
-const Header = () => {
+const Header = props => {
   const [username, setUsername] = useState("");
   const [logout, setLogout] = useState(false);
+  const { path } = props.match
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser({ bypassCache: false }).then(user => {
+    Auth.currentAuthenticatedUser({ bypassCache: false })
+    .then(user => {
       setUsername(`${user.firstname} ${user.lastname}`);
     });
   }, []);
@@ -28,6 +30,10 @@ const Header = () => {
 
   return (
     <header>
+      {path === "/records/:refId" && <Link to="/records" className='left-col'>
+        <FontAwesomeIcon size="lg" icon={faArrowLeft} className='back-arrow'/>
+      </Link>}
+
       <Link to="/records">
         <img alt="autobizTrade" className="logo" src={logo} />
       </Link>

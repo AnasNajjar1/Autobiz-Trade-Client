@@ -197,8 +197,21 @@ header {
   padding: 0 $grid-gutter-width / 2;
   position: relative;
   img.logo {
-    height: 28px;
-    margin: 11px 0;
+    height: 25px;
+    margin: 11px 25px;
+  }
+  .left-col {
+    @extend .text-primary;
+    position: absolute;
+    line-height: 50px;
+    left: 2%;
+    top: 0;
+    float: left;
+    .back-arrow {
+      top: 2px;
+      position: relative;
+      cursor: pointer;
+    }
   }
   .right-col {
     @extend .text-primary;
