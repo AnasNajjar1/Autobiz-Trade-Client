@@ -77,7 +77,7 @@ const Record = props => {
   }
 
   const { pointOfSale = {} } = record;
-
+  record.administrativeDetails.ownershipDuration = 0
   return (
     <>
       <Container className="pb-5">

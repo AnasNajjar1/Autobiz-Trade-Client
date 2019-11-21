@@ -4,13 +4,27 @@ import { t } from "../common/Translate";
 import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
-
+let gcDate
 function showableValue(key, value, lang) {
   if (value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   return true;
+}
+
+const calculateOwnerShipDuration = (res) => {
+  let durations = {
+    years : _.get(res._data, 'years', null),
+    months : _.get(res._data, 'months', null),
+    days :  _.get(res._data, 'days', null)
+  }
+
+  let duration = Object.entries(durations).map(([key, value]) => {
+    if(value !== null && value > 0) return `${value} ${t(key)} `
+  })
+  gcDate = null
+  return duration
 }
 
 const renderValue = (key, value, lang) => {
@@ -24,7 +38,17 @@ const renderValue = (key, value, lang) => {
     case "standardMileage":
       return parseInt(value).toLocaleString();
     case "gcDate":
-      return moment(value).format("DD-MM-YYYY");
+    case "ownershipDuration":
+      let val
+      if(!gcDate){
+        gcDate = value
+        val = moment(value).format("DD-MM-YYYY");
+      }
+      if(key == 'ownershipDuration') {
+        let res = moment.duration(moment().diff(moment(gcDate)))
+        val = calculateOwnerShipDuration(res)
+      }
+      return val 
     case "lastServicingDate":
     case "nextTechnicalCheckDate":
       return moment(value).format("MM-YYYY");
