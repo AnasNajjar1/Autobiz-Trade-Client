@@ -1024,5 +1024,17 @@
     "puissance": "NULL",
     "finition": "NULL",
     "autoEcole": "Fahrschule",
-    "pack": "Pack"
+    "pack": "Pack",
+    "year_mec_max": "Erstzulassung max",
+    "year_mec_min_is_bigger_than_max": "Erstzulassung min \u00fcber Erstzulassung \nmax!",
+    "km_min": "KM min",
+    "km_min_is_bigger_than_max": "KM min \u00fcber KM max!",
+    "km_max": "KM max",
+    "year_mec_min": "Erstzulassung min",
+    "fr": "FR",
+    "de": "DE",
+    "translated": " (\u00dcbersetzt)",
+    "too_late_sale_is_closed\n\n": "Verkauf beendet",
+    "sales_closed_on ": "Verkauf endet am",
+    "sales_closed_on": "Verkauf endet am"
 }

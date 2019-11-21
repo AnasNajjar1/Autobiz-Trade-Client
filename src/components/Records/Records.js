@@ -148,7 +148,7 @@ const Record = props => {
                   {t("sellers_comment")}
 
                   {appLanguage !== record.salesCommentInt.sourceLanguage && (
-                    <span>{t("translated")}</span>
+                    <span> {t("translated")}</span>
                   )}
                 </p>
                 <p className="mb-0 font-italic">

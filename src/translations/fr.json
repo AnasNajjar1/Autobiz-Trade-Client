@@ -913,7 +913,7 @@
     "info_immediate_purchase": "Une fois votre achat confirm\u00e9, vous serez contact\u00e9 dans les plus brefs d\u00e9lais par l'un de nos responsables des ventes",
     "confirm_message_immediate_purchase": "Confirmez-vous votre achat ?",
     "confirm_buy": "Confimer",
-    "my_vehicles": "Mes v\u00e9hicules",
+    "my_vehicles": "Mes offres",
     "countdown_over": "Termin\u00e9",
     "pdfReport": "Rapport d'inspection",
     "lastServicingKm": "km depuis le dernier entretien",
@@ -1025,6 +1025,16 @@
     "finition": "FINITION",
     "autoEcole": "AUTO ECOLE",
     "pack": "PACK",
-    "fr" : "France",
-    "de" : "Allemagne"
+    "year_mec_max": "Ann\u00e9e MEC max",
+    "year_mec_min_is_bigger_than_max": "Ann\u00e9e MEC min sup\u00e9rieur \u00e0 Ann\u00e9e MEC max !",
+    "km_min": "km min",
+    "km_min_is_bigger_than_max": "km min sup\u00e9rieur \u00e0 km max !",
+    "km_max": "km max",
+    "year_mec_min": "Ann\u00e9e MEC min",
+    "fr": "France",
+    "de": "Allemagne",
+    "translated": " (Traduit)",
+    "too_late_sale_is_closed\n\n": "Trop tard ! La vente est termin\u00e9e",
+    "sales_closed_on ": "Vente termin\u00e9e le ",
+    "sales_closed_on": "Vente termin\u00e9e le"
 }
