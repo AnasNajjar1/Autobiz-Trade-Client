@@ -13,7 +13,8 @@ import awsconfig from "./aws-config";
 import AuthRequiredRoute from "./components/LoginForm/AuthRequiredRoute";
 import _ from "lodash";
 import Cookies from "js-cookie";
-
+import getTranslations from './translations/services/getTranslations'
+import cacheStaticContent from './translations/services/cacheStaticContent'
 Amplify.configure(awsconfig);
 
 class App extends Component {
@@ -24,8 +25,9 @@ class App extends Component {
   changeLanguage = async language => {
     if (dictionnary.hasOwnProperty(language)) {
       try {
+        const languageDict = await getTranslations(language);
         moment.locale(language);
-        this.setState({ language: dictionnary[language] });
+        this.setState({ language: languageDict }); //dictionnary[language]
       } catch (e) {
         console.log("missing trads", e.toString());
       }
@@ -61,7 +63,16 @@ class App extends Component {
     this.changeLanguage(language);
 
     window.addEventListener("changeLanguage", this.handleChangeLanguage);
+    window.addEventListener("storage", this.handleRefresh);
+    Object.keys(dictionnary).map(language=>cacheStaticContent(language))
   }
+
+  handleRefresh = async e => {
+    if (e.key === "b2b-plateform") {
+      this.changeLanguage(Cookies.get("appLanguage"));
+      return;
+    }
+  };
 
   render() {
     return (

@@ -189,7 +189,7 @@ const Auction = ({ refId }) => {
           )}
           {isExpired && (
             <p className="text-center text-danger mt-3 mb-0">
-              {t("too_late_sale_is_closed")}
+              {t("too_late_sale_is_closed\n\n")}
             </p>
           )}
           {userWin && (
