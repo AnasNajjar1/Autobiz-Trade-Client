@@ -19,3 +19,11 @@ exports.link_new_password =
   exports.identityPoolId = identityPoolIds[ENV];
 
   exports.region = "eu-west-1"
+
+  const contactEmails = {
+    dev : "stg-support-autobizTrade@autobiz.com",
+    staging : "stg-support-autobizTrade@autobiz.com",
+    prod : "support-autobizTrade@autobiz.com"
+  }
+
+  exports.contactEmail = contactEmails[ENV]

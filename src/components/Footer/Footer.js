@@ -1,6 +1,7 @@
 import React from "react";
 import Translate from "../common/Translate";
 import { Link } from "react-router-dom";
+import { contactEmail } from "../../config"
 
 const Footer = () => {
   return (
@@ -8,12 +9,13 @@ const Footer = () => {
       <ul>
         <li>
           <Link to="/content/Cgu">
-            <Translate code="terms_of_use"></Translate>
+            <Translate code="terms_of_use" />
           </Link>
         </li>
         <li>
           <Link to="/content/Contact">
-            <Translate code="contact_us"></Translate>
+            <Translate code="contact_us" />
+            {` - ${contactEmail}`}
           </Link>
         </li>
         {/*         <li>
