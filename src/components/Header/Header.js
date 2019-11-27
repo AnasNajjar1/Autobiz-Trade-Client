@@ -38,6 +38,8 @@ const Header = props => {
         <img alt="autobizTrade" className="logo" src={logo} />
       </Link>
 
+      <p className="tagline">Nicer people. Better cars.</p>
+
       <div className="right-col">
         {(username && (
           <>
