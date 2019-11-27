@@ -10,7 +10,8 @@ import {
   faQuoteRight,
   faSpinner,
   faExclamationTriangle,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faExternalLinkAlt
 } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "./Carousel.js";
 import TagsProps from "./TagsProps.js";
@@ -224,7 +225,15 @@ const Record = props => {
               {record.market && (
                 <>
                   <div className="section-title">
-                    <Translate code="the_market"></Translate>
+                    <Row>
+                      <Col xs="12" md="4"><Translate code="the_market"></Translate></Col>
+                      <Col xs="12" md="8" className="section-title-link">
+                          <a href={record.market.MarketLink} target="_blank" rel="noopener noreferrer" >
+                          {`${t("market_link")} `}
+                            <FontAwesomeIcon icon={faExternalLinkAlt} />
+                          </a>
+                      </Col>
+                    </Row>
                   </div>
                   <TableList items={record.market} />
                 </>
