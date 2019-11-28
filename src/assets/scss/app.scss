@@ -318,6 +318,7 @@ header {
 .section-title {
   @extend .pl-3;
   @extend .mb-3;
+  
   &.mb-0 {
     margin-bottom: 0 !important;
   }
