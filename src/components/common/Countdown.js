@@ -7,8 +7,8 @@ import moment from "moment";
 const padLeft = (nr, n, str) => {
   return Array(n - String(nr).length + 1).join(str || "0") + nr;
 };
-const Countdown = ({ secondsLeft }) => {
-  const [seconds, setSeconds] = useState(secondsLeft);
+const Countdown = ({secondsLeft}) => {
+  const [seconds, setSeconds] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
@@ -17,6 +17,10 @@ const Countdown = ({ secondsLeft }) => {
   const translation_day_and = t("day_and");
   const translation_days_and = t("days_and");
   // ---
+
+  useEffect(() => {
+    setSeconds(secondsLeft)
+  }, [secondsLeft])
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
