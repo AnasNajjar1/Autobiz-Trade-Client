@@ -221,14 +221,14 @@ const Record = props => {
                     <EquipmentList items={record.declaredEquipments} />
                   </>
                 )}
-              {record.market && (
+              {/* {record.market && (
                 <>
                   <div className="section-title">
                     <Translate code="the_market"></Translate>
                   </div>
                   <TableList items={record.market} />
                 </>
-              )}
+              )} */}
               {record.history && (
                 <>
                   <div className="section-title">
