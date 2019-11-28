@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Row } from "reactstrap";
 import { t } from "../common/Translate";
 import _ from "lodash";
@@ -14,14 +14,34 @@ function showableValue(key, value, lang) {
 }
 
 const calculateOwnerShipDuration = (res) => {
+  let years = _.get(res._data, 'years', null)
+  let months = _.get(res._data, 'months', null)
+  let days =  _.get(res._data, 'days', null)
+
+  let nYears = null
+  let nMonths = null
+
   let durations = {
-    years : _.get(res._data, 'years', null),
-    months : _.get(res._data, 'months', null),
-    days :  _.get(res._data, 'days', null)
+    days : days,
+    months : nMonths ? nMonths : months,
+    years : nYears ? nYears : years
   }
 
   let duration = Object.entries(durations).map(([key, value]) => {
-    if(value !== null && value > 0) return `${value} ${t(key)} `
+    if(key === "days" && value !== null && value > 20) nMonths = months+1
+
+    if(key === 'months' && value !== null && value !== 0) {
+      if(nMonths !== null && (nMonths === 11 || nMonths == 12)) nYears = years+1
+      else if (nMonths !== null && nMonths < 11) return `${nMonths} ${t(key)} `
+      else if (nMonths === null) return `${value} ${t(key)} `
+    }
+
+    if(key === 'years' && value !== null && value !== 0) {
+      if(nYears !== null && nYears === 1) return `${nYears} ${t('year')} `
+      else if (value !== null && value === 1) return `${value} ${t('year')} `
+      else if (nYears !== null && nYears > 1) return `${nYears} ${t(key)} `
+      else if (nYears === null) return `${value} ${t(key)} `
+    }
   })
   gcDate = null
   return duration
@@ -47,6 +67,7 @@ const renderValue = (key, value, lang) => {
       if(key == 'ownershipDuration') {
         let res = moment.duration(moment().diff(moment(gcDate)))
         val = calculateOwnerShipDuration(res)
+        val = val.reverse()
       }
       return val 
     case "lastServicingDate":
