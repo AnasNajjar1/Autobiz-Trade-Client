@@ -21,7 +21,7 @@ import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
-
+import Link from './Link';
 const Record = props => {
   const [record, setRecord] = useState([]);
 
@@ -224,7 +224,12 @@ const Record = props => {
               {/* {record.market && (
                 <>
                   <div className="section-title">
-                    <Translate code="the_market"></Translate>
+                    <Row>
+                      <Col xs="12" md="4"><Translate code="the_market"></Translate></Col>
+                      <Col xs="12" md="8" className="section-title-link">
+                        <Link items={record.market.MarketLink} />
+                      </Col>
+                    </Row>
                   </div>
                   <TableList items={record.market} />
                 </>

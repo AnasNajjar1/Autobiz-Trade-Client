@@ -10,6 +10,7 @@ function showableValue(key, value, lang) {
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
+  if (key === "MarketLink") return false
   return true;
 }
 

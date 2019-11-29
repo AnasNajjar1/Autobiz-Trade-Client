@@ -324,7 +324,7 @@ header {
 .section-title {
   @extend .pl-3;
   @extend .mb-3;
-
+  
   &.mb-0 {
     margin-bottom: 0 !important;
   }
@@ -343,6 +343,19 @@ header {
     font-size: 80%;
     font-weight: normal;
     color: #9097ac;
+  }
+}
+
+.section-title-link {
+  @extend .h6;
+  @include media-breakpoint-down(xs) {
+    margin: 0 0;
+    display: block;
+    text-align: left;
+  }
+  text-align: right;
+  a {
+    color: $am_gray;
   }
 }
 
