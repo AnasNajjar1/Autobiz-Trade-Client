@@ -73,6 +73,8 @@ const renderValue = (key, value, lang) => {
       return val 
     case "lastServicingDate":
     case "nextTechnicalCheckDate":
+    case "lastServicingKm":
+      if(key === "lastServicingKm") return parseInt(value).toLocaleString()+' km'
       return moment(value).format("MM-YYYY");
     case "liter":
       let literStr = "";

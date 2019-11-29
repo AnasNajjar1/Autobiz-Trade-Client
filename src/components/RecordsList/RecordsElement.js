@@ -98,7 +98,7 @@ class RecordsElement extends Component {
               )) || (
                 <img
                   className="card-img-top"
-                  src={defaultFrontPicture}
+                  src={record.front_picture}
                   alt={""}
                 />
               )}
@@ -127,12 +127,12 @@ class RecordsElement extends Component {
                       </p>
                     )}
 
-                    {auction.salesType === "immediatePurchase" && (
+                    {/* {auction.salesType === "immediatePurchase" && (
                       <p className="immediate-purchase">
                         <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                         {t("immediate_purchase")}
                       </p>
-                    ) || <p className="text-right small"><Translate code="auction" /></p>}
+                    ) || <p className="text-right small"><Translate code="auction" /></p>} */}
                   </Col>
                 </Row>
               </CardTitle>
