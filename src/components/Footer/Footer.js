@@ -1,26 +1,21 @@
 import React from "react";
 import Translate from "../common/Translate";
 import { Link } from "react-router-dom";
+import { contactEmail, StaticFile } from "../../config"
+import Cookies from "js-cookie";
 
 const Footer = () => {
+  let lang = Cookies.get("appLanguage");
+
   return (
     <footer>
       <ul>
         <li>
-          <Link to="/content/Cgu">
-            <Translate code="terms_of_use"></Translate>
-          </Link>
+          <a href={`${StaticFile}${lang.toUpperCase()}/ConditionsGenerales.pdf`} target="__blank"><Translate code="terms_of_use" /></a>
         </li>
         <li>
-          <Link to="/content/Contact">
-            <Translate code="contact_us"></Translate>
-          </Link>
+          <a href={`mailto:${contactEmail}`}><Translate code="contact_us" /></a>
         </li>
-        {/*         <li>
-          <Link to="/content/SignIn">
-            <Translate code="sign_in"></Translate>
-          </Link>
-        </li> */}
       </ul>
     </footer>
   );

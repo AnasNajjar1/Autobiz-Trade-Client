@@ -8,7 +8,7 @@ const apisB2bPlateform = {
 exports.apiB2bPlateform = apisB2bPlateform[ENV];
 
 exports.link_new_password =
-  "https://www.autobiz-market.com/fr/mot-de-passe-oublie";
+"https://www.autobiz-market.com/fr/mot-de-passe-oublie";
 
 const identityPoolIds = {
   dev: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
@@ -29,3 +29,13 @@ const staticContents = {
 exports.staticContentUrl=staticContents[ENV]
 exports.staticCache = 'static-content'
 exports.staticFiles = { locale : "locale.json" }
+
+const contactEmails = {
+  dev : "stg-support-autobizTrade@autobiz.com",
+  staging : "stg-support-autobizTrade@autobiz.com",
+  prod : "support-autobizTrade@autobiz.com"
+}
+
+exports.contactEmail = contactEmails[ENV]
+
+exports.StaticFile = ["https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/"]
