@@ -8,22 +8,24 @@ const apisB2bPlateform = {
 exports.apiB2bPlateform = apisB2bPlateform[ENV];
 
 exports.link_new_password =
-  "https://www.autobiz-market.com/fr/mot-de-passe-oublie";
+"https://www.autobiz-market.com/fr/mot-de-passe-oublie";
 
-  const identityPoolIds = {
-    dev: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
-    staging: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
-    prod : "eu-west-1:e8cbcb21-aa17-41e1-bdfc-58c09cb55566"
-  };
+const identityPoolIds = {
+  dev: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
+  staging: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
+  prod : "eu-west-1:e8cbcb21-aa17-41e1-bdfc-58c09cb55566"
+};
 
-  exports.identityPoolId = identityPoolIds[ENV];
+exports.identityPoolId = identityPoolIds[ENV];
 
-  exports.region = "eu-west-1"
+exports.region = "eu-west-1"
 
-  const contactEmails = {
-    dev : "stg-support-autobizTrade@autobiz.com",
-    staging : "stg-support-autobizTrade@autobiz.com",
-    prod : "support-autobizTrade@autobiz.com"
-  }
+const contactEmails = {
+  dev : "stg-support-autobizTrade@autobiz.com",
+  staging : "stg-support-autobizTrade@autobiz.com",
+  prod : "support-autobizTrade@autobiz.com"
+}
 
-  exports.contactEmail = contactEmails[ENV]
+exports.contactEmail = contactEmails[ENV]
+
+exports.StaticFile = ["https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/"]
