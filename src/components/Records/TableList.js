@@ -82,7 +82,7 @@ const renderValue = (key, value, lang) => {
       if (lang === "de") {
         literStr = `${parseFloat(value) * 1000} ${t("unit_ccm")}`;
       } else {
-        literStr = `${Math.ceil(value)} ${t("unit_liter")}`;
+        literStr = `${Math.ceil(value).toFixed(1)} ${t("unit_liter")}`;
       }
       return literStr;
     case "fiscal":
