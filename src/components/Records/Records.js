@@ -268,7 +268,9 @@ const Record = props => {
                         <Translate code="constructor_source"></Translate>
                       </i>
                     </div>
-                    <UlList items={record.constructorEquipments} />
+                    {Object.values(record.constructorEquipments).map(items => (
+                      <UlList items={items} />
+                    ))}
                   </Col>
                 </>
               )}
