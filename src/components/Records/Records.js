@@ -228,7 +228,7 @@ const Record = props => {
                       <Col xs="12" md="4"><Translate code="the_market"></Translate></Col>
                       <Col xs="12" md="8" className="section-title-link">
                         <a href={record.market.MarketLink} target="_blank" >
-                            {`${t("market_link")} `}
+                            {`${t("marketLink")} `}
                             <FontAwesomeIcon icon={faExternalLinkAlt} />
                         </a>
                       </Col>
