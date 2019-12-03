@@ -10,6 +10,7 @@ function showableValue(key, value, lang) {
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
+  if (key === "b2cMarketValue" && value < 200) return false
   if (key === "MarketLink") return false
   return true;
 }
@@ -81,7 +82,7 @@ const renderValue = (key, value, lang) => {
       if (lang === "de") {
         literStr = `${parseFloat(value) * 1000} ${t("unit_ccm")}`;
       } else {
-        literStr = `${Math.ceil(value)} ${t("unit_liter")}`;
+        literStr = `${Math.ceil(value).toFixed(1)} ${t("unit_liter")}`;
       }
       return literStr;
     case "fiscal":
