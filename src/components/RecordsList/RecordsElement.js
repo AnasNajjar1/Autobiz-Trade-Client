@@ -127,12 +127,16 @@ class RecordsElement extends Component {
                       </p>
                     )}
 
-                    {/* {auction.salesType === "immediatePurchase" && (
+                    {(auction.salesType === "immediatePurchase" && (
                       <p className="immediate-purchase">
                         <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                         {t("immediate_purchase")}
                       </p>
-                    ) || <p className="text-right small"><Translate code="auction" /></p>} */}
+                    )) || (
+                      <p className="text-right small">
+                        <Translate code="auction" />
+                      </p>
+                    )}
                   </Col>
                 </Row>
               </CardTitle>
@@ -165,7 +169,9 @@ class RecordsElement extends Component {
                 className="mr-1"
                 size="1x"
               />
-              {record.city === null && record.zipCode === null && record.country === null
+              {record.city === null &&
+              record.zipCode === null &&
+              record.country === null
                 ? t("unknown_point_of_sale")
                 : record.city + " " + record.zipCode + " " + t(record.country)}
             </CardFooter>
