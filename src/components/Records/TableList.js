@@ -58,7 +58,7 @@ const renderValue = (key, value, lang) => {
     case "mileage":
     case "b2cMarketValue":
     case "standardMileage":
-      return parseInt(value).toLocaleString();
+      return parseInt(value).toLocaleString()+(key === "b2cMarketValue" && ' €' || '') 
     case "gcDate":
     case "ownershipDuration":
       let val
