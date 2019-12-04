@@ -137,7 +137,7 @@ class RecordsElement extends Component {
                 </Row>
               </CardTitle>
 
-              <div className="text-center">
+              <div className="text-center wrapper">
                 {record.yearMec && record.fuelLabel && record.mileage !== null && (
                   <span className="tag tag-white">
                     {record.yearMec && (

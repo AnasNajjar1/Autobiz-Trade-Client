@@ -576,6 +576,20 @@ header {
   @extend .mb-2;
 }
 
+.wrapper {
+  position: absolute;
+  bottom: 46px;
+  @include media-breakpoint-up(xs) {
+    left: 20%;
+  }
+  @include media-breakpoint-up(sm) {
+    left: 28%;
+  }
+  @include media-breakpoint-up(lg) {
+    left: 30%;
+  }
+}
+
 .list-table {
   background-color: $card-cap-bg;
   border-radius: 0.5em;
