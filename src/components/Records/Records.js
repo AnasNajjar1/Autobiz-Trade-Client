@@ -22,6 +22,7 @@ import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
+import moment from 'moment';
 const Record = props => {
   const [record, setRecord] = useState([]);
 
@@ -102,8 +103,8 @@ const Record = props => {
               <TagsProps
                 tags={[
                   {
-                    label: "year_mec",
-                    value: record.yearMec
+                    label: "firstRegistrationDate",
+                    value: moment(record.characteristics.firstRegistrationDate).format('DD-MM-YYYY')
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
                   {

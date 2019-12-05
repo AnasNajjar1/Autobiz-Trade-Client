@@ -5,7 +5,7 @@ import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
-
+import moment from "moment";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 
 import {
@@ -138,11 +138,11 @@ class RecordsElement extends Component {
               </CardTitle>
 
               <div className="text-center">
-                {record.yearMec && record.fuelLabel && record.mileage !== null && (
+                {record.firstRegistrationDate && record.fuelLabel && record.mileage !== null && (
                   <span className="tag tag-white">
-                    {record.yearMec && (
+                    {record.firstRegistrationDate && (
                       <span className="text-nowrap after-slash-divider">
-                        {record.yearMec}
+                        {moment(record.firstRegistrationDate).format('DD-MM-YYYY')}
                       </span>
                     )}
                     {record.fuelLabel && (

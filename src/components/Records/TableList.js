@@ -75,7 +75,9 @@ const renderValue = (key, value, lang) => {
     case "lastServicingDate":
     case "nextTechnicalCheckDate":
     case "lastServicingKm":
+    case "firstRegistrationDate":
       if(key === "lastServicingKm") return parseInt(value).toLocaleString()+' km'
+      if(key === "firstRegistrationDate") return moment(value).format("DD-MM-YYYY")
       return moment(value).format("MM-YYYY");
     case "liter":
       let literStr = "";
