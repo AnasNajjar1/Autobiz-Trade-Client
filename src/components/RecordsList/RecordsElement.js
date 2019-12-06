@@ -142,7 +142,7 @@ class RecordsElement extends Component {
                   <span className="tag tag-white">
                     {record.firstRegistrationDate && (
                       <span className="text-nowrap after-slash-divider">
-                        {moment(record.firstRegistrationDate).format('DD-MM-YYYY')}
+                        {moment(record.firstRegistrationDate).format('YYYY')}
                       </span>
                     )}
                     {record.fuelLabel && (

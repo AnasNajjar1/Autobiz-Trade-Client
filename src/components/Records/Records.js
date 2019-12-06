@@ -104,7 +104,7 @@ const Record = props => {
                 tags={[
                   {
                     label: "firstRegistrationDate",
-                    value: moment(record.characteristics.firstRegistrationDate).format('DD-MM-YYYY')
+                    value: moment(record.characteristics.firstRegistrationDate).format('MM-YYYY')
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
                   {
