@@ -61,16 +61,16 @@ class Carousel extends Component {
               this.setState({ currentSlide: currentSlide + 1 });
             }}
           >
-            {Object.keys(this.props.items).map((value, index) => (
+            {Object.values(this.props.items).map((i, index) => (
               <div key={index}>
                 <a href="#overlay" onClick={this.openOverlay}>
-                  <img src={this.props.items[value]} alt="" />
+                  <img src={i.value} alt="" />
                 </a>
               </div>
             ))}
           </Slider>
           <div className="slider-pagination">
-            {this.state.currentSlide} / {Object.keys(this.props.items).length}
+            {this.state.currentSlide} / {this.props.items.length}
           </div>
         </div>
         <Slider
@@ -82,9 +82,9 @@ class Carousel extends Component {
           focusOnSelect={true}
           className="slider-thumbmails mt-2"
         >
-          {Object.keys(this.props.items).map((value, index) => (
+          {Object.values(this.props.items).map((i, index) => (
             <div key={index}>
-              <img src={this.props.items[value]} alt="" />
+              <img src={i.value} alt="" />
             </div>
           ))}
         </Slider>

@@ -22,6 +22,7 @@ import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
+import moment from 'moment';
 const Record = props => {
   const [record, setRecord] = useState([]);
 
@@ -102,8 +103,8 @@ const Record = props => {
               <TagsProps
                 tags={[
                   {
-                    label: "year_mec",
-                    value: record.yearMec
+                    label: "firstRegistrationDate",
+                    value: moment(record.characteristics.firstRegistrationDate).format('MM-YYYY')
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
                   {
@@ -225,8 +226,11 @@ const Record = props => {
                 <>
                   <div className="section-title">
                     <Row>
-                      <Col xs="12" md="4"><Translate code="the_market"></Translate></Col>
-                      <Col xs="12" md="8" className="section-title-link">
+                      <Col xs="12" md="7">
+                        <Translate code="the_market"></Translate>
+                        <i><Translate code="autobizMarketSource"></Translate></i>
+                      </Col>
+                      <Col xs="12" md="5" className="section-title-link">
                         <a href={record.market.MarketLink} target="_blank" >
                             {`${t("marketLink")} `}
                             <FontAwesomeIcon icon={faExternalLinkAlt} />
