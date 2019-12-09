@@ -5,6 +5,7 @@ import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
 let gcDate
+let lsDate
 function showableValue(key, value, lang) {
   if (value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
@@ -12,6 +13,10 @@ function showableValue(key, value, lang) {
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "b2cMarketValue" && value < 200) return false
   if (key === "MarketLink") return false
+  if (key === "lastServicingDate") {
+    lsDate = lsDate = moment(value).format("MM-YYYY");
+    return false
+  }
   return true;
 }
 
@@ -72,10 +77,9 @@ const renderValue = (key, value, lang) => {
         val = val.reverse()
       }
       return val 
-    case "lastServicingDate":
     case "nextTechnicalCheckDate":
     case "lastServicingKm":
-      if(key === "lastServicingKm") return parseInt(value).toLocaleString()+' km'
+      if(key === "lastServicingKm") return `${lsDate}-${parseInt(value).toLocaleString()} km`
       return moment(value).format("MM-YYYY");
     case "liter":
       let literStr = "";
