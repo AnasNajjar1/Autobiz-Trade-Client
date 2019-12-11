@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
 import moment from "moment";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
-
 import {
   faShoppingCart,
   faUser,
@@ -136,8 +135,7 @@ class RecordsElement extends Component {
                   </Col>
                 </Row>
               </CardTitle>
-
-              <div className="text-center">
+              <div className="text-center wrapper">
                 {record.firstRegistrationDate && record.fuelLabel && record.mileage !== null && (
                   <span className="tag tag-white">
                     {record.firstRegistrationDate && (
