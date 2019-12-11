@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 import Cookies from "js-cookie";
-
+import moment from "moment";
+import _ from "lodash";
 import { API } from "aws-amplify";
 import { Container, Row, Col, Alert } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,7 +79,19 @@ const Record = props => {
   }
 
   const { pointOfSale = {} } = record;
-  record.administrativeDetails.ownershipDuration = 0
+
+  let gcDate = _.get(record, "administrativeDetails.gcDate", null);
+  try {
+    if (gcDate)
+      _.set(
+        record,
+        "administrativeDetails.ownershipDuration",
+        calculateOwnerShipDuration(gcDate)
+      );
+  } catch (e) {
+    console.log("Error while calculate ownershipDuration");
+  }
+
   return (
     <>
       <Container className="pb-5">
@@ -125,7 +138,8 @@ const Record = props => {
                     <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
                     {pointOfSale.name}
                     <br />
-                    {pointOfSale.zipCode} {pointOfSale.city}<br />
+                    {pointOfSale.zipCode} {pointOfSale.city}
+                    <br />
                     {t(pointOfSale.country)}
                   </Col>
                 )}
@@ -226,14 +240,13 @@ const Record = props => {
                 <>
                   <div className="section-title">
                     <Row>
-                      <Col xs="12" md="7">
+                      <Col xs="12" md="4">
                         <Translate code="the_market"></Translate>
-                        <i><Translate code="autobizMarketSource"></Translate></i>
                       </Col>
-                      <Col xs="12" md="5" className="section-title-link">
-                        <a href={record.market.MarketLink} target="_blank" >
-                            {`${t("marketLink")} `}
-                            <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      <Col xs="12" md="8" className="section-title-link">
+                        <a href={record.market.MarketLink} target="_blank">
+                          {`${t("market_link")} `}
+                          <FontAwesomeIcon icon={faExternalLinkAlt} />
                         </a>
                       </Col>
                     </Row>
@@ -286,3 +299,38 @@ const Record = props => {
 };
 
 export default Record;
+
+const calculateOwnerShipDuration = gcDate => {
+  let res = moment.duration(moment().diff(moment(gcDate)));
+  let years = _.get(res._data, "years", null);
+  let months = _.get(res._data, "months", null);
+  let days = _.get(res._data, "days", null);
+
+  let nYears = null;
+  let nMonths = null;
+
+  let durations = {
+    days: days,
+    months: nMonths ? nMonths : months,
+    years: nYears ? nYears : years
+  };
+
+  let duration = Object.entries(durations).map(([key, value]) => {
+    if (key === "days" && value !== null && value > 20) nMonths = months + 1;
+
+    if (key === "months" && value !== null && value !== 0) {
+      if (nMonths !== null && (nMonths === 11 || nMonths == 12))
+        nYears = years + 1;
+      else if (nMonths !== null && nMonths < 11) return `${nMonths} ${t(key)} `;
+      else if (nMonths === null) return `${value} ${t(key)} `;
+    }
+
+    if (key === "years" && value !== null && value !== 0) {
+      if (nYears !== null && nYears === 1) return `${nYears} ${t("year")} `;
+      else if (value !== null && value === 1) return `${value} ${t("year")} `;
+      else if (nYears !== null && nYears > 1) return `${nYears} ${t(key)} `;
+      else if (nYears === null) return `${value} ${t(key)} `;
+    }
+  });
+  return duration.reverse();
+};
