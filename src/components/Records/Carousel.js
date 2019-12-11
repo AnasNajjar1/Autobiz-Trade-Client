@@ -46,6 +46,9 @@ class Carousel extends Component {
     if (Object.keys(this.props.items).length === 0) {
       return null;
     }
+    Object.entries(this.props.items).map(([i, v]) => {
+      if(v.value === null) delete this.props.items[i]
+    })
     return (
       <div>
         <div id="mainSliderWrapper">
