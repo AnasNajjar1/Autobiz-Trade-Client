@@ -15,9 +15,24 @@ import {
   faBolt,
   faTags
 } from "@fortawesome/free-solid-svg-icons";
+import _ from "lodash";
 
 class RecordsElement extends Component {
-  state = {};
+  state = {
+    listPicture : ['front_picture', 'left_side_picture', 'right_side_picture'],
+    nextPicture : null,
+    record : this.props.record
+  };
+
+  componentWillMount() {
+    if(this.state.record.three_quarters_front_picture === "null" && this.state.nextPicture === null) {
+      let i = 0
+      if(this.state.nextPicture !== null) return
+      let res = _.get(this.state.record, this.state.listPicture[i], null)
+      if(res) return this.setState({ nextPicture: this.state.listPicture[i] })
+      else i++
+    }
+  }
 
   render() {
     const { record } = this.props;
@@ -88,7 +103,7 @@ class RecordsElement extends Component {
               </Row>
             </div>
             <div className="card-head">
-              {(record.three_quarters_front_picture && (
+              {(record.three_quarters_front_picture !== "null" && (
                 <img
                   className="card-img-top"
                   src={record.three_quarters_front_picture}
@@ -97,7 +112,7 @@ class RecordsElement extends Component {
               )) || (
                 <img
                   className="card-img-top"
-                  src={record.front_picture}
+                  src={record[this.state.nextPicture]}
                   alt={""}
                 />
               )}
