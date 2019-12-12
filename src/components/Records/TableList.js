@@ -14,7 +14,7 @@ function showableValue(key, value, lang) {
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "b2cMarketValue" && value < 200) return false;
-  //if (key === "MarketLink") return false
+  if (key === "MarketLink") return false
   return true;
 }
 
