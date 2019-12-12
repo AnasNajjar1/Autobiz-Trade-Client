@@ -116,7 +116,9 @@ const Record = props => {
                 tags={[
                   {
                     label: "firstRegistrationDate",
-                    value: moment(record.characteristics.firstRegistrationDate).format('MM-YYYY')
+                    value: moment(
+                      record.characteristics.firstRegistrationDate
+                    ).format("MM-YYYY")
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
                   {
@@ -300,36 +302,5 @@ const Record = props => {
 export default Record;
 
 const calculateOwnerShipDuration = gcDate => {
-  let res = moment.duration(moment().diff(moment(gcDate)));
-  let years = _.get(res._data, "years", null);
-  let months = _.get(res._data, "months", null);
-  let days = _.get(res._data, "days", null);
-
-  let nYears = null;
-  let nMonths = null;
-
-  let durations = {
-    days: days,
-    months: nMonths ? nMonths : months,
-    years: nYears ? nYears : years
-  };
-
-  let duration = Object.entries(durations).map(([key, value]) => {
-    if (key === "days" && value !== null && value > 20) nMonths = months + 1;
-
-    if (key === "months" && value !== null && value !== 0) {
-      if (nMonths !== null && (nMonths === 11 || nMonths == 12))
-        nYears = years + 1;
-      else if (nMonths !== null && nMonths < 11) return `${nMonths} ${t(key)} `;
-      else if (nMonths === null) return `${value} ${t(key)} `;
-    }
-
-    if (key === "years" && value !== null && value !== 0) {
-      if (nYears !== null && nYears === 1) return `${nYears} ${t("year")} `;
-      else if (value !== null && value === 1) return `${value} ${t("year")} `;
-      else if (nYears !== null && nYears > 1) return `${nYears} ${t(key)} `;
-      else if (nYears === null) return `${value} ${t(key)} `;
-    }
-  });
-  return duration.reverse();
+  return moment.duration(moment().diff(moment(gcDate))).asMilliseconds()
 };

@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import humanizeDuration from "humanize-duration";
+import Cookies from "js-cookie";
 import { LanguageContext } from "../../language-context";
 
 class Translate extends React.Component {
@@ -48,6 +50,17 @@ export function t(code, variables = null) {
 
   return translated_string;
 }
+
+export function durationTranslate(duration, units = ["y", "mo"], round = true){
+  return humanizeDuration(duration, {
+    language: Cookies.get("appLanguage"),
+    units,
+    round,
+    fallbacks: ['en'] 
+  });
+};
+ 
+
 Translate.contextType = LanguageContext;
 export default Translate;
 

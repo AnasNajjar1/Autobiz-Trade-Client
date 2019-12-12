@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import _ from "lodash";
-import { dictionnary, flags, LanguageContext } from "../../language-context";
+import { dictionnary, flags } from "../../language-context";
 
 const handleChangeLang = async language => {
   Cookies.set("appLanguage", language, { expires: 365 });

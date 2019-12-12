@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Row } from "reactstrap";
-import { t } from "../common/Translate";
+import { t, durationTranslate } from "../common/Translate";
 import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -88,6 +88,10 @@ const renderValue = (key, value, lang) => {
           </a>
         </>
       );
+    
+      //duration display
+    case "ownershipDuration" : 
+    return durationTranslate(value, ["y", "mo"], true)
     default:
       return t(String(value));
   }
