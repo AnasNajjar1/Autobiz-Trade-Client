@@ -4,7 +4,6 @@ import { t, durationTranslate } from "../common/Translate";
 import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
-let gcDate;
 
 //remove uncomplete data or unwanted data
 function showableValue(key, value, lang) {
@@ -43,6 +42,7 @@ const renderValue = (key, value, lang) => {
     case "nextTechnicalCheckDate":
     case "firstRegistrationDate":
     case "lastServicingDate":
+    case "lastTechnicalCheckDate":
       return moment(value).format("MM-YYYY");
 
     //liter display
