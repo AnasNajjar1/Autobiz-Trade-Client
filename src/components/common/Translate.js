@@ -51,13 +51,17 @@ export function t(code, variables = null) {
   return translated_string;
 }
 
-export function durationTranslate(duration, units = ["y", "mo"], round = true){
-  return humanizeDuration(duration, {
+export function durationTranslate(duration, units = ["y", "mo"], round = true, separator=","){
+  let result = humanizeDuration(duration, {
     language: Cookies.get("appLanguage"),
     units,
     round,
     fallbacks: ['en'] 
   });
+  if(separator !==","){
+    result = result.replace(",", " " + t(separator))
+  }
+  return result
 };
  
 

@@ -243,6 +243,7 @@ const Record = props => {
                     <Row>
                       <Col xs="12" md="4">
                         <Translate code="the_market"></Translate>
+                        <i><Translate code="autobizMarketSource"></Translate></i>
                       </Col>
                       <Col xs="12" md="8" className="section-title-link">
                         <a href={record.market.MarketLink} target="_blank">
