@@ -338,6 +338,22 @@ const RecordsListContainer = () => {
               </Button>
 
               <Button
+                color={form.list === "my_favorite" ? "primary" : "secondary"}
+                className="mr-2"
+                onClick={() => showCustomList("my_favorite")}
+              >
+                {t("my_favorite")}
+              </Button>
+
+              <Button
+                color={form.list === "my_auctions" ? "primary" : "secondary"}
+                className="mr-2"
+                onClick={() => showCustomList("my_auctions")}
+              >
+                {t("my_auctions")}
+              </Button>
+
+              <Button
                 color={form.list === "my_offers" ? "primary" : "secondary"}
                 onClick={() => showCustomList("my_offers")}
               >

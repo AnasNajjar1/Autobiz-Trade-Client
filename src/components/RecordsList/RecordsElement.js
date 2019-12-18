@@ -16,6 +16,7 @@ import {
   faTags
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
+import Favorie from "../Records/Favorie";
 
 class RecordsElement extends Component {
   state = {
@@ -120,8 +121,10 @@ class RecordsElement extends Component {
             </div>
 
             <CardBody>
-              {auction && <Countdown secondsLeft={auction.secondsLeft} />}
-
+              <Row>
+                <Col xs="9" sm="10" md="9" lg="9">{auction && <Countdown secondsLeft={auction.secondsLeft} />}</Col>
+                <Col className="text-left"><Favorie record={record} /></Col>
+              </Row>
               <CardTitle>
                 <Row>
                   <Col xs="7" sm="8" lg="7">

@@ -94,6 +94,10 @@ $input-border-color: #e5e5e7;
   color: $am_gray !important;
 }
 
+.red {
+  color: $danger;
+}
+
 .dark,
 .dark:hover {
   color: $am_dark !important;
@@ -863,6 +867,15 @@ header {
       font-size: 50%;
     }
   }
+}
+
+.favorie-icon {
+  // position: absolute;
+  // bottom: 0;
+  border-radius: 50%;
+  background-color: $card-cap-bg;
+  padding: 10px 10px;
+  text-align: center;
 }
 
 form.form-offer {

@@ -19,6 +19,7 @@ import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import Favorie from "./Favorie";
 
 const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState(true);
@@ -280,49 +281,55 @@ const Auction = ({ refId }) => {
             <strong>{minimalPrice.toLocaleString()}</strong> €{" "}
             <sup className="text-uppercase">{t("ttc")}</sup>
           </p>
-          <div className="section-price">
-            <Row>
-              {bestUserOffer > 0 && (
-                <Col
-                  xs="12"
-                  sm="6"
-                  md="12"
-                  lg="6"
-                  className={userWin ? "text-success" : "gray"}
-                >
-                  <p className="h5">
-                    <Translate code="your_offer" />
-                  </p>
-                  <div className="offer-value">
-                    <span className="font-weight-bold">
-                      {bestUserOffer.toLocaleString()}
-                    </span>{" "}
-                    €<sup>{t("ttc")}</sup>
-                  </div>
-                </Col>
-              )}
-
-              <Col>
-                {(bestOffer > 0 && (
-                  <>
-                    <p className="h5 gray ">
-                      <Translate code="best_offer" />
+          <Row>
+            <Col xs="12" sm="12" md="10" lg="10">
+            <div className="section-price">
+              <Row>
+                {bestUserOffer > 0 && (
+                  <Col
+                    xs="12"
+                    sm="6"
+                    md="12"
+                    lg="6"
+                    className={userWin ? "text-success" : "gray"}
+                  >
+                    <p className="h5">
+                      <Translate code="your_offer" />
                     </p>
                     <div className="offer-value">
-                      <span className="dark font-weight-bold">
-                        {bestOffer.toLocaleString()}
+                      <span className="font-weight-bold">
+                        {bestUserOffer.toLocaleString()}
                       </span>{" "}
                       €<sup>{t("ttc")}</sup>
                     </div>
-                  </>
-                )) || (
-                  <div className="gray font-italic my-2">
-                    <Translate code="no_offer" />
-                  </div>
+                  </Col>
                 )}
-              </Col>
-            </Row>
-          </div>
+                <Col>
+                    {(bestOffer > 0 && (
+                    <>
+                      <p className="h5 gray ">
+                        <Translate code="best_offer" />
+                      </p>
+                      <div className="offer-value">
+                        <span className="dark font-weight-bold">
+                          {bestOffer.toLocaleString()}
+                        </span>{" "}
+                        €<sup>{t("ttc")}</sup>
+                      </div>
+                    </>
+                      )) || (
+                        <div className="gray font-italic my-2">
+                          <Translate code="no_offer" />
+                        </div>
+                      )}
+                </Col>
+              </Row>
+              </div>
+            </Col>
+            <Col>
+              <Favorie refId={refId}/>
+            </Col>
+          </Row>
           {!isExpired && statusName === "online" && (
             <Form
               method="post"
