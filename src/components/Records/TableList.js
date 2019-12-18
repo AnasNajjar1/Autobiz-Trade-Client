@@ -91,7 +91,7 @@ const renderValue = (key, value, lang) => {
     
       //duration display
     case "ownershipDuration" : 
-    return durationTranslate(value, ["y", "mo"], true)
+    return durationTranslate(value, ["y", "mo"], true, "and")
     default:
       return t(String(value));
   }
