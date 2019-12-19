@@ -25,16 +25,16 @@ const Favorie = ({refId}) => {
     };
     
     const handleClick = () => {
-        setFavorite(refId)
+        setIsFavorite(!isFavorite)
         //putVehicleInFavorie()
-        console.log('called', refId)
+        console.log('refId', refId)
     }
 
     return (//className="favorie-icon"
         <>
             <FontAwesomeIcon 
                 icon={faStar} 
-                className={isFavorite && "red" || "gray"} 
+                className={isFavorite && "star-fav red" || "star-fav gray"} 
                 size="1x" 
                 onClick={handleClick} 
             />  

@@ -1200,5 +1200,13 @@ footer {
     text-transform: capitalize;
   }
 }
+.star-fav {
+  cursor: pointer;
+  transition: transform .2s
+}
+
+.star-fav:hover {
+  transform: scale(1.5);
+}
 
 @import "carousel";
