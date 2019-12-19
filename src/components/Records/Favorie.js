@@ -23,25 +23,22 @@ const Favorie = ({refId}) => {
             console.log('dossier ',refId,' n\'est pas ton favorie',e)
         }
     };
-
-    const handleSubmit = e => {
-        putVehicleInFavorie()
-    };
     
     const handleClick = () => {
         setFavorite(refId)
+        //putVehicleInFavorie()
         console.log('called', refId)
     }
 
     return (//className="favorie-icon"
-        <div>
+        <>
             <FontAwesomeIcon 
                 icon={faStar} 
                 className={isFavorite && "red" || "gray"} 
                 size="1x" 
                 onClick={handleClick} 
             />  
-        </div>
+        </>
     );
 };
 

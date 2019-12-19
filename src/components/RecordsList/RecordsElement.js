@@ -122,8 +122,10 @@ class RecordsElement extends Component {
 
             <CardBody>
               <Row>
-                <Col xs="9" sm="10" md="9" lg="9">{auction && <Countdown secondsLeft={auction.secondsLeft} />}</Col>
-                <Col className="text-left"><Favorie record={record} /></Col>
+                <Col>
+                  {auction && <Countdown secondsLeft={auction.secondsLeft} />}
+                  {/* <span className="star-icon"><Favorie record={record} /></span> */}
+                </Col>
               </Row>
               <CardTitle>
                 <Row>

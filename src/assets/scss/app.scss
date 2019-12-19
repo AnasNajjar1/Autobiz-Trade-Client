@@ -97,6 +97,18 @@ $input-border-color: #e5e5e7;
 .red {
   color: $danger;
 }
+.second-blue,
+.second-blue:hover {
+  background-color: #4367a2;
+}
+.blue,
+.blue:hover {
+  background-color: $primary;
+}
+.light-blue,
+.light-blue:hover {
+  background-color: #B4C7E7;
+}
 
 .dark,
 .dark:hover {
@@ -370,6 +382,12 @@ header {
   .fa-spinner {
     display: none;
   }
+}
+
+.star-icon {
+  position: relative;
+  top: -10px;
+  left: -20px; 
 }
 
 .car-list {

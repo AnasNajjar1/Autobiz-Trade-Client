@@ -337,28 +337,42 @@ const RecordsListContainer = () => {
                 {t("all_vehicles")}
               </Button>
 
-              <Button
-                color={form.list === "my_favorite" ? "primary" : "secondary"}
-                className="mr-2"
-                onClick={() => showCustomList("my_favorite")}
+              {/* <Button
+                className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
+                onClick={() => showCustomList("my_favourites")}
               >
-                {t("my_favorite")}
-              </Button>
+                {t("My_favourites")}
+              </Button> */}
 
               <Button
-                color={form.list === "my_auctions" ? "primary" : "secondary"}
-                className="mr-2"
-                onClick={() => showCustomList("my_auctions")}
-              >
-                {t("my_auctions")}
-              </Button>
-
-              <Button
-                color={form.list === "my_offers" ? "primary" : "secondary"}
+                className={form.list === "my_offers" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_offers")}
               >
-                {t("my_vehicles")}
+                {t("My_offers")}
               </Button>
+
+              <Button
+                className={form.list === "my_purchases" ? "blue mr-2" : "second-blue mr-2"}
+                onClick={() => showCustomList("my_purchases")}
+              >
+                {t("My_purchases")}
+              </Button>
+
+              <Button
+                className={form.list === "my_vehicles_onSale" ? "blue mr-2" : "light-blue mr-2"}
+                onClick={() => showCustomList("my_vehicles_onSale")}
+              >
+                {t("Vo_onSale")}
+              </Button>
+
+              <Button
+                className={form.list === "my_vehicles_finished" ? "blue" : "light-blue"}
+                onClick={() => showCustomList("my_vehicles_finished")}
+              >
+                {t("Vo_finished")}
+              </Button>
+
+              
             </Col>
           </Row>
           <Row>
@@ -426,6 +440,7 @@ const RecordsListContainer = () => {
               <Col xs="12" sm="6" lg="4">
                 <Sort list={sortList} value={form.sort} sort={handleSort} />
               </Col>
+              {console.log(records)}
               {records &&
                 records.map((record, index) => (
                   <RecordsElement key={index} record={record} />
