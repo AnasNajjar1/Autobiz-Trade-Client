@@ -386,7 +386,7 @@ header {
 
 .star-icon {
   position: relative;
-  top: -10px;
+  top: -5px;
   left: -20px; 
 }
 
@@ -427,6 +427,7 @@ header {
 
       .card-head {
         position: relative;
+        margin: 0 auto;
       }
 
       .car-condition-wrapper {
@@ -524,10 +525,8 @@ header {
 
       .card-img-top {
         position: relative;
-        width: calc(100% + 20px);
-        left: -10px;
+        width: 350px;
         height: 200px;
-        object-fit: cover;
         @extend .rounded;
       }
     }
