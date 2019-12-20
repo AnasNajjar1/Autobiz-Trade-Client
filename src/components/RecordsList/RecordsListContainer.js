@@ -341,35 +341,35 @@ const RecordsListContainer = () => {
                 className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_favourites")}
               >
-                {t("My_favourites")}
+                {t("my_favourites")}
               </Button> */}
 
               <Button
                 className={form.list === "my_offers" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_offers")}
               >
-                {t("My_offers")}
+                {t("my_offers")}
               </Button>
 
               <Button
                 className={form.list === "my_purchases" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_purchases")}
               >
-                {t("My_purchases")}
+                {t("my_purchases")}
               </Button>
 
               <Button
                 className={form.list === "my_vehicles_onSale" ? "blue mr-2" : "light-blue mr-2"}
                 onClick={() => showCustomList("my_vehicles_onSale")}
               >
-                {t("Vo_onSale")}
+                {t("vo_onSale")}
               </Button>
 
               <Button
                 className={form.list === "my_vehicles_finished" ? "blue" : "light-blue"}
                 onClick={() => showCustomList("my_vehicles_finished")}
               >
-                {t("Vo_finished")}
+                {t("vo_finished")}
               </Button>
 
               
