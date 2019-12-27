@@ -345,11 +345,16 @@ header {
     color: #9097ac;
   }
 }
+.section-market {
+  @include media-breakpoint-up(md) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
 
 .section-title-link {
   @extend .h6;
   @include media-breakpoint-down(xs) {
-    margin: 0 0;
     display: block;
     text-align: left;
   }

@@ -262,23 +262,23 @@ const Record = props => {
                   </Col>
                   <Col xs="12" md="6">
                     {record.declaredEquipments &&
-                      record.declaredEquipments.length > 0 && (
-                        <>
-                          <div className="section-title">
-                            <Translate code="declared_equiments"></Translate>
-                          </div>
-                          <EquipmentList items={record.declaredEquipments} />
-                        </>
-                      )}
+                    record.declaredEquipments.length > 0 && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="declared_equiments"></Translate>
+                        </div>
+                        <EquipmentList items={record.declaredEquipments} />
+                      </>
+                    )}
                     {record.market && (
                       <>
                         <div className="section-title">
                           <Row>
-                            <Col xs="12" md="4">
+                            <Col xs="12" md="6" className="section-market">
                               <Translate code="the_market"></Translate>
                               <i><Translate code="autobizMarketSource"></Translate></i>
                             </Col>
-                            <Col xs="12" md="8" className="section-title-link">
+                            <Col xs="12" md="6" className="section-title-link">
                               <a href={record.market.MarketLink} target="_blank">
                                 {`${t("market_link")} `}
                                 <FontAwesomeIcon icon={faExternalLinkAlt} />
