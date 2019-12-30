@@ -275,7 +275,6 @@
 }
 .section-damages {
   width: 100vh;
-  //min-height: 300px;
   margin: 0 auto;
 }
 
@@ -311,6 +310,7 @@
     top: -60px;
     border-radius: 0.5em;
     margin-left: 5px;
+    cursor: pointer;
   }
 }
 

@@ -24,6 +24,8 @@ import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
 import { BrowserView, MobileView } from "react-device-detect";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 const Record = props => {
   const [record, setRecord] = useState([]);
   const [sections, setSections] = useState([])
@@ -110,6 +112,8 @@ const Record = props => {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
+  let dimage = _.get(sections, activeSubTab, null)
+  console.log(dimage)
   return (
     <>
       <Container className="pb-5">
@@ -331,6 +335,7 @@ const Record = props => {
                 <BrowserView>
                   <Row>
                     <Col lg='12' className='section-zone'>
+                      
                       <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
                     </Col>
                     <div className="section-damages">
@@ -381,18 +386,43 @@ const iterateData = (v) => {
   return item
 }
 
-const subDamages = (items) => (items.map(i => (<Damages i={i} key={i.element}/>)))
+const subDamages = (items) =>  {
+  let damagesImage = []
+  items.forEach(i => {
+    if(i.damage_picture) damagesImage.push(i.damage_picture)
+    if(i.damage_picture2) damagesImage.push(i.damage_picture2)
+  })
+  return(items.map(i => (<Damages i={i} key={i.element} damagesImage={damagesImage}/> )))
+}
 
-const Damages = ({i}) => (
-  <div className="damage-list mt-4" key={i.element}>
+const Damages = ({i, damagesImage}) => {
+  const [popedUp, setPopup] = useState(false);
+  const [photoIndex , setPhotoIndex] = useState(0)
+
+  const togglePopup = () => {
+    setPopup(!popedUp);
+  };
+
+  return(<div className="damage-list mt-4" key={i.element}>
       <div className="item">
         <div className="label">{t(i.damage)}</div>
         <div className="value">{t(i.element)}</div>
-        {i.damage_picture && <img src={i.damage_picture} className="damage-img" />}
-        {i.damage_picture2 && <img src={i.damage_picture2} className="damage-img" />}
+        {popedUp && <Lightbox 
+          mainSrc={damagesImage[photoIndex]}
+          nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+          prevSrc={damagesImage[(photoIndex + damagesImage.length - 1) % damagesImage.length]} 
+          onCloseRequest={togglePopup} 
+          onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % damagesImage.length)}/>}
+        {i.damage_picture && <span onClick={togglePopup}>
+          <img src={i.damage_picture} className="damage-img" />
+        </span>}
+        {i.damage_picture2 && <span onClick={togglePopup}>
+          <img src={i.damage_picture2} className="damage-img" />
+        </span>}
       </div>
-  </div>
-)
+  </div>)
+}
 
 const ListZones = ({ activeSubTab, setActiveSubTab }) => {
   const listZone = ['servicing','wheels','body','inner','road_test','motor']
