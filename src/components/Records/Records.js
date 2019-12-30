@@ -112,8 +112,6 @@ const Record = props => {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
-  let dimage = _.get(sections, activeSubTab, null)
-  console.log(dimage)
   return (
     <>
       <Container className="pb-5">
@@ -335,7 +333,6 @@ const Record = props => {
                 <BrowserView>
                   <Row>
                     <Col lg='12' className='section-zone'>
-                      
                       <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
                     </Col>
                     <div className="section-damages">
