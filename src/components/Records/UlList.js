@@ -5,7 +5,8 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 const UlList = ({ items }) => {
   return (<>
-      {items !== null && Object.entries(items).map(([key, item])=>(<>
+      {items !== null && Object.entries(items).map(([key, item])=>(
+      <div key={key}>
           <div className="section-title">
             {t(key)}
           </div>
@@ -17,7 +18,7 @@ const UlList = ({ items }) => {
               </li>
             ))}
           </ul>
-          </>
+          </div>
       ))}
     </>
   );

@@ -320,7 +320,7 @@ const Record = props => {
                             </i>
                           </div>
                           {Object.values(record.constructorEquipments).map(items => (
-                            <UlList items={items} />
+                            <UlList items={items} key={Object.keys(items)}/>
                           ))}
                         </Col>
                       </>
@@ -329,10 +329,13 @@ const Record = props => {
               </TabPane>
               <TabPane tabId="2">
                 <BrowserView>
-                  <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
-                  <Row className="mt-5">
-                    {activeSubTab && 
-                      <ShowDamages data={_.get(sections, activeSubTab, null)} />}
+                  <Row>
+                    <Col lg='12' className='section-zone'>
+                      <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
+                    </Col>
+                    <div className="section-damages">
+                      {activeSubTab && <ShowDamages data={_.get(sections, activeSubTab, null)} />}
+                    </div>
                   </Row>
                 </BrowserView>
                 <MobileView>
@@ -362,41 +365,34 @@ const calculateOwnerShipDuration = gcDate => {
   return moment.duration(moment().diff(moment(gcDate))).asMilliseconds()
 };
 
-const subDamages = (items) => (items.map(i => (
-    <div className="damage-list mt-4" key={i.element}>
+const ShowDamages = (data) => {
+  let res
+  if(_.get(data, 'data', null) !== null){
+    res = Object.values(data).map(v => (
+      iterateData(v)
+    ))
+  } else res = <Col><Translate code="no_damage" /></Col>
+  return res
+}
+
+const iterateData = (v) => {
+  let item = null
+  item = subDamages(v)
+  return item
+}
+
+const subDamages = (items) => (items.map(i => (<Damages i={i} key={i.element}/>)))
+
+const Damages = ({i}) => (
+  <div className="damage-list mt-4" key={i.element}>
       <div className="item">
         <div className="label">{t(i.damage)}</div>
         <div className="value">{t(i.element)}</div>
         {i.damage_picture && <img src={i.damage_picture} className="damage-img" />}
         {i.damage_picture2 && <img src={i.damage_picture2} className="damage-img" />}
       </div>
-    </div>
-  ))
+  </div>
 )
-
-const iterateData = (v) => (v.map(i => (
-    <Col md='6' lg="6" key={i}>
-      <div className="damage-list" key={i.element}>
-        <div className="item">
-          <div className="label">{t(i.damage)}</div>
-          <div className="value">{t(i.element)}</div>
-          {i.damage_picture && <img src={i.damage_picture} className="damage-img" />}
-          {i.damage_picture2 && <img src={i.damage_picture2} className="damage-img" />}
-        </div>
-      </div>
-    </Col>
-  ))
-)
-
-const ShowDamages = (data) => {
-  let res
-  if(_.get(data, 'data', null) !== null){
-      res = Object.values(data).map(v => (
-        iterateData(v)
-      ))
-  } else res = <Translate code="no_damage" />
-  return res
-}
 
 const ListZones = ({ activeSubTab, setActiveSubTab }) => {
   const listZone = ['servicing','wheels','body','inner','road_test','motor']
@@ -405,7 +401,7 @@ const ListZones = ({ activeSubTab, setActiveSubTab }) => {
     <div className="list-zone">
       <div className="item">
         {listZone.map(i => (<div 
-          className={i == activeSubTab ? "lebel active-label" : "label"}
+          className={i == activeSubTab ? "label active-label" : "label"}
           key={i} 
           onClick={() => setActiveSubTab(i)}>
           {`${t(i)}`}

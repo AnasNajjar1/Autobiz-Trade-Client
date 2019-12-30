@@ -274,14 +274,22 @@
   }
 }
 .section-damages {
-  min-height: 300px;
+  width: 100vh;
+  //min-height: 300px;
+  margin: 0 auto;
 }
 
 .damage-list {
   background-color: $card-cap-bg;
   border-radius: 0.5em;
   width: 450px;
+  height: 70px;
+  margin-left:20px;
+  @include media-breakpoint-up(lg) {
+    display: inline-block;
+  }
   @include media-breakpoint-down(sm) {
+    display: block;
     width: 420px;
   }
   @extend .px-4;
