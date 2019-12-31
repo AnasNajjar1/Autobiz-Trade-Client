@@ -1,0 +1,209 @@
+image: docker:18.09
+stages:
+  - testing
+  - build
+  - deploy_dev
+  - deploy_staging
+  - deploy_ppr
+  - deploy_beta
+  - deploy_prod
+
+variables:
+  DEV_SERVER: 51.77.133.108
+  STAGING_SERVER: 51.77.133.108
+  PPR_SERVER: 51.38.57.127
+  PROD1_SERVER: 172.16.2.14
+  PROD2_SERVER: 172.16.2.39
+  PROD3_SERVER: 172.16.2.40
+  DELIVERY_USER: delivery2
+  GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_FILE_PATH: ./container/Dockerfile 
+  PORT_MAPPING: "127.0.0.1:38888:80"
+  DEV_AND_BETA_PORT_MAPPING: "127.0.0.1:38889:80"
+  DOCKER_REGISTRY: docker.autobiz.pro
+  CONTAINER_NAME: trade_app
+  DOCKER_TAG_DEV: "${DOCKER_REGISTRY}/autobiz_trade/${CONTAINER_NAME}_dev"
+  DOCKER_TAG_STG: "${DOCKER_REGISTRY}/autobiz_trade/${CONTAINER_NAME}_stg"
+  DOCKER_TAG_PPR: "${DOCKER_REGISTRY}/autobiz_trade/${CONTAINER_NAME}_ppr"
+  DOCKER_TAG_BETA: "${DOCKER_REGISTRY}/autobiz_trade/${CONTAINER_NAME}_beta"
+  DOCKER_TAG_PROD: "${DOCKER_REGISTRY}/autobiz_trade/${CONTAINER_NAME}_prod"
+
+services:
+  - docker:18.09-dind
+
+before_script:
+  - source ./.cicd_tools/add_shared_cicd_tools.sh 
+  - source ./.cicd_tools_project_specific/add_trade_app_cicd_overrides_and_functions.sh
+  - set_up_ssh_for_alpine
+  - configure_access_to_bastion
+  - set_up_access_to_docker_registry
+
+test_merge_master:
+  stage: testing
+  script: 
+    - test_merge_master_to_this_branch
+  except:
+    - master        
+  tags:
+    - docker
+
+build_dev:
+  stage: build
+  script: 
+    - change_dev_environment_variable_to "staging"
+    - set_docker_tag ${DOCKER_TAG_DEV}
+    - build_and_push_to_registry
+  except:
+    - master
+  tags:
+    - docker
+  when: manual
+
+
+build_staging:
+  stage: build
+  script: 
+    - change_dev_environment_variable_to "staging"
+    - set_docker_tag "${DOCKER_TAG_STG}"
+    - build_and_push_to_registry
+  only:
+    - master        
+  tags:
+    - docker
+
+build_ppr:
+  stage: build
+  script: 
+    - change_dev_environment_variable_to "ppr"
+    - set_docker_tag "${DOCKER_TAG_PPR}"
+    - build_and_push_to_registry
+  only:
+    - master        
+  tags:
+    - docker
+
+build_beta:
+  stage: build
+  script: 
+    # Beta uses PROD env variable but its own docker tag
+    - change_dev_environment_variable_to "prod"
+    - set_docker_tag "${DOCKER_TAG_BETA}"
+    - build_and_push_to_registry
+  only:
+    - master        
+  tags:
+    - docker
+
+build_prod:
+  stage: build
+  script: 
+    - change_dev_environment_variable_to "prod"
+    - set_docker_tag "${DOCKER_TAG_PROD}"
+    - build_and_push_to_registry
+  only:
+    - master        
+  tags:
+    - docker
+
+deploy_dev:
+  stage: deploy_dev
+  script: 
+    - set_deploy_server "${DEV_SERVER}" 
+    - set_docker_tag "${DOCKER_TAG_DEV}"
+    - override_container_name "${CONTAINER_NAME}_dev"
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}"
+  tags:
+    - docker
+  except:
+    - master        
+  when: manual
+
+deploy_staging:
+  stage: deploy_staging
+  script: 
+    - set_deploy_server "${STAGING_SERVER}"
+    - set_docker_tag "${DOCKER_TAG_STG}"
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${PORT_MAPPING}"
+  only:
+    - master        
+  when: manual
+  tags:
+    - docker
+
+deploy_ppr:
+  stage: deploy_ppr
+  script: 
+    - set_deploy_server "${PPR_SERVER}"
+    - set_docker_tag "${DOCKER_TAG_PPR}"
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${PORT_MAPPING}" 
+  only:
+    - master        
+  when: manual
+  tags:
+    - docker
+
+deploy_beta:
+  stage: deploy_beta
+  script: 
+    - set_docker_tag "${DOCKER_TAG_BETA}" 
+    - override_container_name "${CONTAINER_NAME}_beta"
+    - echo "Deploy First"
+    - set_deploy_server "${PROD1_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}" 
+    - echo "Deploy Second"
+    - set_deploy_server "${PROD2_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}" 
+    - echo "Deploy Third"
+    - set_deploy_server "${PROD3_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}" 
+  only:
+    - master        
+  when: manual
+  tags:
+    - docker
+
+deploy_prod:
+  stage: deploy_prod
+  script: 
+    - set_docker_tag "${DOCKER_TAG_PROD}" 
+    - echo "Deploy First"
+    - set_deploy_server "${PROD1_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping "${PORT_MAPPING}" 
+    - echo "Deploy Second"
+    - set_deploy_server "${PROD2_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping  "${PORT_MAPPING}" 
+    - echo "Deploy Third"
+    - set_deploy_server "${PROD3_SERVER}" 
+    - set_up_access_to_docker_registry_in_server
+    - try_to_remove_previous_container_and_volumes
+    - remove_previous_images
+    - docker_run_with_this_port_mapping  "${PORT_MAPPING}" 
+  only:
+    - master        
+  when: manual
+  tags:
+    - docker
