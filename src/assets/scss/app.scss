@@ -345,11 +345,16 @@ header {
     color: #9097ac;
   }
 }
+.section-market {
+  @include media-breakpoint-up(md) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
 
 .section-title-link {
   @extend .h6;
   @include media-breakpoint-down(xs) {
-    margin: 0 0;
     display: block;
     text-align: left;
   }
@@ -804,6 +809,38 @@ header {
   }
 }
 
+.section-zone {
+  width: 100vh;
+  .list-zone {
+    width:650px;
+    margin-left: calc(20%);
+    @include media-breakpoint-down(md) {
+      width:500px;
+      margin-left: 0%;
+    }
+    .item {
+      display: block;
+      text-align: center;
+      border-bottom: 1px solid #081a29;
+      &:last-child() {
+        margin-left: 0%;
+      }
+    }
+    .label {
+      display: inline-block;
+      color: #989ea3;
+      padding: 15px;
+      // margin-left: 5px;
+      cursor: pointer;
+    }
+    .label:hover, .active-label {
+      padding: 15px;
+      border-bottom: 1px solid #0d2030;
+      color: #0d2030;
+    }
+  }
+}
+
 .list-check {
   font-size: 0.9em;
   border-radius: 0.5em;
@@ -948,6 +985,16 @@ form.form-offer {
   .container-separator-title {
     background-color: #4167a5;
     color: white;
+    display: inline-block;
+    margin: 10px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    border-radius: 40px;
+  }
+  .container-separator-title-light {
+    background-color: rgb(233, 232, 232);
+    //color: white;
     display: inline-block;
     margin: 10px;
     height: 40px;

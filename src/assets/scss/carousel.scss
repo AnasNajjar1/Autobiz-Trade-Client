@@ -273,6 +273,47 @@
     left: 0;
   }
 }
+.section-damages {
+  width: 100vh;
+  margin: 0 auto;
+}
+
+.damage-list {
+  background-color: $card-cap-bg;
+  border-radius: 0.5em;
+  width: 450px;
+  height: 70px;
+  margin-left:20px;
+  @include media-breakpoint-up(lg) {
+    display: inline-block;
+  }
+  @include media-breakpoint-down(sm) {
+    display: block;
+    width: 420px;
+  }
+  @extend .px-4;
+  .item {
+    @extend .py-3;
+    .label {
+      font-size: 0.9em;
+      color: $am_gray;
+    }
+    .value {
+      color: #3c4852;
+    }
+  }
+  .damage-img {
+    width: 100px;
+    height: 80px;
+    float: right;
+    position: relative;
+    top: -60px;
+    border-radius: 0.5em;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
+
 
 .slider-pagination {
   position: relative;

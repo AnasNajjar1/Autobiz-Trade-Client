@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import moment from "moment";
 import _ from "lodash";
 import { API } from "aws-amplify";
-import { Container, Row, Col, Alert } from "reactstrap";
+import { Container, Row, Col, Alert, Button, TabContent,TabPane } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faQuoteLeft,
@@ -23,12 +23,16 @@ import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
+import { BrowserView, MobileView } from "react-device-detect";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 const Record = props => {
   const [record, setRecord] = useState([]);
-
+  const [sections, setSections] = useState([])
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [activeTab, setActiveTab] = useState('1');
+  const [activeSubTab, setActiveSubTab] = useState('servicing');
   const appLanguage = Cookies.get("appLanguage");
 
   useEffect(() => {
@@ -47,6 +51,19 @@ const Record = props => {
     };
     fetchRecord();
   }, []);
+
+  useEffect(() => {
+    let ld = [];
+    
+    if(record !== null && record.damages) {
+      Object.values(record.damages).map(v=> {
+        let isExist = _.get(ld, v.zone, null)
+        if(isExist === null) ld[v.zone] = [v]
+        else isExist.push(v)
+      })
+    }
+    setSections(ld)
+  },[record])
 
   if (notFound) {
     return (
@@ -89,6 +106,10 @@ const Record = props => {
       );
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
+  }
+
+  const toggle = tab => {
+    if(activeTab !== tab) setActiveTab(tab);
   }
 
   return (
@@ -204,95 +225,135 @@ const Record = props => {
           <Row>
             <Col xs="12" className="text-center">
               <div className="container-separator">
-                <div className="container-separator-title">
-                  <Translate code="vehicle_description"></Translate>
-                </div>
+                <Button
+                  color="light"
+                  className={activeTab === '1' ? "container-separator-title" : "container-separator-title-light"}
+                  onClick={() => toggle('1')}
+                >
+                  {t("vehicle_description")}
+                </Button>
+                <Button
+                  color="light"
+                  className={activeTab === '2' ? "container-separator-title" : "container-separator-title-light"}
+                  onClick={() => toggle('2')}
+                >
+                  {t("Entretien et dommage de vehicule")}
+                </Button>
               </div>
             </Col>
-            <Col xs="12" md="6">
-              {record.characteristics && (
-                <>
-                  <div className="section-title">
-                    <Translate code="caracteristics"></Translate>
-                  </div>
-                  <TableList items={record.characteristics} />
-                </>
-              )}
-              {record.administrativeDetails && (
-                <>
-                  <div className="section-title">
-                    <Translate code="administrative_details"></Translate>
-                  </div>
-                  <TableList items={record.administrativeDetails} />
-                </>
-              )}
-            </Col>
-            <Col xs="12" md="6">
-              {record.declaredEquipments &&
-                record.declaredEquipments.length > 0 && (
-                  <>
-                    <div className="section-title">
-                      <Translate code="declared_equiments"></Translate>
-                    </div>
-                    <EquipmentList items={record.declaredEquipments} />
-                  </>
-                )}
-              {record.market && (
-                <>
-                  <div className="section-title">
-                    <Row>
-                      <Col xs="12" md="4">
-                        <Translate code="the_market"></Translate>
-                        <i><Translate code="autobizMarketSource"></Translate></i>
-                      </Col>
-                      <Col xs="12" md="8" className="section-title-link">
-                        <a href={record.market.MarketLink} target="_blank">
-                          {`${t("market_link")} `}
-                          <FontAwesomeIcon icon={faExternalLinkAlt} />
-                        </a>
-                      </Col>
-                    </Row>
-                  </div>
-                  <TableList items={record.market} />
-                </>
-              )}
-              {record.history && (
-                <>
-                  <div className="section-title">
-                    <Translate code="history"></Translate>
-                  </div>
-                  <TableList items={record.history} />
-                </>
-              )}
-              {record.servicing && (
-                <>
-                  <div className="section-title">
-                    <Translate code="servicing"></Translate>
-                  </div>
-                  <TableList items={record.servicing} />
-                </>
-              )}
-            </Col>
-
-            {record.constructorEquipments &&
-              record.constructorEquipments.length > 0 && (
-                <>
-                  <Col xs="12">
-                    <hr className="mt-5 mb-0" />
+            <TabContent activeTab={activeTab}>
+              <TabPane tabId="1">
+                <Row>
+                  <Col xs="12" md="6">
+                    {record.characteristics && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="caracteristics"></Translate>
+                        </div>
+                        <TableList items={record.characteristics} />
+                      </>
+                    )}
+                    {record.administrativeDetails && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="administrative_details"></Translate>
+                        </div>
+                        <TableList items={record.administrativeDetails} />
+                      </>
+                    )}
                   </Col>
-                  <Col xs="12">
-                    <div className="section-title text-center">
-                      <Translate code="equiments"></Translate>
-                      <i>
-                        <Translate code="constructor_source"></Translate>
-                      </i>
+                  <Col xs="12" md="6">
+                    {record.declaredEquipments &&
+                    record.declaredEquipments.length > 0 && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="declared_equiments"></Translate>
+                        </div>
+                        <EquipmentList items={record.declaredEquipments} />
+                      </>
+                    )}
+                    {record.market && (
+                      <>
+                        <div className="section-title">
+                          <Row>
+                            <Col xs="12" md="6" className="section-market">
+                              <Translate code="the_market"></Translate>
+                              <i><Translate code="autobizMarketSource"></Translate></i>
+                            </Col>
+                            <Col xs="12" md="6" className="section-title-link">
+                              <a href={record.market.MarketLink} target="_blank">
+                                {`${t("market_link")} `}
+                                <FontAwesomeIcon icon={faExternalLinkAlt} />
+                              </a>
+                            </Col>
+                          </Row>
+                        </div>
+                        <TableList items={record.market} />
+                      </>
+                    )}
+                    {record.history && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="history"></Translate>
+                        </div>
+                        <TableList items={record.history} />
+                      </>
+                    )}
+                    {record.servicing && (
+                      <>
+                        <div className="section-title">
+                          <Translate code="servicing"></Translate>
+                        </div>
+                        <TableList items={record.servicing} />
+                      </>
+                    )}
+                  </Col>
+                  {record.constructorEquipments &&
+                    record.constructorEquipments.length > 0 && (
+                      <>
+                        <Col xs="12">
+                          <hr className="mt-5 mb-0" />
+                        </Col>
+                        <Col xs="12">
+                          <div className="section-title text-center">
+                            <Translate code="equiments"></Translate>
+                            <i>
+                              <Translate code="constructor_source"></Translate>
+                            </i>
+                          </div>
+                          {Object.values(record.constructorEquipments).map(items => (
+                            <UlList items={items} key={Object.keys(items)}/>
+                          ))}
+                        </Col>
+                      </>
+                    )}
+                </Row>
+              </TabPane>
+              <TabPane tabId="2">
+                <BrowserView>
+                  <Row>
+                    <Col lg='12' className='section-zone'>
+                      <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
+                    </Col>
+                    <div className="section-damages">
+                      {activeSubTab && <ShowDamages data={_.get(sections, activeSubTab, null)} />}
                     </div>
-                    {Object.values(record.constructorEquipments).map(items => (
-                      <UlList items={items} />
+                  </Row>
+                </BrowserView>
+                <MobileView>
+                  <Row>
+                    <Col>
+                    {Object.entries(sections).map(([section, items]) => (
+                      <div key={section}>
+                        <div className="section-title">{t(section)}</div>
+                          {subDamages(items)}
+                      </div>
                     ))}
-                  </Col>
-                </>
-              )}
+                    </Col>
+                  </Row>
+                </MobileView>
+              </TabPane>
+            </TabContent>
           </Row>
         </Container>
       </div>
@@ -305,3 +366,74 @@ export default Record;
 const calculateOwnerShipDuration = gcDate => {
   return moment.duration(moment().diff(moment(gcDate))).asMilliseconds()
 };
+
+const ShowDamages = (data) => {
+  let res
+  if(_.get(data, 'data', null) !== null){
+    res = Object.values(data).map(v => (
+      iterateData(v)
+    ))
+  } else res = <Col><Translate code="no_damage" /></Col>
+  return res
+}
+
+const iterateData = (v) => {
+  let item = null
+  item = subDamages(v)
+  return item
+}
+
+const subDamages = (items) =>  {
+  let damagesImage = []
+  items.forEach(i => {
+    if(i.damage_picture) damagesImage.push(i.damage_picture)
+    if(i.damage_picture2) damagesImage.push(i.damage_picture2)
+  })
+  return(items.map(i => (<Damages i={i} key={i.element} damagesImage={damagesImage}/> )))
+}
+
+const Damages = ({i, damagesImage}) => {
+  const [popedUp, setPopup] = useState(false);
+  const [photoIndex , setPhotoIndex] = useState(0)
+
+  const togglePopup = () => {
+    setPopup(!popedUp);
+  };
+
+  return(<div className="damage-list mt-4" key={i.element}>
+      <div className="item">
+        <div className="label">{t(i.damage)}</div>
+        <div className="value">{t(i.element)}</div>
+        {popedUp && <Lightbox 
+          mainSrc={damagesImage[photoIndex]}
+          nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+          prevSrc={damagesImage[(photoIndex + damagesImage.length - 1) % damagesImage.length]} 
+          onCloseRequest={togglePopup} 
+          onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % damagesImage.length)}/>}
+        {i.damage_picture && <span onClick={togglePopup}>
+          <img src={i.damage_picture} className="damage-img" />
+        </span>}
+        {i.damage_picture2 && <span onClick={togglePopup}>
+          <img src={i.damage_picture2} className="damage-img" />
+        </span>}
+      </div>
+  </div>)
+}
+
+const ListZones = ({ activeSubTab, setActiveSubTab }) => {
+  const listZone = ['servicing','wheels','body','inner','road_test','motor']
+
+  return (
+    <div className="list-zone">
+      <div className="item">
+        {listZone.map(i => (<div 
+          className={i == activeSubTab ? "label active-label" : "label"}
+          key={i} 
+          onClick={() => setActiveSubTab(i)}>
+          {`${t(i)}`}
+        </div>))}
+      </div>
+    </div>
+  )
+}

@@ -925,7 +925,7 @@
     "info_immediate_purchase": "Une fois votre achat confirm\u00e9, vous serez contact\u00e9 dans les plus brefs d\u00e9lais par l'un de nos responsables des ventes",
     "confirm_message_immediate_purchase": "Confirmez-vous votre achat ?",
     "confirm_buy": "Confimer",
-    "my_vehicles": "Mes offres",
+    "my_vehicles": "Mes v\u00e9hicules",
     "countdown_over": "Termin\u00e9",
     "pdfReport": "Rapport d'inspection",
     "kmSinceLastServicing": "km depuis le dernier entretien",
@@ -1061,5 +1061,17 @@
     "fewImportantDatEquipment": "Equipements secondaires",
     "otherDatEquipement": "Autres \u00e9quipements",
     "histovec": "Certificat de non-gage (Histovec)",
-    "autobizMarketSource": "(Source autobizMarket)"
+    "autobizMarketSource": "(autobizMarket)",
+    "firstRegistrationDate": "Date de MEC",
+    "downloadPurchaseInvoice": "T\u00e9l\u00e9charger",
+    "lastServicingKm": "km au dernier entretien",
+    "and": "et",
+    "autobizTrade_close": "autobizTrade sera ferm\u00e9 jusqu'au \n",
+    "6_january_2020": "6 janvier 2020",
+    "merry_christmas": "Toute l'\u00e9quipe autobiz vous souhaite de joyeuses f\u00eates de fin d'ann\u00e9e !",
+    "my_favourites": "Favoris",
+    "my_offers": "Ench\u00e8res en cours",
+    "my_purchases": "Achats",
+    "vo_onSale": "Ventes en cours",
+    "vo_finished": "Ventes termin\u00e9es"
 }
