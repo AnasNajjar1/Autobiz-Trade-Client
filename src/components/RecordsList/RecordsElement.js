@@ -124,7 +124,7 @@ class RecordsElement extends Component {
               <Row>
                 <Col>
                   {auction && <Countdown secondsLeft={auction.secondsLeft} />}
-                  <span className="star-icon"><Favorie record={record} /></span>
+                  <span className="star-icon"><Favorie refId={record.uuid} /></span>
                 </Col>
               </Row>
               <CardTitle>

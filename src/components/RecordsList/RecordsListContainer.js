@@ -337,12 +337,12 @@ const RecordsListContainer = () => {
                 {t("all_vehicles")}
               </Button>
 
-              {/* <Button
+              <Button
                 className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_favourites")}
               >
                 {t("my_favourites")}
-              </Button> */}
+              </Button>
 
               <Button
                 className={form.list === "my_offers" ? "blue mr-2" : "second-blue mr-2"}
