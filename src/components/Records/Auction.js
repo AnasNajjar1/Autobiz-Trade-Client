@@ -327,7 +327,7 @@ const Auction = ({ refId }) => {
               </div>
             </Col>
             <Col>
-              <Favorie refId={refId}/>
+              {!isExpired && <Favorie refId={refId}/>}
             </Col>
           </Row>
           {!isExpired && statusName === "online" && (

@@ -440,7 +440,6 @@ const RecordsListContainer = () => {
               <Col xs="12" sm="6" lg="4">
                 <Sort list={sortList} value={form.sort} sort={handleSort} />
               </Col>
-              {console.log(records)}
               {records &&
                 records.map((record, index) => (
                   <RecordsElement key={index} record={record} />
