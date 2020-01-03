@@ -17,26 +17,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../Records/Bookmark";
+const listPicture = [
+  "three_quarters_front_picture",
+  "front_picture",
+  "left_side_picture",
+  "right_side_picture"
+];
 
-class RecordsElement extends Component {
-  state = {
-    listPicture : ['front_picture', 'left_side_picture', 'right_side_picture'],
-    nextPicture : null,
-    record : this.props.record
-  };
+const RecordsElement = (props) => {
 
-  componentWillMount() {
-    if(this.state.record.three_quarters_front_picture === "null" && this.state.nextPicture === null) {
-      let i = 0
-      if(this.state.nextPicture !== null) return
-      let res = _.get(this.state.record, this.state.listPicture[i], null)
-      if(res) return this.setState({ nextPicture: this.state.listPicture[i] })
-      else i++
+    let picture = "";
+    for (const pictTitle of listPicture) {
+      picture = _.get(props, `record.${pictTitle}`, null);
+      if (!picture || picture === "" || picture ==="null") continue;
+      break
     }
-  }
 
-  render() {
-    const { record } = this.props;
+    const { record } = props;
     const { auction, bookmarked } = record;
 
     return (
@@ -104,19 +101,11 @@ class RecordsElement extends Component {
               </Row>
             </div>
             <div className="card-head">
-              {(record.three_quarters_front_picture !== "null" && (
-                <img
-                  className="card-img-top"
-                  src={record.three_quarters_front_picture}
-                  alt={record.brandLabel + " " + record.modelLabel}
-                />
-              )) || (
-                <img
-                  className="card-img-top"
-                  src={record[this.state.nextPicture]}
-                  alt={""}
-                />
-              )}
+              <img
+                className="card-img-top"
+                src={picture}
+                alt={record.brandLabel + " " + record.modelLabel}
+              />
               <RecordsElementGrade grade={record.profileCosts} />
             </div>
 
@@ -124,7 +113,11 @@ class RecordsElement extends Component {
               <Row>
                 <Col>
                   {auction && <Countdown secondsLeft={auction.secondsLeft} />}
-                  {auction.secondsLeft > 0 && <span className="star-icon"><Bookmark refId={record.uuid} bookmarked={bookmarked} /></span>}
+                  {auction.secondsLeft > 0 && (
+                    <span className="star-icon">
+                      <Bookmark refId={record.uuid} bookmarked={bookmarked} />
+                    </span>
+                  )}
                 </Col>
               </Row>
               <CardTitle>
@@ -146,35 +139,41 @@ class RecordsElement extends Component {
                       </p>
                     )}
 
-                    {auction.salesType === "immediatePurchase" && (
+                    {(auction.salesType === "immediatePurchase" && (
                       <p className="immediate-purchase">
                         <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                         {t("immediate_purchase")}
                       </p>
-                    ) || <p className="text-right small"><Translate code="auction" /></p>}
+                    )) || (
+                      <p className="text-right small">
+                        <Translate code="auction" />
+                      </p>
+                    )}
                   </Col>
                 </Row>
               </CardTitle>
               <div className="text-center wrapper">
-                {record.firstRegistrationDate && record.fuelLabel && record.mileage !== null && (
-                  <span className="tag tag-white">
-                    {record.firstRegistrationDate && (
-                      <span className="text-nowrap after-slash-divider">
-                        {moment(record.firstRegistrationDate).format('YYYY')}
-                      </span>
-                    )}
-                    {record.fuelLabel && (
-                      <span className="text-nowrap after-slash-divider">
-                        {t(record.fuelLabel)}
-                      </span>
-                    )}
-                    {record.mileage !== null && (
-                      <span className="text-nowrap after-slash-divider">
-                        {record.mileage.toLocaleString()} {t("Km")}
-                      </span>
-                    )}
-                  </span>
-                )}
+                {record.firstRegistrationDate &&
+                  record.fuelLabel &&
+                  record.mileage !== null && (
+                    <span className="tag tag-white">
+                      {record.firstRegistrationDate && (
+                        <span className="text-nowrap after-slash-divider">
+                          {moment(record.firstRegistrationDate).format("YYYY")}
+                        </span>
+                      )}
+                      {record.fuelLabel && (
+                        <span className="text-nowrap after-slash-divider">
+                          {t(record.fuelLabel)}
+                        </span>
+                      )}
+                      {record.mileage !== null && (
+                        <span className="text-nowrap after-slash-divider">
+                          {record.mileage.toLocaleString()} {t("Km")}
+                        </span>
+                      )}
+                    </span>
+                  )}
               </div>
             </CardBody>
             <CardFooter>
@@ -193,7 +192,6 @@ class RecordsElement extends Component {
         </Link>
       </Col>
     );
-  }
 }
 
 export default RecordsElement;
