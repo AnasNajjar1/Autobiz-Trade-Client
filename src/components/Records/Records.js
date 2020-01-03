@@ -4,7 +4,15 @@ import Cookies from "js-cookie";
 import moment from "moment";
 import _ from "lodash";
 import { API } from "aws-amplify";
-import { Container, Row, Col, Alert, Button, TabContent,TabPane } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Alert,
+  Button,
+  TabContent,
+  TabPane
+} from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faQuoteLeft,
@@ -25,15 +33,15 @@ import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
 import { BrowserView, MobileView } from "react-device-detect";
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 const Record = props => {
   const [record, setRecord] = useState([]);
-  const [sections, setSections] = useState([])
+  const [sections, setSections] = useState([]);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('1');
-  const [activeSubTab, setActiveSubTab] = useState('servicing');
+  const [activeTab, setActiveTab] = useState("1");
+  const [activeSubTab, setActiveSubTab] = useState("servicing");
   const appLanguage = Cookies.get("appLanguage");
 
   useEffect(() => {
@@ -55,16 +63,16 @@ const Record = props => {
 
   useEffect(() => {
     let ld = [];
-    
-    if(record !== null && record.damages) {
-      Object.values(record.damages).map(v=> {
-        let isExist = _.get(ld, v.zone, null)
-        if(isExist === null) ld[v.zone] = [v]
-        else isExist.push(v)
-      })
+
+    if (record !== null && record.damages) {
+      Object.values(record.damages).map(v => {
+        let isExist = _.get(ld, v.zone, null);
+        if (isExist === null) ld[v.zone] = [v];
+        else isExist.push(v);
+      });
     }
-    setSections(ld)
-  },[record])
+    setSections(ld);
+  }, [record]);
 
   if (notFound) {
     return (
@@ -110,8 +118,8 @@ const Record = props => {
   }
 
   const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
-  }
+    if (activeTab !== tab) setActiveTab(tab);
+  };
 
   return (
     <>
@@ -228,15 +236,23 @@ const Record = props => {
               <div className="container-separator">
                 <Button
                   color="light"
-                  className={activeTab === '1' ? "container-separator-title" : "container-separator-title-light"}
-                  onClick={() => toggle('1')}
+                  className={
+                    activeTab === "1"
+                      ? "container-separator-title"
+                      : "container-separator-title-light"
+                  }
+                  onClick={() => toggle("1")}
                 >
                   {t("vehicle_description")}
                 </Button>
                 <Button
                   color="light"
-                  className={activeTab === '2' ? "container-separator-title" : "container-separator-title-light"}
-                  onClick={() => toggle('2')}
+                  className={
+                    activeTab === "2"
+                      ? "container-separator-title"
+                      : "container-separator-title-light"
+                  }
+                  onClick={() => toggle("2")}
                 >
                   {t("titleServicingAndDamage")}
                 </Button>
@@ -265,24 +281,29 @@ const Record = props => {
                   </Col>
                   <Col xs="12" md="6">
                     {record.declaredEquipments &&
-                    record.declaredEquipments.length > 0 && (
-                      <>
-                        <div className="section-title">
-                          <Translate code="declared_equiments"></Translate>
-                        </div>
-                        <EquipmentList items={record.declaredEquipments} />
-                      </>
-                    )}
+                      record.declaredEquipments.length > 0 && (
+                        <>
+                          <div className="section-title">
+                            <Translate code="declared_equiments"></Translate>
+                          </div>
+                          <EquipmentList items={record.declaredEquipments} />
+                        </>
+                      )}
                     {record.market && (
                       <>
                         <div className="section-title">
                           <Row>
                             <Col xs="12" md="6" className="section-market">
                               <Translate code="the_market"></Translate>
-                              <i><Translate code="autobizMarketSource"></Translate></i>
+                              <i>
+                                <Translate code="autobizMarketSource"></Translate>
+                              </i>
                             </Col>
                             <Col xs="12" md="6" className="section-title-link">
-                              <a href={record.market.MarketLink} target="_blank">
+                              <a
+                                href={record.market.MarketLink}
+                                target="_blank"
+                              >
                                 {`${t("market_link")} `}
                                 <FontAwesomeIcon icon={faExternalLinkAlt} />
                               </a>
@@ -322,9 +343,15 @@ const Record = props => {
                               <Translate code="constructor_source"></Translate>
                             </i>
                           </div>
-                          {Object.values(record.constructorEquipments).map(items => (
-                            <UlList items={items} key={Object.keys(items)}/>
-                          ))}
+                          {Object.values(record.constructorEquipments).map(
+                            items =>
+                              items && (
+                                <UlList
+                                  items={items}
+                                  key={Object.keys(items)}
+                                />
+                              )
+                          )}
                         </Col>
                       </>
                     )}
@@ -333,23 +360,30 @@ const Record = props => {
               <TabPane tabId="2">
                 <BrowserView>
                   <Row>
-                    <Col lg='12' className='section-zone'>
-                      <ListZones activeSubTab={activeSubTab} setActiveSubTab={setActiveSubTab} />
+                    <Col lg="12" className="section-zone">
+                      <ListZones
+                        activeSubTab={activeSubTab}
+                        setActiveSubTab={setActiveSubTab}
+                      />
                     </Col>
                     <div className="section-damages">
-                      {activeSubTab && <ShowDamages data={_.get(sections, activeSubTab, null)} />}
+                      {activeSubTab && (
+                        <ShowDamages
+                          data={_.get(sections, activeSubTab, null)}
+                        />
+                      )}
                     </div>
                   </Row>
                 </BrowserView>
                 <MobileView>
                   <Row>
                     <Col>
-                    {Object.entries(sections).map(([section, items]) => (
-                      <div key={section}>
-                        <div className="section-title">{t(section)}</div>
+                      {Object.entries(sections).map(([section, items]) => (
+                        <div key={section}>
+                          <div className="section-title">{t(section)}</div>
                           {subDamages(items)}
-                      </div>
-                    ))}
+                        </div>
+                      ))}
                     </Col>
                   </Row>
                 </MobileView>
@@ -365,81 +399,126 @@ const Record = props => {
 export default Record;
 
 const calculateOwnerShipDuration = gcDate => {
-  return moment.duration(moment().diff(moment(gcDate))).asMilliseconds()
+  return moment.duration(moment().diff(moment(gcDate))).asMilliseconds();
 };
 
-const ShowDamages = (data) => {
-  let res
-  if(_.get(data, 'data', null) !== null){
-    res = Object.values(data).map(v => (
-      iterateData(v)
-    ))
-  } else res = <Col className='mt-5'><Translate code="no_damage" /></Col>
-  return res
-}
+const ShowDamages = data => {
+  let res;
+  if (_.get(data, "data", null) !== null) {
+    res = Object.values(data).map(v => iterateData(v));
+  } else
+    res = (
+      <Col className="mt-5">
+        <Translate code="no_damage" />
+      </Col>
+    );
+  return res;
+};
 
-const iterateData = (v) => {
-  let item = null
-  item = subDamages(v)
-  return item
-}
+const iterateData = v => {
+  let item = null;
+  item = subDamages(v);
+  return item;
+};
 
-const subDamages = (items) =>  {
-  let damagesImage = []
+const subDamages = items => {
+  let damagesImage = [];
   items.forEach(i => {
-    if(i.damage_picture) damagesImage.push(i.damage_picture)
-    if(i.damage_picture2) damagesImage.push(i.damage_picture2)
-  })
-  return(items.map(i => (<Damages i={i} key={i.element} damagesImage={damagesImage}/> )))
-}
+    if (i.damage_picture) damagesImage.push(i.damage_picture);
+    if (i.damage_picture2) damagesImage.push(i.damage_picture2);
+  });
+  return items.map(i => (
+    <Damages i={i} key={i.element} damagesImage={damagesImage} />
+  ));
+};
 
-const Damages = ({i, damagesImage}) => {
+const Damages = ({ i, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
-  const [photoIndex , setPhotoIndex] = useState(0)
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   const togglePopup = () => {
     setPopup(!popedUp);
   };
 
-    return(
-    <div className={i.is_custom == true && i.custom_damage !== '' && "custom-damage mt-4"||"damage-list mt-4"} key={i.element}>
+  return (
+    <div
+      className={
+        (i.is_custom == true &&
+          i.custom_damage !== "" &&
+          "custom-damage mt-4") ||
+        "damage-list mt-4"
+      }
+      key={i.element}
+    >
       <div className="item">
-       {i.is_custom == true && i.custom_damage !== '' && <>
-          <div className="label"><FontAwesomeIcon icon={faExclamationCircle} />{t('other_custom_damage')} {t('inFrench')}</div>
-          <div className="value">{i.custom_damage}</div>
-          </> ||<>
-          <div className="label">{t(i.element)}</div>
-          <div className="value">{t(i.damage)}</div></>}
-        {popedUp && <Lightbox
-          mainSrc={damagesImage[photoIndex]}
-          nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
-          prevSrc={damagesImage[(photoIndex + damagesImage.length - 1) % damagesImage.length]} 
-          onCloseRequest={togglePopup} 
-          onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
-          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % damagesImage.length)}/>}
-        {i.damage_picture && <span onClick={togglePopup}>
-          <img src={i.damage_picture} className="damage-img" />
-        </span>}
-        {i.damage_picture2 && <span onClick={togglePopup}>
-          <img src={i.damage_picture2} className="damage-img" />
-        </span>}
+        {(i.is_custom == true && i.custom_damage !== "" && (
+          <>
+            <div className="label">
+              <FontAwesomeIcon icon={faExclamationCircle} />
+              {t("other_custom_damage")} {t("inFrench")}
+            </div>
+            <div className="value">{i.custom_damage}</div>
+          </>
+        )) || (
+          <>
+            <div className="label">{t(i.element)}</div>
+            <div className="value">{t(i.damage)}</div>
+          </>
+        )}
+        {popedUp && (
+          <Lightbox
+            mainSrc={damagesImage[photoIndex]}
+            // nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+            // prevSrc={
+            //   damagesImage[
+            //     (photoIndex + damagesImage.length - 1) % damagesImage.length
+            //   ]
+            // }
+            onCloseRequest={togglePopup}
+            //onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+            // onMoveNextRequest={() =>
+            //   setPhotoIndex((photoIndex + 1) % damagesImage.length)
+            // }
+          />
+        )}
+        {i.damage_picture && (
+          <span onClick={togglePopup}>
+            <img src={i.damage_picture} className="damage-img" />
+          </span>
+        )}
+        {i.damage_picture2 && (
+          <span onClick={togglePopup}>
+            <img src={i.damage_picture2} className="damage-img" />
+          </span>
+        )}
       </div>
-  </div>)
-}
+    </div>
+  );
+};
 
 const ListZones = ({ activeSubTab, setActiveSubTab }) => {
-  const listZone = ['servicing','wheels','body','inner','road_test','motor']
+  const listZone = [
+    "servicing",
+    "wheels",
+    "body",
+    "inner",
+    "road_test",
+    "motor"
+  ];
 
   return (
     <div className="list-zone">
       <div className="item">
-        {listZone.map(i => (<div 
-          className={i == activeSubTab ? "label active-label" : "label"}
-          key={i} 
-          onClick={() => setActiveSubTab(i)}>
-          {`${t(i)}`}
-        </div>))}
+        {listZone.map(i => (
+          <div
+            className={i == activeSubTab ? "label active-label" : "label"}
+            key={i}
+            onClick={() => setActiveSubTab(i)}
+          >
+            {`${t(i)}`}
+          </div>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
