@@ -37,7 +37,7 @@ const Bookmark = ({ refId, bookmarked }) => {
 
   return (
     //className="Bookmark-icon"
-    <span>
+    <span className="star-icon-bookmark">
       <FontAwesomeIcon
         icon={faStar}
         className={(isBookmarked && "star-fav red") || "star-fav gray"}

@@ -390,6 +390,13 @@ header {
   left: -20px; 
 }
 
+.star-icon-bookmark {
+  @include media-breakpoint-down(xs) {
+    position: absolute;
+    margin-left: 45%;
+  }
+}
+
 .car-list {
   @include media-breakpoint-down(xs) {
     margin: 0 0;
@@ -1201,11 +1208,6 @@ footer {
 }
 .star-fav {
   cursor: pointer;
-  transition: transform .2s
-}
-
-.star-fav:hover {
-  transform: scale(1.5);
 }
 
 @import "carousel";

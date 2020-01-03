@@ -329,19 +329,19 @@ const RecordsListContainer = () => {
           <Row>
             <Col className="mb-2">
               <Button
-                className={form.list === "all" ?  "blue mr-2" : "second-blue mr-2"}
+                className={form.list === "all" ?  "blue mr-2 mb-2" : "second-blue mr-2 mb-2"}
                 onClick={() => showCustomList("all")}
               >
                 {t("all_vehicles")}
               </Button>
               <Button
-                className={form.list === "my_offers" ? "blue mr-2" : "second-blue mr-2"}
+                className={form.list === "my_offers" ? "blue mr-2 mb-2" : "second-blue mr-2 mb-2"}
                 onClick={() => showCustomList("my_offers")}
               >
                 {t("my_offers")}
               </Button>
               <Button
-                className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
+                className={form.list === "my_favourites" ? "blue mr-2 mb-2" : "second-blue mr-2 mb-2"}
                 onClick={() => showCustomList("my_favourites")}
               >
                 {t("my_favourites")}
