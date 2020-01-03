@@ -76,7 +76,8 @@
 }
 .slick-slide img {
   display: block;
-  width: 100%;
+  margin: 0 auto;
+  width: 400px;
 }
 .slick-slide.slick-loading img {
   display: none;
@@ -214,8 +215,8 @@
 }
 
 .slick-slider.slider-main {
-  width: calc(100% + 50px);
-  margin-left: -25px;
+  margin-left: -15px;
+  width: calc(100% + 30px);
   height: 280px;
   border-radius: 10px;
   overflow: hidden;
@@ -224,13 +225,13 @@
   }
   img {
     height: 280px;
-    object-fit: cover;
+    margin: 0 auto;
     cursor: pointer;
   }
 
   .slick-next,
   .slick-prev {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 40px;
     width: 50px;
     height: 50px;
