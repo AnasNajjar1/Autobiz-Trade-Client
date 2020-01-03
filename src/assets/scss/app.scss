@@ -821,7 +821,7 @@ header {
     .item {
       display: block;
       text-align: center;
-      border-bottom: 1px solid #081a29;
+      border-bottom: 1px solid #4167a5;
       &:last-child() {
         margin-left: 0%;
       }
@@ -835,8 +835,8 @@ header {
     }
     .label:hover, .active-label {
       padding: 15px;
-      border-bottom: 1px solid #0d2030;
-      color: #0d2030;
+      border-bottom: 1px solid #4167a5;
+      color: #4167a5;
     }
   }
 }

@@ -12,7 +12,8 @@ import {
   faSpinner,
   faExclamationTriangle,
   faMapMarkerAlt,
-  faExternalLinkAlt
+  faExternalLinkAlt,
+  faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "./Carousel.js";
 import TagsProps from "./TagsProps.js";
@@ -237,7 +238,7 @@ const Record = props => {
                   className={activeTab === '2' ? "container-separator-title" : "container-separator-title-light"}
                   onClick={() => toggle('2')}
                 >
-                  {t("Entretien et dommage de vehicule")}
+                  {t("titleServicingAndDamage")}
                 </Button>
               </div>
             </Col>
@@ -373,7 +374,7 @@ const ShowDamages = (data) => {
     res = Object.values(data).map(v => (
       iterateData(v)
     ))
-  } else res = <Col><Translate code="no_damage" /></Col>
+  } else res = <Col className='mt-5'><Translate code="no_damage" /></Col>
   return res
 }
 
@@ -400,11 +401,16 @@ const Damages = ({i, damagesImage}) => {
     setPopup(!popedUp);
   };
 
-  return(<div className="damage-list mt-4" key={i.element}>
+    return(
+    <div className={i.is_custom == true && i.custom_damage !== '' && "custom-damage mt-4"||"damage-list mt-4"} key={i.element}>
       <div className="item">
-        <div className="label">{t(i.damage)}</div>
-        <div className="value">{t(i.element)}</div>
-        {popedUp && <Lightbox 
+       {i.is_custom == true && i.custom_damage !== '' && <>
+          <div className="label"><FontAwesomeIcon icon={faExclamationCircle} />{t('other_custom_damage')} {t('inFrench')}</div>
+          <div className="value">{i.custom_damage}</div>
+          </> ||<>
+          <div className="label">{t(i.element)}</div>
+          <div className="value">{t(i.damage)}</div></>}
+        {popedUp && <Lightbox
           mainSrc={damagesImage[photoIndex]}
           nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
           prevSrc={damagesImage[(photoIndex + damagesImage.length - 1) % damagesImage.length]} 
