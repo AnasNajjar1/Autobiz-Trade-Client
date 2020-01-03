@@ -77,7 +77,7 @@ const Record = props => {
     );
   }
 
-  const { pointOfSale = {} } = record;
+  const { pointOfSale = {}, bookmarked } = record;
 
   let gcDate = _.get(record, "administrativeDetails.gcDate", null);
   try {
@@ -157,7 +157,7 @@ const Record = props => {
             )}
           </Col>
           <Col>
-            <Auction refId={props.refId} />
+            <Auction refId={props.refId} bookmarked={bookmarked} />
             {record.salesComment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">

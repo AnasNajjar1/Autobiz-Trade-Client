@@ -206,7 +206,6 @@ const RecordsListContainer = () => {
       });
 
       const contentRange = result.headers["content-range"];
-
       if (result.data && result.data.length > 0) {
         const contentRangeArray = contentRange.split("/");
         setRecordsCount(contentRangeArray[1]);
@@ -330,49 +329,23 @@ const RecordsListContainer = () => {
           <Row>
             <Col className="mb-2">
               <Button
-                color={form.list === "all" ? "primary" : "secondary"}
-                className="mr-2"
+                className={form.list === "all" ?  "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("all")}
               >
                 {t("all_vehicles")}
               </Button>
-
-              <Button
-                className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
-                onClick={() => showCustomList("my_favourites")}
-              >
-                {t("my_favourites")}
-              </Button>
-
               <Button
                 className={form.list === "my_offers" ? "blue mr-2" : "second-blue mr-2"}
                 onClick={() => showCustomList("my_offers")}
               >
                 {t("my_offers")}
               </Button>
-
               <Button
-                className={form.list === "my_purchases" ? "blue mr-2" : "second-blue mr-2"}
-                onClick={() => showCustomList("my_purchases")}
+                className={form.list === "my_favourites" ? "blue mr-2" : "second-blue mr-2"}
+                onClick={() => showCustomList("my_favourites")}
               >
-                {t("my_purchases")}
-              </Button>
-
-              <Button
-                className={form.list === "my_vehicles_onSale" ? "blue mr-2" : "light-blue mr-2"}
-                onClick={() => showCustomList("my_vehicles_onSale")}
-              >
-                {t("vo_onSale")}
-              </Button>
-
-              <Button
-                className={form.list === "my_vehicles_finished" ? "blue" : "light-blue"}
-                onClick={() => showCustomList("my_vehicles_finished")}
-              >
-                {t("vo_finished")}
-              </Button>
-
-              
+                {t("my_favourites")}
+              </Button>              
             </Col>
           </Row>
           <Row>

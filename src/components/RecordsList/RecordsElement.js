@@ -16,7 +16,7 @@ import {
   faTags
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
-import Favorie from "../Records/Favorie";
+import Bookmark from "../Records/Bookmark";
 
 class RecordsElement extends Component {
   state = {
@@ -37,7 +37,7 @@ class RecordsElement extends Component {
 
   render() {
     const { record } = this.props;
-    const { auction } = record;
+    const { auction, bookmarked } = record;
 
     return (
       <Col xs="12" lg="6" xl="6" className="mb-4">
@@ -124,7 +124,7 @@ class RecordsElement extends Component {
               <Row>
                 <Col>
                   {auction && <Countdown secondsLeft={auction.secondsLeft} />}
-                  {auction.secondsLeft > 0 && <span className="star-icon"><Favorie refId={record.uuid} /></span>}
+                  {auction.secondsLeft > 0 && <span className="star-icon"><Bookmark refId={record.uuid} bookmarked={bookmarked} /></span>}
                 </Col>
               </Row>
               <CardTitle>
