@@ -73,7 +73,7 @@ const RecordsElement = (props) => {
                           {t("highest_bidder")}
                         </>
                       )}
-                      {auction.salesType === "immediatePurchase" && (
+                      {auction && auction.salesType === "immediatePurchase" && (
                         <>
                           <FontAwesomeIcon
                             icon={faTags}
@@ -113,7 +113,7 @@ const RecordsElement = (props) => {
               <Row>
                 <Col>
                   {auction && <Countdown secondsLeft={auction.secondsLeft} />}
-                  {auction.secondsLeft > 0 && (
+                  {auction && auction.secondsLeft > 0 && (
                     <span className="star-icon">
                       <Bookmark refId={record.uuid} bookmarked={bookmarked} />
                     </span>
@@ -139,7 +139,7 @@ const RecordsElement = (props) => {
                       </p>
                     )}
 
-                    {(auction.salesType === "immediatePurchase" && (
+                    {(auction && auction.salesType === "immediatePurchase" && (
                       <p className="immediate-purchase">
                         <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                         {t("immediate_purchase")}
