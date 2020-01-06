@@ -3,6 +3,9 @@ import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
+import _ from "lodash";
 
 class Carousel extends Component {
   constructor(props) {
@@ -10,8 +13,8 @@ class Carousel extends Component {
     this.state = {
       nav1: null,
       nav2: null,
-      currentSlide: 1,
-      overlay: false
+      currentSlide: 0,
+      popedUp: false
     };
   }
 
@@ -21,28 +24,17 @@ class Carousel extends Component {
       nav2: this.slider2
     });
   }
-  componentDidUpdate() {
-    if (this.props.history.location.hash === "#overlay") {
-      document.getElementById("mainSliderWrapper").classList.add("overlay");
-    } else {
-      document.getElementById("mainSliderWrapper").classList.remove("overlay");
-    }
-  }
 
-  openOverlay = () => {
-    this.setState({
-      overlay: true
-    });
-  };
-
-  closeOverlay = () => {
-    this.props.history.goBack();
-    this.setState({
-      overlay: false
-    });
+  togglePopup = (index) => {
+    console.log(index)
+    let i = _.get(this.props.items, this.state.currentSlide, null)
+    if(i === null) i = index+1
+    this.setState({ currentSlide : i })
+    this.setState({ popedUp : !this.state.popedUp })
   };
 
   render() {
+    console.log(this.props.items, this.state.currentSlide)
     if (Object.keys(this.props.items).length === 0) {
       return null;
     }
@@ -51,33 +43,42 @@ class Carousel extends Component {
     })
     return (
       <div>
-        <div id="mainSliderWrapper">
-          <p className="close-link" onClick={this.closeOverlay}>
-            <FontAwesomeIcon icon={faTimes} /> Fermer
-          </p>
           <Slider
-            asNavFor={this.state.nav2}
+            asNavFor={this.state.nav1}
             ref={slider => (this.slider1 = slider)}
             infinite={false}
             className="slider-main"
             afterChange={currentSlide => {
               this.setState({ currentSlide: currentSlide + 1 });
             }}
-          >
+          >        
             {Object.values(this.props.items).map((i, index) => (
               <div key={index}>
-                <a href="#overlay" onClick={this.openOverlay}>
-                  <img src={i.value} alt="" />
-                </a>
+                <img src={i.value} alt="" onClick={() => this.togglePopup(index)} />
               </div>
             ))}
           </Slider>
+          {this.state.popedUp && <Lightbox
+            mainSrc={this.props.items[this.state.currentSlide].value}
+            nextSrc={this.props.items[(this.state.currentSlide + 1) % this.props.items.length].value}
+            prevSrc={
+              this.props.items[
+                (this.state.currentSlide + this.props.items.length - 1) % this.props.items.length
+              ].value
+            }
+            onCloseRequest={this.togglePopup}
+            onMovePrevRequest={() => 
+              this.setState({ currentSlide : (this.state.currentSlide + this.props.items.length - 1) % this.props.items.length })
+            }
+            onMoveNextRequest={() =>
+              this.setState({ currentSlide: (this.state.currentSlide + 1) % this.props.items.length })
+            }
+          />}
           <div className="slider-pagination">
             {this.state.currentSlide} / {this.props.items.length}
           </div>
-        </div>
         <Slider
-          asNavFor={this.state.nav1}
+          asNavFor={this.state.nav2}
           ref={slider => (this.slider2 = slider)}
           infinite={false}
           swipeToSlide={true}
