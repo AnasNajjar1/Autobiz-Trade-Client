@@ -537,10 +537,12 @@ header {
 
       .card-img-top {
         position: relative;
-        width: 350px;
-        height: 200px;
+        width: calc(100% + 20px);
+        left: -10px;
+        height: 250px;
+        object-fit: cover;
         @extend .rounded;
-      }
+      }    
     }
 
     &:hover {
