@@ -13,7 +13,7 @@ class Carousel extends Component {
     this.state = {
       nav1: null,
       nav2: null,
-      currentSlide: 0,
+      currentSlide: 1,
       popedUp: false
     };
   }
@@ -44,7 +44,7 @@ class Carousel extends Component {
           infinite={false}
           className="slider-main"
           afterChange={currentSlide => {
-            this.setState({ currentSlide: currentSlide });
+            this.setState({ currentSlide: currentSlide + 1 });
           }}
         >
           {Object.values(this.props.items).map((i, index) => (
@@ -55,7 +55,7 @@ class Carousel extends Component {
         </Slider>
         {this.state.popedUp && (
           <Lightbox
-            mainSrc={this.props.items[this.state.currentSlide].value}
+            mainSrc={this.props.items[this.state.currentSlide - 1].value}
             nextSrc={
               this.props.items[
                 (this.state.currentSlide + 1) % this.props.items.length
