@@ -25,58 +25,67 @@ class Carousel extends Component {
     });
   }
 
-  togglePopup = (index) => {
-    console.log(index)
-    let i = _.get(this.props.items, this.state.currentSlide, null)
-    if(i === null) i = index+1
-    this.setState({ currentSlide : i })
-    this.setState({ popedUp : !this.state.popedUp })
+  togglePopup = () => {
+    this.setState({ popedUp: !this.state.popedUp });
   };
 
   render() {
-    console.log(this.props.items, this.state.currentSlide)
     if (Object.keys(this.props.items).length === 0) {
       return null;
     }
     Object.entries(this.props.items).map(([i, v]) => {
-      if(v.value === null) delete this.props.items[i]
-    })
+      if (v.value === null) delete this.props.items[i];
+    });
     return (
       <div>
-          <Slider
-            asNavFor={this.state.nav1}
-            ref={slider => (this.slider1 = slider)}
-            infinite={false}
-            className="slider-main"
-            afterChange={currentSlide => {
-              this.setState({ currentSlide: currentSlide + 1 });
-            }}
-          >        
-            {Object.values(this.props.items).map((i, index) => (
-              <div key={index}>
-                <img src={i.value} alt="" onClick={() => this.togglePopup(index)} />
-              </div>
-            ))}
-          </Slider>
-          {this.state.popedUp && <Lightbox
+        <Slider
+          asNavFor={this.state.nav1}
+          ref={slider => (this.slider1 = slider)}
+          infinite={false}
+          className="slider-main"
+          afterChange={currentSlide => {
+            this.setState({ currentSlide: currentSlide });
+          }}
+        >
+          {Object.values(this.props.items).map((i, index) => (
+            <div key={index}>
+              <img src={i.value} alt="" onClick={() => this.togglePopup()} />
+            </div>
+          ))}
+        </Slider>
+        {this.state.popedUp && (
+          <Lightbox
             mainSrc={this.props.items[this.state.currentSlide].value}
-            nextSrc={this.props.items[(this.state.currentSlide + 1) % this.props.items.length].value}
+            nextSrc={
+              this.props.items[
+                (this.state.currentSlide + 1) % this.props.items.length
+              ].value
+            }
             prevSrc={
               this.props.items[
-                (this.state.currentSlide + this.props.items.length - 1) % this.props.items.length
+                (this.state.currentSlide + this.props.items.length - 1) %
+                  this.props.items.length
               ].value
             }
             onCloseRequest={this.togglePopup}
-            onMovePrevRequest={() => 
-              this.setState({ currentSlide : (this.state.currentSlide + this.props.items.length - 1) % this.props.items.length })
+            onMovePrevRequest={() =>
+              this.setState({
+                currentSlide:
+                  (this.state.currentSlide + this.props.items.length - 1) %
+                  this.props.items.length
+              })
             }
             onMoveNextRequest={() =>
-              this.setState({ currentSlide: (this.state.currentSlide + 1) % this.props.items.length })
+              this.setState({
+                currentSlide:
+                  (this.state.currentSlide + 1) % this.props.items.length
+              })
             }
-          />}
-          <div className="slider-pagination">
-            {this.state.currentSlide} / {this.props.items.length}
-          </div>
+          />
+        )}
+        <div className="slider-pagination">
+          {this.state.currentSlide} / {this.props.items.length}
+        </div>
         <Slider
           asNavFor={this.state.nav2}
           ref={slider => (this.slider2 = slider)}
