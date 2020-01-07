@@ -19,8 +19,9 @@ class Carousel extends Component {
   }
 
   componentDidMount() {
+
     this.setState({
-      nav1: this.slider1,
+      nav1: this.slider2,
       nav2: this.slider2
     });
   }
@@ -40,7 +41,7 @@ class Carousel extends Component {
       <div>
         <Slider
           asNavFor={this.state.nav1}
-          ref={slider => (this.slider1 = slider)}
+          ref={slider => (this.slider2 = slider)}
           infinite={false}
           className="slider-main"
           afterChange={currentSlide => {
@@ -87,8 +88,8 @@ class Carousel extends Component {
           {this.state.currentSlide} / {this.props.items.length}
         </div>
         <Slider
-          asNavFor={this.state.nav2}
-          ref={slider => (this.slider2 = slider)}
+          asNavFor={this.state.nav1}
+          ref={slider => (this.slider1 = slider)}
           infinite={false}
           swipeToSlide={true}
           variableWidth={true}
