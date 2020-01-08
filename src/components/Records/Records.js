@@ -105,12 +105,12 @@ const Record = props => {
 
   const { pointOfSale = {}, bookmarked } = record;
 
-  let gcDate = _.get(record, "administrativeDetails.gcDate", null);
+  let gcDate = _.get(record, "administrativeDetails[0].gcDate", null);
   try {
     if (gcDate)
       _.set(
         record,
-        "administrativeDetails.ownershipDuration",
+        "administrativeDetails[0].ownershipDuration",
         calculateOwnerShipDuration(gcDate)
       );
   } catch (e) {
@@ -275,7 +275,11 @@ const Record = props => {
                         <div className="section-title">
                           <Translate code="administrative_details"></Translate>
                         </div>
-                        <TableList items={record.administrativeDetails} />
+                        {Object.values(record.administrativeDetails).map(
+                          items => (
+                            <TableList items={items} key={Object.keys(items)} />
+                          )
+                        )}
                       </>
                     )}
                   </Col>
