@@ -1,25 +1,21 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import _ from "lodash";
-
 class Carousel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       nav1: null,
       nav2: null,
-      currentSlide: 1,
+      currentSlide: 0,
       popedUp: false
     };
   }
 
   componentDidMount() {
-
     this.setState({
       nav1: this.slider2,
       nav2: this.slider2
@@ -31,11 +27,11 @@ class Carousel extends Component {
   };
 
   render() {
-    if (Object.keys(this.props.items).length === 0) {
+    if (this.props.items.length === 0) {
       return null;
     }
-    Object.entries(this.props.items).map(([i, v]) => {
-      if (v.value === null) delete this.props.items[i];
+    let items = _.filter(this.props.items, function(o) {
+      return o.value;
     });
     return (
       <div>
@@ -45,47 +41,39 @@ class Carousel extends Component {
           infinite={false}
           className="slider-main"
           afterChange={currentSlide => {
-            this.setState({ currentSlide: currentSlide + 1 });
+            this.setState({ currentSlide: currentSlide });
           }}
         >
-          {Object.values(this.props.items).map((i, index) => (
-            <div key={index}>
-              <img src={i.value} alt="" onClick={() => this.togglePopup()} />
+          {items.map(({ key, value }) => (
+            <div key={key}>
+              <img src={value} alt="" onClick={() => this.togglePopup()} />
             </div>
           ))}
         </Slider>
         {this.state.popedUp && (
           <Lightbox
-            mainSrc={this.props.items[this.state.currentSlide - 1].value}
-            nextSrc={
-              this.props.items[
-                (this.state.currentSlide + 1) % this.props.items.length
-              ].value
-            }
+            mainSrc={items[this.state.currentSlide].value}
+            nextSrc={items[(this.state.currentSlide + 1) % items.length].value}
             prevSrc={
-              this.props.items[
-                (this.state.currentSlide + this.props.items.length - 1) %
-                  this.props.items.length
-              ].value
+              items[(this.state.currentSlide + items.length - 1) % items.length]
+                .value
             }
             onCloseRequest={this.togglePopup}
             onMovePrevRequest={() =>
               this.setState({
                 currentSlide:
-                  (this.state.currentSlide + this.props.items.length - 1) %
-                  this.props.items.length
+                  (this.state.currentSlide + items.length - 1) % items.length
               })
             }
             onMoveNextRequest={() =>
               this.setState({
-                currentSlide:
-                  (this.state.currentSlide + 1) % this.props.items.length
+                currentSlide: (this.state.currentSlide + 1) % items.length
               })
             }
           />
         )}
         <div className="slider-pagination">
-          {this.state.currentSlide} / {this.props.items.length}
+          {this.state.currentSlide} / {items.length}
         </div>
         <Slider
           asNavFor={this.state.nav1}
@@ -96,9 +84,9 @@ class Carousel extends Component {
           focusOnSelect={true}
           className="slider-thumbmails mt-2"
         >
-          {Object.values(this.props.items).map((i, index) => (
-            <div key={index}>
-              <img src={i.value} alt="" />
+          {items.map(({ key, value }) => (
+            <div key={key}>
+              <img src={value} alt="" />
             </div>
           ))}
         </Slider>
@@ -106,5 +94,4 @@ class Carousel extends Component {
     );
   }
 }
-
 export default withRouter(Carousel);
