@@ -225,6 +225,7 @@
   }
   img {
     height: 280px;
+    width: auto;
     margin: 0 auto;
     cursor: pointer;
   }
@@ -394,7 +395,7 @@
       justify-content: center;
       img {
         height: auto;
-        //width: 100% !important;
+        width: 100% !important;
         cursor: inherit;
         object-fit: initial;
       }
