@@ -468,17 +468,17 @@ const Damages = ({ i, damagesImage }) => {
         {popedUp && (
           <Lightbox
             mainSrc={damagesImage[photoIndex]}
-            // nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
-            // prevSrc={
-            //   damagesImage[
-            //     (photoIndex + damagesImage.length - 1) % damagesImage.length
-            //   ]
-            // }
+            nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+            prevSrc={
+              damagesImage[
+                (photoIndex + damagesImage.length - 1) % damagesImage.length
+              ]
+            }
             onCloseRequest={togglePopup}
-            //onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
-            // onMoveNextRequest={() =>
-            //   setPhotoIndex((photoIndex + 1) % damagesImage.length)
-            // }
+            onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % damagesImage.length)
+            }
           />
         )}
         {i.damage_picture && (
