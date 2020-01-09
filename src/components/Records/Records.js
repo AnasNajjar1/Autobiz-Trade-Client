@@ -111,7 +111,7 @@ const Record = props => {
     if (_.get(record.administrativeDetails, "ownershipDuration", null) === null)
       Object.entries(record.administrativeDetails).forEach(([key, value]) => {
         _.set(orderadminDetail, key, value);
-        if (key === "co2" && gcDate)
+        if (key === "gcDate" && gcDate)
           _.set(
             orderadminDetail,
             "ownershipDuration",
