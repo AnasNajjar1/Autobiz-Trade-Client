@@ -104,19 +104,24 @@ const Record = props => {
   }
 
   const { pointOfSale = {}, bookmarked } = record;
+  let orderadminDetail = {};
+  let gcDate = _.get(record, "administrativeDetails.gcDate", null);
 
-  let gcDate = _.get(record, "administrativeDetails[0].gcDate", null);
   try {
-    if (gcDate)
-      _.set(
-        record,
-        "administrativeDetails[0].ownershipDuration",
-        calculateOwnerShipDuration(gcDate)
-      );
+    if (_.get(record.administrativeDetails, "ownershipDuration", null) === null)
+      Object.entries(record.administrativeDetails).forEach(([key, value]) => {
+        _.set(orderadminDetail, key, value);
+        if (key === "co2" && gcDate)
+          _.set(
+            orderadminDetail,
+            "ownershipDuration",
+            calculateOwnerShipDuration(gcDate)
+          );
+      });
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-
+  record.administrativeDetails = orderadminDetail;
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -275,11 +280,11 @@ const Record = props => {
                         <div className="section-title">
                           <Translate code="administrative_details"></Translate>
                         </div>
-                        {Object.values(record.administrativeDetails).map(
-                          items => (
-                            <TableList items={items} key={Object.keys(items)} />
-                          )
-                        )}
+                        {/* {Object.values(record.administrativeDetails).map(
+                          items => ( */}
+                        <TableList items={record.administrativeDetails} />
+                        {/* )
+                        )} */}
                       </>
                     )}
                   </Col>
