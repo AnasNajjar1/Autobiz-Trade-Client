@@ -436,16 +436,17 @@ const subDamages = items => {
     if (i.damage_picture) damagesImage.push(i.damage_picture);
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
-  return items.map(i => (
-    <Damages i={i} key={i.element} damagesImage={damagesImage} />
+  return items.map((i, key) => (
+    <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
   ));
 };
 
-const Damages = ({ i, damagesImage }) => {
+const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(null)
 
   const togglePopup = () => {
+    setPhotoIndex(index)
     setPopup(!popedUp);
   };
 
