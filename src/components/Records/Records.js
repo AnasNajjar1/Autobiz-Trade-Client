@@ -428,11 +428,11 @@ const subDamages = items => {
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
   return items.map((i, key) => (
-    <Damages i={i} key={key} index={key} damagesImage={damagesImage} />
+    <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
   ));
 };
 
-const Damages = ({ i, index, damagesImage }) => {
+const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
 
   const togglePopup = () => {
