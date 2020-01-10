@@ -108,7 +108,7 @@ const Record = props => {
   let gcDate = _.get(record, "administrativeDetails.gcDate", null);
 
   try {
-    if (_.get(record.administrativeDetails, "ownershipDuration", null) === null)
+    if (gcDate)
       Object.entries(record.administrativeDetails).forEach(([key, value]) => {
         _.set(orderadminDetail, key, value);
         if (key === "gcDate" && gcDate)
@@ -121,7 +121,7 @@ const Record = props => {
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-  record.administrativeDetails = orderadminDetail;
+  if(orderadminDetail) record.administrativeDetails = orderadminDetail;
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
