@@ -23,7 +23,7 @@ const Documents = ({ items }) => {
       {items.map((item, index) => (
         <div className="cell" key={index}>
           <div className="item">
-            {(item.title === "pdfReport" && (
+            {(["pdfReport", "certificate_of_non_pledge"].includes(item.title) && (
               <a
                 href={`${item.link}?language=${lang}`}
                 target="_blank"
