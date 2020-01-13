@@ -254,26 +254,29 @@
     width: 80px;
     border-radius: 10px;
     object-fit: cover;
+    cursor: pointer;
   }
   .slick-list {
+    width: 85%;
     margin-left: 40px;
   }
 
   .slick-prev,
   .slick-next {
-    top: calc(50% - 12px);
-    background-color: transparent;
-    background-image: url(../img/arrow-thumb.png);
-    background-size: 10px;
-    width: 12px;
+    visibility: hidden;
+    //top: calc(50% - 12px);
+    //background-color: transparent;
+    //background-image: url(../img/arrow-thumb.png);
+    //background-size: 10px;
+    //width: 12px;
   }
-  .slick-next {
-    right: 0;
-  }
+  // .slick-next {
+  //   right: 0;
+  // }
 
-  .slick-prev {
-    left: 0;
-  }
+  // .slick-prev {
+  //   left: 0;
+  // }
 }
 .section-damages {
   width: 100vh;

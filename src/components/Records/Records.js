@@ -104,19 +104,24 @@ const Record = props => {
   }
 
   const { pointOfSale = {}, bookmarked } = record;
-
+  let orderadminDetail = {};
   let gcDate = _.get(record, "administrativeDetails.gcDate", null);
+
   try {
     if (gcDate)
-      _.set(
-        record,
-        "administrativeDetails.ownershipDuration",
-        calculateOwnerShipDuration(gcDate)
-      );
+      Object.entries(record.administrativeDetails).forEach(([key, value]) => {
+        _.set(orderadminDetail, key, value);
+        if (key === "gcDate" && gcDate)
+          _.set(
+            orderadminDetail,
+            "ownershipDuration",
+            calculateOwnerShipDuration(gcDate)
+          );
+      });
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-
+  if(orderadminDetail) record.administrativeDetails = orderadminDetail;
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -275,7 +280,11 @@ const Record = props => {
                         <div className="section-title">
                           <Translate code="administrative_details"></Translate>
                         </div>
+                        {/* {Object.values(record.administrativeDetails).map(
+                          items => ( */}
                         <TableList items={record.administrativeDetails} />
+                        {/* )
+                        )} */}
                       </>
                     )}
                   </Col>
@@ -434,8 +443,10 @@ const subDamages = items => {
 
 const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(null)
 
   const togglePopup = () => {
+    setPhotoIndex(index)
     setPopup(!popedUp);
   };
 
@@ -466,18 +477,18 @@ const Damage = ({ i, index, damagesImage }) => {
         )}
         {popedUp && (
           <Lightbox
-            mainSrc={damagesImage[index]}
-            // nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
-            // prevSrc={
-            //   damagesImage[
-            //     (photoIndex + damagesImage.length - 1) % damagesImage.length
-            //   ]
-            // }
+            mainSrc={damagesImage[photoIndex]}
+            nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+            prevSrc={
+              damagesImage[
+                (photoIndex + damagesImage.length - 1) % damagesImage.length
+              ]
+            }
             onCloseRequest={togglePopup}
-            //onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
-            // onMoveNextRequest={() =>
-            //   setPhotoIndex((photoIndex + 1) % damagesImage.length)
-            // }
+            onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % damagesImage.length)
+            }
           />
         )}
         {i.damage_picture && (
