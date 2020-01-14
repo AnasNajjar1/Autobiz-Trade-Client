@@ -432,9 +432,9 @@ const iterateData = v => {
 
 const subDamages = items => {
   let damagesImage = [];
-  items.forEach(i => {
-    if (i.damage_picture) damagesImage.push(i.damage_picture);
-    if (i.damage_picture2) damagesImage.push(i.damage_picture2);
+  items.forEach((i, key) => {
+    if (i.damage_picture) damagesImage[key] = [i.damage_picture];
+    if (i.damage_picture2) damagesImage[key].push(i.damage_picture2);
   });
   return items.map((i, key) => (
     <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
@@ -445,8 +445,12 @@ const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(null)
 
-  const togglePopup = () => {
-    setPhotoIndex(index)
+  const togglePopup = (photo) => {
+    let currentKey
+    damagesImage[index].forEach((i, key) => {
+      if(i === photo) currentKey = key
+    })
+    setPhotoIndex(currentKey)
     setPopup(!popedUp);
   };
 
@@ -477,27 +481,27 @@ const Damage = ({ i, index, damagesImage }) => {
         )}
         {popedUp && (
           <Lightbox
-            mainSrc={damagesImage[photoIndex]}
-            nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
+            mainSrc={damagesImage[index][photoIndex]}
+            nextSrc={damagesImage[index][(photoIndex + 1) % damagesImage[index].length]}
             prevSrc={
-              damagesImage[
-                (photoIndex + damagesImage.length - 1) % damagesImage.length
+              damagesImage[index][
+                (photoIndex + damagesImage[index].length - 1) % damagesImage[index].length
               ]
             }
             onCloseRequest={togglePopup}
-            onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage.length - 1) % damagesImage.length)}
+            onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage[index].length - 1) % damagesImage[index].length)}
             onMoveNextRequest={() =>
-              setPhotoIndex((photoIndex + 1) % damagesImage.length)
+              setPhotoIndex((photoIndex + 1) % damagesImage[index].length)
             }
           />
         )}
         {i.damage_picture && (
-          <span onClick={togglePopup}>
+          <span onClick={() => togglePopup(i.damage_picture)}>
             <img src={i.damage_picture} className="damage-img" />
           </span>
         )}
         {i.damage_picture2 && (
-          <span onClick={togglePopup}>
+          <span onClick={()=> togglePopup(i.damage_picture2)}>
             <img src={i.damage_picture2} className="damage-img" />
           </span>
         )}
