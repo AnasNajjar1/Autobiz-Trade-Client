@@ -829,6 +829,10 @@ header {
   .item {
     text-align: center;
     color: #989ea3;
+    &.item:hover {
+      text-decoration: underline;
+    }
+    cursor: pointer;
     @extend .pt-3;
     @extend .pb-2;
   }
