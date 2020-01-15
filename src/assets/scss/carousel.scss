@@ -294,7 +294,7 @@
   }
   @include media-breakpoint-down(sm) {
     display: block;
-    width: 420px;
+    width: 340px;
   }
   @extend .px-4;
   .item {
@@ -321,6 +321,7 @@
 }
 
 .custom-damage {
+  width: 100vh;
   @extend .damage-list;
   background-color:  rgb(248, 234, 234) !important;
 }

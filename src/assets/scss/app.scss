@@ -842,8 +842,8 @@ header {
 .section-zone {
   width: 100vh;
   .list-zone {
-    width:629px;
-    margin-left: calc(24%);
+    width:729px;
+    margin-left: calc(20%);
     @include media-breakpoint-down(md) {
       width:500px;
       margin-left: 0%;
