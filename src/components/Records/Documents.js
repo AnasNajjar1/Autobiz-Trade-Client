@@ -6,6 +6,8 @@ import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
+import { lang as pdfLang } from ".././../config";
+import _ from "lodash";
 const Documents = ({ items }) => {
   const lang = Cookies.get("appLanguage");
   const [popup, setPopup] = useState(false);
@@ -25,7 +27,7 @@ const Documents = ({ items }) => {
           <div className="item">
             {(["pdfReport", "certificate_of_non_pledge"].includes(item.title) && (
               <a
-                href={`${item.link}?language=${lang}`}
+                href={`${item.link}?language=${_.get(pdfLang, lang, pdfLang["default"])}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
