@@ -121,7 +121,7 @@ const Record = props => {
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-  if(orderadminDetail) record.administrativeDetails = orderadminDetail;
+  if (orderadminDetail) record.administrativeDetails = orderadminDetail;
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -386,7 +386,7 @@ const Record = props => {
                 </BrowserView>
                 <MobileView>
                   <Row>
-                    <Col>
+                    <Col lg="12">
                       {Object.entries(sections).map(([section, items]) => (
                         <div key={section}>
                           <div className="section-title">{t(section)}</div>
@@ -443,7 +443,7 @@ const subDamages = items => {
 
 const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(null)
+  const [photoIndex, setPhotoIndex] = useState(null);
 
   const togglePopup = (photo) => {
     let currentKey
@@ -476,7 +476,11 @@ const Damage = ({ i, index, damagesImage }) => {
         )) || (
           <>
             <div className="label">{t(i.element)}</div>
-            <div className="value">{t(i.damage)}</div>
+            <div className="value">
+              {(typeof i.damage === "object" &&
+                i.damage.map(i => `${t(i)} `)) ||
+                t(i.damage)}
+            </div>
           </>
         )}
         {popedUp && (
@@ -517,7 +521,8 @@ const ListZones = ({ activeSubTab, setActiveSubTab }) => {
     "body",
     "inner",
     "road_test",
-    "motor"
+    "motor",
+    "crash"
   ];
 
   return (
