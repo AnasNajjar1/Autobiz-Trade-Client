@@ -121,7 +121,7 @@ const Record = props => {
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-  if(orderadminDetail) record.administrativeDetails = orderadminDetail;
+  if (orderadminDetail) record.administrativeDetails = orderadminDetail;
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -386,7 +386,7 @@ const Record = props => {
                 </BrowserView>
                 <MobileView>
                   <Row>
-                    <Col>
+                    <Col lg="12">
                       {Object.entries(sections).map(([section, items]) => (
                         <div key={section}>
                           <div className="section-title">{t(section)}</div>
@@ -443,16 +443,19 @@ const subDamages = items => {
 
 const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(null)
+  const [photoIndex, setPhotoIndex] = useState(null);
 
-  const togglePopup = (photo) => {
-    let currentKey
+  const togglePopup = photo => {
+    let currentKey;
     damagesImage[index].forEach((i, key) => {
-      if(i === photo) currentKey = key
-    })
-    setPhotoIndex(currentKey)
+      if (i === photo) currentKey = key;
+    });
+    setPhotoIndex(currentKey);
     setPopup(!popedUp);
   };
+
+  let accidentDamage;
+  if (typeof i.damage === "object") accidentDamage = i.damage;
 
   return (
     <div
@@ -476,20 +479,35 @@ const Damage = ({ i, index, damagesImage }) => {
         )) || (
           <>
             <div className="label">{t(i.element)}</div>
-            <div className="value">{t(i.damage)}</div>
+            <div className="value">
+              {typeof i.damage === "object" &&
+                i.damage.map((i, key) => {
+                  if (key < accidentDamage.length - 1) return `${t(i)}, `;
+                  else return `${t(i)}`;
+                })}
+              {typeof i.damage !== "object" && t(i.damage)}
+            </div>
           </>
         )}
         {popedUp && (
           <Lightbox
             mainSrc={damagesImage[index][photoIndex]}
-            nextSrc={damagesImage[index][(photoIndex + 1) % damagesImage[index].length]}
+            nextSrc={
+              damagesImage[index][(photoIndex + 1) % damagesImage[index].length]
+            }
             prevSrc={
               damagesImage[index][
-                (photoIndex + damagesImage[index].length - 1) % damagesImage[index].length
+                (photoIndex + damagesImage[index].length - 1) %
+                  damagesImage[index].length
               ]
             }
             onCloseRequest={togglePopup}
-            onMovePrevRequest={() => setPhotoIndex((photoIndex + damagesImage[index].length - 1) % damagesImage[index].length)}
+            onMovePrevRequest={() =>
+              setPhotoIndex(
+                (photoIndex + damagesImage[index].length - 1) %
+                  damagesImage[index].length
+              )
+            }
             onMoveNextRequest={() =>
               setPhotoIndex((photoIndex + 1) % damagesImage[index].length)
             }
@@ -501,7 +519,7 @@ const Damage = ({ i, index, damagesImage }) => {
           </span>
         )}
         {i.damage_picture2 && (
-          <span onClick={()=> togglePopup(i.damage_picture2)}>
+          <span onClick={() => togglePopup(i.damage_picture2)}>
             <img src={i.damage_picture2} className="damage-img" />
           </span>
         )}
@@ -517,7 +535,8 @@ const ListZones = ({ activeSubTab, setActiveSubTab }) => {
     "body",
     "inner",
     "road_test",
-    "motor"
+    "motor",
+    "crash"
   ];
 
   return (

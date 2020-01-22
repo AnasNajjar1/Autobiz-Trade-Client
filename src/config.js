@@ -39,3 +39,9 @@ const contactEmails = {
 exports.contactEmail = contactEmails[ENV]
 
 exports.StaticFile = ["https://www.autobiz-market.com/bundles/autobizmarketmodenonconnecte/CGU/"]
+
+exports.lang = {
+  fr: "fr",
+  de: "de",
+  default: "en"
+}
