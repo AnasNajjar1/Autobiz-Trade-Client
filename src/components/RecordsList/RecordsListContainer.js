@@ -3,7 +3,8 @@ import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
-  faFilter
+  faFilter,
+  faStar
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
@@ -20,7 +21,6 @@ import RecordsElement from "./RecordsElement";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
 import FormActions from "./FormActions";
-
 import {
   useQueryParams,
   NumberParam,
@@ -344,6 +344,7 @@ const RecordsListContainer = () => {
                 className={form.list === "my_favourites" ? "blue mr-2 mb-2" : "second-blue mr-2 mb-2"}
                 onClick={() => showCustomList("my_favourites")}
               >
+                <FontAwesomeIcon icon={faStar} className='mr-2'/>
                 {t("my_favourites")}
               </Button>              
             </Col>
