@@ -36,11 +36,11 @@ const renderValue = (key, value, lang) => {
 
     //date DD-MM-YYYY values
     case "gcDate":
+    case "firstRegistrationDate":
       return moment(value).format("DD-MM-YYYY");
 
     //date MM-YYYY values
     case "nextTechnicalCheckDate":
-    case "firstRegistrationDate":
     case "lastServicingDate":
     case "lastTechnicalCheckDate":
       return moment(value).format("MM-YYYY");
