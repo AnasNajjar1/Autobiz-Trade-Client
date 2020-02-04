@@ -101,6 +101,7 @@ const RecordsElement = (props) => {
               </Row>
             </div>
             <div className="card-head">
+              {auction && auction.statusId === 3 && <div className="sold-vehicle-banner"><span>{t('sold')}</span></div>}
               <img
                 className="card-img-top"
                 src={picture}

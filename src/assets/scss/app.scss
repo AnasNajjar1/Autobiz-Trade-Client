@@ -541,8 +541,29 @@ header {
         left: -10px;
         height: 250px;
         object-fit: cover;
+        z-index: 0;
         @extend .rounded;
       }    
+      .sold-vehicle-banner {
+        position: absolute;
+        z-index: 1;
+        color: $body-bg;
+        text-transform: uppercase;
+        font-weight: bolder;
+        font-size: 5rem;
+        overflow: hidden;
+        @extend .card-img-top;
+        span {
+          position: absolute;
+          display: block;
+          width: calc(150%);
+          background-color: rgba(245, 81, 81, 0.5);
+          transform: rotate(-30deg);
+          text-align: center;
+          margin-top: 15%;
+          margin-left: -25%;
+        }
+      }
     }
 
     &:hover {
