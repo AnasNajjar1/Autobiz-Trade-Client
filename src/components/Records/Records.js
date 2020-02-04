@@ -433,8 +433,8 @@ const iterateData = v => {
 const subDamages = items => {
   let damagesImage = [];
   items.forEach((i, key) => {
-    if (i.damage_picture) damagesImage[key] = [i.damage_picture];
-    if (i.damage_picture2) damagesImage[key].push(i.damage_picture2);
+    if (i.damage_picture) damagesImage.push(i.damage_picture);
+    if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
   return items.map((i, key) => (
     <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
@@ -447,7 +447,7 @@ const Damage = ({ i, index, damagesImage }) => {
 
   const togglePopup = photo => {
     let currentKey;
-    damagesImage[index].forEach((i, key) => {
+    damagesImage.forEach((i, key) => {
       if (i === photo) currentKey = key;
     });
     setPhotoIndex(currentKey);
@@ -491,25 +491,21 @@ const Damage = ({ i, index, damagesImage }) => {
         )}
         {popedUp && (
           <Lightbox
-            mainSrc={damagesImage[index][photoIndex]}
-            nextSrc={
-              damagesImage[index][(photoIndex + 1) % damagesImage[index].length]
-            }
+            mainSrc={photoIndex && damagesImage[photoIndex] || damagesImage[0]}
+            nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
             prevSrc={
-              damagesImage[index][
-                (photoIndex + damagesImage[index].length - 1) %
-                  damagesImage[index].length
+              damagesImage[
+                (photoIndex + damagesImage.length - 1) % damagesImage.length
               ]
             }
             onCloseRequest={togglePopup}
             onMovePrevRequest={() =>
               setPhotoIndex(
-                (photoIndex + damagesImage[index].length - 1) %
-                  damagesImage[index].length
+                (photoIndex + damagesImage.length - 1) % damagesImage.length
               )
             }
             onMoveNextRequest={() =>
-              setPhotoIndex((photoIndex + 1) % damagesImage[index].length)
+              setPhotoIndex((photoIndex + 1) % damagesImage.length)
             }
           />
         )}
