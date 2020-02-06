@@ -2,8 +2,19 @@ import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 
-const FilterKilometers = ({ mileageMin, mileageMax, updateField }) => {
+const FilterKilometers = ({
+  mileageMin,
+  mileageMax,
+  updateField,
+  updateSearch
+}) => {
   const [error, setError] = useState(false);
+
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      updateSearch();
+    }
+  };
 
   useEffect(() => {
     if (parseInt(mileageMin, 10) > parseInt(mileageMax, 10)) {
@@ -25,6 +36,8 @@ const FilterKilometers = ({ mileageMin, mileageMax, updateField }) => {
               id="mileageMin"
               className={error ? "is-invalid" : ""}
               value={mileageMin}
+              onBlur={() => updateSearch()}
+              onKeyDown={e => handleKeyDown(e)}
               onChange={e => updateField(e)}
             />
             <Label for="mileageMin" className="mini-label">
@@ -41,6 +54,8 @@ const FilterKilometers = ({ mileageMin, mileageMax, updateField }) => {
               name="mileageMax"
               id="mileageMax"
               value={mileageMax}
+              onBlur={() => updateSearch()}
+              onKeyDown={e => handleKeyDown(e)}
               onChange={e => updateField(e)}
             />
             <Label for="mileageMax" className="mini-label">

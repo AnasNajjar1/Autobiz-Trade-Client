@@ -107,7 +107,7 @@ $input-border-color: #e5e5e7;
 }
 .light-blue,
 .light-blue:hover {
-  background-color: #B4C7E7;
+  background-color: #b4c7e7;
 }
 
 .dark,
@@ -308,7 +308,11 @@ header {
     padding-left: 5px;
   }
 }
-
+.list-filter-buttons {
+  button {
+    @extend .mr-2;
+  }
+}
 .search-record-nav {
   @include make-col-ready;
 
@@ -339,8 +343,8 @@ header {
 
 .section-title {
   @extend .pl-3;
-  @extend .mb-3;
-  
+  @extend .mb-2;
+
   &.mb-0 {
     margin-bottom: 0 !important;
   }
@@ -388,20 +392,7 @@ header {
     display: none;
   }
 }
-
-.star-icon {
-  position: relative;
-  top: -5px;
-  left: -20px; 
-}
-
-.star-icon-bookmark {
-  @include media-breakpoint-down(xs) {
-    position: absolute;
-    margin-left: 45%;
-  }
-}
-
+.dealer-list,
 .car-list {
   @include media-breakpoint-down(xs) {
     margin: 0 0;
@@ -420,10 +411,6 @@ header {
       margin-bottom: 0;
     }
 
-    /* .countdown {
-      top: -15px;
-      margin-bottom: 0;
-    } */
     .card {
       border: 0;
       color: $am_gray;
@@ -440,6 +427,27 @@ header {
       .card-head {
         position: relative;
         margin: 0 auto;
+        width: 100%;
+      }
+
+      .card-body {
+        .star-icon {
+          position: absolute;
+          right: 5px;
+          top: -48px;
+          padding: 10px;
+          .star-icon-bookmark {
+            position: relative;
+            @extend .shadow-sm;
+            height: 35px;
+            width: 35px;
+            border-radius: 35px;
+            line-height: 35px;
+            text-align: center;
+            background: #fff;
+            display: inline-block;
+          }
+        }
       }
 
       .car-condition-wrapper {
@@ -543,14 +551,13 @@ header {
         object-fit: cover;
         z-index: 0;
         @extend .rounded;
-      }    
+      }
       .sold-vehicle-banner {
         position: absolute;
         z-index: 1;
         color: $body-bg;
         text-transform: uppercase;
-        font-weight: bolder;
-        font-size: 5rem;
+        font-size: 4rem;
         overflow: hidden;
         @extend .card-img-top;
         span {
@@ -560,7 +567,7 @@ header {
           background-color: rgba(245, 81, 81, 0.5);
           transform: rotate(-30deg);
           text-align: center;
-          margin-top: 15%;
+          margin-top: calc(15%);
           margin-left: -25%;
         }
       }
@@ -867,10 +874,10 @@ header {
 .section-zone {
   width: 100vh;
   .list-zone {
-    width:729px;
+    width: 729px;
     margin-left: calc(20%);
     @include media-breakpoint-down(md) {
-      width:500px;
+      width: 500px;
       margin-left: 0%;
     }
     .item {
@@ -888,7 +895,8 @@ header {
       // margin-left: 5px;
       cursor: pointer;
     }
-    .label:hover, .active-label {
+    .label:hover,
+    .active-label {
       padding: 15px;
       border-bottom: 1px solid #4167a5;
       color: #4167a5;
@@ -1248,6 +1256,7 @@ footer {
 .header-username {
   color: $blue;
 }
+.page-dealer-list,
 .page-car-list {
   @extend .mb-5;
 }
@@ -1282,6 +1291,172 @@ footer {
 }
 .star-fav {
   cursor: pointer;
+}
+
+.menu-switcher {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $input-border-color;
+  margin-bottom: 1rem;
+
+  ul {
+    border: 1px solid $primary;
+    border-radius: 3em;
+    list-style-type: none;
+    padding: 0;
+    display: inline-block;
+    margin-bottom: 0;
+    li {
+      display: inline-block;
+      padding: 7.5px 25px;
+      &.active {
+        background-color: $primary;
+        border-radius: 3em;
+
+        a {
+          color: $body-bg;
+        }
+      }
+      &.inactive {
+        a {
+          color: $am_gray;
+        }
+      }
+      a {
+        text-transform: capitalize;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+.page-dealer {
+  .brands {
+    height: 60px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    img {
+      height: 60px;
+    }
+  }
+}
+
+.page-dealer-list {
+  .brands {
+    height: 45px;
+    margin-top: 15px;
+    img {
+      height: 45px;
+    }
+  }
+}
+
+.brands {
+  margin-left: -15px;
+  width: calc(100% + 30px);
+  overflow: hidden;
+  text-align: center;
+  img {
+    filter: grayscale(100%);
+    margin: 0 15px;
+  }
+}
+
+.overflowed-image {
+  position: relative;
+  width: calc(100% + 48px);
+  left: -24px;
+  min-height: 200px;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 0.4em;
+}
+.info-two-lines {
+  line-height: 1.5em;
+
+  &.closed {
+    display: -webkit-box;
+    max-height: 4.5em;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+    .readmore {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #fff;
+      cursor: pointer;
+      color: #ccc;
+      padding-left: 10px;
+      text-decoration: underline;
+    }
+    .readless {
+      display: none;
+    }
+  }
+
+  &.open {
+    .readmore {
+      display: none;
+    }
+
+    .readless {
+      cursor: pointer;
+      color: #ccc;
+      padding-left: 10px;
+      text-decoration: underline;
+    }
+  }
+
+  @extend .small;
+  @extend .text-secondary;
+  @extend .mb-0;
+}
+
+.documentation {
+  @extend .table;
+  color: $secondary;
+  border-bottom: 1px solid #babdd3;
+  thead {
+    th {
+      border: 0;
+      font-weight: normal;
+      color: $primary;
+    }
+  }
+  th,
+  td {
+    padding: 0.5rem;
+  }
+  td {
+    border-top: 1px solid #babdd3;
+  }
+  td.icon {
+    width: 40px;
+    color: $primary;
+    text-align: center;
+    img {
+      height: 16px;
+      cursor: pointer;
+    }
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+
+.dealer-sticky-title {
+  position: sticky;
+  top: 0;
+  border-top: 1px solid $gray-300;
+  border-bottom: 1px solid $gray-300;
+  padding: 20px 0;
+  color: $primary;
+  margin-bottom: 30px;
+  background-color: $body-bg;
+  z-index: 1;
 }
 
 @import "carousel";

@@ -2,7 +2,13 @@ import React from "react";
 import { t } from "../common/Translate";
 import { Input } from "reactstrap";
 
-const FilterSearch = ({ value, onChange, onKeyDown }) => {
+const FilterSearch = ({ value, updateField, updateSearch }) => {
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      updateSearch();
+    }
+  };
+
   return (
     <Input
       type="text"
@@ -10,8 +16,9 @@ const FilterSearch = ({ value, onChange, onKeyDown }) => {
       className="rounded ico-search"
       placeholder={t("search")}
       value={value}
-      onChange={e => onChange(e)}
-      onKeyDown={e => onKeyDown(e)}
+      onBlur={() => updateSearch()}
+      onKeyDown={e => handleKeyDown(e)}
+      onChange={e => updateField(e)}
     />
   );
 };
