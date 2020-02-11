@@ -311,6 +311,7 @@ header {
 .list-filter-buttons {
   button {
     @extend .mr-2;
+    @extend .mb-2;
   }
 }
 .search-record-nav {
