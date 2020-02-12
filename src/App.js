@@ -5,6 +5,8 @@ import { LanguageContext, dictionnary } from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
+import DealersView from "./views/DealersView.js";
+import DealersListView from "./views/DealersListView.js";
 import { QueryParamProvider } from "use-query-params";
 import moment from "moment";
 import Amplify from "aws-amplify";
@@ -13,8 +15,8 @@ import awsconfig from "./aws-config";
 import AuthRequiredRoute from "./components/LoginForm/AuthRequiredRoute";
 import _ from "lodash";
 import Cookies from "js-cookie";
-import getTranslations from './translations/services/getTranslations'
-import cacheStaticContent from './translations/services/cacheStaticContent'
+import getTranslations from "./translations/services/getTranslations";
+import cacheStaticContent from "./translations/services/cacheStaticContent";
 Amplify.configure(awsconfig);
 
 class App extends Component {
@@ -64,7 +66,7 @@ class App extends Component {
 
     window.addEventListener("changeLanguage", this.handleChangeLanguage);
     window.addEventListener("storage", this.handleRefresh);
-    Object.keys(dictionnary).map(language=>cacheStaticContent(language))
+    Object.keys(dictionnary).map(language => cacheStaticContent(language));
   }
 
   handleRefresh = async e => {
@@ -84,8 +86,12 @@ class App extends Component {
                 path="/records/:refId"
                 component={RecordsView}
               />
-
               <AuthRequiredRoute path="/records" component={RecordsListView} />
+              <AuthRequiredRoute
+                path="/dealers/:refId"
+                component={DealersView}
+              />
+              <Route path="/dealers" component={DealersListView} />
               <Route path="/login" component={LoginView} />
               <Redirect from="/" exact to="/records" />
             </Switch>

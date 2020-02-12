@@ -19,7 +19,7 @@ import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import Bookmark from "./Bookmark";
+import Bookmark from "../common/Bookmark";
 
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState(true);
@@ -274,15 +274,23 @@ const Auction = ({ refId, bookmarked }) => {
               </p>
             </Col>
           </Row>
-          <p className="mb-0">
-            <span className="gray">
-              <Translate code="start_price" />
-            </span>
-            <strong>{minimalPrice.toLocaleString()}</strong> €{" "}
-            <sup className="text-uppercase">{t("ttc")}</sup>
-          </p>
           <Row>
-            <Col xs="12" sm="12" md="10" lg="10">
+            <Col>
+              <p className="mb-0">
+                <span className="gray">
+                  <Translate code="start_price" />
+                </span>
+                <strong>{minimalPrice.toLocaleString()}</strong> €{" "}
+                <sup className="text-uppercase">{t("ttc")}</sup>
+              </p>
+            </Col>
+            <Col xs="3" className="text-right">
+              {!isExpired && <Bookmark refId={refId} bookmarked={bookmarked} />}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
               <div className="section-price">
                 <Row>
                   {bestUserOffer > 0 && (
@@ -325,9 +333,6 @@ const Auction = ({ refId, bookmarked }) => {
                   </Col>
                 </Row>
               </div>
-            </Col>
-            <Col>
-              {!isExpired && <Bookmark refId={refId} bookmarked={bookmarked} />}
             </Col>
           </Row>
           {!isExpired && statusName === "online" && (

@@ -26,7 +26,14 @@ const staticContents = {
   prod : "https://b2b-translate-prod.s3-eu-west-1.amazonaws.com"
 }
 
+const staticImages = {
+  dev : "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
+  staging : "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
+  prod : "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com"
+}
+
 exports.staticContentUrl=staticContents[ENV]
+exports.staticImagesUrl=staticImages[ENV]
 exports.staticCache = 'static-content'
 exports.staticFiles = { locale : "locale.json" }
 
