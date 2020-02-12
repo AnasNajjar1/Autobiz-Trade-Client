@@ -6,16 +6,16 @@ const BrandsCarousel = ({ brands }) => {
       {brands && (
         <div className="brands">
           {brands.map((brand, index) => (
-            <img
-              key={index}
-              className="brand"
-              src={brandsPath(`./brand-${brand.toLowerCase()}.jpg`)}
-            />
+            <img key={index} className="brand" src={brandImageFile(brand)} />
           ))}
         </div>
       )}
     </>
   );
+};
+
+const brandImageFile = brand => {
+  return brandsPath(`./brand-${brand.toLowerCase().replace(" ", "-")}.jpg`);
 };
 
 export default BrandsCarousel;

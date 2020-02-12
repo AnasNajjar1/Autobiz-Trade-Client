@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,6 +40,11 @@ const DealersListContainer = () => {
   };
 
   const updateSearch = () => {
+    setQuery(form);
+  };
+
+  const showCustomList = listName => {
+    form.list = listName;
     setQuery(form);
   };
 
@@ -93,6 +99,7 @@ const DealersListContainer = () => {
 
   const initialFormState = {
     search: "",
+    list: "all",
     onlineOffersMinCount: 0,
     brandLabel: "",
     modelLabel: "",
@@ -102,6 +109,7 @@ const DealersListContainer = () => {
 
   const [query, setQuery] = useQueryParams({
     search: StringParam,
+    list: StringParam,
     onlineOffersMinCount: NumberParam,
     brandLabel: StringParam,
     modelLabel: StringParam,
@@ -111,6 +119,7 @@ const DealersListContainer = () => {
 
   const [form, setValues] = useState({
     search: query.search || initialFormState.search,
+    list: query.list || initialFormState.list,
     onlineOffersMinCount:
       query.onlineOffersMinCount || initialFormState.onlineOffersMinCount,
     brandLabel: query.brandLabel || initialFormState.brandLabel,
@@ -130,6 +139,7 @@ const DealersListContainer = () => {
       const result = await API.get("b2bPlateform", `/pointOfSale`, {
         queryStringParameters: {
           search: form.search,
+          list: form.list,
           onlineOffersMinCount: JSON.stringify(form.onlineOffersMinCount),
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
@@ -259,7 +269,34 @@ const DealersListContainer = () => {
             <FormActions reset={handleReset} />
           </Section>
         </div>
+
         <Col>
+          <Row>
+            <Col className="list-filter-buttons mb-2">
+              <Button
+                size="sm"
+                outline
+                className={form.list === "all" ? "active" : "inactive"}
+                onClick={() => showCustomList("all")}
+              >
+                {t("all_dealers")}
+              </Button>
+
+              <Button
+                size="sm"
+                outline
+                className={form.list === "my_dealers" ? "active" : "inactive"}
+                onClick={() => showCustomList("my_dealers")}
+              >
+                {t("my_dealers")}
+              </Button>
+              <Link to="/records?list=my_dealers">
+                <Button size="sm" outline className="inactive">
+                  {t("vehicles_from_my_dealers")}
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           {DealersCount === 0 && (
             <Alert color="secondary" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />

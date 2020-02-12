@@ -379,6 +379,14 @@ const RecordsListContainer = () => {
                 <FontAwesomeIcon icon={faStar} className="mr-2" />
                 {t("my_favourites")}
               </Button>
+              <Button
+                size="sm"
+                outline
+                className={form.list === "my_dealers" ? "active" : "inactive"}
+                onClick={() => showCustomList("my_dealers")}
+              >
+                {t("vehicles_from_my_dealers")}
+              </Button>
             </Col>
           </Row>
           <Row>
