@@ -240,9 +240,9 @@ const RecordsListContainer = () => {
     )
       return;
 
-    const newRange = parseInt(form.range[1]) + ItemsPerPage;
-    if (newRange <= RecordsCount) {
-      form.range[1] = newRange;
+    const currentRange = parseInt(form.range[1]);
+    if (currentRange <= parseInt(RecordsCount)) {
+      form.range[1] = currentRange + ItemsPerPage;
       setQuery(form);
       setIsFetching(true);
     }

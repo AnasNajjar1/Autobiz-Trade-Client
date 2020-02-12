@@ -18,7 +18,6 @@ import {
   faSearch,
   faExclamationTriangle
 } from "@fortawesome/free-solid-svg-icons";
-import defaultFrontPicture from "../../assets/img/default-front-dealer-picture.png";
 import iconPdf from "../../assets/img/ico-pdf.png";
 import BrandsCarousel from "../common/BrandsCarousel";
 import RecordsElement from "../RecordsList/RecordsElement";
@@ -30,6 +29,7 @@ import FilterYears from "../RecordsList/FilterYears";
 import FilterKilometers from "../RecordsList/FilterKilometers";
 import FormActions from "../RecordsList/FormActions";
 import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
+import { staticImagesUrl } from "../../config"
 
 const Dealer = props => {
   const [dealer, setDealer] = useState(false);
@@ -324,7 +324,7 @@ const Dealer = props => {
           <Col xs="12" md="6">
             <div className="section radius">
               <img
-                src={dealer.picture ? dealer.picture : defaultFrontPicture}
+                src={dealer.picture ? dealer.picture : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`}
                 alt={dealer.name}
                 className="overflowed-image"
               />

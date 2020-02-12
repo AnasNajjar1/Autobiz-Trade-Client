@@ -193,10 +193,10 @@ const DealersListContainer = () => {
     )
       return;
 
-    const newRange = parseInt(form.range[1]) + ItemsPerPage;
+    const currentRange = parseInt(form.range[1]);
 
-    if (newRange <= DealersCount) {
-      form.range[1] = newRange;
+    if (currentRange <= DealersCount) {
+      form.range[1] = currentRange + ItemsPerPage;
       setQuery(form);
       setIsFetching(true);
     }

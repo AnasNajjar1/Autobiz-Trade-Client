@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import { t } from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import Bookmark from "../common/Bookmark";
-import defaultFrontPicture from "../../assets/img/default-front-dealer-picture.png";
+import { staticImagesUrl } from "../../config"
 
 import _ from "lodash";
 import BrandsCarousel from "../common/BrandsCarousel";
 const DealersElement = props => {
-  let picture = "";
 
   const { dealer } = props;
   const { bookmarked } = dealer;
@@ -29,7 +28,7 @@ const DealersElement = props => {
           <div className="card-head">
             <img
               className="card-img-top"
-              src={dealer.picture ? dealer.picture : defaultFrontPicture}
+              src={dealer.picture ? dealer.picture : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`}
               alt={dealer.name}
             />
           </div>
