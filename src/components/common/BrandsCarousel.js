@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-const brandsPath = require.context("../../assets/img/brands", true);
+import React from "react";
+import { staticImagesUrl } from "../../config";
+
 const BrandsCarousel = ({ brands }) => {
   return (
     <>
@@ -15,7 +16,7 @@ const BrandsCarousel = ({ brands }) => {
 };
 
 const brandImageFile = brand => {
-  return brandsPath(`./brand-${brand.toLowerCase().replace(" ", "-")}.jpg`);
+  return `${staticImagesUrl}/brandsLogos/${brand.replace(" ", "+")}.jpg`;
 };
 
 export default BrandsCarousel;

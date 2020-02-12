@@ -291,13 +291,13 @@ const Dealer = props => {
               <table className="documentation my-4">
                 <thead>
                   <tr>
-                    <th colSpan="3">{t("Documentation")}</th>
+                    <th colSpan="3">{t("documentation")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dealer.documentation.map((document, index) => (
                     <tr key={index}>
-                      <td>{document.title}</td>
+                      <td>{t(document.title)}</td>
                       <td className="icon">
                         {document.text && (
                           <FontAwesomeIcon
@@ -357,7 +357,8 @@ const Dealer = props => {
       </Container>
       <div className="dealer-sticky-title">
         <Container>
-          Les vehicules de <strong>{dealer.name}</strong>
+          {t("vehicles_of")}
+          <strong>{dealer.name}</strong>
         </Container>
       </div>
       <Container className="pb-5">
@@ -381,7 +382,7 @@ const Dealer = props => {
                       setMenuMobileOpen(menuMobileOpen ? false : true)
                     }
                   >
-                    Filtrer <FontAwesomeIcon icon={faFilter} />
+                    {t("filter")} <FontAwesomeIcon icon={faFilter} />
                   </button>
                 </Col>
               </Row>
