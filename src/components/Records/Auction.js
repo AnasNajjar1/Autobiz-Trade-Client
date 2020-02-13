@@ -169,6 +169,17 @@ const Auction = ({ refId, bookmarked }) => {
               </p>
             </Col>
           </Row>
+          <Row>
+            <Col xs="12" className="text-right">
+              {!isExpired && (
+                <Bookmark
+                  refId={refId}
+                  bookmarked={bookmarked}
+                  scope="vehicle"
+                />
+              )}
+            </Col>
+          </Row>
           <div className="section-price">
             <Row>
               <Col>
@@ -285,7 +296,13 @@ const Auction = ({ refId, bookmarked }) => {
               </p>
             </Col>
             <Col xs="3" className="text-right">
-              {!isExpired && <Bookmark refId={refId} bookmarked={bookmarked} />}
+              {!isExpired && (
+                <Bookmark
+                  refId={refId}
+                  bookmarked={bookmarked}
+                  scope="vehicle"
+                />
+              )}
             </Col>
           </Row>
 
