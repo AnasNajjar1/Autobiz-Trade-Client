@@ -29,7 +29,8 @@ import FilterYears from "../RecordsList/FilterYears";
 import FilterKilometers from "../RecordsList/FilterKilometers";
 import FormActions from "../RecordsList/FormActions";
 import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
-import { staticImagesUrl } from "../../config"
+import { staticImagesUrl } from "../../config";
+import Bookmark from "../common/Bookmark";
 
 const Dealer = props => {
   const [dealer, setDealer] = useState(false);
@@ -275,7 +276,18 @@ const Dealer = props => {
         <Row>
           <Col xs="12" md="6">
             <div className="section radius">
-              <div className="h1 mb-3">{dealer.name}</div>
+              <div className="h1 mb-3">
+                <Row>
+                  <Col xs="9">{dealer.name}</Col>
+                  <Col xs="3" className="text-right">
+                    <Bookmark
+                      refId={props.refId}
+                      bookmarked={dealer.bookmarked}
+                      scope="dealer"
+                    />
+                  </Col>
+                </Row>
+              </div>
               <div className="section-price text-left">
                 <p className="gray h6 my-2">
                   <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
@@ -324,7 +336,11 @@ const Dealer = props => {
           <Col xs="12" md="6">
             <div className="section radius">
               <img
-                src={dealer.picture ? dealer.picture : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`}
+                src={
+                  dealer.picture
+                    ? dealer.picture
+                    : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`
+                }
                 alt={dealer.name}
                 className="overflowed-image"
               />
@@ -336,7 +352,9 @@ const Dealer = props => {
           <Row>
             <Col lg={{ size: 10, offset: 1 }}>
               <div className="section radius my-4 p-4">
-                <div className="h5">Infos</div>
+                <div className="h5">
+                  <Translate code="infos" />
+                </div>
                 <p
                   className={
                     infoClosed ? "info-two-lines closed" : "info-two-lines open"
