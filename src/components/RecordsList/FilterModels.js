@@ -6,7 +6,7 @@ const FilterModels = ({ models, value, updateField }) => {
 
   models = models.sort();
   if (models) {
-    options = models.map(model => (
+    options = models.map((model) => (
       <option key={model} value={model}>
         {model}
       </option>
@@ -21,7 +21,7 @@ const FilterModels = ({ models, value, updateField }) => {
           name="modelLabel"
           value={value}
           className="mb-2 rounded"
-          onChange={e => updateField(e)}
+          onChange={(e) => updateField(e)}
         >
           <option value="">---</option>
           {options}

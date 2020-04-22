@@ -8,7 +8,7 @@ import {
   Alert,
   Modal,
   ModalHeader,
-  ModalBody
+  ModalBody,
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,7 +16,7 @@ import {
   faMapMarkerAlt,
   faSpinner,
   faSearch,
-  faExclamationTriangle
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import iconPdf from "../../assets/img/ico-pdf.png";
 import BrandsCarousel from "../common/BrandsCarousel";
@@ -32,7 +32,7 @@ import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
 import { staticImagesUrl } from "../../config";
 import Bookmark from "../common/Bookmark";
 
-const Dealer = props => {
+const Dealer = (props) => {
   const [dealer, setDealer] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -47,16 +47,15 @@ const Dealer = props => {
   const [isFetching, setIsFetching] = useState(false);
 
   const ItemsPerPage = 100;
-  const offers = ["offerToPrivate", "stock"];
 
   useEffect(() => {
     const fetchDealer = async () => {
       try {
         const result = await API.get("b2bPlateform", `/pointOfSale`, {
           queryStringParameters: {
-            uuid: props.refId
+            uuid: props.refId,
           },
-          response: true
+          response: true,
         });
 
         setDealer(result.data);
@@ -96,8 +95,8 @@ const Dealer = props => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    offerType: ["all"],
-    range: [0, ItemsPerPage - 1]
+    offerType: "stock",
+    range: [0, ItemsPerPage - 1],
   };
 
   const [form, setValues] = useState({
@@ -111,18 +110,18 @@ const Dealer = props => {
     mileageMin: initialFormState.mileageMin,
     mileageMax: initialFormState.mileageMax,
     offerType: initialFormState.offerType,
-    range: initialFormState.range
+    range: initialFormState.range,
   });
 
   const [query, setQuery] = useState(form);
 
   const [filters, setFilters] = useState([]);
 
-  const updateField = e => {
+  const updateField = (e) => {
     const { name, value } = e.target;
     const tmpForm = {
       ...form,
-      [name]: value
+      [name]: value,
     };
     setValues(tmpForm);
   };
@@ -147,12 +146,12 @@ const Dealer = props => {
         tmpTarget = [];
       }
     } else {
-      tmpTarget = tmpTarget.filter(function(item) {
+      tmpTarget = tmpTarget.filter(function (item) {
         return item !== "all";
       });
 
       if (tmpTarget.includes(value)) {
-        tmpTarget = tmpTarget.filter(function(item) {
+        tmpTarget = tmpTarget.filter(function (item) {
           return item !== value;
         });
       } else {
@@ -162,7 +161,7 @@ const Dealer = props => {
 
     const tmpForm = {
       ...form,
-      [target]: tmpTarget
+      [target]: tmpTarget,
     };
 
     setValues(tmpForm);
@@ -181,16 +180,16 @@ const Dealer = props => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel]);
+  }, [form.modelLabel, form.offerType]);
 
   useEffect(() => {
     if (dealer !== false) {
       const fetchRecords = async () => {
         const result = await API.get("b2bPlateform", `/filter`, {
           queryStringParameters: {
-            pointOfSale: dealer.id
+            pointOfSale: dealer.id,
           },
-          response: true
+          response: true,
         });
         setFilters(result.data);
       };
@@ -214,10 +213,10 @@ const Dealer = props => {
             yearMecMax: form.yearMecMax,
             mileageMin: form.mileageMin,
             mileageMax: form.mileageMax,
-            offerType: JSON.stringify(form.offerType),
-            range: JSON.stringify(form.range)
+            offerType: form.offerType,
+            range: JSON.stringify(form.range),
           },
-          response: true
+          response: true,
         });
 
         const contentRange = result.headers["content-range"];
@@ -352,9 +351,7 @@ const Dealer = props => {
           <Row>
             <Col lg={{ size: 10, offset: 1 }}>
               <div className="section radius my-4 p-4">
-                <div className="h5">
-                  <Translate code="infos" />
-                </div>
+                <div className="h5">{t("infos")}</div>
                 <p
                   className={
                     infoClosed ? "info-two-lines closed" : "info-two-lines open"
@@ -382,7 +379,7 @@ const Dealer = props => {
       <Container className="pb-5">
         <Row>
           <div className="search-record-nav">
-            <Section>
+            <Section className="search-section">
               <Row>
                 <Col className="col col-6" sm="8" md="12">
                   <FilterSearch
@@ -412,6 +409,35 @@ const Dealer = props => {
               } d-md-block`}
             >
               <Section>
+                <div className="switcher">
+                  <ul>
+                    <li className={form.offerType === "stock" ? "active" : ""}>
+                      <button
+                        name="offerType"
+                        id="offerType"
+                        value="stock"
+                        onClick={(e) => updateField(e)}
+                      >
+                        {t("stock")}
+                      </button>
+                    </li>
+                    <li
+                      className={
+                        form.offerType === "offerToPrivate" ? "active" : ""
+                      }
+                    >
+                      <button
+                        name="offerType"
+                        id="offerType"
+                        value="offerToPrivate"
+                        onClick={(e) => updateField(e)}
+                      >
+                        {t("offerToPrivate")}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
                 <p className="section-title">
                   <Translate code="brand_and_model" />
                 </p>
@@ -449,17 +475,6 @@ const Dealer = props => {
                   mileageMax={form.mileageMax}
                   updateField={updateField}
                   updateSearch={updateSearch}
-                />
-
-                <p className="section-title">
-                  <Translate code="offer_type" />
-                </p>
-                <FilterCheckboxes
-                  data={offers}
-                  target="offerType"
-                  values={form.offerType}
-                  updateField={updateCheckBox}
-                  all
                 />
               </Section>
             </div>

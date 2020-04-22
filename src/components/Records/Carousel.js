@@ -11,14 +11,14 @@ class Carousel extends Component {
       nav1: null,
       nav2: null,
       currentSlide: 0,
-      popedUp: false
+      popedUp: false,
     };
   }
 
   componentDidMount() {
     this.setState({
       nav1: this.slider2,
-      nav2: this.slider2
+      nav2: this.slider2,
     });
   }
 
@@ -30,17 +30,17 @@ class Carousel extends Component {
     if (this.props.items.length === 0) {
       return null;
     }
-    let items = _.filter(this.props.items, function(o) {
+    let items = _.filter(this.props.items, function (o) {
       return o.value;
     });
     return (
       <div>
         <Slider
           asNavFor={this.state.nav1}
-          ref={slider => (this.slider2 = slider)}
+          ref={(slider) => (this.slider2 = slider)}
           infinite={false}
           className="slider-main"
-          afterChange={currentSlide => {
+          afterChange={(currentSlide) => {
             this.setState({ currentSlide: currentSlide });
           }}
         >
@@ -62,22 +62,22 @@ class Carousel extends Component {
             onMovePrevRequest={() =>
               this.setState({
                 currentSlide:
-                  (this.state.currentSlide + items.length - 1) % items.length
+                  (this.state.currentSlide + items.length - 1) % items.length,
               })
             }
             onMoveNextRequest={() =>
               this.setState({
-                currentSlide: (this.state.currentSlide + 1) % items.length
+                currentSlide: (this.state.currentSlide + 1) % items.length,
               })
             }
           />
         )}
         <div className="slider-pagination">
-          {this.state.currentSlide} / {items.length}
+          {this.state.currentSlide + 1} / {items.length}
         </div>
         <Slider
           asNavFor={this.state.nav1}
-          ref={slider => (this.slider1 = slider)}
+          ref={(slider) => (this.slider1 = slider)}
           infinite={false}
           swipeToSlide={true}
           variableWidth={true}

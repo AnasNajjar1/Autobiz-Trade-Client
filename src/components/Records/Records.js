@@ -11,18 +11,20 @@ import {
   Alert,
   Button,
   TabContent,
-  TabPane
+  TabPane,
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faShoppingCart,
   faQuoteLeft,
   faQuoteRight,
   faSpinner,
   faExclamationTriangle,
   faMapMarkerAlt,
   faExternalLinkAlt,
-  faExclamationCircle
+  faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import iconCockadeRed from "../../assets/img/cockade-red.svg";
 import Carousel from "./Carousel.js";
 import TagsProps from "./TagsProps.js";
 import Grade from "./Grade.js";
@@ -34,8 +36,10 @@ import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
 import { BrowserView, MobileView } from "react-device-detect";
 import Lightbox from "react-image-lightbox";
+import Bookmark from "../common/Bookmark";
 import "react-image-lightbox/style.css";
-const Record = props => {
+
+const Record = (props) => {
   const [record, setRecord] = useState([]);
   const [sections, setSections] = useState([]);
   const [notFound, setNotFound] = useState(false);
@@ -65,7 +69,7 @@ const Record = props => {
     let ld = [];
 
     if (record !== null && record.damages) {
-      Object.values(record.damages).map(v => {
+      Object.values(record.damages).map((v) => {
         let isExist = _.get(ld, v.zone, null);
         if (isExist === null) ld[v.zone] = [v];
         else isExist.push(v);
@@ -122,23 +126,54 @@ const Record = props => {
     console.log("Error while calculate ownershipDuration");
   }
   if (orderadminDetail) record.administrativeDetails = orderadminDetail;
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   return (
     <>
       <Container className="pb-5">
-        <Row>
-          <Col xs="12">
-            <div className="gray pl-3 mb-1">
+        <Row className="mb-3">
+          <div className="col-auto">
+            <small className="gray pl-3 mb-1">
               {t("reference")}
               {record.fileNumber}
-            </div>
-          </Col>
+            </small>
+          </div>
+          <div className="col text-right">
+            {record.offerType === "offerToPrivate" && (
+              <>
+                <img
+                  alt={t("offerToPrivate")}
+                  className="mr-2"
+                  src={iconCockadeRed}
+                />
+                <small className="gray">{t("offerToPrivate")}</small>
+              </>
+            )}
+
+            {record.offerType === "stock" && (
+              <>
+                <FontAwesomeIcon
+                  icon={faShoppingCart}
+                  className="mr-2 text-success"
+                  size="1x"
+                />
+                <small className="gray">{t("in_stock")}</small>
+              </>
+            )}
+          </div>
+        </Row>
+        <Row>
           <Col xs="12" md="6">
             <div className="car-props">
               <div className="section radius">
+                <Bookmark
+                  refId={props.refId}
+                  bookmarked={bookmarked}
+                  scope="vehicle"
+                />
+
                 <div className="h1">
                   {record.brandLabel} {record.modelLabel}
                 </div>
@@ -153,13 +188,13 @@ const Record = props => {
                     label: "firstRegistrationDate",
                     value: moment(
                       record.characteristics.firstRegistrationDate
-                    ).format("MM-YYYY")
+                    ).format("MM-YYYY"),
                   },
                   { label: "fuelLabel", value: record.fuelLabel },
                   {
                     label: "km",
-                    value: record.mileage && record.mileage.toLocaleString()
-                  }
+                    value: record.mileage && record.mileage.toLocaleString(),
+                  },
                 ]}
               />
               <Row>
@@ -167,7 +202,7 @@ const Record = props => {
                   <div className="h3 text-center">
                     <Translate code="global_condition"></Translate>
                   </div>
-                  <Grade letter={record.profileCosts} />
+                  <Grade letter={record.profileBodyCosts} />
                 </Col>
                 {pointOfSale.name !== null && (
                   <Col className="reseller-col">
@@ -353,7 +388,7 @@ const Record = props => {
                             </i>
                           </div>
                           {Object.values(record.constructorEquipments).map(
-                            items =>
+                            (items) =>
                               items && (
                                 <UlList
                                   items={items}
@@ -407,14 +442,14 @@ const Record = props => {
 
 export default Record;
 
-const calculateOwnerShipDuration = gcDate => {
+const calculateOwnerShipDuration = (gcDate) => {
   return moment.duration(moment().diff(moment(gcDate))).asMilliseconds();
 };
 
-const ShowDamages = data => {
+const ShowDamages = (data) => {
   let res;
   if (_.get(data, "data", null) !== null) {
-    res = Object.values(data).map(v => iterateData(v));
+    res = Object.values(data).map((v) => iterateData(v));
   } else
     res = (
       <Col className="mt-5">
@@ -424,13 +459,13 @@ const ShowDamages = data => {
   return res;
 };
 
-const iterateData = v => {
+const iterateData = (v) => {
   let item = null;
   item = subDamages(v);
   return item;
 };
 
-const subDamages = items => {
+const subDamages = (items) => {
   let damagesImage = [];
   items.forEach((i, key) => {
     if (i.damage_picture) damagesImage.push(i.damage_picture);
@@ -445,7 +480,7 @@ const Damage = ({ i, index, damagesImage }) => {
   const [popedUp, setPopup] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(null);
 
-  const togglePopup = photo => {
+  const togglePopup = (photo) => {
     let currentKey;
     damagesImage.forEach((i, key) => {
       if (i === photo) currentKey = key;
@@ -491,7 +526,9 @@ const Damage = ({ i, index, damagesImage }) => {
         )}
         {popedUp && (
           <Lightbox
-            mainSrc={photoIndex && damagesImage[photoIndex] || damagesImage[0]}
+            mainSrc={
+              (photoIndex && damagesImage[photoIndex]) || damagesImage[0]
+            }
             nextSrc={damagesImage[(photoIndex + 1) % damagesImage.length]}
             prevSrc={
               damagesImage[
@@ -532,13 +569,13 @@ const ListZones = ({ activeSubTab, setActiveSubTab }) => {
     "inner",
     "road_test",
     "motor",
-    "crash"
+    "crash",
   ];
 
   return (
     <div className="list-zone">
       <div className="item">
-        {listZone.map(i => (
+        {listZone.map((i) => (
           <div
             className={i == activeSubTab ? "label active-label" : "label"}
             key={i}

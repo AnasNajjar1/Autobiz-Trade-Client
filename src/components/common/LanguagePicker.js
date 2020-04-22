@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import _ from "lodash";
 import { dictionnary, flags } from "../../language-context";
 
-const handleChangeLang = async language => {
+const handleChangeLang = async (language) => {
   Cookies.set("appLanguage", language, { expires: 365 });
   window.dispatchEvent(
     new CustomEvent("changeLanguage", { detail: { language } })
@@ -19,7 +19,7 @@ const LanguagePicker = () => {
       <li key={appLanguage}>
         <img src={flags[appLanguage]} alt={appLanguage} />
       </li>
-      {_.without(languages, appLanguage).map(lang => {
+      {_.without(languages, appLanguage).map((lang) => {
         return (
           <li
             key={lang}

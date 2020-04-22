@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Translate, { t } from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
@@ -7,13 +7,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
 import moment from "moment";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
+import iconCockadeRed from "../../assets/img/cockade-red.svg";
 import {
   faShoppingCart,
   faUser,
   faCheck,
   faMapMarkerAlt,
   faBolt,
-  faTags
+  faTags,
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
@@ -21,10 +22,10 @@ const listPicture = [
   "three_quarters_front_picture",
   "front_picture",
   "left_side_picture",
-  "right_side_picture"
+  "right_side_picture",
 ];
 
-const RecordsElement = props => {
+const RecordsElement = (props) => {
   let picture = "";
   for (const pictTitle of listPicture) {
     picture = _.get(props, `record.${pictTitle}`, null);
@@ -43,8 +44,12 @@ const RecordsElement = props => {
             <Row>
               {record.offerType === "offerToPrivate" && (
                 <div className="col-auto">
-                  <FontAwesomeIcon icon={faUser} className="mr-2" size="1x" />
-                  <Translate code="offerToPrivate"></Translate>
+                  <img
+                    alt={t("offerToPrivate")}
+                    className="mr-2"
+                    src={iconCockadeRed}
+                  />
+                  {t("offerToPrivate")}
                 </div>
               )}
 
@@ -52,10 +57,10 @@ const RecordsElement = props => {
                 <div className="col-auto">
                   <FontAwesomeIcon
                     icon={faShoppingCart}
-                    className="mr-2"
+                    className="mr-2 text-success"
                     size="1x"
                   />
-                  <Translate code="in_stock"></Translate>
+                  {t("in_stock")}
                 </div>
               )}
               {auction &&
@@ -110,7 +115,7 @@ const RecordsElement = props => {
               src={picture}
               alt={record.brandLabel + " " + record.modelLabel}
             />
-            <RecordsElementGrade grade={record.profileCosts} />
+            <RecordsElementGrade grade={record.profileBodyCosts} />
           </div>
 
           <CardBody>

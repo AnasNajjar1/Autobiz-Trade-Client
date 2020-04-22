@@ -6,11 +6,11 @@ const FilterKilometers = ({
   mileageMin,
   mileageMax,
   updateField,
-  updateSearch
+  updateSearch,
 }) => {
   const [error, setError] = useState(false);
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       updateSearch();
     }
@@ -37,8 +37,8 @@ const FilterKilometers = ({
               className={error ? "is-invalid" : ""}
               value={mileageMin}
               onBlur={() => updateSearch()}
-              onKeyDown={e => handleKeyDown(e)}
-              onChange={e => updateField(e)}
+              onKeyDown={(e) => handleKeyDown(e)}
+              onChange={(e) => updateField(e)}
             />
             <Label for="mileageMin" className="mini-label">
               <Translate code="min" />
@@ -55,8 +55,8 @@ const FilterKilometers = ({
               id="mileageMax"
               value={mileageMax}
               onBlur={() => updateSearch()}
-              onKeyDown={e => handleKeyDown(e)}
-              onChange={e => updateField(e)}
+              onKeyDown={(e) => handleKeyDown(e)}
+              onChange={(e) => updateField(e)}
             />
             <Label for="mileageMax" className="mini-label">
               <Translate code="max" />

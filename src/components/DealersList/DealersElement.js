@@ -3,14 +3,12 @@ import { t } from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faCarSide } from "@fortawesome/free-solid-svg-icons";
 import Bookmark from "../common/Bookmark";
-import { staticImagesUrl } from "../../config"
+import { staticImagesUrl } from "../../config";
 
-import _ from "lodash";
 import BrandsCarousel from "../common/BrandsCarousel";
-const DealersElement = props => {
-
+const DealersElement = (props) => {
   const { dealer } = props;
   const { bookmarked } = dealer;
 
@@ -20,15 +18,22 @@ const DealersElement = props => {
         <Card className="h-100">
           <div className="status">
             <Row>
-              <div className="col-auto text-primary">
-                {t("online_offers:")} {dealer.count_vehicles}
+              <div className="col-auto text-success">
+                <u>
+                  <FontAwesomeIcon icon={faCarSide} className="mr-2" />
+                  {t("online_offers:")} {dealer.count_vehicles}
+                </u>
               </div>
             </Row>
           </div>
           <div className="card-head">
             <img
               className="card-img-top"
-              src={dealer.picture ? dealer.picture : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`}
+              src={
+                dealer.picture
+                  ? dealer.picture
+                  : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`
+              }
               alt={dealer.name}
             />
           </div>
@@ -47,6 +52,7 @@ const DealersElement = props => {
               <p className="brand-model">
                 <span className="text-nowrap">{dealer.name}</span>
               </p>
+
               <BrandsCarousel brands={dealer.brands} />
             </CardTitle>
           </CardBody>

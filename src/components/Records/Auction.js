@@ -11,24 +11,23 @@ import {
   Input,
   Tooltip,
   Modal,
-  ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "reactstrap";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import Bookmark from "../common/Bookmark";
 
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState(true);
 
   const [auction, setAuction] = useState({});
-  const [userAuctionAmout, setUserAuctionAmout] = useState([]);
+  const [userAuctionAmout, setUserAuctionAmout] = useState(false);
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modal, setModal] = useState(false);
+  const [offerIsValid, setOfferIsValid] = useState(false);
 
   const toggleToolTip = () => setTooltipOpen(!tooltipOpen);
   const toggleModal = () => setModal(!modal);
@@ -53,7 +52,7 @@ const Auction = ({ refId, bookmarked }) => {
         "b2bPlateform",
         `/vehicle/${refId}/auction`,
         {
-          response: true
+          response: true,
         }
       );
       if (result.data.secondsLeft > 0) {
@@ -72,7 +71,7 @@ const Auction = ({ refId, bookmarked }) => {
     stepPrice = 0,
     userWin = false,
     bestUserOffer = 0,
-    statusName
+    statusName,
   } = auction;
 
   const endDateTime = new Date(auction.endDateTime);
@@ -84,16 +83,16 @@ const Auction = ({ refId, bookmarked }) => {
     minOffer = minimalPrice;
   }
 
-  const handleSubmit = e => {
+  const handleSubmitAuction = (e) => {
     e.preventDefault();
-    e.target.reset();
     setModal(false);
-    let postData = {};
-    if (auction.salesType === "auction") {
-      postData = {
-        amount: userAuctionAmout
-      };
-    }
+    const postData = {
+      amount: userAuctionAmout,
+    };
+
+    setUserAuctionAmout(false);
+    setOfferIsValid(false);
+
     const putAuction = async () => {
       try {
         const result = await API.post(
@@ -101,7 +100,7 @@ const Auction = ({ refId, bookmarked }) => {
           `/vehicle/${refId}/auction`,
           {
             body: postData,
-            response: true
+            response: true,
           }
         );
 
@@ -113,8 +112,39 @@ const Auction = ({ refId, bookmarked }) => {
     putAuction();
   };
 
-  const handleChange = e => {
+  const handleSubmitImmediatePurchase = (e) => {
+    e.preventDefault();
+    e.target.reset();
+    setModal(false);
+
+    const putAuction = async () => {
+      try {
+        const result = await API.post(
+          "b2bPlateform",
+          `/vehicle/${refId}/auction`,
+          {
+            body: {},
+            response: true,
+          }
+        );
+
+        setAuction(result.data);
+      } catch (e) {
+        alert(e);
+      }
+    };
+    putAuction();
+  };
+
+  const handleChangeOffer = (e) => {
     setUserAuctionAmout(e.target.value);
+    if (isNaN(parseInt(e.target.value))) {
+      setOfferIsValid(false);
+    } else if (parseInt(e.target.value) < minOffer) {
+      setOfferIsValid(false);
+    } else {
+      setOfferIsValid(true);
+    }
   };
 
   const closingMessage = () => {
@@ -132,7 +162,7 @@ const Auction = ({ refId, bookmarked }) => {
       " " +
       endDateTime.toLocaleDateString([lang], {
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       });
     return message;
   };
@@ -169,17 +199,7 @@ const Auction = ({ refId, bookmarked }) => {
               </p>
             </Col>
           </Row>
-          <Row>
-            <Col xs="12" className="text-right">
-              {!isExpired && (
-                <Bookmark
-                  refId={refId}
-                  bookmarked={bookmarked}
-                  scope="vehicle"
-                />
-              )}
-            </Col>
-          </Row>
+
           <div className="section-price">
             <Row>
               <Col>
@@ -240,7 +260,7 @@ const Auction = ({ refId, bookmarked }) => {
                   >
                     {t("cancel")}
                   </Button>
-                  <Form method="post" onSubmit={handleSubmit}>
+                  <Form method="post" onSubmit={handleSubmitImmediatePurchase}>
                     <Button color="danger" className="rounded">
                       {t("confirm_buy")}
                     </Button>{" "}
@@ -295,15 +315,6 @@ const Auction = ({ refId, bookmarked }) => {
                 <sup className="text-uppercase">{t("ttc")}</sup>
               </p>
             </Col>
-            <Col xs="3" className="text-right">
-              {!isExpired && (
-                <Bookmark
-                  refId={refId}
-                  bookmarked={bookmarked}
-                  scope="vehicle"
-                />
-              )}
-            </Col>
           </Row>
 
           <Row>
@@ -355,17 +366,19 @@ const Auction = ({ refId, bookmarked }) => {
           {!isExpired && statusName === "online" && (
             <Form
               method="post"
-              className="form-offer mt-4"
-              onSubmit={handleSubmit}
+              className="form-offer mt-4 needs-validation"
+              noValidate
             >
               <Row>
                 <Col xs="12" lg="7" className="mb-3">
                   <Input
+                    invalid={!offerIsValid}
                     type="number"
                     min={minOffer}
                     name="user-offer"
                     className="rounded"
-                    onChange={handleChange}
+                    value={userAuctionAmout}
+                    onChange={handleChangeOffer}
                     disabled={isExpired}
                     required={true}
                     placeholder={`${t("your_offer")} (${t(
@@ -378,10 +391,42 @@ const Auction = ({ refId, bookmarked }) => {
                     block
                     color="danger"
                     className="rounded"
-                    disabled={isExpired}
+                    disabled={isExpired || !offerIsValid}
+                    onClick={toggleModal}
                   >
                     <Translate code="make_an_offer" />
                   </Button>
+
+                  <Modal isOpen={modal} toggle={toggleModal}>
+                    <ModalBody>
+                      <p className="text-center">
+                        {t("confirm_message_offer")}{" "}
+                        {userAuctionAmout.toLocaleString()} €
+                      </p>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        color="secondary"
+                        className="rounded"
+                        onClick={toggleModal}
+                      >
+                        {t("cancel")}
+                      </Button>
+                      <Form method="post" onSubmit={handleSubmitAuction}>
+                        <Button color="danger" className="rounded">
+                          {t("confirm_buy")}
+                        </Button>{" "}
+                      </Form>
+                    </ModalFooter>
+                  </Modal>
+
+                  {auction.nbOffers > 0 && (
+                    <p className="text-danger text-center mt-2 mb-0 small">
+                      {auction.nbOffers}{" "}
+                      {(auction.nbOffers === 1 && <Translate code="bid" />) ||
+                        t("bids")}
+                    </p>
+                  )}
                 </Col>
               </Row>
             </Form>

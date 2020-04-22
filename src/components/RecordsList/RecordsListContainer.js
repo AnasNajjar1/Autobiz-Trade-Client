@@ -6,7 +6,7 @@ import {
   faExclamationTriangle,
   faFilter,
   faStar,
-  faSpinner
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
 import FilterBrands from "./FilterBrands";
@@ -14,11 +14,9 @@ import FilterSearch from "./FilterSearch";
 import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
-import FilterCheckboxes from "./FilterCheckboxes";
+import FilterGeoloc from "./FilterGeoloc";
 import Sort from "./Sort.js";
-
-import { API } from "aws-amplify";
-
+import { API, Auth } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
@@ -27,22 +25,18 @@ import {
   useQueryParams,
   NumberParam,
   StringParam,
-  DelimitedArrayParam,
-  ArrayParam
+  ArrayParam,
 } from "use-query-params";
 
 const RecordsListContainer = () => {
-  const offers = ["offerToPrivate", "stock"];
   const ItemsPerPage = 12;
 
   const sortList = [
-    /* "sort_price_asc",
-    "sort_price_desc", */
     "sort_sales_ending_soon",
     "sort_date_asc",
     "sort_date_desc",
     "sort_mileage_asc",
-    "sort_mileage_desc"
+    "sort_mileage_desc",
   ];
 
   const initialFormState = {
@@ -54,10 +48,14 @@ const RecordsListContainer = () => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    offerType: ["all"],
-    city: ["all"],
+    offerType: "stock",
+    country: "all",
+    zipCode: "",
+    radius: 300,
+    lat: "",
+    lng: "",
     sort: "sort_sales_ending_soon",
-    range: [0, ItemsPerPage - 1]
+    range: [0, ItemsPerPage - 1],
   };
 
   const [query, setQuery] = useQueryParams({
@@ -69,10 +67,14 @@ const RecordsListContainer = () => {
     yearMecMax: NumberParam,
     mileageMin: NumberParam,
     mileageMax: NumberParam,
-    offerType: DelimitedArrayParam,
-    city: DelimitedArrayParam,
+    offerType: StringParam,
+    country: StringParam,
+    zipCode: StringParam,
+    lat: StringParam,
+    lng: StringParam,
+    radius: NumberParam,
     sort: StringParam,
-    range: ArrayParam
+    range: ArrayParam,
   });
 
   const [form, setValues] = useState({
@@ -85,9 +87,13 @@ const RecordsListContainer = () => {
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
     offerType: query.offerType || initialFormState.offerType,
-    city: query.city || initialFormState.city,
+    country: query.country || initialFormState.country,
+    zipCode: query.zipCode || initialFormState.zipCode,
+    radius: query.radius || initialFormState.radius,
+    lat: query.lat || initialFormState.lat,
+    lng: query.lng || initialFormState.lng,
     sort: query.sort || initialFormState.sort,
-    range: query.range || initialFormState.range
+    range: query.range || initialFormState.range,
   });
 
   const [records, setRecords] = useState([]);
@@ -97,11 +103,21 @@ const RecordsListContainer = () => {
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
-  const updateField = e => {
+  const updateField = (e) => {
     const { name, value } = e.target;
+
     const tmpForm = {
       ...form,
-      [name]: value
+      [name]: value,
+    };
+    setValues(tmpForm);
+  };
+
+  const updatePosition = (position) => {
+    const tmpForm = {
+      ...form,
+      lat: position.lat,
+      lng: position.lng,
     };
     setValues(tmpForm);
   };
@@ -110,45 +126,12 @@ const RecordsListContainer = () => {
     setQuery(form);
   };
 
-  const showCustomList = listName => {
+  const showCustomList = (listName) => {
     form.list = listName;
     setQuery(form);
   };
 
-  const updateCheckBox = (e, target) => {
-    const { value, checked } = e.target;
-    let tmpTarget = form[target];
-
-    if (value === "all") {
-      if (checked) {
-        tmpTarget = ["all"];
-      } else {
-        tmpTarget = [];
-      }
-    } else {
-      tmpTarget = tmpTarget.filter(function(item) {
-        return item !== "all";
-      });
-
-      if (tmpTarget.includes(value)) {
-        tmpTarget = tmpTarget.filter(function(item) {
-          return item !== value;
-        });
-      } else {
-        tmpTarget = [...tmpTarget, value];
-      }
-    }
-
-    const tmpForm = {
-      ...form,
-      [target]: tmpTarget
-    };
-
-    setValues(tmpForm);
-    setQuery(tmpForm);
-  };
-
-  const removeFilter = target => {
+  const removeFilter = (target) => {
     form[target] = "";
     setQuery(form);
   };
@@ -158,7 +141,7 @@ const RecordsListContainer = () => {
     setQuery(initialFormState);
   };
 
-  const handleSort = value => {
+  const handleSort = (value) => {
     form.sort = value;
     setQuery(form);
   };
@@ -166,13 +149,20 @@ const RecordsListContainer = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/filter`, {
-        response: true
+        response: true,
       });
       setFilters(result.data);
     };
 
     fetchRecords();
-  }, []);
+    /*
+    if (form.country === "") {
+      Auth.currentAuthenticatedUser({ bypassCache: false }).then((user) => {
+        setValues({ ...form, country: user.country });
+      });
+    }
+    */
+  }, [form.offerType]);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -188,12 +178,14 @@ const RecordsListContainer = () => {
           yearMecMax: form.yearMecMax,
           mileageMin: form.mileageMin,
           mileageMax: form.mileageMax,
-          offerType: JSON.stringify(form.offerType),
-          city: JSON.stringify(form.city),
+          offerType: form.offerType,
           country: form.country,
-          range: JSON.stringify(form.range)
+          radius: form.radius,
+          lat: form.lat,
+          lng: form.lng,
+          range: JSON.stringify(form.range),
         },
-        response: true
+        response: true,
       });
 
       const contentRange = result.headers["content-range"];
@@ -223,7 +215,21 @@ const RecordsListContainer = () => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel]);
+  }, [
+    form.modelLabel,
+    form.offerType,
+    form.country,
+    form.radius,
+    form.lat,
+    form.lng,
+  ]);
+
+  useEffect(() => {
+    form.zipCode = "";
+    form.lat = "";
+    form.lng = "";
+    setQuery(form);
+  }, [form.country]);
 
   // infinte scroll
 
@@ -251,11 +257,12 @@ const RecordsListContainer = () => {
   return (
     <Container>
       <MenuSwitcher current="records" />
+      <hr />
       <Row>
         <div className="search-record-nav">
-          <Section>
+          <Section className="search-section">
             <Row>
-              <Col className="col col-6" sm="8" md="12">
+              <Col className="col col-8" md="12">
                 <FilterSearch
                   value={form.search}
                   updateField={updateField}
@@ -266,7 +273,7 @@ const RecordsListContainer = () => {
               <Col className="col d-md-none">
                 <button
                   type="button"
-                  className="btn btn-block btn-danger-reverse rounded"
+                  className="btn btn-sm btn-block btn-danger-reverse rounded"
                   onClick={() =>
                     setMenuMobileOpen(menuMobileOpen ? false : true)
                   }
@@ -276,14 +283,47 @@ const RecordsListContainer = () => {
               </Col>
             </Row>
           </Section>
+
           <div
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
               <p className="section-title">
-                <Translate code="brand_and_model" />
+                <Translate code="offer_type" />
               </p>
 
+              <div className="switcher">
+                <ul>
+                  <li className={form.offerType === "stock" ? "active" : ""}>
+                    <button
+                      name="offerType"
+                      id="offerType"
+                      value="stock"
+                      onClick={(e) => updateField(e)}
+                    >
+                      {t("stock")}
+                    </button>
+                  </li>
+                  <li
+                    className={
+                      form.offerType === "offerToPrivate" ? "active" : ""
+                    }
+                  >
+                    <button
+                      name="offerType"
+                      id="offerType"
+                      value="offerToPrivate"
+                      onClick={(e) => updateField(e)}
+                    >
+                      {t("offerToPrivate")}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <p className="section-title">
+                <Translate code="brand_and_model" />
+              </p>
               {filters.brands && (
                 <FilterBrands
                   brands={filters.brands}
@@ -291,7 +331,6 @@ const RecordsListContainer = () => {
                   updateField={updateField}
                 />
               )}
-
               {modelLabels && (
                 <FilterModels
                   models={modelLabels}
@@ -308,7 +347,6 @@ const RecordsListContainer = () => {
                 updateField={updateField}
                 updateSearch={updateSearch}
               />
-
               <p className="section-title">
                 <Translate code="km" />
               </p>
@@ -318,30 +356,19 @@ const RecordsListContainer = () => {
                 updateField={updateField}
                 updateSearch={updateSearch}
               />
-
               <p className="section-title">
                 <Translate code="storage_place" />
               </p>
 
-              {filters.cities && (
-                <FilterCheckboxes
-                  data={filters.cities}
-                  target="city"
-                  values={form.city}
-                  updateField={updateCheckBox}
-                  all
-                />
-              )}
-
-              <p className="section-title">
-                <Translate code="offer_type" />
-              </p>
-              <FilterCheckboxes
-                data={offers}
-                target="offerType"
-                values={form.offerType}
-                updateField={updateCheckBox}
-                all
+              <FilterGeoloc
+                country={form.country}
+                zipCode={form.zipCode}
+                radius={form.radius}
+                lat={form.lat}
+                lng={form.lng}
+                updateField={updateField}
+                updateSearch={updateSearch}
+                updatePosition={updatePosition}
               />
             </Section>
             <Section>
@@ -352,41 +379,43 @@ const RecordsListContainer = () => {
         <Col>
           <Row>
             <Col className="list-filter-buttons">
-              <Button
-                size="sm"
-                outline
-                className={form.list === "all" ? "active" : "inactive"}
-                onClick={() => showCustomList("all")}
-              >
-                {t("all_vehicles")}
-              </Button>
-              <Button
-                size="sm"
-                outline
-                className={form.list === "my_offers" ? "active" : "inactive"}
-                onClick={() => showCustomList("my_offers")}
-              >
-                {t("my_offers")}
-              </Button>
-              <Button
-                size="sm"
-                outline
-                className={
-                  form.list === "my_favourites" ? "active" : "inactive"
-                }
-                onClick={() => showCustomList("my_favourites")}
-              >
-                <FontAwesomeIcon icon={faStar} className="mr-2" />
-                {t("my_favourites")}
-              </Button>
-              <Button
-                size="sm"
-                outline
-                className={form.list === "my_dealers" ? "active" : "inactive"}
-                onClick={() => showCustomList("my_dealers")}
-              >
-                {t("vehicles_from_my_dealers")}
-              </Button>
+              <div className="d-none d-md-block">
+                <Button
+                  size="sm"
+                  outline
+                  className={form.list === "all" ? "active" : "inactive"}
+                  onClick={() => showCustomList("all")}
+                >
+                  {t("all_vehicles")}
+                </Button>
+                <Button
+                  size="sm"
+                  outline
+                  className={form.list === "my_offers" ? "active" : "inactive"}
+                  onClick={() => showCustomList("my_offers")}
+                >
+                  {t("my_offers")}
+                </Button>
+                <Button
+                  size="sm"
+                  outline
+                  className={
+                    form.list === "my_favourites" ? "active" : "inactive"
+                  }
+                  onClick={() => showCustomList("my_favourites")}
+                >
+                  <FontAwesomeIcon icon={faStar} className="mr-2" />
+                  {t("my_favourites")}
+                </Button>
+                <Button
+                  size="sm"
+                  outline
+                  className={form.list === "my_dealers" ? "active" : "inactive"}
+                  onClick={() => showCustomList("my_dealers")}
+                >
+                  {t("vehicles_from_my_dealers")}
+                </Button>
+              </div>
             </Col>
           </Row>
           <Row>
@@ -445,20 +474,61 @@ const RecordsListContainer = () => {
           )}
 
           {RecordsCount > 0 && (
-            <Row className="car-list">
-              <Col xs="12" sm="6" lg="8">
-                <div className="h5 mt-1 mb-3">
-                  <b>{RecordsCount}</b> <Translate code="vehicles" />
-                </div>
-              </Col>
-              <Col xs="12" sm="6" lg="4">
-                <Sort list={sortList} value={form.sort} sort={handleSort} />
-              </Col>
-              {records &&
-                records.map((record, index) => (
-                  <RecordsElement key={index} record={record} />
-                ))}
-            </Row>
+            <>
+              <div className="d-block d-md-none mb-3">
+                <label className="gray text-uppercase">{t("vehicles")}</label>
+                <Row className="row-thin">
+                  <Col className="col-thin col-8" md="12">
+                    <select
+                      className="rounded form-control form-control-sm"
+                      onChange={(e) =>
+                        e.target.value && showCustomList(e.target.value)
+                      }
+                      value={form.list}
+                    >
+                      <option></option>
+                      <option value="all">{t("all_vehicles")}</option>
+                      <option value="my_offers">{t("my_offers")}</option>
+                      <option value="my_dealers">
+                        {t("vehicles_from_my_dealers")}
+                      </option>
+                    </select>
+                  </Col>
+                  <Col className="col-thin">
+                    <Button
+                      block
+                      outline={form.list !== "my_favourites"}
+                      className="rounded"
+                      size="sm"
+                      color="primary"
+                      onClick={() => showCustomList("my_favourites")}
+                    >
+                      {t("my_favourites")}
+                      <FontAwesomeIcon icon={faStar} className="ml-2" />
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+              <Row>
+                <Col xs="12" md="8" lg="5" xl="4" className="order-md-2">
+                  <label className="gray text-uppercase d-md-none">
+                    {t("sort_by")}
+                  </label>
+                  <Sort list={sortList} value={form.sort} sort={handleSort} />
+                </Col>
+                <Col xs="12" md="4" lg="7" xl="8" className="order-md-1">
+                  <div className="h5 mt-1 mb-3">
+                    <b>{RecordsCount}</b> <Translate code="vehicles" />
+                  </div>
+                </Col>
+              </Row>
+              <Row className="car-list">
+                {records &&
+                  records.map((record, index) => (
+                    <RecordsElement key={index} record={record} />
+                  ))}
+              </Row>
+            </>
           )}
           {isFetching && (
             <Row>

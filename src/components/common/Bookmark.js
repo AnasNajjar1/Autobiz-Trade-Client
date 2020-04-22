@@ -11,7 +11,7 @@ const Bookmark = ({ scope, refId, bookmarked }) => {
     setIsBookmarked(bookmarked === 1);
   }, [bookmarked]);
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     e.preventDefault();
     setIsBookmarked(!isBookmarked);
     putVehicleInBookmark();
@@ -21,23 +21,25 @@ const Bookmark = ({ scope, refId, bookmarked }) => {
     try {
       let myInit = {
         body: {
-          favorite: !isBookmarked
+          favorite: !isBookmarked,
         },
-        response: true
+        response: true,
       };
       await API.post("b2bPlateform", `/bookmark/${scope}/${refId}/`, myInit);
       return;
     } catch (e) {
-      console.log("dossier ", refId, " n'est pas ton Bookmark", e);
+      //console.log("dossier ", refId, " n'est pas ton Bookmark", e);
     }
   };
 
   return (
-    <span className="star-icon" onClick={e => handleClick(e)}>
+    <span className="star-icon" onClick={(e) => handleClick(e)}>
       <span className="star-icon-bookmark">
         <FontAwesomeIcon
           icon={(isBookmarked && faStarFull) || faStarEmpty}
-          className={(isBookmarked && "star-fav red") || "star-fav gray"}
+          className={
+            (isBookmarked && "star-fav text-primary") || "star-fav text-primary"
+          }
           size="1x"
         />
       </span>

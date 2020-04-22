@@ -58,6 +58,10 @@ $input-border-color: #e5e5e7;
     url("../fonts/facit-semibold.ttf") format("truetype");
 }
 
+button[disabled] {
+  cursor: inherit !important;
+}
+
 .modal-body {
   padding-top: 3rem;
 }
@@ -173,6 +177,12 @@ select {
   background-repeat: no-repeat;
   background-position: right 15px center;
   background-size: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
 }
 
 select:focus,
@@ -297,6 +307,14 @@ header {
   .form-group {
     @extend .mb-4;
   }
+
+  &.search-section {
+    @include media-breakpoint-down(sm) {
+      background-color: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+  }
 }
 
 .row-thin {
@@ -318,15 +336,15 @@ header {
   @include make-col-ready;
 
   @include media-breakpoint-up(md) {
-    @include make-col(4);
+    @include make-col(5);
   }
 
   @include media-breakpoint-up(lg) {
-    @include make-col(3);
+    @include make-col(4);
   }
 
-  @include media-breakpoint-down(md) {
-    margin-bottom: 0.75rem !important;
+  @include media-breakpoint-up(xl) {
+    @include make-col(3);
   }
 
   .row {
@@ -339,6 +357,35 @@ header {
 
   .section {
     @extend .px-2;
+  }
+
+  .switcher {
+    height: 38px;
+    font-size: 14px;
+    width: 100%;
+    ul {
+      height: 38px;
+
+      @include media-breakpoint-up(md) {
+        width: 100%;
+      }
+    }
+    li {
+      padding: 0 15px;
+      height: 36px;
+      line-height: 1;
+      width: 50%;
+      width: 50%;
+      overflow: hidden;
+      vertical-align: middle;
+      text-align: center;
+      display: table-cell;
+      button {
+        outline: 0;
+        text-transform: none;
+        vertical-align: bottom;
+      }
+    }
   }
 }
 
@@ -1009,6 +1056,11 @@ form.form-offer {
   @extend .pb-3;
   @extend .mb-3;
 
+  .star-icon {
+    float: right;
+    font-size: 1.25em;
+  }
+
   .tag-props {
     background: white;
     display: inline-block;
@@ -1275,7 +1327,6 @@ footer {
 .countdown {
   background: $blue;
   @extend .small;
-  /* @extend .mb-2; */
   padding: 5px 15px;
   display: inline-block;
   left: -30px;
@@ -1294,10 +1345,12 @@ footer {
   cursor: pointer;
 }
 
-.menu-switcher {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid $input-border-color;
+.switcher {
   margin-bottom: 1rem;
+
+  @include media-breakpoint-down(sm) {
+    text-align: center;
+  }
 
   ul {
     border: 1px solid $primary;
@@ -1313,17 +1366,25 @@ footer {
         background-color: $primary;
         border-radius: 3em;
 
-        a {
+        a,
+        button {
           color: $body-bg;
         }
       }
       &.inactive {
-        a {
+        a,
+        button {
           color: $am_gray;
         }
       }
-      a {
+      a,
+      button {
+        background: none !important;
         text-transform: capitalize;
+        border: none;
+        padding: 0 !important;
+        outline: 0;
+        cursor: pointer;
         &:hover {
           text-decoration: none;
         }
@@ -1334,9 +1395,10 @@ footer {
 
 .page-dealer {
   .brands {
-    height: 60px;
+    height: 80px;
     margin-top: 20px;
     margin-bottom: 5px;
+    text-align: center;
     img {
       height: 60px;
     }
@@ -1345,22 +1407,34 @@ footer {
 
 .page-dealer-list {
   .brands {
-    height: 45px;
+    height: 75px;
     margin-top: 15px;
-    img {
-      height: 45px;
+    text-align: left;
+    .brand {
+      img {
+        height: 55px;
+      }
     }
   }
 }
 
 .brands {
-  margin-left: -15px;
-  width: calc(100% + 30px);
   overflow: hidden;
-  text-align: center;
-  img {
-    filter: grayscale(100%);
-    margin: 0 15px;
+
+  .brand {
+    border: 1px solid #e5e5e8;
+    display: inline-block;
+    margin: 0 2.5px 2.5px 2.5px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 12px;
+    padding-bottom: 5px;
+    img {
+      filter: grayscale(100%);
+      padding: 10px 10px 0px 10px;
+      display: block;
+    }
   }
 }
 

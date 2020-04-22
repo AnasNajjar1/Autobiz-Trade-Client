@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
   faSpinner,
-  faFilter
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
 import { API } from "aws-amplify";
@@ -14,7 +14,7 @@ import {
   NumberParam,
   StringParam,
   DelimitedArrayParam,
-  ArrayParam
+  ArrayParam,
 } from "use-query-params";
 import DealersElement from "./DealersElement";
 import MenuSwitcher from "../common/MenuSwitcher";
@@ -23,18 +23,20 @@ import FormActions from "../RecordsList/FormActions";
 import FilterSearch from "../RecordsList/FilterSearch";
 import FilterBrands from "../RecordsList/FilterBrands";
 import FilterModels from "../RecordsList/FilterModels";
-import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
+import FilterGeoloc from "../RecordsList/FilterGeoloc";
 
 const DealersListContainer = () => {
   const ItemsPerPage = 6;
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [modelLabels, setModelLabels] = useState([]);
 
-  const updateField = e => {
+  let history = useHistory();
+
+  const updateField = (e) => {
     const { name, value } = e.target;
     const tmpForm = {
       ...form,
-      [name]: value
+      [name]: value,
     };
     setValues(tmpForm);
   };
@@ -43,7 +45,20 @@ const DealersListContainer = () => {
     setQuery(form);
   };
 
-  const showCustomList = listName => {
+  const updatePosition = (position) => {
+    const tmpForm = {
+      ...form,
+      lat: position.lat,
+      lng: position.lng,
+    };
+    setValues(tmpForm);
+  };
+
+  const showCustomList = (listName) => {
+    if (listName === "vehicles_from_my_dealers") {
+      return history.push("/records?list=my_dealers");
+    }
+
     form.list = listName;
     setQuery(form);
   };
@@ -56,7 +71,7 @@ const DealersListContainer = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/filter`, {
-        response: true
+        response: true,
       });
       setFilters(result.data);
     };
@@ -64,47 +79,18 @@ const DealersListContainer = () => {
     fetchRecords();
   }, []);
 
-  const updateCheckBox = (e, target) => {
-    const { value, checked } = e.target;
-    let tmpTarget = form[target];
-
-    if (value === "all") {
-      if (checked) {
-        tmpTarget = ["all"];
-      } else {
-        tmpTarget = [];
-      }
-    } else {
-      tmpTarget = tmpTarget.filter(function(item) {
-        return item !== "all";
-      });
-
-      if (tmpTarget.includes(value)) {
-        tmpTarget = tmpTarget.filter(function(item) {
-          return item !== value;
-        });
-      } else {
-        tmpTarget = [...tmpTarget, value];
-      }
-    }
-
-    const tmpForm = {
-      ...form,
-      [target]: tmpTarget
-    };
-
-    setValues(tmpForm);
-    setQuery(tmpForm);
-  };
-
   const initialFormState = {
     search: "",
     list: "all",
     onlineOffersMinCount: 0,
     brandLabel: "",
     modelLabel: "",
-    city: ["all"],
-    range: [0, ItemsPerPage - 1]
+    country: "all",
+    zipCode: "",
+    radius: 300,
+    lat: "",
+    lng: "",
+    range: [0, ItemsPerPage - 1],
   };
 
   const [query, setQuery] = useQueryParams({
@@ -113,8 +99,12 @@ const DealersListContainer = () => {
     onlineOffersMinCount: NumberParam,
     brandLabel: StringParam,
     modelLabel: StringParam,
-    city: DelimitedArrayParam,
-    range: ArrayParam
+    country: StringParam,
+    zipCpde: StringParam,
+    radius: StringParam,
+    lat: StringParam,
+    lng: StringParam,
+    range: ArrayParam,
   });
 
   const [form, setValues] = useState({
@@ -124,8 +114,12 @@ const DealersListContainer = () => {
       query.onlineOffersMinCount || initialFormState.onlineOffersMinCount,
     brandLabel: query.brandLabel || initialFormState.brandLabel,
     modelLabel: query.modelLabel || initialFormState.modelLabel,
-    city: query.city || initialFormState.city,
-    range: query.range || initialFormState.range
+    country: query.country || initialFormState.country,
+    zipCode: query.zipCode || initialFormState.zipCode,
+    radius: query.radius || initialFormState.radius,
+    lat: query.lat || initialFormState.lat,
+    lng: query.lng || initialFormState.lng,
+    range: query.range || initialFormState.range,
   });
   const [dealers, setDealers] = useState([]);
   const [DealersCount, setDealersCount] = useState([]);
@@ -143,10 +137,13 @@ const DealersListContainer = () => {
           onlineOffersMinCount: JSON.stringify(form.onlineOffersMinCount),
           brandLabel: form.brandLabel,
           modelLabel: form.modelLabel,
-          city: JSON.stringify(form.city),
-          range: JSON.stringify(form.range)
+          country: form.country,
+          radius: form.radius,
+          lat: form.lat,
+          lng: form.lng,
+          range: JSON.stringify(form.range),
         },
-        response: true
+        response: true,
       });
 
       const contentRange = result.headers["content-range"];
@@ -177,7 +174,14 @@ const DealersListContainer = () => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel]);
+  }, [form.modelLabel, form.country, form.radius, form.lat, form.lng]);
+
+  useEffect(() => {
+    form.zipCode = "";
+    form.lat = "";
+    form.lng = "";
+    setQuery(form);
+  }, [form.country]);
 
   // infinte scroll
   useEffect(() => {
@@ -205,11 +209,12 @@ const DealersListContainer = () => {
   return (
     <Container>
       <MenuSwitcher current="dealers" />
+      <hr />
       <Row>
         <div className="search-record-nav">
-          <Section>
+          <Section className="search-section">
             <Row>
-              <Col className="col col-6" sm="8" md="12">
+              <Col className="col col-8" md="12">
                 <FilterSearch
                   value={form.search}
                   updateField={updateField}
@@ -220,59 +225,63 @@ const DealersListContainer = () => {
               <Col className="col d-md-none">
                 <button
                   type="button"
-                  className="btn btn-block btn-danger-reverse rounded"
+                  className="btn btn-sm btn-block btn-danger-reverse rounded"
                   onClick={() =>
                     setMenuMobileOpen(menuMobileOpen ? false : true)
                   }
                 >
-                  Filtrer <FontAwesomeIcon icon={faFilter} />
+                  {t("Filter")} <FontAwesomeIcon icon={faFilter} />
                 </button>
               </Col>
             </Row>
           </Section>
-          <Section>
-            <p className="section-title">
-              <Translate code="brand_and_model" />
-            </p>
 
-            {filters.brands && (
-              <FilterBrands
-                brands={filters.brands}
-                value={form.brandLabel}
+          <div
+            className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
+          >
+            <Section>
+              <p className="section-title">
+                <Translate code="brand_and_model" />
+              </p>
+              {filters.brands && (
+                <FilterBrands
+                  brands={filters.brands}
+                  value={form.brandLabel}
+                  updateField={updateField}
+                />
+              )}
+              {modelLabels && (
+                <FilterModels
+                  models={modelLabels}
+                  value={form.modelLabel}
+                  updateField={updateField}
+                />
+              )}
+
+              <p className="section-title">
+                <Translate code="storage_place" />
+              </p>
+
+              <FilterGeoloc
+                country={form.country}
+                zipCode={form.zipCode}
+                radius={form.radius}
+                lat={form.lat}
+                lng={form.lng}
                 updateField={updateField}
+                updateSearch={updateSearch}
+                updatePosition={updatePosition}
               />
-            )}
-
-            {modelLabels && (
-              <FilterModels
-                models={modelLabels}
-                value={form.modelLabel}
-                updateField={updateField}
-              />
-            )}
-
-            <p className="section-title">
-              <Translate code="storage_place" />
-            </p>
-
-            {filters.cities && (
-              <FilterCheckboxes
-                data={filters.cities}
-                target="city"
-                values={form.city}
-                updateField={updateCheckBox}
-                all
-              />
-            )}
-          </Section>
-          <Section>
-            <FormActions reset={handleReset} />
-          </Section>
+            </Section>
+            <Section>
+              <FormActions reset={handleReset} />
+            </Section>
+          </div>
         </div>
 
         <Col>
           <Row>
-            <Col className="list-filter-buttons mb-2">
+            <Col className="list-filter-buttons mb-2 d-none d-md-block">
               <Button
                 size="sm"
                 outline
@@ -305,18 +314,40 @@ const DealersListContainer = () => {
           )}
 
           {DealersCount > 0 && (
-            <Row className="dealer-list">
-              <Col xs="12" sm="6" lg="8">
-                <div className="h5 mb-3">
-                  <b>{DealersCount}</b> {t("dealers")}
-                </div>
-              </Col>
+            <>
+              <div className="d-block d-md-none mt-3 mb-3">
+                <Row className="row-thin">
+                  <Col className="col-thin col-12">
+                    <select
+                      className="rounded form-control form-control-sm"
+                      onChange={(e) =>
+                        e.target.value && showCustomList(e.target.value)
+                      }
+                      value={form.list}
+                    >
+                      <option></option>
+                      <option value="all">{t("all_dealers")}</option>
+                      <option value="my_dealers">{t("my_dealers")}</option>
+                      <option value="vehicles_from_my_dealers">
+                        {t("vehicles_from_my_dealers")}
+                      </option>
+                    </select>
+                  </Col>
+                </Row>
+              </div>
+              <Row className="dealer-list">
+                <Col xs="12" sm="6" lg="8">
+                  <div className="h5 mb-3">
+                    <b>{DealersCount}</b> {t("dealers")}
+                  </div>
+                </Col>
 
-              {dealers &&
-                dealers.map((record, index) => (
-                  <DealersElement key={index} dealer={record} />
-                ))}
-            </Row>
+                {dealers &&
+                  dealers.map((record, index) => (
+                    <DealersElement key={index} dealer={record} />
+                  ))}
+              </Row>
+            </>
           )}
           {isFetching && (
             <Row>

@@ -7,7 +7,14 @@ const BrandsCarousel = ({ brands }) => {
       {brands && (
         <div className="brands">
           {brands.map((brand, index) => (
-            <img key={index} className="brand" src={brandImageFile(brand)} />
+            <div className="brand">
+              <img
+                key={index}
+                src={brandImageFile(brand.label)}
+                alt={brand.label}
+              />
+              <div>{brand.nbVehicles}</div>
+            </div>
           ))}
         </div>
       )}
@@ -15,7 +22,7 @@ const BrandsCarousel = ({ brands }) => {
   );
 };
 
-const brandImageFile = brand => {
+const brandImageFile = (brand) => {
   return `${staticImagesUrl}/brandsLogos/${brand.replace(" ", "+")}.jpg`;
 };
 
