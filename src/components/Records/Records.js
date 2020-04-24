@@ -205,13 +205,22 @@ const Record = (props) => {
                   <Grade letter={record.profileBodyCosts} />
                 </Col>
                 {pointOfSale.name !== null && (
-                  <Col className="reseller-col">
-                    <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />
-                    {pointOfSale.name}
-                    <br />
-                    {pointOfSale.zipCode} {pointOfSale.city}
-                    <br />
-                    {t(pointOfSale.country)}
+                  <Col>
+                    <div className="reseller-block">
+                      {pointOfSale.name}
+                      <br />
+                      {pointOfSale.zipCode} {pointOfSale.city}
+                      <br />
+                      {t(pointOfSale.country)}
+                      <br />
+                      <a href={`/dealers/${pointOfSale.uuid}`}>
+                        <FontAwesomeIcon
+                          icon={faExternalLinkAlt}
+                          className="mr-1"
+                        />
+                        {t("linkCarDealer")}
+                      </a>
+                    </div>
                   </Col>
                 )}
               </Row>
