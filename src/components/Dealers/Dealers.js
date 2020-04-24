@@ -29,6 +29,7 @@ import FilterYears from "../RecordsList/FilterYears";
 import FilterKilometers from "../RecordsList/FilterKilometers";
 import FormActions from "../RecordsList/FormActions";
 import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
+import Parser from "html-react-parser";
 import { staticImagesUrl } from "../../config";
 import Bookmark from "../common/Bookmark";
 
@@ -302,7 +303,7 @@ const Dealer = (props) => {
               <table className="documentation my-4">
                 <thead>
                   <tr>
-                    <th colSpan="3">{t("documentation")}</th>
+                    <th colSpan="3">{t("dealerDocuments")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -351,7 +352,7 @@ const Dealer = (props) => {
           <Row>
             <Col lg={{ size: 10, offset: 1 }}>
               <div className="section radius my-4 p-4">
-                <div className="h5">{t("infos")}</div>
+                <div className="h5">{t("dealerDescription")}</div>
                 <p
                   className={
                     infoClosed ? "info-two-lines closed" : "info-two-lines open"
@@ -360,7 +361,7 @@ const Dealer = (props) => {
                   <span className="readmore" onClick={readMore}>
                     {t("read more")}
                   </span>
-                  {dealer.info}
+                  {Parser(dealer.info)}
                   <span className="readless" onClick={readLess}>
                     {t("read less")}
                   </span>
