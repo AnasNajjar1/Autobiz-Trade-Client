@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Row } from "reactstrap";
 import { t, durationTranslate } from "../common/Translate";
+import Tooltip from "../common/Tooltip";
 import _ from "lodash";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -13,9 +14,28 @@ function showableValue(key, value, lang) {
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "b2cMarketValue" && value < 200) return false;
-  if (key === "MarketLink") return false
+  if (key === "MarketLink") return false;
   return true;
 }
+
+const renderLabel = (key) => {
+  switch (key) {
+    case "b2cMarketValue":
+      return (
+        <>
+          {t(key)} <Tooltip>{t("legendC2bMarketValue")}</Tooltip>
+        </>
+      );
+    case "standardMileage":
+      return (
+        <>
+          {t(key)} <Tooltip>{t("legendStandardMileage")}</Tooltip>
+        </>
+      );
+    default:
+      return t(key);
+  }
+};
 
 const renderValue = (key, value, lang) => {
   switch (key) {
@@ -88,10 +108,10 @@ const renderValue = (key, value, lang) => {
           </a>
         </>
       );
-    
-      //duration display
-    case "ownershipDuration" : 
-    return durationTranslate(value, ["y", "mo"], true, "and")
+
+    //duration display
+    case "ownershipDuration":
+      return durationTranslate(value, ["y", "mo"], true, "and");
     default:
       return t(String(value));
   }
@@ -103,12 +123,12 @@ const ListTable = ({ items }) => {
     <div className="list-table">
       <Row>
         {Object.keys(items).map(
-          key =>
+          (key) =>
             showableValue(key, items[key], lang) && (
               <React.Fragment key={key}>
                 <div className="cell">
                   <div className="item">
-                    <div className="label">{t(key)}</div>
+                    <div className="label">{renderLabel(key)}</div>
                     <div className="value" key={key}>
                       {renderValue(key, items[key], lang)}
                     </div>

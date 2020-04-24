@@ -20,7 +20,6 @@ import {
   faQuoteRight,
   faSpinner,
   faExclamationTriangle,
-  faMapMarkerAlt,
   faExternalLinkAlt,
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -37,6 +36,7 @@ import UlList from "./UlList.js";
 import { BrowserView, MobileView } from "react-device-detect";
 import Lightbox from "react-image-lightbox";
 import Bookmark from "../common/Bookmark";
+import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
 
 const Record = (props) => {
@@ -149,6 +149,7 @@ const Record = (props) => {
                   src={iconCockadeRed}
                 />
                 <small className="gray">{t("offerToPrivate")}</small>
+                <Tooltip>{t("legendOfferToPrivate")}</Tooltip>
               </>
             )}
 
@@ -160,6 +161,7 @@ const Record = (props) => {
                   size="1x"
                 />
                 <small className="gray">{t("in_stock")}</small>
+                <Tooltip>{t("legendStock")}</Tooltip>
               </>
             )}
           </div>

@@ -9,15 +9,12 @@ import {
   Form,
   Button,
   Input,
-  Tooltip,
   Modal,
   ModalBody,
   ModalFooter,
 } from "reactstrap";
 import Cookies from "js-cookie";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import Tooltip from "../common/Tooltip";
 
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState(true);
@@ -25,11 +22,9 @@ const Auction = ({ refId, bookmarked }) => {
   const [auction, setAuction] = useState({});
   const [userAuctionAmout, setUserAuctionAmout] = useState(false);
 
-  const [tooltipOpen, setTooltipOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const [offerIsValid, setOfferIsValid] = useState(false);
 
-  const toggleToolTip = () => setTooltipOpen(!tooltipOpen);
   const toggleModal = () => setModal(!modal);
 
   const second = 1000;
@@ -268,23 +263,7 @@ const Auction = ({ refId, bookmarked }) => {
                 </ModalFooter>
               </Modal>
 
-              <span className="text-left pt-2 ml-2">
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  className="gray"
-                  size="1x"
-                  id="TooltipWarning"
-                />
-                <Tooltip
-                  placement="bottom"
-                  isOpen={tooltipOpen}
-                  f
-                  target="TooltipWarning"
-                  toggle={toggleToolTip}
-                >
-                  {t("info_immediate_purchase")}
-                </Tooltip>
-              </span>
+              <Tooltip>{t("info_immediate_purchase")}</Tooltip>
             </div>
           )}
         </div>
