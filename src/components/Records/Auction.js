@@ -358,6 +358,16 @@ const Auction = ({ refId, bookmarked }) => {
                     className="rounded"
                     value={userAuctionAmout}
                     onChange={handleChangeOffer}
+                    onKeyPress={(ev) => {
+                      if (ev.key === "Enter") {
+                        ev.preventDefault();
+                        if (isExpired || !offerIsValid) {
+                          // do nothing
+                        } else {
+                          toggleModal();
+                        }
+                      }
+                    }}
                     disabled={isExpired}
                     required={true}
                     placeholder={`${t("your_offer")} (${t(
@@ -379,8 +389,7 @@ const Auction = ({ refId, bookmarked }) => {
                   <Modal isOpen={modal} toggle={toggleModal}>
                     <ModalBody>
                       <p className="text-center">
-                        {t("confirm_message_offer")}{" "}
-                        {userAuctionAmout.toLocaleString()} €
+                        {t("confirm_message_offer")}
                       </p>
                     </ModalBody>
                     <ModalFooter>

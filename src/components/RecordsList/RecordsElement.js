@@ -63,6 +63,7 @@ const RecordsElement = (props) => {
                   {t("in_stock")}
                 </div>
               )}
+
               {auction &&
                 auction.bestUserOffer &&
                 auction.bestUserOffer === auction.bestOffer && (
@@ -102,6 +103,12 @@ const RecordsElement = (props) => {
                     {t("overbid")}
                   </Col>
                 )}
+
+              {auction && !auction.bestUserOffer && record.nbOffers > 0 && (
+                <Col className="text-right text-danger">
+                  {record.nbOffers} {t("OffersReceived")}
+                </Col>
+              )}
             </Row>
           </div>
           <div className="card-head">

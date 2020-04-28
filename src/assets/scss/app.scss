@@ -750,19 +750,40 @@ header {
   }
 }
 
+.list-ul-container {
+  @include media-breakpoint-up(lg) {
+    column-count: 2;
+    column-gap: $grid-gutter-width;
+  }
+  .list-ul-block {
+    break-inside: avoid;
+  }
+
+  .section-title {
+    margin-top: 0 !important;
+  }
+  .list-ul {
+    margin-bottom: 3rem !important;
+  }
+}
+
 .list-ul {
-  margin: 0;
-  padding-left: 0;
-  @extend .mt-4;
+  background-color: $card-cap-bg;
+  border-radius: 0.5em;
   list-style: none;
   column-count: 2;
+  font-size: 0.9em;
+
+  @extend .px-4;
+  @extend .py-3;
+  @extend .mb-3;
 
   @include media-breakpoint-up(md) {
-    column-count: 3;
+    column-count: 2;
   }
 
   @include media-breakpoint-up(lg) {
-    column-count: 4;
+    column-count: 2;
   }
 
   column-gap: $grid-gutter-width;
@@ -775,11 +796,11 @@ header {
     break-inside: avoid;
 
     .fa-circle {
-      color: #535edb;
-      font-size: 0.7em;
-      margin-right: 8px;
+      color: #65ac4e;
+      font-size: 0.5em;
+      margin-right: 6px;
       position: relative;
-      top: -2px;
+      top: -3px;
     }
   }
 }
@@ -918,35 +939,92 @@ header {
     font-size: 0.9em;
   }
 }
-
 .section-zone {
-  width: 100vh;
   .list-zone {
-    width: 729px;
-    margin-left: calc(20%);
-    @include media-breakpoint-down(md) {
-      width: 500px;
-      margin-left: 0%;
+    margin: 20px 0;
+
+    @include media-breakpoint-down(sm) {
+      height: 36px;
+      position: relative;
+      left: -15px;
+      width: calc(100% + 30px);
+      overflow: hidden;
+      padding: 0 30px;
+
+      &:before {
+        background-color: #fff;
+        background-image: url("../img/arrow-blue-left.svg");
+        background-repeat: no-repeat;
+        background-position: 0px 3px;
+        content: "";
+        width: 20px;
+        height: 36px;
+        display: block;
+        position: absolute;
+        left: 15px;
+      }
+      &:after {
+        background-color: #fff;
+        background-image: url("../img/arrow-blue-right.svg");
+        background-repeat: no-repeat;
+        background-position: right 3px;
+        content: "";
+        width: 20px;
+        height: 36px;
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 0;
+      }
+
+      .item {
+        overflow: hidden;
+
+        float: none;
+        height: 60px;
+
+        white-space: nowrap;
+        list-style: none;
+        position: relative;
+        display: block;
+        overflow-x: scroll;
+        overflow-y: hidden;
+      }
     }
+
     .item {
       display: block;
       text-align: center;
-      border-bottom: 1px solid #4167a5;
       &:last-child() {
         margin-left: 0%;
       }
     }
+
     .label {
       display: inline-block;
       color: #989ea3;
-      padding: 15px;
-      // margin-left: 5px;
+      padding: 2.5px 0;
+      margin: 0 10px;
       cursor: pointer;
+      border-bottom: 3px solid transparent;
+
+      &:after {
+        content: "|";
+        color: #ccc;
+        margin-left: 8px;
+        position: absolute;
+        font-weight: lighter;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
     }
     .label:hover,
     .active-label {
-      padding: 15px;
-      border-bottom: 1px solid #4167a5;
+      border-bottom: 3px solid #4167a5;
       color: #4167a5;
     }
   }
@@ -1001,7 +1079,6 @@ header {
 
   .offer-value {
     font-size: 2rem;
-    //color: $am_gray;
     @extend .mb-1;
 
     sup {
@@ -1014,8 +1091,6 @@ header {
 }
 
 .favorie-icon {
-  // position: absolute;
-  // bottom: 0;
   border-radius: 50%;
   background-color: $card-cap-bg;
   padding: 10px 10px;
@@ -1048,6 +1123,10 @@ form.form-offer {
 .page-car-detail {
   .section-title {
     @extend .mt-5;
+  }
+  .tab-content {
+    width: 100%;
+    @extend .container;
   }
 }
 
@@ -1119,7 +1198,6 @@ form.form-offer {
   }
   .container-separator-title-light {
     background-color: rgb(233, 232, 232);
-    //color: white;
     display: inline-block;
     margin: 10px;
     height: 40px;
@@ -1311,7 +1389,7 @@ footer {
 }
 .page-dealer-list,
 .page-car-list {
-  @extend .mb-5;
+  @extend .mb-4;
 }
 
 .loading {

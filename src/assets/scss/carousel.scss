@@ -279,27 +279,26 @@
   // }
 }
 .section-damages {
-  width: 100vh;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
+  @extend .row;
 }
 
 .damage-list {
-  background-color: $card-cap-bg;
-  border-radius: 0.5em;
-  width: 450px;
   height: 70px;
-  margin-left:20px;
-  @include media-breakpoint-up(lg) {
-    display: inline-block;
+
+  @include make-col-ready;
+
+  @include media-breakpoint-up(md) {
+    @include make-col(6);
   }
-  @include media-breakpoint-down(sm) {
-    display: block;
-    width: 340px;
-  }
-  @extend .px-4;
+
   .item {
-    padding-left: 10px;
-    @extend .py-3;
+    background-color: $card-cap-bg;
+    border-radius: 0.5em;
+    @extend .p-3;
+
     .label {
       font-size: 0.9em;
       color: $am_gray;
@@ -322,14 +321,17 @@
 
 .custom-damage {
   @extend .damage-list;
-  background-color:  rgb(248, 234, 234) !important;
+  .item {
+    background-color: rgb(248, 234, 234) !important;
+    padding-left: 30px !important;
+  }
 }
 
 .fa-exclamation-circle {
   position: relative;
   color: #e62a2a;
   font-size: 15px;
-  margin-left:-20px;
+  margin-left: -20px;
   margin-right: 5px;
 }
 

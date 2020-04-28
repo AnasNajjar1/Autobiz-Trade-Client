@@ -389,24 +389,26 @@ const Record = (props) => {
                     record.constructorEquipments.length > 0 && (
                       <>
                         <Col xs="12">
-                          <hr className="mt-5 mb-0" />
+                          <hr className="my-3" />
                         </Col>
                         <Col xs="12">
-                          <div className="section-title text-center">
+                          <div className="section-title mt-0 mb-3">
                             <Translate code="equiments"></Translate>
                             <i>
                               <Translate code="constructor_source"></Translate>
                             </i>
                           </div>
-                          {Object.values(record.constructorEquipments).map(
-                            (items) =>
-                              items && (
-                                <UlList
-                                  items={items}
-                                  key={Object.keys(items)}
-                                />
-                              )
-                          )}
+                          <div className="list-ul-container">
+                            {Object.values(record.constructorEquipments).map(
+                              (items) =>
+                                items && (
+                                  <UlList
+                                    items={items}
+                                    key={Object.keys(items)}
+                                  />
+                                )
+                            )}
+                          </div>
                         </Col>
                       </>
                     )}
@@ -463,7 +465,7 @@ const ShowDamages = (data) => {
     res = Object.values(data).map((v) => iterateData(v));
   } else
     res = (
-      <Col className="mt-5">
+      <Col className="mt-5 text-center">
         <Translate code="no_damage" />
       </Col>
     );
@@ -508,8 +510,8 @@ const Damage = ({ i, index, damagesImage }) => {
       className={
         (i.is_custom == true &&
           i.custom_damage !== "" &&
-          "custom-damage mt-4") ||
-        "damage-list mt-4"
+          "custom-damage mt-3") ||
+        "damage-list mt-3"
       }
       key={i.element}
     >
