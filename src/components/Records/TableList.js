@@ -23,13 +23,19 @@ const renderLabel = (key) => {
     case "b2cMarketValue":
       return (
         <>
-          {t(key)} <Tooltip>{t("legendC2bMarketValue")}</Tooltip>
+          {t(key)}{" "}
+          <Tooltip id="legendC2bMarketValue">
+            {t("legendC2bMarketValue")}
+          </Tooltip>
         </>
       );
     case "standardMileage":
       return (
         <>
-          {t(key)} <Tooltip>{t("legendStandardMileage")}</Tooltip>
+          {t(key)}{" "}
+          <Tooltip id="legendStandardMileage">
+            {t("legendStandardMileage")}
+          </Tooltip>
         </>
       );
     default:

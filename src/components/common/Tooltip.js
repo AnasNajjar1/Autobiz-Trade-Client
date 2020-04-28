@@ -13,13 +13,12 @@ const Tooltip = (props) => {
         icon={faInfoCircle}
         className="gray"
         size="1x"
-        id="TooltipWarning"
+        id={"tooltip-" + props.id}
       />
       <RsTooltip
         placement="bottom"
         isOpen={tooltipOpen}
-        f
-        target="TooltipWarning"
+        target={"tooltip-" + props.id}
         toggle={toggleToolTip}
       >
         {props.children}

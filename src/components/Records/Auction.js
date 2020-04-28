@@ -411,8 +411,7 @@ const Auction = ({ refId, bookmarked }) => {
                   {auction.nbOffers > 0 && (
                     <p className="text-danger text-center mt-2 mb-0 small">
                       {auction.nbOffers}{" "}
-                      {(auction.nbOffers === 1 && <Translate code="bid" />) ||
-                        t("bids")}
+                      {(auction.nbOffers === 1 && t("bid")) || t("bids")}
                     </p>
                   )}
                 </Col>

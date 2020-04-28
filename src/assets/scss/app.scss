@@ -750,23 +750,6 @@ header {
   }
 }
 
-.list-ul-container {
-  @include media-breakpoint-up(lg) {
-    column-count: 2;
-    column-gap: $grid-gutter-width;
-  }
-  .list-ul-block {
-    break-inside: avoid;
-  }
-
-  .section-title {
-    margin-top: 0 !important;
-  }
-  .list-ul {
-    margin-bottom: 3rem !important;
-  }
-}
-
 .list-ul {
   background-color: $card-cap-bg;
   border-radius: 0.5em;

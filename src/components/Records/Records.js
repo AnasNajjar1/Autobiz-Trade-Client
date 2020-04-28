@@ -149,7 +149,9 @@ const Record = (props) => {
                   src={iconCockadeRed}
                 />
                 <small className="gray">{t("offerToPrivate")}</small>
-                <Tooltip>{t("legendOfferToPrivate")}</Tooltip>
+                <Tooltip id="legendOfferToPrivate">
+                  {t("legendOfferToPrivate")}
+                </Tooltip>
               </>
             )}
 
@@ -161,7 +163,7 @@ const Record = (props) => {
                   size="1x"
                 />
                 <small className="gray">{t("in_stock")}</small>
-                <Tooltip>{t("legendStock")}</Tooltip>
+                <Tooltip id="legendStock">{t("legendStock")}</Tooltip>
               </>
             )}
           </div>
@@ -392,23 +394,25 @@ const Record = (props) => {
                           <hr className="my-3" />
                         </Col>
                         <Col xs="12">
-                          <div className="section-title mt-0 mb-3">
+                          <div className="section-title mt-0 mb-1">
                             <Translate code="equiments"></Translate>
                             <i>
                               <Translate code="constructor_source"></Translate>
                             </i>
                           </div>
-                          <div className="list-ul-container">
-                            {Object.values(record.constructorEquipments).map(
-                              (items) =>
-                                items && (
-                                  <UlList
-                                    items={items}
-                                    key={Object.keys(items)}
-                                  />
-                                )
-                            )}
-                          </div>
+                        </Col>
+                        <Col xs="12" lg="6">
+                          {record.constructorEquipments[0] && (
+                            <UlList items={record.constructorEquipments[0]} />
+                          )}
+                          {record.constructorEquipments[1] && (
+                            <UlList items={record.constructorEquipments[1]} />
+                          )}
+                        </Col>
+                        <Col xs="12" lg="6">
+                          {record.constructorEquipments[2] && (
+                            <UlList items={record.constructorEquipments[2]} />
+                          )}
                         </Col>
                       </>
                     )}

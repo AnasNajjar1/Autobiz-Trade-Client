@@ -106,7 +106,8 @@ const RecordsElement = (props) => {
 
               {auction && !auction.bestUserOffer && record.nbOffers > 0 && (
                 <Col className="text-right text-danger">
-                  {record.nbOffers} {t("OffersReceived")}
+                  {record.nbOffers}{" "}
+                  {(record.nbOffers === 1 && t("bid")) || t("bids")}
                 </Col>
               )}
             </Row>
