@@ -479,6 +479,7 @@ header {
       }
 
       .card-body {
+        padding: 1.25rem 1.25rem 0.75rem 1.25rem;
         .star-icon {
           position: absolute;
           right: 5px;
@@ -1062,7 +1063,8 @@ header {
 
   .offer-value {
     font-size: 2rem;
-    @extend .mb-1;
+    font-weight: bold;
+    @extend .mb-2;
 
     sup {
       font-weight: normal;

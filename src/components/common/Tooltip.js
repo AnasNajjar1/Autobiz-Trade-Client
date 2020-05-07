@@ -7,8 +7,10 @@ const Tooltip = (props) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleToolTip = () => setTooltipOpen(!tooltipOpen);
 
+  const { className = "text-left pt-2 ml-2" } = props;
+
   return (
-    <span className="text-left pt-2 ml-2">
+    <span className={className}>
       <FontAwesomeIcon
         icon={faInfoCircle}
         className="gray"

@@ -38,6 +38,15 @@ const renderLabel = (key) => {
           </Tooltip>
         </>
       );
+    case "dpaProAmt":
+      return (
+        <>
+          {t(key)}{" "}
+          <Tooltip id="dpaProAmtInfo">
+            {t("dpaProAmtInfo")}
+          </Tooltip>
+        </>
+      );
     default:
       return t(key);
   }
@@ -51,6 +60,7 @@ const renderValue = (key, value, lang) => {
       return `${value.width}/${value.height} R${value.diameter}`;
 
     //€ values
+    case "dpaProAmt":
     case "b2cMarketValue":
       return `${parseInt(value).toLocaleString()} €`;
 

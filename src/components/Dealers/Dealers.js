@@ -269,7 +269,7 @@ const Dealer = (props) => {
     <>
       <Modal isOpen={modal} toggle={closeModal}>
         <ModalHeader toggle={closeModal}>{modalTitle}</ModalHeader>
-        <ModalBody>{modalBody}</ModalBody>
+        <ModalBody>{Parser(modalBody)}</ModalBody>
       </Modal>
 
       <Container>

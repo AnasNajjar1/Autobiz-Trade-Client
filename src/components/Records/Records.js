@@ -209,7 +209,7 @@ const Record = (props) => {
                   <Grade letter={record.profileBodyCosts} />
                 </Col>
                 {pointOfSale.name !== null && (
-                  <Col>
+                  <Col xs="12" sm="6" md="12" lg="6">
                     <div className="reseller-block">
                       {pointOfSale.name}
                       <br />
