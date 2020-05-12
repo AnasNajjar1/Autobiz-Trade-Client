@@ -25,9 +25,15 @@ const Documents = ({ items }) => {
       {items.map((item, index) => (
         <div className="cell" key={index}>
           <div className="item">
-            {(["pdfReport", "certificate_of_non_pledge"].includes(item.title) && (
+            {(["pdfReport", "certificate_of_non-pledge", "histovec"].includes(
+              item.title
+            ) && (
               <a
-                href={`${item.link}?language=${_.get(pdfLang, lang, pdfLang["default"])}`}
+                href={`${item.link}?language=${_.get(
+                  pdfLang,
+                  lang,
+                  pdfLang["default"]
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -59,7 +65,7 @@ const Documents = ({ items }) => {
               className="ril__toolbarItemChild ril__builtinButton"
               icon={faSync}
               onClick={() => customRotate()}
-            />
+            />,
           ]}
           onCloseRequest={() => setPopup(false)}
         />
