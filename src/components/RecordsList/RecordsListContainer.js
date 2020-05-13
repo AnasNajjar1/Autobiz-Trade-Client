@@ -239,12 +239,12 @@ const RecordsListContainer = () => {
   }, [isFetching]);
 
   const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      isFetching
-    )
-      return;
+    const scrollPos = Math.round(
+      (window.innerHeight + document.documentElement.scrollTop) / 10
+    );
+    const windowHeight = Math.round(document.documentElement.offsetHeight / 10);
+
+    if (scrollPos !== windowHeight || isFetching) return;
 
     const currentRange = parseInt(form.range[1]);
     if (currentRange <= parseInt(RecordsCount)) {
