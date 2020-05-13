@@ -876,6 +876,7 @@ header {
   @include make-row();
   @extend .mb-4;
   overflow: hidden;
+  margin: 0 !important;
 
   img {
     display: block;
