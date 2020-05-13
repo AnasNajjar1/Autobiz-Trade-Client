@@ -242,7 +242,7 @@
 }
 
 .slick-slider.slider-thumbmails {
-  height: 50px;
+  height: 65px;
   .slick-slide {
     height: 50px;
     width: 80px;
@@ -257,8 +257,8 @@
     cursor: pointer;
   }
   .slick-list {
-    width: 85%;
-    margin-left: 40px;
+    width: 100%;
+    margin-left: 0;
   }
 
   .slick-prev,
