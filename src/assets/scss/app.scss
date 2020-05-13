@@ -1200,6 +1200,7 @@ form.form-offer {
   border-radius: 5px;
   position: relative;
   @extend .mt-3;
+  @extend .mb-4;
 
   .grade-cursor {
     position: absolute;
