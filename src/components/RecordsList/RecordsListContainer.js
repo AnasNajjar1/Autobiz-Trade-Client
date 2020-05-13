@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuSwitcher from "../common/MenuSwitcher";
+import OfferTypeSwitcher from "../common/OfferTypeSwitcher";
 import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -257,7 +258,16 @@ const RecordsListContainer = () => {
   return (
     <Container>
       <MenuSwitcher current="records" />
+
+      <div className="d-md-none text-center">
+        <p className="section-title">
+          <Translate code="offer_type" />
+        </p>
+        <OfferTypeSwitcher current={form.offerType} updateField={updateField} />
+      </div>
+
       <hr />
+
       <Row>
         <div className="search-record-nav">
           <Section className="search-section">
@@ -288,37 +298,15 @@ const RecordsListContainer = () => {
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
-              <p className="section-title">
-                <Translate code="offer_type" />
-              </p>
+              <div className="d-none d-md-block">
+                <p className="section-title">
+                  <Translate code="offer_type" />
+                </p>
 
-              <div className="switcher">
-                <ul>
-                  <li className={form.offerType === "stock" ? "active" : ""}>
-                    <button
-                      name="offerType"
-                      id="offerType"
-                      value="stock"
-                      onClick={(e) => updateField(e)}
-                    >
-                      {t("stock")}
-                    </button>
-                  </li>
-                  <li
-                    className={
-                      form.offerType === "offerToPrivate" ? "active" : ""
-                    }
-                  >
-                    <button
-                      name="offerType"
-                      id="offerType"
-                      value="offerToPrivate"
-                      onClick={(e) => updateField(e)}
-                    >
-                      {t("offerToPrivate")}
-                    </button>
-                  </li>
-                </ul>
+                <OfferTypeSwitcher
+                  current={form.offerType}
+                  updateField={updateField}
+                />
               </div>
 
               <p className="section-title">
@@ -466,6 +454,41 @@ const RecordsListContainer = () => {
               />
             </Col>
           </Row>
+
+          <div className="d-block d-md-none mb-3">
+            <label className="gray text-uppercase">{t("vehicles")}</label>
+            <Row className="row-thin">
+              <Col className="col-thin col-8" md="12">
+                <select
+                  className="rounded form-control form-control-sm"
+                  onChange={(e) =>
+                    e.target.value && showCustomList(e.target.value)
+                  }
+                  value={form.list}
+                >
+                  <option></option>
+                  <option value="all">{t("all_vehicles")}</option>
+                  <option value="my_offers">{t("my_offers")}</option>
+                  <option value="my_dealers">
+                    {t("vehicles_from_my_dealers")}
+                  </option>
+                </select>
+              </Col>
+              <Col className="col-thin">
+                <Button
+                  block
+                  outline={form.list !== "my_favourites"}
+                  className="rounded"
+                  size="sm"
+                  color="primary"
+                  onClick={() => showCustomList("my_favourites")}
+                >
+                  {t("my_favourites")}
+                  <FontAwesomeIcon icon={faStar} className="ml-2" />
+                </Button>
+              </Col>
+            </Row>
+          </div>
           {RecordsCount === 0 && (
             <Alert color="secondary" className="text-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
@@ -475,40 +498,6 @@ const RecordsListContainer = () => {
 
           {RecordsCount > 0 && (
             <>
-              <div className="d-block d-md-none mb-3">
-                <label className="gray text-uppercase">{t("vehicles")}</label>
-                <Row className="row-thin">
-                  <Col className="col-thin col-8" md="12">
-                    <select
-                      className="rounded form-control form-control-sm"
-                      onChange={(e) =>
-                        e.target.value && showCustomList(e.target.value)
-                      }
-                      value={form.list}
-                    >
-                      <option></option>
-                      <option value="all">{t("all_vehicles")}</option>
-                      <option value="my_offers">{t("my_offers")}</option>
-                      <option value="my_dealers">
-                        {t("vehicles_from_my_dealers")}
-                      </option>
-                    </select>
-                  </Col>
-                  <Col className="col-thin">
-                    <Button
-                      block
-                      outline={form.list !== "my_favourites"}
-                      className="rounded"
-                      size="sm"
-                      color="primary"
-                      onClick={() => showCustomList("my_favourites")}
-                    >
-                      {t("my_favourites")}
-                      <FontAwesomeIcon icon={faStar} className="ml-2" />
-                    </Button>
-                  </Col>
-                </Row>
-              </div>
               <Row>
                 <Col xs="12" md="8" lg="5" xl="4" className="order-md-2">
                   <label className="gray text-uppercase d-md-none">

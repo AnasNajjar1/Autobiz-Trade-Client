@@ -358,35 +358,6 @@ header {
   .section {
     @extend .px-2;
   }
-
-  .switcher {
-    height: 38px;
-    font-size: 14px;
-    width: 100%;
-    ul {
-      height: 38px;
-
-      @include media-breakpoint-up(md) {
-        width: 100%;
-      }
-    }
-    li {
-      padding: 0 15px;
-      height: 36px;
-      line-height: 1;
-      width: 50%;
-      width: 50%;
-      overflow: hidden;
-      vertical-align: middle;
-      text-align: center;
-      display: table-cell;
-      button {
-        outline: 0;
-        text-transform: none;
-        vertical-align: bottom;
-      }
-    }
-  }
 }
 
 .section-title {
@@ -1453,6 +1424,36 @@ footer {
         &:hover {
           text-decoration: none;
         }
+      }
+    }
+  }
+  &.switcher-offer-type {
+    height: 38px;
+
+    font-size: 14px;
+    width: 100%;
+    ul {
+      height: 38px;
+
+      @include media-breakpoint-up(md) {
+        width: 100%;
+      }
+    }
+    li {
+      padding: 0 15px;
+      height: 36px;
+      line-height: 1;
+      width: 50%;
+      width: 50%;
+      overflow: hidden;
+      vertical-align: middle;
+      text-align: center;
+      display: table-cell;
+      button {
+        outline: 0;
+        text-transform: none;
+        vertical-align: bottom;
+        color: $primary;
       }
     }
   }
