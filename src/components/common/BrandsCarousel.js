@@ -23,7 +23,7 @@ const BrandsCarousel = ({ brands }) => {
 };
 
 const brandImageFile = (brand) => {
-  return `${staticImagesUrl}/brandsLogos/${brand.replace(" ", "+")}.jpg`;
+  return `${staticImagesUrl}/brandsLogos/${brand.replace(" ", "_")}.jpg`;
 };
 
 export default BrandsCarousel;

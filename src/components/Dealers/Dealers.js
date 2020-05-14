@@ -19,6 +19,7 @@ import {
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import iconPdf from "../../assets/img/ico-pdf.png";
+import OfferTypeSwitcher from "../common/OfferTypeSwitcher";
 import BrandsCarousel from "../common/BrandsCarousel";
 import RecordsElement from "../RecordsList/RecordsElement";
 import Section from "../RecordsList/Section";
@@ -28,7 +29,6 @@ import FilterModels from "../RecordsList/FilterModels";
 import FilterYears from "../RecordsList/FilterYears";
 import FilterKilometers from "../RecordsList/FilterKilometers";
 import FormActions from "../RecordsList/FormActions";
-import FilterCheckboxes from "../RecordsList/FilterCheckboxes";
 import Parser from "html-react-parser";
 import { staticImagesUrl } from "../../config";
 import Bookmark from "../common/Bookmark";
@@ -410,34 +410,13 @@ const Dealer = (props) => {
               } d-md-block`}
             >
               <Section>
-                <div className="switcher">
-                  <ul>
-                    <li className={form.offerType === "stock" ? "active" : ""}>
-                      <button
-                        name="offerType"
-                        id="offerType"
-                        value="stock"
-                        onClick={(e) => updateField(e)}
-                      >
-                        {t("stock")}
-                      </button>
-                    </li>
-                    <li
-                      className={
-                        form.offerType === "offerToPrivate" ? "active" : ""
-                      }
-                    >
-                      <button
-                        name="offerType"
-                        id="offerType"
-                        value="offerToPrivate"
-                        onClick={(e) => updateField(e)}
-                      >
-                        {t("offerToPrivate")}
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                <p className="section-title">
+                  <Translate code="offer_type" />
+                </p>
+                <OfferTypeSwitcher
+                  current={form.offerType}
+                  updateField={updateField}
+                />
 
                 <p className="section-title">
                   <Translate code="brand_and_model" />

@@ -358,35 +358,6 @@ header {
   .section {
     @extend .px-2;
   }
-
-  .switcher {
-    height: 38px;
-    font-size: 14px;
-    width: 100%;
-    ul {
-      height: 38px;
-
-      @include media-breakpoint-up(md) {
-        width: 100%;
-      }
-    }
-    li {
-      padding: 0 15px;
-      height: 36px;
-      line-height: 1;
-      width: 50%;
-      width: 50%;
-      overflow: hidden;
-      vertical-align: middle;
-      text-align: center;
-      display: table-cell;
-      button {
-        outline: 0;
-        text-transform: none;
-        vertical-align: bottom;
-      }
-    }
-  }
 }
 
 .section-title {
@@ -876,6 +847,7 @@ header {
   @include make-row();
   @extend .mb-4;
   overflow: hidden;
+  margin: 0 !important;
 
   img {
     display: block;
@@ -1200,6 +1172,7 @@ form.form-offer {
   border-radius: 5px;
   position: relative;
   @extend .mt-3;
+  @extend .mb-4;
 
   .grade-cursor {
     position: absolute;
@@ -1451,6 +1424,36 @@ footer {
         &:hover {
           text-decoration: none;
         }
+      }
+    }
+  }
+  &.switcher-offer-type {
+    height: 38px;
+
+    font-size: 14px;
+    width: 100%;
+    ul {
+      height: 38px;
+
+      @include media-breakpoint-up(md) {
+        width: 100%;
+      }
+    }
+    li {
+      padding: 0 15px;
+      height: 36px;
+      line-height: 1;
+      width: 50%;
+      width: 50%;
+      overflow: hidden;
+      vertical-align: middle;
+      text-align: center;
+      display: table-cell;
+      button {
+        outline: 0;
+        text-transform: none;
+        vertical-align: bottom;
+        color: $primary;
       }
     }
   }

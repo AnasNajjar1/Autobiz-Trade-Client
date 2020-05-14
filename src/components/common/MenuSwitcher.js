@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Alert, Button } from "reactstrap";
-import { t } from "../common/Translate";
+
+import { t } from "./Translate";
 const MenuSwitcher = (props) => {
   return (
     <div className="switcher">
