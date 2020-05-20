@@ -381,6 +381,18 @@ const Dealer = (props) => {
         <Row>
           <div className="search-record-nav">
             <Section className="search-section">
+              <div className="d-md-none text-center">
+                <p className="section-title">
+                  <Translate code="offer_type" />
+                </p>
+                <OfferTypeSwitcher
+                  current={form.offerType}
+                  updateField={updateField}
+                />
+              </div>
+
+              <hr />
+
               <Row>
                 <Col className="col col-6" sm="8" md="12">
                   <FilterSearch
@@ -393,7 +405,7 @@ const Dealer = (props) => {
                 <Col className="col d-md-none">
                   <button
                     type="button"
-                    className="btn btn-block btn-danger-reverse rounded"
+                    className="btn btn-block btn-sm btn-danger-reverse rounded"
                     onClick={() =>
                       setMenuMobileOpen(menuMobileOpen ? false : true)
                     }
@@ -410,13 +422,15 @@ const Dealer = (props) => {
               } d-md-block`}
             >
               <Section>
-                <p className="section-title">
-                  <Translate code="offer_type" />
-                </p>
-                <OfferTypeSwitcher
-                  current={form.offerType}
-                  updateField={updateField}
-                />
+                <div className="d-none d-md-block">
+                  <p className="section-title">
+                    <Translate code="offer_type" />
+                  </p>
+                  <OfferTypeSwitcher
+                    current={form.offerType}
+                    updateField={updateField}
+                  />
+                </div>
 
                 <p className="section-title">
                   <Translate code="brand_and_model" />

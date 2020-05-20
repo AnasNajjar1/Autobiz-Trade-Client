@@ -177,7 +177,7 @@ const RecordsElement = (props) => {
                             {record.immediatePurchasePrice.toLocaleString()} €{" "}
                             <small> {t("ttc")}</small>
                           </p>
-                          <p className="immediate-purchase">
+                          <p className="text-right small mb-0">
                             <FontAwesomeIcon icon={faBolt} size="1x" />{" "}
                             {t("immediate_purchase")}
                           </p>
@@ -196,7 +196,7 @@ const RecordsElement = (props) => {
                             {t("auction")}
                           </p>
                           {record.countAuctions > 0 && (
-                            <p className="text-right text-danger small mb-1">
+                            <p className="text-right small mb-1">
                               {record.countAuctions}{" "}
                               {(record.countAuctions === 1 && t("bid")) ||
                                 t("bids")}

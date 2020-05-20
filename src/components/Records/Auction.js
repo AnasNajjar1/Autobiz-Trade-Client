@@ -72,9 +72,20 @@ const Auction = ({ refId, bookmarked }) => {
 
   const handleChangeSubmission = (e) => {
     setUserSubmissionAmout(e.target.value);
+    console.log(auction.minimalAuction);
     if (isNaN(parseInt(e.target.value))) {
       setSubmissionIsValid(false);
     } else if (parseInt(e.target.value) < minSubmission) {
+      setSubmissionIsValid(false);
+    } else if (
+      acceptImmediatePurchase &&
+      parseInt(e.target.value) >= immediatePurchasePrice
+    ) {
+      setSubmissionIsValid(false);
+    } else if (
+      acceptAuction &&
+      parseInt(e.target.value) >= auction.minimalAuction
+    ) {
       setSubmissionIsValid(false);
     } else {
       setSubmissionIsValid(true);
@@ -252,7 +263,7 @@ const Auction = ({ refId, bookmarked }) => {
     <Row className="row-thin align-items-end mt-3">
       <Col className="col-thin">
         <Button
-          color="danger"
+          color="primary"
           block
           disabled={isExpired}
           onClick={toggleModalImmediatePurchase}
@@ -390,7 +401,7 @@ const Auction = ({ refId, bookmarked }) => {
 
       <Col xs="12">
         {countAuctions > 0 && (
-          <p className="text-danger text-center mt-2 mb-0 small">
+          <p className="gray text-center mt-2 mb-0 small">
             {countAuctions} {(countAuctions === 1 && t("bid")) || t("bids")}
           </p>
         )}
@@ -459,7 +470,7 @@ const Auction = ({ refId, bookmarked }) => {
 
       bestOffer = bestAuction;
       bestUserOffer = bestUserAuction;
-      if (!bestOffer) {
+      if (!bestOffer && !bestUserSubmission) {
         message = "no_offer";
         messageClass = "gray font-italic";
       }
@@ -494,7 +505,6 @@ const Auction = ({ refId, bookmarked }) => {
 
         <div className="section-price">
           <Row className="">
-            {/*<Col xs="12" sm="6" md="12" lg="6">*/}
             {bestUserOffer && (
               <Col>
                 <p className="h6 gray mb-0">

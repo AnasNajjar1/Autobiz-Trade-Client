@@ -328,11 +328,7 @@ const Record = (props) => {
                         <div className="section-title">
                           <Translate code="administrative_details"></Translate>
                         </div>
-                        {/* {Object.values(record.administrativeDetails).map(
-                          items => ( */}
                         <TableList items={record.administrativeDetails} />
-                        {/* )
-                        )} */}
                       </>
                     )}
                   </Col>
