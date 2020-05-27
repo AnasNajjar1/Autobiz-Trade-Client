@@ -424,10 +424,17 @@ header {
     }
   }
 
-  a.link-card {
+  .link-card {
     .salesInfo {
       top: -15px;
       margin-bottom: 0;
+    }
+
+    a {
+      color: inherit !important;
+      &:hover {
+        text-decoration: none;
+      }
     }
 
     .card {
@@ -1459,47 +1466,50 @@ footer {
   }
 }
 
-.page-dealer {
-  .brands {
-    height: 80px;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    text-align: center;
-    img {
-      height: 60px;
-    }
-  }
-}
-
-.page-dealer-list {
-  .brands {
-    height: 75px;
-    margin-top: 15px;
-    text-align: left;
-    .brand {
-      img {
-        height: 55px;
-      }
-    }
-  }
-}
-
-.brands {
-  overflow: hidden;
-
-  .brand {
+.carrousel-brands {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  .carrousel-brand {
     border: 1px solid #e5e5e8;
-    display: inline-block;
-    margin: 0 2.5px 2.5px 2.5px;
+    padding: 10px;
+    margin: 0 5px;
     border-radius: 10px;
     text-align: center;
-    font-size: 12px;
     line-height: 12px;
-    padding-bottom: 5px;
+    font-size: 12px;
     img {
       filter: grayscale(100%);
-      padding: 10px 10px 0px 10px;
-      display: block;
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  .slick-next,
+  .slick-prev {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 40px;
+    width: 30px;
+    height: 30px;
+    top: calc(50% - 15px);
+    background-image: url(../img/slide-arrow.png);
+  }
+  .slick-prev {
+    left: -30px;
+  }
+  .slick-next {
+    right: -30px;
+  }
+}
+
+.dealer-list {
+  .carrousel-brands {
+    @include media-breakpoint-only(md) {
+      max-width: 310px;
+    }
+    @include media-breakpoint-only(lg) {
+      max-width: 220px;
     }
   }
 }

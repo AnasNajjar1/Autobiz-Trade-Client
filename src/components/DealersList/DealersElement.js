@@ -11,31 +11,35 @@ import BrandsCarousel from "../common/BrandsCarousel";
 const DealersElement = (props) => {
   const { dealer } = props;
   const { bookmarked } = dealer;
-
+  /*<Link className="link-card" to={`/dealers/${dealer.uuid}`}>*/
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
-      <Link className="link-card" to={`/dealers/${dealer.uuid}`}>
+      <div className="link-card">
         <Card className="h-100">
           <div className="status">
             <Row>
               <div className="col-auto text-success">
-                <u>
-                  <FontAwesomeIcon icon={faCarSide} className="mr-2" />
-                  {t("online_offers:")} {dealer.count_vehicles}
-                </u>
+                <Link to={`/dealers/${dealer.uuid}`}>
+                  <u>
+                    <FontAwesomeIcon icon={faCarSide} className="mr-2" />
+                    {t("online_offers:")} {dealer.count_vehicles}
+                  </u>
+                </Link>
               </div>
             </Row>
           </div>
           <div className="card-head">
-            <img
-              className="card-img-top"
-              src={
-                dealer.picture
-                  ? dealer.picture
-                  : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`
-              }
-              alt={dealer.name}
-            />
+            <Link to={`/dealers/${dealer.uuid}`}>
+              <img
+                className="card-img-top"
+                src={
+                  dealer.picture
+                    ? dealer.picture
+                    : `${staticImagesUrl}/pointOfSales/default-front-dealer-picture.png`
+                }
+                alt={dealer.name}
+              />
+            </Link>
           </div>
 
           <CardBody>
@@ -50,7 +54,9 @@ const DealersElement = (props) => {
             </Row>
             <CardTitle>
               <p className="brand-model">
-                <span className="text-nowrap">{dealer.name}</span>
+                <Link to={`/dealers/${dealer.uuid}`}>
+                  <span className="text-nowrap">{dealer.name}</span>
+                </Link>
               </p>
 
               <BrandsCarousel brands={dealer.brands} />
@@ -65,7 +71,7 @@ const DealersElement = (props) => {
               : dealer.city + " " + dealer.zipCode + " " + t(dealer.country)}
           </CardFooter>
         </Card>
-      </Link>
+      </div>
     </Col>
   );
 };
