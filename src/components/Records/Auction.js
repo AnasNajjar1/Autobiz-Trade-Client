@@ -20,6 +20,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [auction, setAuction] = useState({});
 
@@ -214,7 +215,9 @@ const Auction = ({ refId, bookmarked }) => {
       }
 
       setAuction(result.data);
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   const closingMessage = () => {
@@ -251,11 +254,15 @@ const Auction = ({ refId, bookmarked }) => {
     immediatePurchasePrice,
   } = auction;
 
+  console.log(auction);
+
   if (_.isEmpty(auction)) {
     return (
-      <div className="text-center my-5">
-        <FontAwesomeIcon icon={faSpinner} size="3x" spin />
-      </div>
+      isLoading && (
+        <div className="text-center my-5">
+          <FontAwesomeIcon icon={faSpinner} size="3x" spin />
+        </div>
+      )
     );
   }
 
@@ -270,7 +277,7 @@ const Auction = ({ refId, bookmarked }) => {
         >
           {t("immediate_purchase")}{" "}
           <span className="font-weight-bold">
-            {immediatePurchasePrice.toLocaleString()}{" "}
+            {immediatePurchasePrice && immediatePurchasePrice.toLocaleString()}{" "}
           </span>{" "}
           €<sup>{t("ttc")}</sup>
         </Button>
@@ -358,9 +365,9 @@ const Auction = ({ refId, bookmarked }) => {
           invalid={!auctionIsValid && Boolean(userAuctionAmout)}
           onChange={handleChangeAuction}
           onKeyPress={(e) => handleKeyPress(e, "auction")}
-          placeholder={`${t("your_offer")} (${t(
-            "min"
-          )}  ${minimalAuction.toLocaleString()}€)`}
+          placeholder={`${t("your_offer")} (${t("min")}  ${
+            minimalAuction && minimalAuction.toLocaleString()
+          }€)`}
         />
       </Col>
       <Col className="col-thin">
