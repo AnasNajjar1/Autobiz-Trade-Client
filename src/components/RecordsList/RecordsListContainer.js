@@ -403,6 +403,16 @@ const RecordsListContainer = () => {
                 >
                   {t("vehicles_from_my_dealers")}
                 </Button>
+                <Button
+                  size="sm"
+                  outline
+                  className={
+                    form.list === "my_purchases" ? "active" : "inactive"
+                  }
+                  onClick={() => showCustomList("my_purchases")}
+                >
+                  {t("my_purchases")}
+                </Button>
               </div>
             </Col>
           </Row>
