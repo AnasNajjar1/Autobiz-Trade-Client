@@ -6,7 +6,7 @@ import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
-import { lang as pdfLang } from ".././../config";
+import { pdfLang } from ".././../config";
 import _ from "lodash";
 const Documents = ({ items }) => {
   const lang = Cookies.get("appLanguage");
