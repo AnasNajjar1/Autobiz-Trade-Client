@@ -73,6 +73,7 @@ const Auction = ({ refId, bookmarked }) => {
 
   const handleChangeSubmission = (e) => {
     setUserSubmissionAmout(e.target.value);
+    console.log(auction.minimalAuction);
     if (isNaN(parseInt(e.target.value))) {
       setSubmissionIsValid(false);
     } else if (parseInt(e.target.value) < minSubmission) {
@@ -252,6 +253,8 @@ const Auction = ({ refId, bookmarked }) => {
     statusName,
     immediatePurchasePrice,
   } = auction;
+
+  console.log(auction);
 
   if (_.isEmpty(auction)) {
     return (
