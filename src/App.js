@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import "./assets/scss/app.scss";
+import "./assets/scss/report.scss";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { LanguageContext, dictionnary } from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
 import DealersView from "./views/DealersView.js";
+import ReportsView from "./views/ReportsView.js";
 import DealersListView from "./views/DealersListView.js";
 import { QueryParamProvider } from "use-query-params";
 import moment from "moment";
@@ -21,10 +23,10 @@ Amplify.configure(awsconfig);
 
 class App extends Component {
   state = {
-    language: dictionnary[process.env.REACT_APP_LANG]
+    language: dictionnary[process.env.REACT_APP_LANG],
   };
 
-  changeLanguage = async language => {
+  changeLanguage = async (language) => {
     if (dictionnary.hasOwnProperty(language)) {
       try {
         const languageDict = await getTranslations(language);
@@ -39,7 +41,7 @@ class App extends Component {
     return;
   };
 
-  handleChangeLanguage = async event => {
+  handleChangeLanguage = async (event) => {
     if (event.detail.language) {
       await this.changeLanguage(event.detail.language);
     }
@@ -57,7 +59,7 @@ class App extends Component {
         Cookies.set("appLanguage", language, { expires: 365 });
       } else {
         Cookies.set("appLanguage", process.env.REACT_APP_LANG, {
-          expires: 365
+          expires: 365,
         });
       }
     }
@@ -66,10 +68,10 @@ class App extends Component {
 
     window.addEventListener("changeLanguage", this.handleChangeLanguage);
     window.addEventListener("storage", this.handleRefresh);
-    Object.keys(dictionnary).map(language => cacheStaticContent(language));
+    Object.keys(dictionnary).map((language) => cacheStaticContent(language));
   }
 
-  handleRefresh = async e => {
+  handleRefresh = async (e) => {
     if (e.key === "b2b-plateform") {
       this.changeLanguage(Cookies.get("appLanguage"));
       return;
@@ -82,6 +84,7 @@ class App extends Component {
         <LanguageContext.Provider value={this.state.language}>
           <QueryParamProvider ReactRouterRoute={Route}>
             <Switch>
+              <Route path="/reports/:lang/:refId" component={ReportsView} />
               <AuthRequiredRoute
                 path="/records/:refId"
                 component={RecordsView}

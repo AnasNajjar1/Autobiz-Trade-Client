@@ -7,7 +7,7 @@ import moment from "moment";
 import Cookies from "js-cookie";
 
 //remove uncomplete data or unwanted data
-function showableValue(key, value, lang) {
+export function showableValue(key, value, lang) {
   if (value === undefined || value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
@@ -18,7 +18,7 @@ function showableValue(key, value, lang) {
   return true;
 }
 
-const renderLabel = (key) => {
+export const renderLabel = (key) => {
   switch (key) {
     case "b2cMarketValue":
       return (
@@ -41,10 +41,7 @@ const renderLabel = (key) => {
     case "dpaProAmt":
       return (
         <>
-          {t(key)}{" "}
-          <Tooltip id="dpaProAmtInfo">
-            {t("dpaProAmtInfo")}
-          </Tooltip>
+          {t(key)} <Tooltip id="dpaProAmtInfo">{t("dpaProAmtInfo")}</Tooltip>
         </>
       );
     default:
@@ -52,7 +49,7 @@ const renderLabel = (key) => {
   }
 };
 
-const renderValue = (key, value, lang) => {
+export const renderValue = (key, value, lang) => {
   switch (key) {
     //wheels format
     case "wheelsFrontDimensions":
@@ -125,15 +122,31 @@ const renderValue = (key, value, lang) => {
         </>
       );
 
+    //Boolean
+    case "secondSetKey":
+    case "userManual":
+    case "firstHand":
+    case "imported":
+    case "metallic":
+    case "servicingInBrandNetwork":
+      if (value === 1) {
+        return t("yes");
+      } else if (value === 0) {
+        return t("no");
+      } else {
+        return "-";
+      }
+
     //duration display
     case "ownershipDuration":
+      console.log(value);
       return durationTranslate(value, ["y", "mo"], true, "and");
     default:
       return t(String(value));
   }
 };
 
-const ListTable = ({ items }) => {
+const TableList = ({ items }) => {
   let lang = Cookies.get("appLanguage");
   return (
     <div className="list-table">
@@ -158,4 +171,4 @@ const ListTable = ({ items }) => {
   );
 };
 
-export default ListTable;
+export default TableList;

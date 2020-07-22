@@ -1,0 +1,206 @@
+$bg: white;
+$grey: #dbdedf;
+$greyLight: #f2f2f2;
+$blue: #324c89;
+
+.page-report {
+  background-color: $bg;
+
+  .page-header,
+  .page-header-space {
+    height: 100px;
+  }
+
+  .page-header {
+    z-index: 999;
+  }
+
+  .page-footer,
+  .page-footer-space {
+    padding: 15px 0;
+  }
+
+  .page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid black; /* for demo */
+    background-color: $bg;
+  }
+
+  .page-header {
+    position: fixed;
+    top: 0mm;
+    width: 100%;
+    border-bottom: 1px solid black; /* for demo */
+    background-color: $bg;
+    margin-bottom: 20px;
+  }
+
+  .page-body {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .page {
+    page-break-after: always;
+  }
+
+  section {
+    break-inside: avoid;
+    margin: 20px 0;
+  }
+
+  .logo {
+    width: 5cm;
+  }
+
+  .page-header table {
+    height: 100%;
+    width: 100%;
+  }
+
+  .page-header h1 {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .page-header .header-info {
+    border: 2px solid $grey;
+    padding: 5px 15px;
+  }
+
+  table.gallery {
+    width: 100%;
+    td {
+      padding: 1px;
+    }
+    div {
+      background-color: $greyLight;
+    }
+    img {
+      max-width: 100%;
+      max-height: 24vw;
+      display: block;
+      margin: auto;
+    }
+  }
+
+  .vin {
+    background-color: $grey;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  .vin-picture {
+    max-height: 24vw;
+    width: auto;
+  }
+
+  .section-title {
+    color: black;
+  }
+
+  .list-ul-block {
+    .list-ul {
+      background-color: transparent;
+      li .fa-circle {
+        color: $blue;
+      }
+    }
+  }
+
+  table.table {
+    width: 100%;
+    td {
+      padding: 0;
+      border-top: 1px solid $grey;
+      div {
+        padding: 5px 10px;
+      }
+    }
+    border-left: 1px solid $grey;
+    border-right: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+  }
+
+  .bg-grey {
+    background-color: $grey;
+  }
+
+  .label {
+    background-color: $grey;
+  }
+
+  .label::first-letter {
+    text-transform: uppercase;
+  }
+
+  .value {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .bg-greyLight {
+    background-color: $greyLight;
+  }
+
+  @media print {
+    @page {
+      margin: 1cm;
+    }
+
+    header {
+      display: none;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+    tfoot {
+      display: table-footer-group;
+    }
+
+    body {
+      margin: 0;
+    }
+  }
+  .bg-greyLight {
+    background: $greyLight;
+  }
+
+  .grade-bar .grade-cursor .label {
+    background-color: transparent;
+  }
+  .list-ul {
+    column-count: inherit;
+  }
+  .icon-title {
+    background: $grey;
+    position: relative;
+    padding-left: 65px;
+    font-size: 22px;
+    line-height: 50px;
+    margin: 15px 0;
+    font-weight: bold;
+    i {
+      font-weight: normal;
+      font-size: 0.75em;
+    }
+
+    svg {
+      background: $blue;
+      color: white;
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      width: 50px;
+      left: 0;
+    }
+  }
+}
