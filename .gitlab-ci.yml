@@ -12,9 +12,8 @@ variables:
   DEV_SERVER: 51.77.133.108
   STAGING_SERVER: 51.77.133.108
   PPR_SERVER: 51.38.57.127
-  PROD1_SERVER: 172.16.2.14
-  PROD2_SERVER: 172.16.2.39
-  PROD3_SERVER: 172.16.2.40
+  PROD1_SERVER: 172.16.2.39
+  PROD2_SERVER: 172.16.2.40
   DELIVERY_USER: delivery2
   GIT_SUBMODULE_STRATEGY: recursive
   DOCKER_FILE_PATH: ./container/Dockerfile 
@@ -168,12 +167,6 @@ deploy_beta:
     - try_to_remove_previous_container_and_volumes
     - remove_previous_images
     - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}" 
-    - echo "Deploy Third"
-    - set_deploy_server "${PROD3_SERVER}" 
-    - set_up_access_to_docker_registry_in_server
-    - try_to_remove_previous_container_and_volumes
-    - remove_previous_images
-    - docker_run_with_this_port_mapping "${DEV_AND_BETA_PORT_MAPPING}" 
   only:
     - master        
   when: manual
@@ -192,12 +185,6 @@ deploy_prod:
     - docker_run_with_this_port_mapping "${PORT_MAPPING}" 
     - echo "Deploy Second"
     - set_deploy_server "${PROD2_SERVER}" 
-    - set_up_access_to_docker_registry_in_server
-    - try_to_remove_previous_container_and_volumes
-    - remove_previous_images
-    - docker_run_with_this_port_mapping  "${PORT_MAPPING}" 
-    - echo "Deploy Third"
-    - set_deploy_server "${PROD3_SERVER}" 
     - set_up_access_to_docker_registry_in_server
     - try_to_remove_previous_container_and_volumes
     - remove_previous_images
