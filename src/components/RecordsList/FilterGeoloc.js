@@ -84,7 +84,7 @@ const FilterGeoloc = ({
               id="country"
               value={country}
               onChange={(e) => handleChangeCountry(e)}
-              className="mb-4"
+              className="mb-2"
             >
               <option value={"all"}>{t("all")}</option>
               {Object.values(countries).map((c, i) => (

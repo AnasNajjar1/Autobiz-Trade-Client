@@ -29,13 +29,15 @@ const RecordsElement = (props) => {
   let picture = "";
   for (const pictTitle of listPicture) {
     picture = _.get(props, `record.${pictTitle}`, null);
-    if (!picture || picture === "" || picture === "null") continue;
+    if (!picture || picture === "" || picture === "null") {
+      picture = defaultFrontPicture;
+    }
     break;
   }
 
   const { record } = props;
   const { secondsLeft } = record;
-
+  console.log();
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
       <Link className="link-card" to={`/records/${record.uuid}`}>

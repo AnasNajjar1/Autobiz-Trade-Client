@@ -6,6 +6,7 @@ import { LanguageContext, dictionnary } from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
+import ListsListView from "./views/ListsListView.js";
 import DealersView from "./views/DealersView.js";
 import ReportsView from "./views/ReportsView.js";
 import DealersListView from "./views/DealersListView.js";
@@ -95,6 +96,7 @@ class App extends Component {
                 component={DealersView}
               />
               <Route path="/dealers" component={DealersListView} />
+              <Route path="/lists" component={ListsListView} />
               <Route path="/login" component={LoginView} />
               <Redirect from="/" exact to="/records" />
             </Switch>

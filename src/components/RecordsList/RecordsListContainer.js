@@ -16,6 +16,7 @@ import FilterModels from "./FilterModels";
 import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
 import FilterGeoloc from "./FilterGeoloc";
+import FilterLists from "./FilterLists";
 import Sort from "./Sort.js";
 import { API, Auth } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
@@ -55,6 +56,7 @@ const RecordsListContainer = () => {
     radius: 300,
     lat: "",
     lng: "",
+    saleList: "",
     sort: "sort_sales_ending_soon",
     range: [0, ItemsPerPage - 1],
   };
@@ -74,6 +76,7 @@ const RecordsListContainer = () => {
     lat: StringParam,
     lng: StringParam,
     radius: NumberParam,
+    saleList: NumberParam,
     sort: StringParam,
     range: ArrayParam,
   });
@@ -93,6 +96,7 @@ const RecordsListContainer = () => {
     radius: query.radius || initialFormState.radius,
     lat: query.lat || initialFormState.lat,
     lng: query.lng || initialFormState.lng,
+    saleList: query.saleList || initialFormState.saleList,
     sort: query.sort || initialFormState.sort,
     range: query.range || initialFormState.range,
   });
@@ -106,6 +110,7 @@ const RecordsListContainer = () => {
 
   const updateField = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
 
     const tmpForm = {
       ...form,
@@ -156,13 +161,6 @@ const RecordsListContainer = () => {
     };
 
     fetchRecords();
-    /*
-    if (form.country === "") {
-      Auth.currentAuthenticatedUser({ bypassCache: false }).then((user) => {
-        setValues({ ...form, country: user.country });
-      });
-    }
-    */
   }, [form.offerType]);
 
   useEffect(() => {
@@ -184,6 +182,7 @@ const RecordsListContainer = () => {
           radius: form.radius,
           lat: form.lat,
           lng: form.lng,
+          saleList: form.saleList,
           range: JSON.stringify(form.range),
         },
         response: true,
@@ -223,6 +222,7 @@ const RecordsListContainer = () => {
     form.radius,
     form.lat,
     form.lng,
+    form.saleList,
   ]);
 
   useEffect(() => {
@@ -358,6 +358,18 @@ const RecordsListContainer = () => {
                 updateSearch={updateSearch}
                 updatePosition={updatePosition}
               />
+              {filters.lists && (
+                <>
+                  <p className="section-title">
+                    <Translate code="lists" />
+                  </p>
+                  <FilterLists
+                    lists={filters.lists}
+                    value={form.saleList}
+                    updateField={updateField}
+                  />
+                </>
+              )}
             </Section>
             <Section>
               <FormActions reset={handleReset} />
