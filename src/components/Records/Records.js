@@ -246,9 +246,10 @@ const Record = (props) => {
                 <p className="gray">
                   {t("sellers_comment")}
 
-                  {appLanguage !== record.salesCommentInt.sourceLanguage && (
-                    <span> {t("translated")}</span>
-                  )}
+                  {record.salesCommentInt &&
+                    appLanguage !== record.salesCommentInt.sourceLanguage && (
+                      <span> {t("translated")}</span>
+                    )}
                 </p>
                 <p className="mb-0 font-italic">
                   <FontAwesomeIcon
@@ -263,11 +264,12 @@ const Record = (props) => {
                     className="ml-2 text-primary"
                   />
                 </p>
-                {appLanguage !== record.salesCommentInt.sourceLanguage && (
-                  <p className="gray small mt-2">
-                    ({t("original")}) {record.salesComment}
-                  </p>
-                )}
+                {record.salesCommentInt &&
+                  appLanguage !== record.salesCommentInt.sourceLanguage && (
+                    <p className="gray small mt-2">
+                      ({t("original")}) {record.salesComment}
+                    </p>
+                  )}
               </div>
             )}
             {record.keyPoints && record.keyPoints.length > 0 && (
