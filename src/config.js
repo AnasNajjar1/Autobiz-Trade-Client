@@ -55,3 +55,7 @@ exports.pdfLang = {
   es: "es",
   default: "fr",
 };
+
+exports.tagManagerArgs = {
+  gtmId: "GTM-K4DKLSR",
+};

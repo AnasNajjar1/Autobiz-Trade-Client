@@ -2,8 +2,6 @@ import React from "react";
 import { FormGroup, Input } from "reactstrap";
 
 const FilterLists = ({ lists, value, updateField }) => {
-  console.log("LIST", lists);
-
   lists = lists.sort();
 
   const options = lists.map((list) => (
