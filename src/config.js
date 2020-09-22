@@ -21,9 +21,9 @@ exports.identityPoolId = identityPoolIds[ENV];
 exports.region = "eu-west-1";
 
 const staticContents = {
-  dev: "https://b2b-translate-dev.s3-eu-west-1.amazonaws.com",
-  staging: "https://b2b-translate-dev.s3-eu-west-1.amazonaws.com",
-  prod: "https://b2b-translate-prod.s3-eu-west-1.amazonaws.com",
+  dev: "https://translations-host-dev.s3-eu-west-1.amazonaws.com/trade-app",
+  staging: "https://translations-host-dev.s3-eu-west-1.amazonaws.com/trade-app",
+  prod: "https://translations-host-prod.s3-eu-west-1.amazonaws.com/trade-app",
 };
 
 const staticImages = {
