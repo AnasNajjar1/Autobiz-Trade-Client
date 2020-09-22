@@ -20,7 +20,12 @@ import _ from "lodash";
 import Cookies from "js-cookie";
 import getTranslations from "./translations/services/getTranslations";
 import cacheStaticContent from "./translations/services/cacheStaticContent";
+import TagManager from "react-gtm-module";
+import tagManagerArgs from "./config";
+
 Amplify.configure(awsconfig);
+
+TagManager.initialize(tagManagerArgs);
 
 class App extends Component {
   state = {
