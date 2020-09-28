@@ -1,7 +1,7 @@
 import React from "react";
 import Translate from "../common/Translate";
-import { Link } from "react-router-dom";
-import { contactEmail, StaticFile, staticContentUrl } from "../../config"
+
+import { contactEmail, staticImagesUrl } from "../../config";
 import Cookies from "js-cookie";
 
 const Footer = () => {
@@ -11,13 +11,17 @@ const Footer = () => {
     <footer>
       <ul>
         <li>
-          <a href={`${staticContentUrl}/${lang}/terms_of_sales.pdf`} target="__blank"><Translate code="terms_of_sales" /></a>
+          <a
+            href={`${staticImagesUrl}/cgu/cgu-${lang.toLowerCase()}.pdf`}
+            target="__blank"
+          >
+            <Translate code="terms_of_use" />
+          </a>
         </li>
         <li>
-          <a href={`${StaticFile}${lang.toUpperCase()}/ConditionsGenerales.pdf`} target="__blank"><Translate code="terms_of_use" /></a>
-        </li>
-        <li>
-          <a href={`mailto:${contactEmail}`}><Translate code="contact_us" /></a>
+          <a href={`mailto:${contactEmail}`}>
+            <Translate code="contact_us" />
+          </a>
         </li>
       </ul>
     </footer>
