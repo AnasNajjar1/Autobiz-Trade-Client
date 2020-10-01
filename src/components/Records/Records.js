@@ -110,9 +110,8 @@ const Record = (props) => {
   const { pointOfSale = {}, bookmarked } = record;
   let orderadminDetail = {};
   let gcDate = _.get(record, "administrativeDetails.gcDate", null);
-
   try {
-    if (gcDate)
+    if (gcDate) {
       Object.entries(record.administrativeDetails).forEach(([key, value]) => {
         _.set(orderadminDetail, key, value);
         if (key === "gcDate" && gcDate)
@@ -122,10 +121,12 @@ const Record = (props) => {
             calculateOwnerShipDuration(gcDate)
           );
       });
+      if (orderadminDetail) record.administrativeDetails = orderadminDetail;
+    }
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
   }
-  if (orderadminDetail) record.administrativeDetails = orderadminDetail;
+
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };

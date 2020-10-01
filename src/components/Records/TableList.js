@@ -129,9 +129,9 @@ export const renderValue = (key, value, lang) => {
     case "imported":
     case "metallic":
     case "servicingInBrandNetwork":
-      if (value === 1) {
+      if (value === 1 || value === "yes") {
         return t("yes");
-      } else if (value === 0) {
+      } else if (value === 0 || value === "no") {
         return t("no");
       } else {
         return "-";
