@@ -5,7 +5,7 @@ import Translate, { t } from "../common/Translate";
 import {
   faEnvelope,
   faKey,
-  faExclamationTriangle
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Auth, API } from "aws-amplify";
 import { link_new_password } from "../../config";
@@ -16,16 +16,16 @@ class LoginForm extends Component {
     username: "",
     password: "",
     error: false,
-    loading: false
+    loading: false,
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
     this.setState({ error: false });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = this.state;
 
@@ -35,8 +35,8 @@ class LoginForm extends Component {
       this.setState({ loading: true });
       signInAutobiz(username, password)
         .then(() => this.props.history.push("/records"))
-        .catch(e => this.setState({ error: true }))
-        .finally(() => this.setState({ loading: true }));
+        .catch((e) => this.setState({ error: true }))
+        .finally(() => this.setState({ loading: false }));
     }
   };
   render() {
@@ -68,10 +68,18 @@ class LoginForm extends Component {
           </FormGroup>
 
           {error && (
-            <Alert color="danger" className="text-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-              <Translate code="user_unauthorized" />
-            </Alert>
+            <>
+              <Alert color="danger" className="text-center">
+                <FontAwesomeIcon
+                  icon={faExclamationTriangle}
+                  className="mr-2"
+                />
+                <Translate code="user_unauthorized" />
+              </Alert>
+              <p className="text-center">
+                <Translate code="login_error_help_message" />
+              </p>
+            </>
           )}
 
           <FormGroup>
@@ -102,7 +110,7 @@ export default LoginForm;
 
 async function signInAutobiz(username, password) {
   const authAutobiz = await API.post("b2bPlateform", "/auth", {
-    body: { username, password }
+    body: { username, password },
   });
 
   // To derive necessary data from the provider
@@ -111,26 +119,26 @@ async function signInAutobiz(username, password) {
     domain,
     expiresIn,
     user,
-    identity_id
+    identity_id,
   } = authAutobiz;
   return Auth.federatedSignIn(
     domain,
     {
       token,
       identity_id, // Optional
-      expires_at: expiresIn * 1000 + new Date().getTime() // the expiration timestamp
+      expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
     },
     user
   )
-    .then(cred => {
+    .then((cred) => {
       // If success, you will get the AWS credentials
       return Auth.currentAuthenticatedUser();
     })
-    .then(user => {
+    .then((user) => {
       // If success, the user object you passed in Auth.federatedSignIn
       return user;
     })
-    .catch(e => {
+    .catch((e) => {
       console.log("error", e.message);
     });
 }
@@ -142,18 +150,18 @@ async function refreshToken() {
   const {
     token, // the token you get from the provider
     expiresIn,
-    identity_id
+    identity_id,
   } = authAutobiz;
 
   return {
-      token, // the token from the provider
-      expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
-      identity_id, // optional, the identityId for the credentials
-  }
+    token, // the token from the provider
+    expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
+    identity_id, // optional, the identityId for the credentials
+  };
 }
 
 Auth.configure({
   refreshHandlers: {
-      'developer': refreshToken()
-  }
-})
+    developer: refreshToken(),
+  },
+});
