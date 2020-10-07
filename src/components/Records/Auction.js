@@ -12,6 +12,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  Tooltip as RsTooltip,
 } from "reactstrap";
 import Cookies from "js-cookie";
 import Tooltip from "../common/Tooltip";
@@ -21,6 +22,10 @@ import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
+  const [tooltipReservePrice, settooltipReservePrice] = useState(false);
+
+  const toggleReservePrice = () => settooltipReservePrice(!tooltipReservePrice);
 
   const [auction, setAuction] = useState({});
 
@@ -490,10 +495,31 @@ const Auction = ({ refId, bookmarked }) => {
             <Countdown secondsLeft={secondsLeft} />
           </Col>
           <Col xs="12" lg="5">
-            {auctionReservePriceReached && (
+            {auctionReservePriceReached === true && (
               <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
                 <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
                 {t("reservePriceReached")}
+              </p>
+            )}
+
+            {auctionReservePriceReached === false && (
+              <p className=" text-lg-right text-nowrap small mt-2 mt-lg-0">
+                <span
+                  className="reserve-price-info"
+                  href="#"
+                  id="tooltipReservePrice"
+                >
+                  {t("reservePrice")}
+                </span>
+
+                <RsTooltip
+                  placement="top-end"
+                  isOpen={tooltipReservePrice}
+                  target="tooltipReservePrice"
+                  toggle={toggleReservePrice}
+                >
+                  {t("reservePriceLegend")}
+                </RsTooltip>
               </p>
             )}
           </Col>

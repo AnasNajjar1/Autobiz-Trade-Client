@@ -1625,5 +1625,14 @@ footer {
   }
 }
 
+.reserve-price-info {
+  border: 1px solid $am_dark;
+  color: $am_dark;
+  font-size: 12.8px;
+  padding: 5px 10px;
+  cursor: default;
+  border-radius: $border-radius;
+}
+
 @import "carousel";
 @import "report";
