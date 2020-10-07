@@ -1615,5 +1615,15 @@ footer {
   z-index: 1;
 }
 
+.blink {
+  animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 @import "carousel";
 @import "report";

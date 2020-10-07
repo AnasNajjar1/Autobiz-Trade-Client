@@ -7,7 +7,7 @@ import moment from "moment";
 const padLeft = (nr, n, str) => {
   return Array(n - String(nr).length + 1).join(str || "0") + nr;
 };
-const Countdown = ({secondsLeft}) => {
+const Countdown = ({ secondsLeft }) => {
   const [seconds, setSeconds] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
@@ -19,8 +19,8 @@ const Countdown = ({secondsLeft}) => {
   // ---
 
   useEffect(() => {
-    setSeconds(secondsLeft)
-  }, [secondsLeft])
+    setSeconds(secondsLeft);
+  }, [secondsLeft]);
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
@@ -51,7 +51,7 @@ const Countdown = ({secondsLeft}) => {
   return (
     loading === false && (
       <div className="countdown">
-        <span className="pr-1">{t("time_left")}</span>
+        <span className="pr-1 d-lg-none d-xl-inline">{t("time_left")}</span>
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}

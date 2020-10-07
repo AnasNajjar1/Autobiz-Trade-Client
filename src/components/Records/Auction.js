@@ -16,7 +16,7 @@ import {
 import Cookies from "js-cookie";
 import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 const Auction = ({ refId, bookmarked }) => {
   const [isExpired, setIsExpired] = useState();
@@ -251,6 +251,7 @@ const Auction = ({ refId, bookmarked }) => {
     bestUserSubmission,
     statusName,
     immediatePurchasePrice,
+    auctionReservePriceReached,
   } = auction;
 
   if (_.isEmpty(auction)) {
@@ -485,8 +486,16 @@ const Auction = ({ refId, bookmarked }) => {
     <div className="section radius mb-4 py-4">
       <div className="auction">
         <Row>
-          <Col xs="12">
+          <Col xs="12" lg="7">
             <Countdown secondsLeft={secondsLeft} />
+          </Col>
+          <Col xs="12" lg="5">
+            {auctionReservePriceReached && (
+              <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
+                <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
+                {t("reservePriceReached")}
+              </p>
+            )}
           </Col>
           <Col xs="12">
             <p className="gray font-italic small">{closingMessage()}</p>
