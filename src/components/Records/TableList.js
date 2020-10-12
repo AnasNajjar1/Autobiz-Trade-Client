@@ -139,7 +139,6 @@ export const renderValue = (key, value, lang) => {
 
     //duration display
     case "ownershipDuration":
-      console.log(value);
       return durationTranslate(value, ["y", "mo"], true, "and");
     default:
       return t(String(value));

@@ -1,5 +1,5 @@
 import React from "react";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
@@ -10,7 +10,6 @@ import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.
 import iconCockadeRed from "../../assets/img/cockade-red.svg";
 import {
   faShoppingCart,
-  faUser,
   faCheck,
   faMapMarkerAlt,
   faBolt,

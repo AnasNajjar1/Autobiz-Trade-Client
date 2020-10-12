@@ -248,7 +248,7 @@ const Auction = ({ refId, bookmarked }) => {
     acceptImmediatePurchase,
     auctionStartPrice,
     countAuctions,
-    userWin,
+    userBestOfferer,
     bestAuction,
     bestUserAuction,
     bestOfferType,
@@ -443,7 +443,7 @@ const Auction = ({ refId, bookmarked }) => {
       switch (bestOfferType) {
         case "immediatePurchase":
           bestOffer = immediatePurchasePrice;
-          if (userWin) {
+          if (userBestOfferer) {
             bestUserOffer = bestOffer;
             message = "purchase_in_process";
             messageClass = "text-success";
@@ -460,7 +460,7 @@ const Auction = ({ refId, bookmarked }) => {
           break;
 
         case "submission":
-          if (userWin) {
+          if (userBestOfferer) {
             bestUserOffer = bestUserSubmission;
             message = "submission_acceptation_pending";
             messageClass = "text-success";
@@ -549,7 +549,9 @@ const Auction = ({ refId, bookmarked }) => {
                 <p className="h6 gray mb-0">
                   <Translate code="your_offer" />
                 </p>
-                <div className={userWin ? "text-success" : "text-danger"}>
+                <div
+                  className={userBestOfferer ? "text-success" : "text-danger"}
+                >
                   <div className="offer-value">
                     {bestUserOffer.toLocaleString()} €<sup>{t("ttc")}</sup>
                   </div>
