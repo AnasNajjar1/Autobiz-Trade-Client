@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCarSide } from "@fortawesome/free-solid-svg-icons";
-import { staticImagesUrl } from "../../config";
 import Cookies from "js-cookie";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 import BrandsCarousel from "../common/BrandsCarousel";
@@ -44,7 +43,7 @@ const DealersElement = ({ list }) => {
             <Link to={`/records?saleList=${list.id}`}>
               <img
                 className="card-img-top"
-                src={defaultFrontPicture}
+                src={list.picture ? list.picture : defaultFrontPicture}
                 alt={list.name}
               />
             </Link>
