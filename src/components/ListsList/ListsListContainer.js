@@ -96,7 +96,7 @@ const ListsListContainer = () => {
           {ListsCount > 0 && (
             <>
               <Row className="dealer-list">
-                <Col xs="12" sm="6" lg="8">
+                <Col xs="12">
                   <div className="h5 mb-3">
                     <b>{ListsCount}</b> {t("lists")}
                   </div>

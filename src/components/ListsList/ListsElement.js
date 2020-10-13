@@ -24,7 +24,7 @@ const DealersElement = ({ list }) => {
   });
 
   return (
-    <Col xs="12" lg="6" className="mb-4">
+    <Col xs="12" lg="4" className="mb-4">
       <div className="link-card">
         <Card className="h-100">
           <div className="status">
