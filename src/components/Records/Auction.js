@@ -354,7 +354,7 @@ const Auction = ({ refId, bookmarked }) => {
 
         <Modal isOpen={modalSubmission} toggle={toggleModalSubmission}>
           <ModalBody>
-            <p className="text-center">{t("confirm_message_offer")}</p>
+            <p className="text-center">{t("submission_validation")}</p>
           </ModalBody>
           <ModalFooter>
             <Button
