@@ -35,6 +35,7 @@ import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
 import { BrowserView, MobileView } from "react-device-detect";
 import Lightbox from "react-image-lightbox";
+import Parser from "html-react-parser";
 import Bookmark from "../common/Bookmark";
 import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
@@ -312,6 +313,21 @@ const Record = (props) => {
                 >
                   {t("titleServicingAndDamage")}
                 </Button>
+                {(pointOfSale.paymentDeadline ||
+                  pointOfSale.pickupDeadline ||
+                  pointOfSale.comments) && (
+                  <Button
+                    color="light"
+                    className={
+                      activeTab === "3"
+                        ? "container-separator-title"
+                        : "container-separator-title-light"
+                    }
+                    onClick={() => toggle("3")}
+                  >
+                    {t("sale_informations")}
+                  </Button>
+                )}
               </div>
             </Col>
             <TabContent activeTab={activeTab}>
@@ -447,6 +463,27 @@ const Record = (props) => {
                     </Col>
                   </Row>
                 </MobileView>
+              </TabPane>
+              <TabPane tabId="3">
+                <Row>
+                  <Col md="4">
+                    <div class="h2 mt-4">{t("payment_deadline")}</div>
+                    {(pointOfSale.paymentDeadline &&
+                      Parser(pointOfSale.paymentDeadline)) ||
+                      t("no_informations")}
+                  </Col>
+                  <Col md="4">
+                    <div class="h2 mt-4">{t("pickup_deadline")}</div>
+                    {(pointOfSale.pickupDeadline &&
+                      Parser(pointOfSale.pickupDeadline)) ||
+                      t("no_informations")}
+                  </Col>
+                  <Col md="4">
+                    <div class="h2 mt-4">{t("comments")}</div>
+                    {(pointOfSale.comments && Parser(pointOfSale.comments)) ||
+                      t("no_informations")}
+                  </Col>
+                </Row>
               </TabPane>
             </TabContent>
           </Row>
