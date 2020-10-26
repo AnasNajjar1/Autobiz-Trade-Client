@@ -29,13 +29,15 @@ const Auction = ({ refId, bookmarked }) => {
 
   const [auction, setAuction] = useState({});
 
-  const [modalImmediatePurchase, setModalImmediatePurchase] = useState(false);
-  const [modalAuction, setModalAuction] = useState(false);
+  const [modalSubmission, setModalSubmission] = useState(false);
+  const toggleModalSubmission = () => setModalSubmission(!modalSubmission);
 
+  const [modalAuction, setModalAuction] = useState(false);
+  const toggleModalAuction = () => setModalAuction(!modalAuction);
+
+  const [modalImmediatePurchase, setModalImmediatePurchase] = useState(false);
   const toggleModalImmediatePurchase = () =>
     setModalImmediatePurchase(!modalImmediatePurchase);
-
-  const toggleModalAuction = () => setModalAuction(!modalAuction);
 
   const second = 1000;
   const refreshTime = 5 * second;
@@ -162,6 +164,7 @@ const Auction = ({ refId, bookmarked }) => {
 
   const handleSubmitSubmission = (e) => {
     e.preventDefault();
+    setModalSubmission(false);
 
     if (submissionIsValid) {
       const postData = {
@@ -302,7 +305,7 @@ const Auction = ({ refId, bookmarked }) => {
               {t("cancel")}
             </Button>
             <Form method="post" onSubmit={handleSubmitImmediatePurchase}>
-              <Button color="danger" className="rounded">
+              <Button color="success" className="rounded">
                 {t("confirm_buy")}
               </Button>{" "}
             </Form>
@@ -344,10 +347,30 @@ const Auction = ({ refId, bookmarked }) => {
           block
           className="mt-2"
           disabled={isExpired || !submissionIsValid}
-          onClick={handleSubmitSubmission}
+          onClick={toggleModalSubmission}
         >
           {t("submission")}
         </Button>
+
+        <Modal isOpen={modalSubmission} toggle={toggleModalSubmission}>
+          <ModalBody>
+            <p className="text-center">{t("confirm_message_offer")}</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="secondary"
+              className="rounded"
+              onClick={toggleModalSubmission}
+            >
+              {t("cancel")}
+            </Button>
+            <Form method="post" onSubmit={handleSubmitSubmission}>
+              <Button color="success" className="rounded">
+                {t("confirm_buy")}
+              </Button>{" "}
+            </Form>
+          </ModalFooter>
+        </Modal>
       </Col>
       <Col className="col-thin col-auto">
         <Tooltip id="info_submission" className="d-block mb-2">
@@ -396,7 +419,7 @@ const Auction = ({ refId, bookmarked }) => {
               {t("cancel")}
             </Button>
             <Form method="post" onSubmit={handleSubmitAuction}>
-              <Button color="danger" className="rounded">
+              <Button color="success" className="rounded">
                 {t("confirm_buy")}
               </Button>{" "}
             </Form>
