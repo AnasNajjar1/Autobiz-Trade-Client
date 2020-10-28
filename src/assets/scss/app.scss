@@ -1634,5 +1634,19 @@ footer {
   border-radius: $border-radius;
 }
 
+.bordered-row {
+  @extend .pt-5;
+
+  @include media-breakpoint-up(md) {
+    & > div {
+      border-right: 1px solid #babdd3;
+    }
+
+    & > div:last-child {
+      border-right: none;
+    }
+  }
+}
+
 @import "carousel";
 @import "report";

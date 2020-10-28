@@ -465,21 +465,21 @@ const Record = (props) => {
                 </MobileView>
               </TabPane>
               <TabPane tabId="3">
-                <Row>
+                <Row className="bordered-row">
                   <Col md="4">
-                    <div class="h2 mt-4">{t("payment_deadline")}</div>
+                    <div class="h2">{t("payment_deadline")}</div>
                     {(pointOfSale.paymentDeadline &&
                       Parser(pointOfSale.paymentDeadline)) ||
                       t("no_informations")}
                   </Col>
                   <Col md="4">
-                    <div class="h2 mt-4">{t("pickup_deadline")}</div>
+                    <div class="h2">{t("pickup_deadline")}</div>
                     {(pointOfSale.pickupDeadline &&
                       Parser(pointOfSale.pickupDeadline)) ||
                       t("no_informations")}
                   </Col>
                   <Col md="4">
-                    <div class="h2 mt-4">{t("comments")}</div>
+                    <div class="h2">{t("comments")}</div>
                     {(pointOfSale.comments && Parser(pointOfSale.comments)) ||
                       t("no_informations")}
                   </Col>
