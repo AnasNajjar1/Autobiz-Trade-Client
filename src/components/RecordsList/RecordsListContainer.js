@@ -263,7 +263,11 @@ const RecordsListContainer = () => {
         <p className="section-title">
           <Translate code="offer_type" />
         </p>
-        <OfferTypeSwitcher current={form.offerType} updateField={updateField} />
+        <OfferTypeSwitcher
+          current={form.offerType}
+          updateField={updateField}
+          countOfferToPrivate={filters.countOfferToPrivate}
+        />
       </div>
 
       <hr />
@@ -306,6 +310,7 @@ const RecordsListContainer = () => {
                 <OfferTypeSwitcher
                   current={form.offerType}
                   updateField={updateField}
+                  countOfferToPrivate={filters.countOfferToPrivate}
                 />
               </div>
 

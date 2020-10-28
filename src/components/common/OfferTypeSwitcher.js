@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { t } from "./Translate";
 const OfferTypeSwitcher = (props) => {
@@ -25,6 +24,11 @@ const OfferTypeSwitcher = (props) => {
           >
             {t("offerToPrivate")}
           </button>
+          {props.countOfferToPrivate ? (
+            <span className="bubble">{props.countOfferToPrivate}</span>
+          ) : (
+            ""
+          )}
         </li>
       </ul>
     </div>

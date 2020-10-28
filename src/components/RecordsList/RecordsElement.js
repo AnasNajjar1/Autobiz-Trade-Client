@@ -50,7 +50,7 @@ const RecordsElement = (props) => {
                     className="mr-2"
                     src={iconCockadeRed}
                   />
-                  {t("offerToPrivate")}
+                  <span className="text-danger">{t("offerToPrivate")}</span>
                 </div>
               )}
 

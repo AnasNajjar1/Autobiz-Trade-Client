@@ -1396,6 +1396,8 @@ footer {
 .switcher {
   margin-bottom: 1rem;
 
+  position: relative;
+
   @include media-breakpoint-down(sm) {
     text-align: center;
   }
@@ -1468,6 +1470,17 @@ footer {
         color: $primary;
       }
     }
+  }
+
+  .bubble {
+    position: absolute;
+    background-color: $success;
+    top: -13px;
+    border-radius: 50%;
+    color: #fff;
+    right: -3px;
+    font-size: 11px;
+    padding: 7px 5px;
   }
 }
 

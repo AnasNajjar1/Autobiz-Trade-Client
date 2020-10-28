@@ -150,7 +150,7 @@ const Record = (props) => {
                   className="mr-2"
                   src={iconCockadeRed}
                 />
-                <small className="gray">{t("offerToPrivate")}</small>
+                <small className="text-danger">{t("offerToPrivate")}</small>
                 <Tooltip id="legendOfferToPrivate">
                   {t("legendOfferToPrivate")}
                 </Tooltip>
