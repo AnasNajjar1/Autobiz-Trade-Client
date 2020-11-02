@@ -1474,13 +1474,24 @@ footer {
 
   .bubble {
     position: absolute;
-    background-color: $success;
+
     top: -13px;
     border-radius: 50%;
     color: #fff;
-    right: -3px;
+    background-color: $success;
+
+    @include media-breakpoint-up(sm) {
+      right: -5px;
+      margin-right: inherit;
+    }
+    @include media-breakpoint-down(sm) {
+      margin-right: -5px;
+      right: inherit;
+    }
+
     font-size: 11px;
-    padding: 7px 5px;
+    padding: 7px 3px;
+    min-width: 25px;
   }
 }
 
