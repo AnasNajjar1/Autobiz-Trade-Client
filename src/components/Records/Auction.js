@@ -526,7 +526,7 @@ const Auction = ({ refId, bookmarked }) => {
             )}
 
             {auctionReservePriceReached === false && (
-              <p className=" text-lg-right text-nowrap small mt-2 mt-lg-0">
+              <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
                 <span
                   className="reserve-price-info"
                   href="#"
