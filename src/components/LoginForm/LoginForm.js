@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { Form, FormGroup, Input, Button, Alert, Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Translate, { t } from "../common/Translate";
@@ -33,12 +34,14 @@ class LoginForm extends Component {
       this.setState({ error: true });
     } else {
       this.setState({ loading: true });
+
       signInAutobiz(username, password)
-        .then(() => this.props.history.push("/records"))
+        .then(() => this.props.history.push(this.props.entryPath))
         .catch((e) => this.setState({ error: true }))
         .finally(() => this.setState({ loading: false }));
     }
   };
+
   render() {
     const { error } = this.state;
     return (
@@ -106,7 +109,7 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
 
 async function signInAutobiz(username, password) {
   const authAutobiz = await API.post("b2bPlateform", "/auth", {

@@ -31,6 +31,18 @@ class App extends Component {
     language: dictionnary[process.env.REACT_APP_LANG],
   };
 
+  constructor() {
+    super();
+    this.entryPath = {
+      pathname: "/records",
+    };
+    if (window.location.pathname !== "/login") {
+      this.entryPath = {
+        pathname: window.location.pathname,
+      };
+    }
+  }
+
   changeLanguage = async (language) => {
     if (dictionnary.hasOwnProperty(language)) {
       try {
@@ -99,9 +111,14 @@ class App extends Component {
                 path="/dealers/:refId"
                 component={DealersView}
               />
-              <Route path="/dealers" component={DealersListView} />
-              <Route path="/lists" component={ListsListView} />
-              <Route path="/login" component={LoginView} />
+              <AuthRequiredRoute path="/dealers" component={DealersListView} />
+              <AuthRequiredRoute path="/lists" component={ListsListView} />
+              <Route
+                path="/login"
+                render={(props) => (
+                  <LoginView {...props} entryPath={this.entryPath} />
+                )}
+              />
               <Redirect from="/" exact to="/records" />
             </Switch>
           </QueryParamProvider>

@@ -605,7 +605,9 @@ const Auction = ({ refId, bookmarked }) => {
               {/* Auction */}
               {acceptAuction === 1 && auctionForm}
               {/* Submission */}
-              {acceptSubmission === 1 && countAuctions === 0 && submissionForm}
+              {acceptSubmission === 1 &&
+                (auctionReservePriceReached === false || countAuctions === 0) &&
+                submissionForm}
               {/* ImmediatePurchaseForm */}
               {acceptImmediatePurchase === 1 && immediatePurchaseForm}
             </>
