@@ -13,7 +13,6 @@ import {
   useQueryParams,
   NumberParam,
   StringParam,
-  DelimitedArrayParam,
   ArrayParam,
 } from "use-query-params";
 import DealersElement from "./DealersElement";

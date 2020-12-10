@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuSwitcher from "../common/MenuSwitcher";
-import OfferTypeSwitcher from "../common/OfferTypeSwitcher";
+import SupplyTypeSwitcher from "../common/SupplyTypeSwitcher";
 import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +18,7 @@ import FilterKilometers from "./FilterKilometers";
 import FilterGeoloc from "./FilterGeoloc";
 import FilterLists from "./FilterLists";
 import Sort from "./Sort.js";
-import { API, Auth } from "aws-amplify";
+import { API } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
@@ -50,14 +50,14 @@ const RecordsListContainer = () => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    offerType: "stock",
+    supplyType: "STOCK",
     country: "all",
     zipCode: "",
     radius: 300,
     lat: "",
     lng: "",
     saleList: "",
-    sort: "sort_sales_ending_soon",
+    sort: ["date", "desc"],
     range: [0, ItemsPerPage - 1],
   };
 
@@ -70,14 +70,14 @@ const RecordsListContainer = () => {
     yearMecMax: NumberParam,
     mileageMin: NumberParam,
     mileageMax: NumberParam,
-    offerType: StringParam,
+    supplyType: StringParam,
     country: StringParam,
     zipCode: StringParam,
     lat: StringParam,
     lng: StringParam,
     radius: NumberParam,
     saleList: NumberParam,
-    sort: StringParam,
+    sort: ArrayParam,
     range: ArrayParam,
   });
 
@@ -90,7 +90,7 @@ const RecordsListContainer = () => {
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
-    offerType: query.offerType || initialFormState.offerType,
+    supplyType: query.supplyType || initialFormState.supplyType,
     country: query.country || initialFormState.country,
     zipCode: query.zipCode || initialFormState.zipCode,
     radius: query.radius || initialFormState.radius,
@@ -110,7 +110,6 @@ const RecordsListContainer = () => {
 
   const updateField = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     const tmpForm = {
       ...form,
@@ -161,14 +160,13 @@ const RecordsListContainer = () => {
     };
 
     fetchRecords();
-  }, [form.offerType]);
+  }, [form.supplyType]);
 
   useEffect(() => {
     const fetchRecords = async () => {
       setIsFetching(true);
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
-          sort: form.sort,
           search: form.search,
           list: form.list,
           brandLabel: form.brandLabel,
@@ -177,13 +175,23 @@ const RecordsListContainer = () => {
           yearMecMax: form.yearMecMax,
           mileageMin: form.mileageMin,
           mileageMax: form.mileageMax,
-          offerType: form.offerType,
+          supplyType: form.supplyType,
           country: form.country,
           radius: form.radius,
           lat: form.lat,
           lng: form.lng,
           saleList: form.saleList,
+          sort: JSON.stringify(form.sort),
           range: JSON.stringify(form.range),
+          filter: JSON.stringify({
+            search: form.search,
+            supplyType: form.supplyType,
+            yearMecMin: form.yearMecMin,
+            yearMecMax: form.yearMecMax,
+            mileageMin: form.mileageMin,
+            mileageMax: form.mileageMax,
+            country: form.country,
+          }),
         },
         response: true,
       });
@@ -217,7 +225,7 @@ const RecordsListContainer = () => {
     setQuery(form);
   }, [
     form.modelLabel,
-    form.offerType,
+    form.supplyType,
     form.country,
     form.radius,
     form.lat,
@@ -263,8 +271,8 @@ const RecordsListContainer = () => {
         <p className="section-title">
           <Translate code="offer_type" />
         </p>
-        <OfferTypeSwitcher
-          current={form.offerType}
+        <SupplyTypeSwitcher
+          current={form.supplyType}
           updateField={updateField}
           countOfferToPrivate={filters.countOfferToPrivate}
         />
@@ -307,8 +315,8 @@ const RecordsListContainer = () => {
                   <Translate code="offer_type" />
                 </p>
 
-                <OfferTypeSwitcher
-                  current={form.offerType}
+                <SupplyTypeSwitcher
+                  current={form.supplyType}
                   updateField={updateField}
                   countOfferToPrivate={filters.countOfferToPrivate}
                 />

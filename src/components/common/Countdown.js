@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "../common/Translate";
-import Cookies from "js-cookie";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 const padLeft = (nr, n, str) => {

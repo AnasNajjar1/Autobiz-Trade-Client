@@ -1,5 +1,5 @@
 import React from "react";
-import Translate, { t } from "../common/Translate";
+import { t } from "../common/Translate";
 
 const Grade = ({ letter }) => {
   if (typeof letter !== "string") return <p className="text-center">-</p>;

@@ -1,25 +1,25 @@
 import React from "react";
 
 import { t } from "./Translate";
-const OfferTypeSwitcher = (props) => {
+const SupplyTypeSwitcher = (props) => {
   return (
     <div className="switcher switcher-offer-type">
       <ul>
-        <li className={props.current === "stock" ? "active" : ""}>
+        <li className={props.current === "STOCK" ? "active" : ""}>
           <button
-            name="offerType"
-            id="offerType"
-            value="stock"
+            name="supplyType"
+            id="supplyType"
+            value="STOCK"
             onClick={(e) => props.updateField(e)}
           >
             {t("stock")}
           </button>
         </li>
-        <li className={props.current === "offerToPrivate" ? "active" : ""}>
+        <li className={props.current === "OFFER_TO_PRIVATE" ? "active" : ""}>
           <button
-            name="offerType"
-            id="offerType"
-            value="offerToPrivate"
+            name="supplyType"
+            id="supplyType"
+            value="OFFER_TO_PRIVATE"
             onClick={(e) => props.updateField(e)}
           >
             {t("offerToPrivate")}
@@ -35,4 +35,4 @@ const OfferTypeSwitcher = (props) => {
   );
 };
 
-export default OfferTypeSwitcher;
+export default SupplyTypeSwitcher;

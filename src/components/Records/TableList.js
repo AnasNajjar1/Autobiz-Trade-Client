@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row } from "reactstrap";
 import { t, durationTranslate } from "../common/Translate";
 import Tooltip from "../common/Tooltip";

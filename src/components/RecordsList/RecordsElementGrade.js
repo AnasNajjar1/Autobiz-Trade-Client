@@ -1,12 +1,12 @@
 import React from "react";
 import Translate, { t } from "../common/Translate";
-const RecordsElementGrade = props => {
+const RecordsElementGrade = (props) => {
   if (props.grade === null) return null;
 
-  const classes = `grade grade-${props.grade.toLowerCase()}`;
+  const classes = `grade grade-${props.grade && props.grade.toLowerCase()}`;
 
   let label = "";
-  switch (props.grade.toUpperCase()) {
+  switch (props.grade && props.grade.toUpperCase()) {
     case "A":
       label = t("very_good");
       break;
@@ -29,7 +29,9 @@ const RecordsElementGrade = props => {
     <div className="car-condition-wrapper">
       <div className="car-condition">
         <Translate code="global_condition"></Translate> :
-        <span className={classes}>{props.grade.toUpperCase()}</span>
+        <span className={classes}>
+          {props.grade && props.grade.toUpperCase()}
+        </span>
         <span className="grade-label">{label}</span>
       </div>
     </div>

@@ -143,7 +143,7 @@ const Record = (props) => {
             </small>
           </div>
           <div className="col text-right">
-            {record.offerType === "offerToPrivate" && (
+            {record.offerType === "OFFER_TO_PRIVATE" && (
               <>
                 <img
                   alt={t("offerToPrivate")}
@@ -157,7 +157,7 @@ const Record = (props) => {
               </>
             )}
 
-            {record.offerType === "stock" && (
+            {record.offerType === "STOCK" && (
               <>
                 <FontAwesomeIcon
                   icon={faShoppingCart}

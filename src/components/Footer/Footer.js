@@ -1,6 +1,5 @@
 import React from "react";
 import Translate from "../common/Translate";
-
 import { contactEmail, staticImagesUrl } from "../../config";
 import Cookies from "js-cookie";
 

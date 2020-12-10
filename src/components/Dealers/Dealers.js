@@ -19,7 +19,7 @@ import {
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import iconPdf from "../../assets/img/ico-pdf.png";
-import OfferTypeSwitcher from "../common/OfferTypeSwitcher";
+import SupplyTypeSwitcher from "../common/SupplyTypeSwitcher";
 import BrandsCarousel from "../common/BrandsCarousel";
 import RecordsElement from "../RecordsList/RecordsElement";
 import Section from "../RecordsList/Section";
@@ -96,7 +96,7 @@ const Dealer = (props) => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    offerType: "stock",
+    supplyType: "STOCK",
     range: [0, ItemsPerPage - 1],
   };
 
@@ -110,7 +110,7 @@ const Dealer = (props) => {
     yearMecMax: initialFormState.yearMecMax,
     mileageMin: initialFormState.mileageMin,
     mileageMax: initialFormState.mileageMax,
-    offerType: initialFormState.offerType,
+    supplyType: initialFormState.supplyType,
     range: initialFormState.range,
   });
 
@@ -181,7 +181,7 @@ const Dealer = (props) => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel, form.offerType]);
+  }, [form.modelLabel, form.supplyType]);
 
   useEffect(() => {
     if (dealer !== false) {
@@ -214,7 +214,7 @@ const Dealer = (props) => {
             yearMecMax: form.yearMecMax,
             mileageMin: form.mileageMin,
             mileageMax: form.mileageMax,
-            offerType: form.offerType,
+            supplyType: form.supplyType,
             range: JSON.stringify(form.range),
           },
           response: true,
@@ -385,8 +385,8 @@ const Dealer = (props) => {
                 <p className="section-title">
                   <Translate code="offer_type" />
                 </p>
-                <OfferTypeSwitcher
-                  current={form.offerType}
+                <SupplyTypeSwitcher
+                  current={form.supplyType}
                   updateField={updateField}
                 />
               </div>
@@ -426,8 +426,8 @@ const Dealer = (props) => {
                   <p className="section-title">
                     <Translate code="offer_type" />
                   </p>
-                  <OfferTypeSwitcher
-                    current={form.offerType}
+                  <SupplyTypeSwitcher
+                    current={form.supplyType}
                     updateField={updateField}
                   />
                 </div>
