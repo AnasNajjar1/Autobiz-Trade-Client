@@ -56,7 +56,7 @@ const RecordsListContainer = () => {
     radius: 300,
     lat: "",
     lng: "",
-    saleList: "",
+    listId: "",
     sort: ["date", "desc"],
     range: [0, ItemsPerPage - 1],
   };
@@ -76,7 +76,7 @@ const RecordsListContainer = () => {
     lat: StringParam,
     lng: StringParam,
     radius: NumberParam,
-    saleList: NumberParam,
+    listId: NumberParam,
     sort: ArrayParam,
     range: ArrayParam,
   });
@@ -96,7 +96,7 @@ const RecordsListContainer = () => {
     radius: query.radius || initialFormState.radius,
     lat: query.lat || initialFormState.lat,
     lng: query.lng || initialFormState.lng,
-    saleList: query.saleList || initialFormState.saleList,
+    listId: query.listId || initialFormState.listId,
     sort: query.sort || initialFormState.sort,
     range: query.range || initialFormState.range,
   });
@@ -168,18 +168,18 @@ const RecordsListContainer = () => {
       const result = await API.get("b2bPlateform", `/vehicle`, {
         queryStringParameters: {
           list: form.list,
-          brandLabel: form.brandLabel,
-          modelLabel: form.modelLabel,
-          saleList: form.saleList,
           sort: JSON.stringify(form.sort),
           range: JSON.stringify(form.range),
           filter: JSON.stringify({
             search: form.search,
             supplyType: form.supplyType,
+            brandLabel: form.brandLabel,
+            modelLabel: form.modelLabel,
             yearMecMin: form.yearMecMin,
             yearMecMax: form.yearMecMax,
             mileageMin: form.mileageMin,
             mileageMax: form.mileageMax,
+            listId: form.listId,
             country: form.country,
             lat: form.lat,
             lng: form.lng,
@@ -223,7 +223,7 @@ const RecordsListContainer = () => {
     form.radius,
     form.lat,
     form.lng,
-    form.saleList,
+    form.listId,
   ]);
 
   useEffect(() => {
@@ -371,7 +371,7 @@ const RecordsListContainer = () => {
                   </p>
                   <FilterLists
                     lists={filters.lists}
-                    value={form.saleList}
+                    value={form.listId}
                     updateField={updateField}
                   />
                 </>
