@@ -22,13 +22,13 @@ const BrandsCarousel = ({ brands }) => {
       <Slider {...settings}>
         {brands.map((brand, index) => (
           <div>
-            <div class="carrousel-brand">
+            <div className="carrousel-brand">
               <img
                 key={index}
-                src={brandImageFile(brand.label)}
-                alt={brand.label}
+                src={brandImageFile(brand.brandLabel)}
+                alt={brand.brandLabel}
               />
-              <div>{brand.nbVehicles}</div>
+              <div>{brand.countVehicle}</div>
             </div>
           </div>
         ))}

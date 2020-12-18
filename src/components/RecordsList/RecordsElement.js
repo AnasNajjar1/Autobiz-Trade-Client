@@ -28,7 +28,7 @@ const RecordsElement = (props) => {
   const { record } = props;
   const { vehicle } = record;
   const { pointofsale } = vehicle;
-  const { secondsLeft } = record;
+  const { secondsBeforeEnd } = record;
 
   let picture = "";
   for (const pictTitle of listPicture) {
@@ -127,14 +127,16 @@ const RecordsElement = (props) => {
           <CardBody>
             <Row>
               <Col>
-                {secondsLeft && <Countdown secondsLeft={secondsLeft} />}
-                {/* {secondsLeft > 0 && (
+                {secondsBeforeEnd && (
+                  <Countdown secondsLeft={secondsBeforeEnd} />
+                )}
+                {secondsBeforeEnd > 0 && (
                   <Bookmark
-                    scope="vehicle"
+                    scope="sale"
                     refId={record.uuid}
-                    bookmarked={record.bookmarked}
+                    bookmarked={record.isBookmarkedByUser}
                   />
-                )} */}
+                )}
               </Col>
             </Row>
             <CardTitle>
@@ -239,15 +241,12 @@ const RecordsElement = (props) => {
 
           <CardFooter>
             <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-1" size="1x" />
-            {pointofsale.city === null &&
-            pointofsale.zipCode === null &&
-            pointofsale.country === null
-              ? t("unknown_point_of_sale")
-              : pointofsale.city +
-                " " +
-                pointofsale.zipCode +
-                " " +
-                t(pointofsale.country)}
+            {(pointofsale && (
+              <>
+                {pointofsale.city} {pointofsale.zipCode} {pointofsale.country}
+              </>
+            )) ||
+              t("unknown_point_of_sale")}
           </CardFooter>
         </Card>
       </Link>

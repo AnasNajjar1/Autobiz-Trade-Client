@@ -22,7 +22,7 @@ const DealersElement = (props) => {
                 <Link to={`/dealers/${dealer.uuid}`}>
                   <u>
                     <FontAwesomeIcon icon={faCarSide} className="mr-2" />
-                    {t("online_offers:")} {dealer.count_vehicles}
+                    {t("online_offers:")} {dealer.countVehicles}
                   </u>
                 </Link>
               </div>
@@ -46,9 +46,9 @@ const DealersElement = (props) => {
             <Row>
               <Col>
                 <Bookmark
-                  scope="dealer"
+                  scope="pointOfSale"
                   refId={dealer.uuid}
-                  bookmarked={bookmarked}
+                  bookmarked={dealer.isBookmarkedByUser}
                 />
               </Col>
             </Row>
@@ -58,8 +58,7 @@ const DealersElement = (props) => {
                   <span className="text-nowrap">{dealer.name}</span>
                 </Link>
               </p>
-
-              <BrandsCarousel brands={dealer.brands} />
+              <BrandsCarousel brands={dealer.brandsOnline} />
             </CardTitle>
           </CardBody>
           <CardFooter>

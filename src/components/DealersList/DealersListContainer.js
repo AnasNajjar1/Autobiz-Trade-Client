@@ -81,7 +81,6 @@ const DealersListContainer = () => {
   const initialFormState = {
     search: "",
     list: "all",
-    onlineOffersMinCount: 0,
     brandLabel: "",
     modelLabel: "",
     country: "all",
@@ -95,7 +94,6 @@ const DealersListContainer = () => {
   const [query, setQuery] = useQueryParams({
     search: StringParam,
     list: StringParam,
-    onlineOffersMinCount: NumberParam,
     brandLabel: StringParam,
     modelLabel: StringParam,
     country: StringParam,
@@ -109,8 +107,7 @@ const DealersListContainer = () => {
   const [form, setValues] = useState({
     search: query.search || initialFormState.search,
     list: query.list || initialFormState.list,
-    onlineOffersMinCount:
-      query.onlineOffersMinCount || initialFormState.onlineOffersMinCount,
+
     brandLabel: query.brandLabel || initialFormState.brandLabel,
     modelLabel: query.modelLabel || initialFormState.modelLabel,
     country: query.country || initialFormState.country,
@@ -131,15 +128,16 @@ const DealersListContainer = () => {
       setIsFetching(true);
       const result = await API.get("b2bPlateform", `/pointOfSale`, {
         queryStringParameters: {
-          search: form.search,
-          list: form.list,
-          onlineOffersMinCount: JSON.stringify(form.onlineOffersMinCount),
-          brandLabel: form.brandLabel,
-          modelLabel: form.modelLabel,
-          country: form.country,
-          radius: form.radius,
-          lat: form.lat,
-          lng: form.lng,
+          filter: JSON.stringify({
+            search: form.search,
+            list: form.list,
+            modelLabel: form.modelLabel,
+            country: form.country,
+            radius: form.radius,
+            lat: form.lat,
+            lng: form.lng,
+            brandLabel: form.brandLabel,
+          }),
           range: JSON.stringify(form.range),
         },
         response: true,

@@ -52,11 +52,9 @@ const Record = (props) => {
   useEffect(() => {
     const fetchRecord = async () => {
       try {
-        const result = await API.get(
-          "b2bPlateform",
-          `/vehicle/${props.refId}`,
-          { response: true }
-        );
+        const result = await API.get("b2bPlateform", `/sale/${props.refId}`, {
+          response: true,
+        });
         setRecord(result.data);
         setLoading(false);
       } catch (error) {
@@ -69,11 +67,15 @@ const Record = (props) => {
   useEffect(() => {
     let ld = [];
 
-    if (record !== null && record.damages) {
-      Object.values(record.damages).map((v) => {
+    if (record && record.vehicle && record.vehicle.damages) {
+      Object.values(record.vehicle.damages).map((v) => {
         let isExist = _.get(ld, v.zone, null);
-        if (isExist === null) ld[v.zone] = [v];
-        else isExist.push(v);
+
+        if (isExist === null) {
+          ld[v.zone] = [v];
+        } else {
+          isExist.push(v);
+        }
       });
     }
     setSections(ld);
@@ -109,20 +111,35 @@ const Record = (props) => {
   }
 
   const { pointOfSale = {}, bookmarked } = record;
+  const { vehicle } = record;
+  const { pointofsale } = vehicle;
+
   let orderadminDetail = {};
-  let gcDate = _.get(record, "administrativeDetails.gcDate", null);
+  let gcDate = _.get(vehicle, "administrativeDetails.gcDate", null);
+
+  const { rankedConstructorEquipments } = vehicle || {};
+  const {
+    veryImportantDatEquipment,
+    importantDatEquipment,
+    fewImportantDatEquipment,
+  } = rankedConstructorEquipments || [];
+
+  // TODO: move ownerShipDuration calculation to API
   try {
     if (gcDate) {
-      Object.entries(record.administrativeDetails).forEach(([key, value]) => {
+      Object.entries(vehicle.administrativeDetails).forEach(([key, value]) => {
         _.set(orderadminDetail, key, value);
-        if (key === "gcDate" && gcDate)
+        if (key === "gcDate" && gcDate) {
           _.set(
             orderadminDetail,
             "ownershipDuration",
             calculateOwnerShipDuration(gcDate)
           );
+        }
       });
-      if (orderadminDetail) record.administrativeDetails = orderadminDetail;
+      if (orderadminDetail) {
+        vehicle.administrativeDetails = orderadminDetail;
+      }
     }
   } catch (e) {
     console.log("Error while calculate ownershipDuration");
@@ -139,11 +156,11 @@ const Record = (props) => {
           <div className="col-auto">
             <small className="gray pl-3 mb-1">
               {t("reference")}
-              {record.fileNumber}
+              {vehicle.fileNumber}
             </small>
           </div>
           <div className="col text-right">
-            {record.offerType === "OFFER_TO_PRIVATE" && (
+            {record.supplyType === "OFFER_TO_PRIVATE" && (
               <>
                 <img
                   alt={t("offerToPrivate")}
@@ -156,8 +173,7 @@ const Record = (props) => {
                 </Tooltip>
               </>
             )}
-
-            {record.offerType === "STOCK" && (
+            {record.supplyType === "STOCK" && (
               <>
                 <FontAwesomeIcon
                   icon={faShoppingCart}
@@ -174,32 +190,37 @@ const Record = (props) => {
           <Col xs="12" md="6">
             <div className="car-props">
               <div className="section radius">
-                <Bookmark
+                {/* <Bookmark
                   refId={props.refId}
                   bookmarked={bookmarked}
-                  scope="vehicle"
-                />
+                  scope="sale"
+                /> */}
 
                 <div className="h1">
-                  {record.brandLabel} {record.modelLabel}
+                  {vehicle.brandLabel} {vehicle.modelLabel}
                 </div>
-                {record.versionLabel && (
-                  <div className="gray mb-1">{record.versionLabel} * </div>
+                {vehicle.versionLabel && (
+                  <div className="gray mb-1">{vehicle.versionLabel} * </div>
                 )}
-                {record.gallery && <Carousel items={record.gallery} />}
+                {/* {record.gallery && <Carousel items={record.gallery} />} */}
               </div>
               <TagsProps
                 tags={[
                   {
                     label: "firstRegistrationDate",
-                    value: moment(
-                      record.characteristics.firstRegistrationDate
-                    ).format("MM-YYYY"),
+                    value: moment(vehicle.firstRegistrationDate).format(
+                      "MM-YYYY"
+                    ),
                   },
-                  { label: "fuelLabel", value: record.fuelLabel },
+                  {
+                    label: "fuelLabel",
+                    value: vehicle.characteristics.fuelLabel,
+                  },
                   {
                     label: "km",
-                    value: record.mileage && record.mileage.toLocaleString(),
+                    value:
+                      vehicle.characteristics.mileage &&
+                      vehicle.characteristics.mileage.toLocaleString(),
                   },
                 ]}
               />
@@ -208,18 +229,18 @@ const Record = (props) => {
                   <div className="h3 text-center">
                     <Translate code="global_condition"></Translate>
                   </div>
-                  <Grade letter={record.profileBodyCosts} />
+                  <Grade letter={vehicle.profileBodyCosts} />
                 </Col>
-                {pointOfSale.name !== null && (
+                {pointofsale.name !== null && (
                   <Col xs="12" sm="6" md="12" lg="6">
                     <div className="reseller-block">
-                      {pointOfSale.name}
+                      {pointofsale.name}
                       <br />
-                      {pointOfSale.zipCode} {pointOfSale.city}
+                      {pointofsale.zipCode} {pointofsale.city}
                       <br />
-                      {t(pointOfSale.country)}
+                      {t(pointofsale.country)}
                       <br />
-                      <a href={`/dealers/${pointOfSale.uuid}`}>
+                      <a href={`/dealers/${pointofsale.uuid}`}>
                         <FontAwesomeIcon
                           icon={faExternalLinkAlt}
                           className="mr-1"
@@ -231,7 +252,7 @@ const Record = (props) => {
                 )}
               </Row>
             </div>
-            {record.versionLabel && (
+            {vehicle.versionLabel && (
               <Row>
                 <Col>
                   <p className="small font-italic text-secondary">
@@ -242,8 +263,8 @@ const Record = (props) => {
             )}
           </Col>
           <Col>
-            <Auction refId={props.refId} bookmarked={bookmarked} />
-            {record.salesComment && (
+            <Auction refId={props.refId} />
+            {/* {record.salesComment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">
                   {t("sellers_comment")}
@@ -273,16 +294,16 @@ const Record = (props) => {
                     </p>
                   )}
               </div>
-            )}
-            {record.keyPoints && record.keyPoints.length > 0 && (
+            )} */}
+            {vehicle.keyPoints && vehicle.keyPoints.length > 0 && (
               <div className="section radius mb-4 py-4">
                 <div className="h2 mb-4 text-center">
                   <Translate code="key_points"></Translate>
                 </div>
-                <CheckList items={record.keyPoints} />
+                <CheckList items={vehicle.keyPoints} />
               </div>
             )}
-            {record.documents && <Documents items={record.documents} />}
+            {vehicle.documents && <Documents items={vehicle.documents} />}
           </Col>
         </Row>
       </Container>
@@ -313,9 +334,9 @@ const Record = (props) => {
                 >
                   {t("titleServicingAndDamage")}
                 </Button>
-                {(pointOfSale.paymentDeadline ||
-                  pointOfSale.pickupDeadline ||
-                  pointOfSale.comments) && (
+                {(pointofsale.paymentDeadline ||
+                  pointofsale.pickupDeadline ||
+                  pointofsale.comments) && (
                   <Button
                     color="light"
                     className={
@@ -334,34 +355,34 @@ const Record = (props) => {
               <TabPane tabId="1">
                 <Row>
                   <Col xs="12" md="6">
-                    {record.characteristics && (
+                    {vehicle.characteristics && (
                       <>
                         <div className="section-title">
                           <Translate code="caracteristics"></Translate>
                         </div>
-                        <TableList items={record.characteristics} />
+                        <TableList items={vehicle.characteristics} />
                       </>
                     )}
-                    {record.administrativeDetails && (
+                    {vehicle.administrativeDetails && (
                       <>
                         <div className="section-title">
                           <Translate code="administrative_details"></Translate>
                         </div>
-                        <TableList items={record.administrativeDetails} />
+                        <TableList items={vehicle.administrativeDetails} />
                       </>
                     )}
                   </Col>
                   <Col xs="12" md="6">
-                    {record.declaredEquipments &&
-                      record.declaredEquipments.length > 0 && (
+                    {vehicle.declaredEquipments &&
+                      vehicle.declaredEquipments.length > 0 && (
                         <>
                           <div className="section-title">
                             <Translate code="declared_equiments"></Translate>
                           </div>
-                          <EquipmentList items={record.declaredEquipments} />
+                          <EquipmentList items={vehicle.declaredEquipments} />
                         </>
                       )}
-                    {record.market && (
+                    {vehicle.market && (
                       <>
                         <div className="section-title">
                           <Row>
@@ -373,7 +394,7 @@ const Record = (props) => {
                             </Col>
                             <Col xs="12" md="6" className="section-title-link">
                               <a
-                                href={record.market.MarketLink}
+                                href={vehicle.market.marketLink}
                                 target="_blank"
                               >
                                 {`${t("market_link")} `}
@@ -382,55 +403,64 @@ const Record = (props) => {
                             </Col>
                           </Row>
                         </div>
-                        <TableList items={record.market} />
+                        <TableList items={vehicle.market} />
                       </>
                     )}
-                    {record.history && (
+                    {vehicle.history && (
                       <>
                         <div className="section-title">
                           <Translate code="history"></Translate>
                         </div>
-                        <TableList items={record.history} />
+                        <TableList items={vehicle.history} />
                       </>
                     )}
-                    {record.servicing && (
+                    {vehicle.servicing && (
                       <>
                         <div className="section-title">
                           <Translate code="servicing"></Translate>
                         </div>
-                        <TableList items={record.servicing} />
+                        <TableList items={vehicle.servicing} />
                       </>
                     )}
                   </Col>
-                  {record.constructorEquipments &&
-                    record.constructorEquipments.length > 0 && (
-                      <>
-                        <Col xs="12">
-                          <hr className="my-3" />
-                        </Col>
-                        <Col xs="12">
-                          <div className="section-title mt-0 mb-1">
-                            <Translate code="equiments"></Translate>
-                            <i>
-                              <Translate code="constructor_source"></Translate>
-                            </i>
-                          </div>
-                        </Col>
-                        <Col xs="12" lg="6">
-                          {record.constructorEquipments[0] && (
-                            <UlList items={record.constructorEquipments[0]} />
-                          )}
-                          {record.constructorEquipments[1] && (
-                            <UlList items={record.constructorEquipments[1]} />
-                          )}
-                        </Col>
-                        <Col xs="12" lg="6">
-                          {record.constructorEquipments[2] && (
-                            <UlList items={record.constructorEquipments[2]} />
-                          )}
-                        </Col>
-                      </>
-                    )}
+                  {vehicle.rankedConstructorEquipments && (
+                    <>
+                      <Col xs="12">
+                        <hr className="my-3" />
+                      </Col>
+                      <Col xs="12">
+                        <div className="section-title mt-0 mb-1">
+                          <Translate code="equiments"></Translate>
+                          <i>
+                            <Translate code="constructor_source"></Translate>
+                          </i>
+                        </div>
+                      </Col>
+                      <Col xs="12" lg="6">
+                        {veryImportantDatEquipment && (
+                          <UlList
+                            items={veryImportantDatEquipment}
+                            title={t("veryImportantDatEquipment")}
+                          />
+                        )}
+
+                        {importantDatEquipment && (
+                          <UlList
+                            items={importantDatEquipment}
+                            title={t("importantDatEquipment")}
+                          />
+                        )}
+                      </Col>
+                      <Col xs="12" lg="6">
+                        {fewImportantDatEquipment && (
+                          <UlList
+                            items={fewImportantDatEquipment}
+                            title={t("fewImportantDatEquipment")}
+                          />
+                        )}
+                      </Col>
+                    </>
+                  )}
                 </Row>
               </TabPane>
               <TabPane tabId="2">
@@ -467,20 +497,20 @@ const Record = (props) => {
               <TabPane tabId="3">
                 <Row className="bordered-row">
                   <Col md="4">
-                    <div class="h2 mb-3">{t("payment_deadline")}</div>
-                    {(pointOfSale.paymentDeadline &&
-                      Parser(pointOfSale.paymentDeadline)) ||
+                    <div className="h2 mb-3">{t("payment_deadline")}</div>
+                    {(pointofsale.paymentDeadline &&
+                      Parser(pointofsale.paymentDeadline)) ||
                       t("no_informations")}
                   </Col>
                   <Col md="4">
-                    <div class="h2 mb-3">{t("pickup_deadline")}</div>
-                    {(pointOfSale.pickupDeadline &&
-                      Parser(pointOfSale.pickupDeadline)) ||
+                    <div className="h2 mb-3">{t("pickup_deadline")}</div>
+                    {(pointofsale.pickupDeadline &&
+                      Parser(pointofsale.pickupDeadline)) ||
                       t("no_informations")}
                   </Col>
                   <Col md="4">
-                    <div class="h2 mb-3">{t("comments")}</div>
-                    {(pointOfSale.comments && Parser(pointOfSale.comments)) ||
+                    <div className="h2 mb-3">{t("comments")}</div>
+                    {(pointofsale.comments && Parser(pointofsale.comments)) ||
                       t("no_informations")}
                   </Col>
                 </Row>
@@ -601,12 +631,12 @@ const Damage = ({ i, index, damagesImage }) => {
         )}
         {i.damage_picture && (
           <span onClick={() => togglePopup(i.damage_picture)}>
-            <img src={i.damage_picture} className="damage-img" />
+            <img src={i.damage_picture} className="damage-img" alt="" />
           </span>
         )}
         {i.damage_picture2 && (
           <span onClick={() => togglePopup(i.damage_picture2)}>
-            <img src={i.damage_picture2} className="damage-img" />
+            <img src={i.damage_picture2} className="damage-img" alt="" />
           </span>
         )}
       </div>

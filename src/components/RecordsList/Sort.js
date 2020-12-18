@@ -12,17 +12,16 @@ const Sort = ({ list, value, sort }) => {
       </option>
     ));
   }
-
   return (
     <>
       <FormGroup>
         <Input
           type="select"
           name="sort"
-          value={value}
+          value={value[0]}
           bsSize="sm"
           className="rounded mb-3"
-          onChange={e => sort(e.target.value)}
+          onChange={(e) => sort(e.target.value)}
         >
           {options}
         </Input>

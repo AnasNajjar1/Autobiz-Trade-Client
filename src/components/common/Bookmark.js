@@ -5,10 +5,10 @@ import { faStar as faStarEmpty } from "@fortawesome/free-regular-svg-icons";
 import { API } from "aws-amplify";
 
 const Bookmark = ({ scope, refId, bookmarked }) => {
-  const [isBookmarked, setIsBookmarked] = useState(bookmarked === 1);
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
 
   useEffect(() => {
-    setIsBookmarked(bookmarked === 1);
+    setIsBookmarked(bookmarked);
   }, [bookmarked]);
 
   const handleClick = (e) => {

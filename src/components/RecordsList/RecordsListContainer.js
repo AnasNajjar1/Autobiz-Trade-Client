@@ -165,12 +165,12 @@ const RecordsListContainer = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       setIsFetching(true);
-      const result = await API.get("b2bPlateform", `/vehicle`, {
+      const result = await API.get("b2bPlateform", `/sale`, {
         queryStringParameters: {
-          list: form.list,
           sort: JSON.stringify(form.sort),
           range: JSON.stringify(form.range),
           filter: JSON.stringify({
+            list: form.list,
             search: form.search,
             supplyType: form.supplyType,
             brandLabel: form.brandLabel,
@@ -406,9 +406,9 @@ const RecordsListContainer = () => {
                   size="sm"
                   outline
                   className={
-                    form.list === "my_favourites" ? "active" : "inactive"
+                    form.list === "my_bookmarked_sales" ? "active" : "inactive"
                   }
-                  onClick={() => showCustomList("my_favourites")}
+                  onClick={() => showCustomList("my_bookmarked_sales")}
                 >
                   <FontAwesomeIcon icon={faStar} className="mr-2" />
                   {t("my_favourites")}
@@ -505,11 +505,11 @@ const RecordsListContainer = () => {
               <Col className="col-thin">
                 <Button
                   block
-                  outline={form.list !== "my_favourites"}
+                  outline={form.list !== "my_bookmarked_sales"}
                   className="rounded"
                   size="sm"
                   color="primary"
-                  onClick={() => showCustomList("my_favourites")}
+                  onClick={() => showCustomList("my_bookmarked_sales")}
                 >
                   {t("my_favourites")}
                   <FontAwesomeIcon icon={faStar} className="ml-2" />

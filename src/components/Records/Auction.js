@@ -19,7 +19,7 @@ import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
-const Auction = ({ refId, bookmarked }) => {
+const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -455,6 +455,7 @@ const Auction = ({ refId, bookmarked }) => {
       case "immediatePurchase":
         bestOffer = immediatePurchasePrice;
         break;
+      default:
       case "auction":
         bestOffer = bestAuction;
         break;
@@ -510,6 +511,7 @@ const Auction = ({ refId, bookmarked }) => {
     }
   }
 
+  console.log("HERER");
   return (
     <div className="section radius mb-4 py-4">
       <div className="auction">

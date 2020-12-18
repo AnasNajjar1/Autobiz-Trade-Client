@@ -52,12 +52,13 @@ const Dealer = (props) => {
   useEffect(() => {
     const fetchDealer = async () => {
       try {
-        const result = await API.get("b2bPlateform", `/pointOfSale`, {
-          queryStringParameters: {
-            uuid: props.refId,
-          },
-          response: true,
-        });
+        const result = await API.get(
+          "b2bPlateform",
+          `/pointOfSale/${props.refId}`,
+          {
+            response: true,
+          }
+        );
 
         setDealer(result.data);
         setLoading(false);
@@ -188,7 +189,10 @@ const Dealer = (props) => {
       const fetchRecords = async () => {
         const result = await API.get("b2bPlateform", `/filter`, {
           queryStringParameters: {
-            pointOfSale: dealer.id,
+            filter: JSON.stringify({
+              pointOfSaleUuid: dealer.uuid,
+              supplyType: form.supplyType,
+            }),
           },
           response: true,
         });
@@ -197,25 +201,26 @@ const Dealer = (props) => {
 
       fetchRecords();
     }
-  }, [dealer]);
+  }, [dealer, form.supplyType]);
 
   useEffect(() => {
     if (dealer !== false) {
       const fetchRecords = async () => {
         setIsFetching(true);
-        const result = await API.get("b2bPlateform", `/vehicle`, {
+        const result = await API.get("b2bPlateform", `/sale`, {
           queryStringParameters: {
-            pointOfSale: dealer.id,
-            search: form.search,
-            list: form.list,
-            brandLabel: form.brandLabel,
-            modelLabel: form.modelLabel,
-            yearMecMin: form.yearMecMin,
-            yearMecMax: form.yearMecMax,
-            mileageMin: form.mileageMin,
-            mileageMax: form.mileageMax,
-            supplyType: form.supplyType,
             range: JSON.stringify(form.range),
+            filter: JSON.stringify({
+              search: form.search,
+              supplyType: form.supplyType,
+              brandLabel: form.brandLabel,
+              modelLabel: form.modelLabel,
+              yearMecMin: form.yearMecMin,
+              yearMecMax: form.yearMecMax,
+              mileageMin: form.mileageMin,
+              mileageMax: form.mileageMax,
+              pointOfSaleUuid: dealer.uuid,
+            }),
           },
           response: true,
         });
@@ -282,8 +287,8 @@ const Dealer = (props) => {
                   <Col xs="3" className="text-right">
                     <Bookmark
                       refId={props.refId}
-                      bookmarked={dealer.bookmarked}
-                      scope="dealer"
+                      bookmarked={dealer.isBookmarkedByUser}
+                      scope="pointOfSale"
                     />
                   </Col>
                 </Row>
@@ -344,7 +349,7 @@ const Dealer = (props) => {
                 alt={dealer.name}
                 className="overflowed-image"
               />
-              <BrandsCarousel brands={dealer.brands} />
+              <BrandsCarousel brands={dealer.brandsOnline} />
             </div>
           </Col>
         </Row>

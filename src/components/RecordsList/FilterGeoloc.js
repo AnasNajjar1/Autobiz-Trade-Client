@@ -42,6 +42,7 @@ const FilterGeoloc = ({
         },
         response: true,
       });
+
       updatePosition(response.data);
 
       setErrorZipCode(false);
