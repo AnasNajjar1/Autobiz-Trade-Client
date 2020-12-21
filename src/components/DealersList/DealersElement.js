@@ -10,8 +10,7 @@ import { staticImagesUrl } from "../../config";
 import BrandsCarousel from "../common/BrandsCarousel";
 const DealersElement = (props) => {
   const { dealer } = props;
-  const { bookmarked } = dealer;
-  /*<Link className="link-card" to={`/dealers/${dealer.uuid}`}>*/
+
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
       <div className="link-card">

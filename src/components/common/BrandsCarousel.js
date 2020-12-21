@@ -17,21 +17,24 @@ const BrandsCarousel = ({ brands }) => {
       },
     ],
   };
+
   return (
     <div className="carrousel-brands">
       <Slider {...settings}>
-        {brands.map((brand, index) => (
-          <div>
-            <div className="carrousel-brand">
-              <img
-                key={index}
-                src={brandImageFile(brand.brandLabel)}
-                alt={brand.brandLabel}
-              />
-              <div>{brand.countVehicle}</div>
+        {brands &&
+          brands.length > 0 &&
+          brands.map((brand, index) => (
+            <div key={index}>
+              <div className="carrousel-brand">
+                <img
+                  key={index}
+                  src={brandImageFile(brand.brandLabel)}
+                  alt={brand.brandLabel}
+                />
+                <div>{brand.countVehicle}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </Slider>
     </div>
   );
