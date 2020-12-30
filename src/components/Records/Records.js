@@ -263,14 +263,16 @@ const Record = (props) => {
             )}
           </Col>
           <Col>
-            <Auction refId={props.refId} />
-            {/* {record.salesComment && (
+            AA
+            {/* <Auction refId={props.refId} /> */}
+            BB
+            {record.comment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">
                   {t("sellers_comment")}
 
-                  {record.salesCommentInt &&
-                    appLanguage !== record.salesCommentInt.sourceLanguage && (
+                  {record.commentInt &&
+                    appLanguage !== record.commentInt.sourceLanguage && (
                       <span> {t("translated")}</span>
                     )}
                 </p>
@@ -279,22 +281,22 @@ const Record = (props) => {
                     icon={faQuoteLeft}
                     className="mr-2 text-primary"
                   />
-                  {(record.salesCommentInt &&
-                    record.salesCommentInt.translation[appLanguage]) ||
-                    record.salesComment}
+                  {(record.commentInt &&
+                    record.commentInt.translation[appLanguage]) ||
+                    record.comment}
                   <FontAwesomeIcon
                     icon={faQuoteRight}
                     className="ml-2 text-primary"
                   />
                 </p>
-                {record.salesCommentInt &&
-                  appLanguage !== record.salesCommentInt.sourceLanguage && (
+                {record.commentInt &&
+                  appLanguage !== record.commentInt.sourceLanguage && (
                     <p className="gray small mt-2">
-                      ({t("original")}) {record.salesComment}
+                      ({t("original")}) {record.comment}
                     </p>
                   )}
               </div>
-            )} */}
+            )}
             {vehicle.keyPoints && vehicle.keyPoints.length > 0 && (
               <div className="section radius mb-4 py-4">
                 <div className="h2 mb-4 text-center">
