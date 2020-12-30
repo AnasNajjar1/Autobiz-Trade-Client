@@ -190,11 +190,11 @@ const Record = (props) => {
           <Col xs="12" md="6">
             <div className="car-props">
               <div className="section radius">
-                {/* <Bookmark
-                  refId={props.refId}
-                  bookmarked={bookmarked}
+                <Bookmark
+                  refId={record.uuid}
+                  bookmarked={record.isBookmarkedByUser}
                   scope="sale"
-                /> */}
+                />
 
                 <div className="h1">
                   {vehicle.brandLabel} {vehicle.modelLabel}
@@ -202,7 +202,7 @@ const Record = (props) => {
                 {vehicle.versionLabel && (
                   <div className="gray mb-1">{vehicle.versionLabel} * </div>
                 )}
-                {/* {record.gallery && <Carousel items={record.gallery} />} */}
+                {vehicle.gallery && <Carousel items={vehicle.gallery} />}
               </div>
               <TagsProps
                 tags={[
