@@ -17,12 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
-const listPicture = [
-  "three_quarters_front_picture",
-  "front_picture",
-  "left_side_picture",
-  "right_side_picture",
-];
 
 const RecordsElement = (props) => {
   const { record } = props;
@@ -30,13 +24,11 @@ const RecordsElement = (props) => {
   const { pointofsale } = vehicle;
   const { secondsBeforeEnd } = record;
 
-  let picture = "";
-  for (const pictTitle of listPicture) {
-    picture = _.get(vehicle, `carPictures.${pictTitle}`, null);
-    if (!picture || picture === "" || picture === "null") {
-      picture = defaultFrontPicture;
-    }
-    break;
+  let featuredPicture;
+  if (vehicle && vehicle.featuredPicture) {
+    featuredPicture = vehicle.featuredPicture;
+  } else {
+    featuredPicture = defaultFrontPicture;
   }
 
   return (
@@ -110,15 +102,15 @@ const RecordsElement = (props) => {
             </Row>
           </div>
           <div className="card-head">
-            {/* {record.statusName === "sold" && (
+            {record.isSold && (
               <div className="sold-vehicle-banner">
                 <span>{t("sold")}</span>
               </div>
-            )} */}
+            )}
 
             <img
               className="card-img-top"
-              src={picture}
+              src={featuredPicture}
               alt={vehicle.brandLabel + " " + vehicle.modelLabel}
             />
             <RecordsElementGrade grade={vehicle.profileBodyCosts} />
