@@ -18,7 +18,7 @@ const Sort = ({ list, value, sort }) => {
         <Input
           type="select"
           name="sort"
-          value={value[0]}
+          value={value}
           bsSize="sm"
           className="rounded mb-3"
           onChange={(e) => sort(e.target.value)}

@@ -33,7 +33,7 @@ import {
 const RecordsListContainer = () => {
   const ItemsPerPage = 12;
 
-  const sortList = [
+  const sortLabelList = [
     "sort_sales_ending_soon",
     "sort_date_asc",
     "sort_date_desc",
@@ -57,7 +57,7 @@ const RecordsListContainer = () => {
     lat: "",
     lng: "",
     listId: "",
-    sort: ["date", "desc"],
+    sortLabel: "sort_date_desc",
     range: [0, ItemsPerPage - 1],
   };
 
@@ -77,7 +77,7 @@ const RecordsListContainer = () => {
     lng: StringParam,
     radius: NumberParam,
     listId: NumberParam,
-    sort: ArrayParam,
+    sortLabel: StringParam,
     range: ArrayParam,
   });
 
@@ -97,7 +97,7 @@ const RecordsListContainer = () => {
     lat: query.lat || initialFormState.lat,
     lng: query.lng || initialFormState.lng,
     listId: query.listId || initialFormState.listId,
-    sort: query.sort || initialFormState.sort,
+    sortLabel: query.sortLabel || initialFormState.sortLabel,
     range: query.range || initialFormState.range,
   });
 
@@ -146,8 +146,8 @@ const RecordsListContainer = () => {
     setQuery(initialFormState);
   };
 
-  const handleSort = (value) => {
-    form.sort = value;
+  const handleSortLabel = (value) => {
+    form.sortLabel = value;
     setQuery(form);
   };
 
@@ -167,7 +167,7 @@ const RecordsListContainer = () => {
       setIsFetching(true);
       const result = await API.get("b2bPlateform", `/sale`, {
         queryStringParameters: {
-          sort: JSON.stringify(form.sort),
+          sortLabel: form.sortLabel,
           range: JSON.stringify(form.range),
           filter: JSON.stringify({
             list: form.list,
@@ -531,7 +531,11 @@ const RecordsListContainer = () => {
                   <label className="gray text-uppercase d-md-none">
                     {t("sort_by")}
                   </label>
-                  <Sort list={sortList} value={form.sort} sort={handleSort} />
+                  <Sort
+                    list={sortLabelList}
+                    value={form.sortLabel}
+                    sort={handleSortLabel}
+                  />
                 </Col>
                 <Col xs="12" md="4" lg="7" xl="8" className="order-md-1">
                   <div className="h5 mt-1 mb-3">
