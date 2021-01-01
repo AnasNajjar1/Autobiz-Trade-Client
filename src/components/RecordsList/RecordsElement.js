@@ -31,6 +31,8 @@ const RecordsElement = (props) => {
     featuredPicture = defaultFrontPicture;
   }
 
+  const { message } = record.userInfo;
+
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
       <Link className="link-card" to={`/records/${record.uuid}`}>
@@ -59,7 +61,7 @@ const RecordsElement = (props) => {
                 </div>
               )}
               <div className="col-auto ml-auto text-right ">
-                {/* {record.userMessage === "highest_bidder" && (
+                {message === "highest_bidder" && (
                   <span className="text-success">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -68,16 +70,16 @@ const RecordsElement = (props) => {
                     />
                     {t("highest_bidder")}
                   </span>
-                )} */}
+                )}
 
-                {/* {record.userMessage === "purchase_in_process" && (
+                {message === "purchase_in_process" && (
                   <span className="text-success">
                     <FontAwesomeIcon icon={faTags} className="mr-2" size="1x" />
                     {t("purchase_in_process")}
                   </span>
-                )} */}
+                )}
 
-                {/* {record.userMessage === "overbid" && (
+                {message === "overbid" && (
                   <span className="text-danger">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -88,7 +90,7 @@ const RecordsElement = (props) => {
                   </span>
                 )}
 
-                {record.userMessage === "submission_sent" && (
+                {message === "submission_sent" && (
                   <span className="text-success">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -97,7 +99,7 @@ const RecordsElement = (props) => {
                     />
                     {t("submission_sent")}
                   </span>
-                )} */}
+                )}
               </div>
             </Row>
           </div>
@@ -120,7 +122,7 @@ const RecordsElement = (props) => {
             <Row>
               <Col>
                 {secondsBeforeEnd && (
-                  <Countdown secondsLeft={secondsBeforeEnd} />
+                  <Countdown secondsBeforeEnd={secondsBeforeEnd} />
                 )}
                 {secondsBeforeEnd > 0 && (
                   <Bookmark

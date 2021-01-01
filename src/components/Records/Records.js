@@ -263,9 +263,7 @@ const Record = (props) => {
             )}
           </Col>
           <Col>
-            AA
-            {/* <Auction refId={props.refId} /> */}
-            BB
+            <Auction refId={props.refId} />
             {record.comment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">
