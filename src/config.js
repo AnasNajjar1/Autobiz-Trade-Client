@@ -12,7 +12,7 @@ exports.link_new_password =
 
 const identityPoolIds = {
   dev: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
-  staging: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
+  staging: "eu-west-1:f9823600-f4b5-4759-889d-1b02c431135a",
   prod: "eu-west-1:e8cbcb21-aa17-41e1-bdfc-58c09cb55566",
 };
 
