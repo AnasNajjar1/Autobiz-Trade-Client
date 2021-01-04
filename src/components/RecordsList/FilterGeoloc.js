@@ -3,7 +3,6 @@ import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrosshairs } from "@fortawesome/free-solid-svg-icons";
-import Axios from "axios";
 import { API } from "aws-amplify";
 
 const FilterGeoloc = ({
@@ -43,6 +42,7 @@ const FilterGeoloc = ({
         },
         response: true,
       });
+
       updatePosition(response.data);
 
       setErrorZipCode(false);

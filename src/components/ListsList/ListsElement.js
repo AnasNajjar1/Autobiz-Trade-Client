@@ -13,15 +13,15 @@ const DealersElement = ({ list }) => {
 
   let brands = [];
 
-  list.Vehicles.forEach((i) => {
-    const index = brands.findIndex((e) => e.label === i.brandLabel);
-
-    if (index === -1) {
-      brands.push({ label: i.brandLabel, nbVehicles: 1 });
-    } else {
-      brands[index].nbVehicles++;
-    }
-  });
+  // list.sales.forEach((i) => {
+  //   console.log(i.vehicle.brandLabel);
+  //   const index = brands.findIndex((e) => e.label === i.vehicle.brandLabel);
+  //   if (index === -1) {
+  //     brands.push({ brandLabel: i.vehicle.brandLabel, countVehicle: 1 });
+  //   } else {
+  //     brands[index].countVehicle++;
+  //   }
+  // });
 
   return (
     <Col xs="12" lg="4" className="mb-4">
@@ -33,14 +33,15 @@ const DealersElement = ({ list }) => {
                 <Link to={`/records?saleList=${list.id}`}>
                   <u>
                     <FontAwesomeIcon icon={faCarSide} className="mr-2" />
-                    {t("online_offers:")} {list.Vehicles.length}
+                    {t("online_offers:")}{" "}
+                    {list.vehicles && list.vehicles.length}
                   </u>
                 </Link>
               </div>
             </Row>
           </div>
           <div className="card-head">
-            <Link to={`/records?saleList=${list.id}`}>
+            <Link to={`/records?listId=${list.id}`}>
               <img
                 className="card-img-top"
                 src={list.picture ? list.picture : defaultFrontPicture}
@@ -57,20 +58,22 @@ const DealersElement = ({ list }) => {
                 </Link>
               </p>
 
-              <BrandsCarousel brands={brands} />
+              {/* <BrandsCarousel brands={brands} /> */}
             </CardTitle>
           </CardBody>
           <CardFooter>
             <Row>
               <Col>
-                {t("start_of_the_sale")} :<br />
+                {t("start_of_the_sale")}&nbsp;:
+                <br />
                 {new Date(list.startDateTime).toLocaleDateString([lang], {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </Col>
               <Col>
-                {t("end_of_the_sale")} :<br />
+                {t("end_of_the_sale")}&nbsp;:
+                <br />
                 {new Date(list.endDateTime).toLocaleDateString([lang], {
                   hour: "2-digit",
                   minute: "2-digit",

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "../common/Translate";
-import Cookies from "js-cookie";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 const padLeft = (nr, n, str) => {
   return Array(n - String(nr).length + 1).join(str || "0") + nr;
 };
-const Countdown = ({ secondsLeft }) => {
+const Countdown = ({ secondsBeforeEnd }) => {
   const [seconds, setSeconds] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
@@ -19,8 +18,8 @@ const Countdown = ({ secondsLeft }) => {
   // ---
 
   useEffect(() => {
-    setSeconds(secondsLeft);
-  }, [secondsLeft]);
+    setSeconds(secondsBeforeEnd);
+  }, [secondsBeforeEnd]);
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {

@@ -17,33 +17,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
-const listPicture = [
-  "three_quarters_front_picture",
-  "front_picture",
-  "left_side_picture",
-  "right_side_picture",
-];
 
 const RecordsElement = (props) => {
-  let picture = "";
-  for (const pictTitle of listPicture) {
-    picture = _.get(props, `record.${pictTitle}`, null);
-    if (!picture || picture === "" || picture === "null") {
-      picture = defaultFrontPicture;
-    }
-    break;
+  const { record } = props;
+  const { vehicle } = record;
+  const { pointofsale } = vehicle;
+  const { secondsBeforeEnd } = record;
+
+  let featuredPicture;
+  if (vehicle && vehicle.featuredPicture) {
+    featuredPicture = vehicle.featuredPicture;
+  } else {
+    featuredPicture = defaultFrontPicture;
   }
 
-  const { record } = props;
-  const { secondsLeft } = record;
-  console.log();
+  const { message } = record.userInfo;
+
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
       <Link className="link-card" to={`/records/${record.uuid}`}>
         <Card className="h-100">
           <div className="status">
             <Row>
-              {record.offerType === "offerToPrivate" && (
+              {record.supplyType === "OFFER_TO_PRIVATE" && (
                 <div className="col-auto">
                   <img
                     alt={t("offerToPrivate")}
@@ -54,7 +50,7 @@ const RecordsElement = (props) => {
                 </div>
               )}
 
-              {record.offerType === "stock" && (
+              {record.supplyType === "STOCK" && (
                 <div className="col-auto">
                   <FontAwesomeIcon
                     icon={faShoppingCart}
@@ -65,7 +61,7 @@ const RecordsElement = (props) => {
                 </div>
               )}
               <div className="col-auto ml-auto text-right ">
-                {record.userMessage === "highest_bidder" && (
+                {message === "highest_bidder" && (
                   <span className="text-success">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -76,14 +72,14 @@ const RecordsElement = (props) => {
                   </span>
                 )}
 
-                {record.userMessage === "purchase_in_process" && (
+                {message === "purchase_in_process" && (
                   <span className="text-success">
                     <FontAwesomeIcon icon={faTags} className="mr-2" size="1x" />
                     {t("purchase_in_process")}
                   </span>
                 )}
 
-                {record.userMessage === "overbid" && (
+                {message === "overbid" && (
                   <span className="text-danger">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -94,7 +90,7 @@ const RecordsElement = (props) => {
                   </span>
                 )}
 
-                {record.userMessage === "submission_sent" && (
+                {message === "submission_sent" && (
                   <span className="text-success">
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -108,7 +104,7 @@ const RecordsElement = (props) => {
             </Row>
           </div>
           <div className="card-head">
-            {record.statusName === "sold" && (
+            {record.isSold && (
               <div className="sold-vehicle-banner">
                 <span>{t("sold")}</span>
               </div>
@@ -116,21 +112,23 @@ const RecordsElement = (props) => {
 
             <img
               className="card-img-top"
-              src={picture}
-              alt={record.brandLabel + " " + record.modelLabel}
+              src={featuredPicture}
+              alt={vehicle.brandLabel + " " + vehicle.modelLabel}
             />
-            <RecordsElementGrade grade={record.profileBodyCosts} />
+            <RecordsElementGrade grade={vehicle.profileBodyCosts} />
           </div>
 
           <CardBody>
             <Row>
               <Col>
-                {secondsLeft && <Countdown secondsLeft={secondsLeft} />}
-                {secondsLeft > 0 && (
+                {secondsBeforeEnd && (
+                  <Countdown secondsBeforeEnd={secondsBeforeEnd} />
+                )}
+                {secondsBeforeEnd > 0 && (
                   <Bookmark
-                    scope="vehicle"
+                    scope="sale"
                     refId={record.uuid}
-                    bookmarked={record.bookmarked}
+                    bookmarked={record.isBookmarkedByUser}
                   />
                 )}
               </Col>
@@ -139,10 +137,10 @@ const RecordsElement = (props) => {
               <Row>
                 <Col xs="7" sm="8" lg="7">
                   <p className="brand-model">
-                    <span className="text-nowrap">{record.brandLabel}</span>{" "}
-                    <span className="text-nowrap">{record.modelLabel}</span>
+                    <span className="text-nowrap">{vehicle.brandLabel}</span>{" "}
+                    <span className="text-nowrap">{vehicle.modelLabel}</span>
                   </p>
-                  <p className="small">{record.versionLabel}</p>
+                  <p className="small">{vehicle.versionLabel}</p>
                 </Col>
                 <Col xs="5" sm="4" lg="5">
                   {(record.statusName === "sold" && (
@@ -160,7 +158,7 @@ const RecordsElement = (props) => {
                         </>
                       )}
 
-                      {record.bestOfferType === "auction" && (
+                      {/* {record.bestOfferType === "auction" && (
                         <>
                           <p className="price">
                             {record.bestAuction.toLocaleString()}€{" "}
@@ -168,11 +166,11 @@ const RecordsElement = (props) => {
                           </p>
                           <p className="immediate-purchase">{t("auction")}</p>
                         </>
-                      )}
+                      )} */}
                     </>
                   )) || (
                     <>
-                      {record.acceptImmediatePurchase === 1 && (
+                      {record.acceptImmediatePurchase === true && (
                         <>
                           <p className="price">
                             {record.immediatePurchasePrice.toLocaleString()} €{" "}
@@ -185,7 +183,7 @@ const RecordsElement = (props) => {
                         </>
                       )}
 
-                      {record.acceptAuction === 1 && (
+                      {record.acceptAuction === true && (
                         <>
                           <p className="price">
                             {record.bestAuction
@@ -212,23 +210,23 @@ const RecordsElement = (props) => {
             </CardTitle>
           </CardBody>
           <div className="text-center mb-3">
-            {record.firstRegistrationDate &&
-              record.fuelLabel &&
-              record.mileage !== null && (
+            {vehicle.firstRegistrationDate &&
+              vehicle.fuelLabel &&
+              vehicle.mileage !== null && (
                 <span className="tag tag-white">
-                  {record.firstRegistrationDate && (
+                  {vehicle.firstRegistrationDate && (
                     <span className="text-nowrap after-slash-divider">
-                      {moment(record.firstRegistrationDate).format("YYYY")}
+                      {moment(vehicle.firstRegistrationDate).format("YYYY")}
                     </span>
                   )}
-                  {record.fuelLabel && (
+                  {vehicle.fuelLabel && (
                     <span className="text-nowrap after-slash-divider">
-                      {t(record.fuelLabel)}
+                      {t(vehicle.fuelLabel)}
                     </span>
                   )}
-                  {record.mileage !== null && (
+                  {vehicle.mileage !== null && (
                     <span className="text-nowrap after-slash-divider">
-                      {record.mileage.toLocaleString()} {t("Km")}
+                      {vehicle.mileage.toLocaleString()} {t("Km")}
                     </span>
                   )}
                 </span>
@@ -237,11 +235,12 @@ const RecordsElement = (props) => {
 
           <CardFooter>
             <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-1" size="1x" />
-            {record.city === null &&
-            record.zipCode === null &&
-            record.country === null
-              ? t("unknown_point_of_sale")
-              : record.city + " " + record.zipCode + " " + t(record.country)}
+            {(pointofsale && (
+              <>
+                {pointofsale.city} {pointofsale.zipCode} {pointofsale.country}
+              </>
+            )) ||
+              t("unknown_point_of_sale")}
           </CardFooter>
         </Card>
       </Link>

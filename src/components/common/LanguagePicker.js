@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { dictionnary, flags } from "../../language-context";

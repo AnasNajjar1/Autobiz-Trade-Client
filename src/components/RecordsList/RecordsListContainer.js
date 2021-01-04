@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuSwitcher from "../common/MenuSwitcher";
-import OfferTypeSwitcher from "../common/OfferTypeSwitcher";
+import SupplyTypeSwitcher from "../common/SupplyTypeSwitcher";
 import { Container, Row, Col, Alert, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +18,7 @@ import FilterKilometers from "./FilterKilometers";
 import FilterGeoloc from "./FilterGeoloc";
 import FilterLists from "./FilterLists";
 import Sort from "./Sort.js";
-import { API, Auth } from "aws-amplify";
+import { API } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
@@ -33,7 +33,7 @@ import {
 const RecordsListContainer = () => {
   const ItemsPerPage = 12;
 
-  const sortList = [
+  const sortLabelList = [
     "sort_sales_ending_soon",
     "sort_date_asc",
     "sort_date_desc",
@@ -50,14 +50,14 @@ const RecordsListContainer = () => {
     yearMecMax: "",
     mileageMin: "",
     mileageMax: "",
-    offerType: "stock",
+    supplyType: "STOCK",
     country: "all",
     zipCode: "",
     radius: 300,
     lat: "",
     lng: "",
-    saleList: "",
-    sort: "sort_sales_ending_soon",
+    listId: "",
+    sortLabel: "sort_date_desc",
     range: [0, ItemsPerPage - 1],
   };
 
@@ -70,14 +70,14 @@ const RecordsListContainer = () => {
     yearMecMax: NumberParam,
     mileageMin: NumberParam,
     mileageMax: NumberParam,
-    offerType: StringParam,
+    supplyType: StringParam,
     country: StringParam,
     zipCode: StringParam,
     lat: StringParam,
     lng: StringParam,
     radius: NumberParam,
-    saleList: NumberParam,
-    sort: StringParam,
+    listId: NumberParam,
+    sortLabel: StringParam,
     range: ArrayParam,
   });
 
@@ -90,14 +90,14 @@ const RecordsListContainer = () => {
     yearMecMax: query.yearMecMax || initialFormState.yearMecMax,
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
-    offerType: query.offerType || initialFormState.offerType,
+    supplyType: query.supplyType || initialFormState.supplyType,
     country: query.country || initialFormState.country,
     zipCode: query.zipCode || initialFormState.zipCode,
     radius: query.radius || initialFormState.radius,
     lat: query.lat || initialFormState.lat,
     lng: query.lng || initialFormState.lng,
-    saleList: query.saleList || initialFormState.saleList,
-    sort: query.sort || initialFormState.sort,
+    listId: query.listId || initialFormState.listId,
+    sortLabel: query.sortLabel || initialFormState.sortLabel,
     range: query.range || initialFormState.range,
   });
 
@@ -110,7 +110,6 @@ const RecordsListContainer = () => {
 
   const updateField = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     const tmpForm = {
       ...form,
@@ -147,8 +146,8 @@ const RecordsListContainer = () => {
     setQuery(initialFormState);
   };
 
-  const handleSort = (value) => {
-    form.sort = value;
+  const handleSortLabel = (value) => {
+    form.sortLabel = value;
     setQuery(form);
   };
 
@@ -161,29 +160,31 @@ const RecordsListContainer = () => {
     };
 
     fetchRecords();
-  }, [form.offerType]);
+  }, [form.supplyType]);
 
   useEffect(() => {
     const fetchRecords = async () => {
       setIsFetching(true);
-      const result = await API.get("b2bPlateform", `/vehicle`, {
+      const result = await API.get("b2bPlateform", `/sale`, {
         queryStringParameters: {
-          sort: form.sort,
-          search: form.search,
-          list: form.list,
-          brandLabel: form.brandLabel,
-          modelLabel: form.modelLabel,
-          yearMecMin: form.yearMecMin,
-          yearMecMax: form.yearMecMax,
-          mileageMin: form.mileageMin,
-          mileageMax: form.mileageMax,
-          offerType: form.offerType,
-          country: form.country,
-          radius: form.radius,
-          lat: form.lat,
-          lng: form.lng,
-          saleList: form.saleList,
+          sortLabel: form.sortLabel,
           range: JSON.stringify(form.range),
+          filter: JSON.stringify({
+            list: form.list,
+            search: form.search,
+            supplyType: form.supplyType,
+            brandLabel: form.brandLabel,
+            modelLabel: form.modelLabel,
+            yearMecMin: form.yearMecMin,
+            yearMecMax: form.yearMecMax,
+            mileageMin: form.mileageMin,
+            mileageMax: form.mileageMax,
+            listId: form.listId,
+            country: form.country,
+            lat: form.lat,
+            lng: form.lng,
+            radius: form.radius,
+          }),
         },
         response: true,
       });
@@ -217,12 +218,12 @@ const RecordsListContainer = () => {
     setQuery(form);
   }, [
     form.modelLabel,
-    form.offerType,
+    form.supplyType,
     form.country,
     form.radius,
     form.lat,
     form.lng,
-    form.saleList,
+    form.listId,
   ]);
 
   useEffect(() => {
@@ -263,8 +264,8 @@ const RecordsListContainer = () => {
         <p className="section-title">
           <Translate code="offer_type" />
         </p>
-        <OfferTypeSwitcher
-          current={form.offerType}
+        <SupplyTypeSwitcher
+          current={form.supplyType}
           updateField={updateField}
           countOfferToPrivate={filters.countOfferToPrivate}
         />
@@ -307,8 +308,8 @@ const RecordsListContainer = () => {
                   <Translate code="offer_type" />
                 </p>
 
-                <OfferTypeSwitcher
-                  current={form.offerType}
+                <SupplyTypeSwitcher
+                  current={form.supplyType}
                   updateField={updateField}
                   countOfferToPrivate={filters.countOfferToPrivate}
                 />
@@ -370,7 +371,7 @@ const RecordsListContainer = () => {
                   </p>
                   <FilterLists
                     lists={filters.lists}
-                    value={form.saleList}
+                    value={form.listId}
                     updateField={updateField}
                   />
                 </>
@@ -405,9 +406,9 @@ const RecordsListContainer = () => {
                   size="sm"
                   outline
                   className={
-                    form.list === "my_favourites" ? "active" : "inactive"
+                    form.list === "my_bookmarked_sales" ? "active" : "inactive"
                   }
-                  onClick={() => showCustomList("my_favourites")}
+                  onClick={() => showCustomList("my_bookmarked_sales")}
                 >
                   <FontAwesomeIcon icon={faStar} className="mr-2" />
                   {t("my_favourites")}
@@ -504,11 +505,11 @@ const RecordsListContainer = () => {
               <Col className="col-thin">
                 <Button
                   block
-                  outline={form.list !== "my_favourites"}
+                  outline={form.list !== "my_bookmarked_sales"}
                   className="rounded"
                   size="sm"
                   color="primary"
-                  onClick={() => showCustomList("my_favourites")}
+                  onClick={() => showCustomList("my_bookmarked_sales")}
                 >
                   {t("my_favourites")}
                   <FontAwesomeIcon icon={faStar} className="ml-2" />
@@ -530,7 +531,11 @@ const RecordsListContainer = () => {
                   <label className="gray text-uppercase d-md-none">
                     {t("sort_by")}
                   </label>
-                  <Sort list={sortList} value={form.sort} sort={handleSort} />
+                  <Sort
+                    list={sortLabelList}
+                    value={form.sortLabel}
+                    sort={handleSortLabel}
+                  />
                 </Col>
                 <Col xs="12" md="4" lg="7" xl="8" className="order-md-1">
                   <div className="h5 mt-1 mb-3">

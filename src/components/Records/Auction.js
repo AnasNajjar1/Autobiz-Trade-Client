@@ -19,7 +19,7 @@ import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
-const Auction = ({ refId, bookmarked }) => {
+const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +27,7 @@ const Auction = ({ refId, bookmarked }) => {
 
   const toggleReservePrice = () => settooltipReservePrice(!tooltipReservePrice);
 
-  const [auction, setAuction] = useState({});
+  const [sale, setSale] = useState({});
 
   const [modalSubmission, setModalSubmission] = useState(false);
   const toggleModalSubmission = () => setModalSubmission(!modalSubmission);
@@ -43,7 +43,6 @@ const Auction = ({ refId, bookmarked }) => {
   const refreshTime = 5 * second;
   const lang = Cookies.get("appLanguage");
 
-  const [minSubmission, setMinSubmission] = useState(200);
   const [userSubmissionAmout, setUserSubmissionAmout] = useState(false);
   const [submissionIsValid, setSubmissionIsValid] = useState(false);
 
@@ -54,7 +53,7 @@ const Auction = ({ refId, bookmarked }) => {
     setUserAuctionAmout(e.target.value);
     if (isNaN(parseInt(e.target.value))) {
       setAuctionIsValid(false);
-    } else if (parseInt(e.target.value) < auction.minimalAuction) {
+    } else if (parseInt(e.target.value) < sale.minimalAuction) {
       setAuctionIsValid(false);
     } else {
       setAuctionIsValid(true);
@@ -80,18 +79,19 @@ const Auction = ({ refId, bookmarked }) => {
 
   const handleChangeSubmission = (e) => {
     setUserSubmissionAmout(e.target.value);
+
     if (isNaN(parseInt(e.target.value))) {
       setSubmissionIsValid(false);
-    } else if (parseInt(e.target.value) < minSubmission) {
+    } else if (parseInt(e.target.value) < userInfo.minimalUserSubmission) {
       setSubmissionIsValid(false);
     } else if (
-      acceptImmediatePurchase &&
+      isImmediatePurchaseOpen &&
       parseInt(e.target.value) >= immediatePurchasePrice
     ) {
       setSubmissionIsValid(false);
     } else if (
-      acceptAuction &&
-      parseInt(e.target.value) >= auction.minimalAuction
+      isAuctionOpen &&
+      parseInt(e.target.value) >= sale.minimalAuction
     ) {
       setSubmissionIsValid(false);
     } else {
@@ -106,22 +106,18 @@ const Auction = ({ refId, bookmarked }) => {
     setModalImmediatePurchase(false);
 
     const postData = {
-      amount: auction.immediatePurchasePrice,
-      saleType: "immediatePurchase",
+      amount: sale.immediatePurchasePrice,
+      offerType: "immediatePurchase",
     };
 
     const putAuction = async () => {
       try {
-        const result = await API.post(
-          "b2bPlateform",
-          `/vehicle/${refId}/sale`,
-          {
-            body: postData,
-            response: true,
-          }
-        );
+        const result = await API.post("b2bPlateform", `/sale/${refId}/offer`, {
+          body: postData,
+          response: true,
+        });
 
-        setAuction(result.data);
+        setSale(result.data);
       } catch (e) {
         alert(e);
       }
@@ -136,7 +132,7 @@ const Auction = ({ refId, bookmarked }) => {
     if (auctionIsValid) {
       const postData = {
         amount: userAuctionAmout,
-        saleType: "auction",
+        offerType: "auction",
       };
 
       setUserAuctionAmout(false);
@@ -146,14 +142,14 @@ const Auction = ({ refId, bookmarked }) => {
         try {
           const result = await API.post(
             "b2bPlateform",
-            `/vehicle/${refId}/sale`,
+            `/sale/${refId}/offer`,
             {
               body: postData,
               response: true,
             }
           );
 
-          setAuction(result.data);
+          setSale(result.data);
         } catch (e) {
           alert(e);
         }
@@ -169,7 +165,7 @@ const Auction = ({ refId, bookmarked }) => {
     if (submissionIsValid) {
       const postData = {
         amount: userSubmissionAmout,
-        saleType: "submission",
+        offerType: "submission",
       };
 
       setUserSubmissionAmout(false);
@@ -179,14 +175,14 @@ const Auction = ({ refId, bookmarked }) => {
         try {
           const result = await API.post(
             "b2bPlateform",
-            `/vehicle/${refId}/sale`,
+            `/sale/${refId}/offer`,
             {
               body: postData,
               response: true,
             }
           );
 
-          setAuction(result.data);
+          setSale(result.data);
         } catch (e) {
           alert(e);
         }
@@ -196,32 +192,29 @@ const Auction = ({ refId, bookmarked }) => {
   };
 
   useEffect(() => {
-    fetchAuction();
+    fetchSale();
     const intervalRefresh = setInterval(() => {
       if (!isExpired) {
-        fetchAuction();
+        fetchSale();
       }
     }, refreshTime);
     return () => clearInterval(intervalRefresh);
   }, [refId, isExpired]);
 
-  const fetchAuction = async () => {
+  const fetchSale = async () => {
+    console.log("fetching");
     try {
-      const result = await API.get("b2bPlateform", `/vehicle/${refId}/sale`, {
+      const result = await API.get("b2bPlateform", `/sale/${refId}/info`, {
         response: true,
       });
 
-      if (result.data.secondsLeft > 0) {
+      if (result.data.secondsBeforeEnd > 0) {
         setIsExpired(false);
       } else {
         setIsExpired(true);
       }
 
-      if (result.data.bestUserSubmission > 0) {
-        setMinSubmission(result.data.bestUserSubmission + 1);
-      }
-
-      setAuction(result.data);
+      setSale(result.data);
     } catch (error) {
       setIsLoading(false);
     }
@@ -243,26 +236,24 @@ const Auction = ({ refId, bookmarked }) => {
     return message;
   };
 
-  const endDateTime = new Date(auction.endDateTime);
+  const endDateTime = new Date(sale.endDateTime);
+
   const {
-    secondsLeft = 0,
-    acceptAuction,
-    acceptSubmission,
-    acceptImmediatePurchase,
+    secondsBeforeEnd = 0,
+    isAuctionOpen,
+    isSubmissionOpen,
+    isImmediatePurchaseOpen,
     auctionStartPrice,
     countAuctions,
-    userBestOfferer,
-    bestAuction,
-    bestUserAuction,
-    bestOfferType,
     minimalAuction,
-    bestUserSubmission,
-    statusName,
     immediatePurchasePrice,
-    auctionReservePriceReached,
-  } = auction;
+    auctionReservePrice,
+    auctionReservePriceIsReached,
+    bestOffer,
+    userInfo,
+  } = sale;
 
-  if (_.isEmpty(auction)) {
+  if (_.isEmpty(sale)) {
     return (
       isLoading && (
         <div className="text-center my-5">
@@ -333,13 +324,13 @@ const Auction = ({ refId, bookmarked }) => {
           invalid={!submissionIsValid && Boolean(userSubmissionAmout)}
           placeholder={`${t("make_a_free_submission")} (${t(
             "min"
-          )}  ${minSubmission.toLocaleString()}€)`}
+          )}  ${userInfo.minimalUserSubmission.toLocaleString()}€)`}
         />
       </Col>
       <Col className="col-thin">
-        {bestUserSubmission > 0 && (
+        {userInfo.bestUserSubmission > 0 && (
           <div className="text-danger small text-left">
-            {t("you_have_already_submitted")} {bestUserSubmission} €{" "}
+            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} €{" "}
           </div>
         )}
         <Button
@@ -442,181 +433,128 @@ const Auction = ({ refId, bookmarked }) => {
     </Row>
   );
 
-  let message;
-  let messageClass;
-  let bestOffer;
-  let bestUserOffer;
-
-  if (statusName === "sold") {
-    // VENDU
-    message = "this_vehicle_has_been_sold";
-    messageClass = "text-danger";
-    switch (bestOfferType) {
-      case "immediatePurchase":
-        bestOffer = immediatePurchasePrice;
-        break;
-      case "auction":
-        bestOffer = bestAuction;
-        break;
-    }
-  } else if (statusName === "online") {
-    if (isExpired) {
-      // VENTE TERMINÉE
-
-      switch (bestOfferType) {
-        case "immediatePurchase":
-          bestOffer = immediatePurchasePrice;
-          if (userBestOfferer) {
-            bestUserOffer = bestOffer;
-            message = "purchase_in_process";
-            messageClass = "text-success";
-          } else {
-            message = "too_late_sale_is_closed";
-            messageClass = "text-danger";
-          }
-          break;
-        case "auction":
-          bestOffer = bestAuction;
-          bestUserOffer = bestUserAuction;
-          message = "too_late_auctions_are_closed";
-          messageClass = "text-danger";
-          break;
-
-        case "submission":
-          if (userBestOfferer) {
-            bestUserOffer = bestUserSubmission;
-            message = "submission_acceptation_pending";
-            messageClass = "text-success";
-          } else {
-            message = "too_late_sale_is_closed";
-            messageClass = "text-danger";
-          }
-          break;
-
-        default:
-          message = "too_late_sale_is_closed";
-          messageClass = "text-danger";
-          break;
-      }
-    } else {
-      // EN VENTE
-
-      bestOffer = bestAuction;
-      bestUserOffer = bestUserAuction;
-      if (!bestOffer && !bestUserSubmission) {
-        message = "no_offer";
-        messageClass = "gray font-italic";
-      }
-    }
+  let messageClass = "gray font-italic";
+  if (userInfo.success === true) {
+    messageClass = "text-success";
   }
 
-  return (
-    <div className="section radius mb-4 py-4">
-      <div className="auction">
-        <Row>
-          <Col xs="12" lg="7">
-            <Countdown secondsLeft={secondsLeft} />
-          </Col>
-          <Col xs="12" lg="5">
-            {auctionReservePriceReached === true && (
-              <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
-                <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
-                {t("reservePriceReached")}
-              </p>
-            )}
+  if (userInfo.success === false) {
+    messageClass = "text-danger";
+  }
 
-            {auctionReservePriceReached === false && (
-              <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
-                <span
-                  className="reserve-price-info"
-                  href="#"
-                  id="tooltipReservePrice"
-                >
-                  {t("reservePrice")}
-                </span>
-
-                <RsTooltip
-                  placement="top-end"
-                  isOpen={tooltipReservePrice}
-                  target="tooltipReservePrice"
-                  toggle={toggleReservePrice}
-                >
-                  {t("reservePriceLegend")}
-                </RsTooltip>
-              </p>
-            )}
-          </Col>
-          <Col xs="12">
-            <p className="gray font-italic small">{closingMessage()}</p>
-          </Col>
-        </Row>
-        {/* Auctions */}
-        {acceptAuction === 1 && (
+  if (userInfo)
+    return (
+      <div className="section radius mb-4 py-4">
+        <div className="auction">
           <Row>
-            <Col>
-              <p className="mb-0">
-                <span className="gray">
-                  <Translate code="start_price" />
-                </span>
-                <strong>{auctionStartPrice.toLocaleString()}</strong> €{" "}
-                <sup className="text-uppercase">{t("ttc")}</sup>
-              </p>
+            <Col xs="12" lg="7">
+              <Countdown secondsBeforeEnd={secondsBeforeEnd} />
+            </Col>
+            <Col xs="12" lg="5">
+              {auctionReservePrice > 0 &&
+                auctionReservePriceIsReached === true && (
+                  <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
+                    <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
+                    {t("reservePriceReached")}
+                  </p>
+                )}
+
+              {auctionReservePrice > 0 &&
+                auctionReservePriceIsReached === false && (
+                  <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
+                    <span
+                      className="reserve-price-info"
+                      href="#"
+                      id="tooltipReservePrice"
+                    >
+                      {t("reservePrice")}
+                    </span>
+
+                    <RsTooltip
+                      placement="top-end"
+                      isOpen={tooltipReservePrice}
+                      target="tooltipReservePrice"
+                      toggle={toggleReservePrice}
+                    >
+                      {t("reservePriceLegend")}
+                    </RsTooltip>
+                  </p>
+                )}
+            </Col>
+            <Col xs="12">
+              <p className="gray font-italic small">{closingMessage()}</p>
             </Col>
           </Row>
-        )}
-
-        <div className="section-price">
-          <Row className="">
-            {bestUserOffer && (
+          {/* Auctions */}
+          {isAuctionOpen && (
+            <Row>
               <Col>
-                <p className="h6 gray mb-0">
-                  <Translate code="your_offer" />
+                <p className="mb-0">
+                  <span className="gray">
+                    <Translate code="start_price" />
+                  </span>
+                  <strong>{auctionStartPrice.toLocaleString()}</strong> €{" "}
+                  <sup className="text-uppercase">{t("ttc")}</sup>
                 </p>
-                <div
-                  className={userBestOfferer ? "text-success" : "text-danger"}
-                >
-                  <div className="offer-value">
-                    {bestUserOffer.toLocaleString()} €<sup>{t("ttc")}</sup>
+              </Col>
+            </Row>
+          )}
+          <div className="section-price">
+            <Row>
+              {userInfo.bestUserOffer && (
+                <Col>
+                  <p className="h6 gray mb-0">
+                    <Translate code="your_offer" />
+                  </p>
+                  <div
+                    className={
+                      userInfo.userBestOfferer ? "text-success" : "text-danger"
+                    }
+                  >
+                    <div className="offer-value">
+                      {userInfo.bestUserOffer.toLocaleString()} €
+                      <sup>{t("ttc")}</sup>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            )}
-            {bestOffer && (
-              <Col>
-                <p className="h6 gray mb-0 ">
-                  <Translate code="best_offer" />
+                </Col>
+              )}
+              {bestOffer && (
+                <Col>
+                  <p className="h6 gray mb-0 ">
+                    <Translate code="best_offer" />
+                  </p>
+                  <div className="offer-value text-secondary">
+                    <span className="font-weight-bold">
+                      {bestOffer.toLocaleString()}
+                    </span>{" "}
+                    €<sup>{t("ttc")}</sup>
+                  </div>
+                </Col>
+              )}
+            </Row>
+            {userInfo.message &&
+              userInfo.message !== "highest_bidder" &&
+              userInfo.message !== "overbid" && (
+                <p className={messageClass + " mt-2 mb-3"}>
+                  {t(userInfo.message)}
                 </p>
-                <div className="offer-value text-secondary">
-                  <span className="font-weight-bold">
-                    {bestOffer.toLocaleString()}
-                  </span>{" "}
-                  €<sup>{t("ttc")}</sup>
-                </div>
-              </Col>
+              )}
+            {/*Forms */}
+            {isExpired === false && (
+              <>
+                {/* Auction */}
+                {isAuctionOpen && auctionForm}
+                {/* Submission */}
+                {isSubmissionOpen && submissionForm}
+                {/* ImmediatePurchaseForm */}
+                {isImmediatePurchaseOpen && immediatePurchaseForm}
+              </>
             )}
-          </Row>
-
-          {message && (
-            <p className={messageClass + " mt-2 mb-3"}>{t(message)}</p>
-          )}
-          {/*Forms */}
-          {isExpired === false && (
-            <>
-              {/* Auction */}
-              {acceptAuction === 1 && auctionForm}
-              {/* Submission */}
-              {acceptSubmission === 1 &&
-                (auctionReservePriceReached === false || countAuctions === 0) &&
-                submissionForm}
-              {/* ImmediatePurchaseForm */}
-              {acceptImmediatePurchase === 1 && immediatePurchaseForm}
-            </>
-          )}
-          {/* End Forms */}
+            {/* End Forms */}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default Auction;

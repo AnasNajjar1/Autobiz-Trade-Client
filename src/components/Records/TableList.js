@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row } from "reactstrap";
 import { t, durationTranslate } from "../common/Translate";
 import Tooltip from "../common/Tooltip";
@@ -14,7 +14,7 @@ export function showableValue(key, value, lang) {
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "b2cMarketValue" && value < 200) return false;
-  if (key === "MarketLink") return false;
+  if (key === "marketLink") return false;
   return true;
 }
 
@@ -122,16 +122,17 @@ export const renderValue = (key, value, lang) => {
         </>
       );
 
-    //Boolean
+    // true or false :  boolean
+    case "servicingInBrandNetwork":
+    case "vat":
+    case "imported":
     case "secondSetKey":
     case "userManual":
     case "firstHand":
-    case "imported":
     case "metallic":
-    case "servicingInBrandNetwork":
-      if (value === 1 || value === "yes") {
+      if (value === true) {
         return t("yes");
-      } else if (value === 0 || value === "no") {
+      } else if (value === false) {
         return t("no");
       } else {
         return "-";

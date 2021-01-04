@@ -14,7 +14,7 @@ const FilterLists = ({ lists, value, updateField }) => {
       <FormGroup>
         <Input
           type="select"
-          name="saleList"
+          name="listId"
           value={value}
           className="mb-2 rounded"
           onChange={(e) => updateField(e)}

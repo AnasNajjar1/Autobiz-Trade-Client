@@ -13,7 +13,6 @@ import DealersListView from "./views/DealersListView.js";
 import { QueryParamProvider } from "use-query-params";
 import moment from "moment";
 import Amplify from "aws-amplify";
-import { withAuthenticator } from "aws-amplify-react";
 import awsconfig from "./aws-config";
 import AuthRequiredRoute from "./components/LoginForm/AuthRequiredRoute";
 import _ from "lodash";
