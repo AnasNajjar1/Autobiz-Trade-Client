@@ -110,7 +110,6 @@ const Record = (props) => {
     );
   }
 
-  const { pointOfSale = {}, bookmarked } = record;
   const { vehicle } = record;
   const { pointofsale } = vehicle;
 
@@ -231,7 +230,7 @@ const Record = (props) => {
                   </div>
                   <Grade letter={vehicle.profileBodyCosts} />
                 </Col>
-                {pointofsale.name !== null && (
+                {pointofsale && pointofsale.name !== null && (
                   <Col xs="12" sm="6" md="12" lg="6">
                     <div className="reseller-block">
                       {pointofsale.name}
@@ -334,21 +333,23 @@ const Record = (props) => {
                 >
                   {t("titleServicingAndDamage")}
                 </Button>
-                {(pointofsale.paymentDeadline ||
-                  pointofsale.pickupDeadline ||
-                  pointofsale.comments) && (
-                  <Button
-                    color="light"
-                    className={
-                      activeTab === "3"
-                        ? "container-separator-title"
-                        : "container-separator-title-light"
-                    }
-                    onClick={() => toggle("3")}
-                  >
-                    {t("sale_informations")}
-                  </Button>
-                )}
+
+                {pointofsale &&
+                  (pointofsale.paymentDeadline ||
+                    pointofsale.pickupDeadline ||
+                    pointofsale.comments) && (
+                    <Button
+                      color="light"
+                      className={
+                        activeTab === "3"
+                          ? "container-separator-title"
+                          : "container-separator-title-light"
+                      }
+                      onClick={() => toggle("3")}
+                    >
+                      {t("sale_informations")}
+                    </Button>
+                  )}
               </div>
             </Col>
             <TabContent activeTab={activeTab}>
@@ -494,27 +495,29 @@ const Record = (props) => {
                   </Row>
                 </MobileView>
               </TabPane>
-              <TabPane tabId="3">
-                <Row className="bordered-row">
-                  <Col md="4">
-                    <div className="h2 mb-3">{t("payment_deadline")}</div>
-                    {(pointofsale.paymentDeadline &&
-                      Parser(pointofsale.paymentDeadline)) ||
-                      t("no_informations")}
-                  </Col>
-                  <Col md="4">
-                    <div className="h2 mb-3">{t("pickup_deadline")}</div>
-                    {(pointofsale.pickupDeadline &&
-                      Parser(pointofsale.pickupDeadline)) ||
-                      t("no_informations")}
-                  </Col>
-                  <Col md="4">
-                    <div className="h2 mb-3">{t("comments")}</div>
-                    {(pointofsale.comments && Parser(pointofsale.comments)) ||
-                      t("no_informations")}
-                  </Col>
-                </Row>
-              </TabPane>
+              {pointofsale && (
+                <TabPane tabId="3">
+                  <Row className="bordered-row">
+                    <Col md="4">
+                      <div className="h2 mb-3">{t("payment_deadline")}</div>
+                      {(pointofsale.paymentDeadline &&
+                        Parser(pointofsale.paymentDeadline)) ||
+                        t("no_informations")}
+                    </Col>
+                    <Col md="4">
+                      <div className="h2 mb-3">{t("pickup_deadline")}</div>
+                      {(pointofsale.pickupDeadline &&
+                        Parser(pointofsale.pickupDeadline)) ||
+                        t("no_informations")}
+                    </Col>
+                    <Col md="4">
+                      <div className="h2 mb-3">{t("comments")}</div>
+                      {(pointofsale.comments && Parser(pointofsale.comments)) ||
+                        t("no_informations")}
+                    </Col>
+                  </Row>
+                </TabPane>
+              )}
             </TabContent>
           </Row>
         </Container>
