@@ -124,13 +124,11 @@ const RecordsElement = (props) => {
                 {secondsBeforeEnd && (
                   <Countdown secondsBeforeEnd={secondsBeforeEnd} />
                 )}
-                {secondsBeforeEnd > 0 && (
-                  <Bookmark
-                    scope="sale"
-                    refId={record.uuid}
-                    bookmarked={record.isBookmarkedByUser}
-                  />
-                )}
+                <Bookmark
+                  scope="sale"
+                  refId={record.uuid}
+                  bookmarked={record.isBookmarkedByUser}
+                />
               </Col>
             </Row>
             <CardTitle>
