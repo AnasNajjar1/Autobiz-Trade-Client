@@ -31,7 +31,7 @@ import {
 } from "use-query-params";
 
 const RecordsListContainer = () => {
-  const ItemsPerPage = 12;
+  const ItemsPerPage = 24;
 
   const sortLabelList = [
     "sort_sales_ending_soon",
@@ -57,7 +57,7 @@ const RecordsListContainer = () => {
     lat: "",
     lng: "",
     listId: "",
-    sortLabel: "sort_date_desc",
+    sortLabel: "sort_sales_ending_soon",
     range: [0, ItemsPerPage - 1],
   };
 
