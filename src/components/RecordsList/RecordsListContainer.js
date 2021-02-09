@@ -30,7 +30,7 @@ import {
   ArrayParam,
 } from "use-query-params";
 
-const RecordsListContainer = () => {
+const RecordsListContainer = ({usercountry}) => {
   const ItemsPerPage = 24;
 
   const sortLabelList = [
@@ -51,7 +51,7 @@ const RecordsListContainer = () => {
     mileageMin: "",
     mileageMax: "",
     supplyType: "STOCK",
-    country: "all",
+    country: usercountry,
     zipCode: "",
     radius: 300,
     lat: "",
