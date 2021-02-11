@@ -5,20 +5,13 @@ import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPowerOff, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/img/autobiz-trade.svg";
-
 import LanguagePicker from "../common/LanguagePicker";
+import { useUser } from "../../hooks/useUser";
 
 const Header = props => {
-  const [username, setUsername] = useState("");
+  const { username } = useUser();
   const [logout, setLogout] = useState(false);
   const { path } = props.match
-
-  useEffect(() => {
-    Auth.currentAuthenticatedUser({ bypassCache: false })
-    .then(user => {
-      setUsername(`${user.firstname} ${user.lastname}`);
-    });
-  }, []);
 
   const signOut = async function() {
     await Auth.signOut();
