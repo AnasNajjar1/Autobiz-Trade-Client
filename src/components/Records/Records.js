@@ -62,7 +62,7 @@ const Record = (props) => {
       }
     };
     fetchRecord();
-  }, []);
+  }, [props.refId]);
 
   useEffect(() => {
     let ld = [];
@@ -207,7 +207,7 @@ const Record = (props) => {
                 tags={[
                   {
                     label: "firstRegistrationDate",
-                    value: moment(vehicle.firstRegistrationDate).format(
+                    value: moment(vehicle.characteristics.firstRegistrationDate, "YYYY-MM-DD").format(
                       "MM-YYYY"
                     ),
                   },
