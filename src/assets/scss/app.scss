@@ -1674,5 +1674,69 @@ footer {
   }
 }
 
+.page.page-register {
+
+  .logo {
+    width: 200px;
+    @extend .mt-5;
+    @extend .mb-5;
+  }
+
+  .register-container{
+    margin-top: 50px;
+  }
+
+  .register-container h1{
+    text-align: center;
+  }
+
+  .register-container h4{
+    margin: 20px 0 20px;
+  }
+
+  .form-group {
+    position: relative;
+    .icon-info {
+      position: absolute;
+      left: 16px;
+      top: 12px;
+      color: #324c89;
+    }
+    button {
+      background-color: #FF4E00;
+      margin: 50px;
+      @extend .border-0;
+    }
+    input[type=radio], input[type=checkbox]{
+      transform: scale(1.5);
+      margin-right: 20px;
+    }
+  }
+
+  .languagepicker {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline;
+      img {
+        width: 25px;
+        margin: 0 10px;
+      }
+    }
+  }
+
+  .g-recaptcha{
+    display: inline-block;
+  }
+
+  .vertical-align{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
+
 @import "carousel";
 @import "report";
