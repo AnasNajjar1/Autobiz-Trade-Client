@@ -21,6 +21,7 @@ import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 const Auction = ({ refId }) => {
   const [isExpired, setIsExpired] = useState();
+  const [isScheduled, setIsScheduled] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const [tooltipReservePrice, settooltipReservePrice] = useState(false);
@@ -214,6 +215,12 @@ const Auction = ({ refId }) => {
         setIsExpired(true);
       }
 
+      if (result.data.secondsBeforeStart > 0) {
+        setIsScheduled(true);
+      } else {
+        setIsScheduled(false);
+      }
+
       setSale(result.data);
     } catch (error) {
       setIsLoading(false);
@@ -240,6 +247,7 @@ const Auction = ({ refId }) => {
 
   const {
     secondsBeforeEnd = 0,
+    secondsBeforeStart = 0,
     isAuctionOpen,
     isSubmissionOpen,
     isImmediatePurchaseOpen,
@@ -269,7 +277,7 @@ const Auction = ({ refId }) => {
         <Button
           color="primary"
           block
-          disabled={isExpired}
+          disabled={isExpired || isScheduled}
           onClick={toggleModalImmediatePurchase}
         >
           {t("immediate_purchase")}{" "}
@@ -337,7 +345,7 @@ const Auction = ({ refId }) => {
           color="secondary"
           block
           className="mt-2"
-          disabled={isExpired || !submissionIsValid}
+          disabled={isExpired || !submissionIsValid || isScheduled}
           onClick={toggleModalSubmission}
         >
           {t("submission")}
@@ -391,7 +399,7 @@ const Auction = ({ refId }) => {
         <Button
           color="primary"
           block
-          disabled={!auctionIsValid}
+          disabled={!auctionIsValid || isScheduled}
           onClick={toggleModalAuction}
         >
           {t("make_an_offer")}
@@ -448,7 +456,7 @@ const Auction = ({ refId }) => {
         <div className="auction">
           <Row>
             <Col xs="12" lg="7">
-              <Countdown secondsBeforeEnd={secondsBeforeEnd} />
+              <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
             </Col>
             <Col xs="12" lg="5">
               {auctionReservePrice > 0 &&

@@ -6,11 +6,13 @@ import moment from "moment";
 const padLeft = (nr, n, str) => {
   return Array(n - String(nr).length + 1).join(str || "0") + nr;
 };
-const Countdown = ({ secondsBeforeEnd }) => {
-  const [seconds, setSeconds] = useState(null);
+const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
+  const [secondsBfEnd, setSecondsBfEnd] = useState(null);
+  const [secondsBfStart, setSecondsBfStart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
-  const [timeLeft, setTimeLeft] = useState("");
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [time, setTime] = useState("");
 
   // Function t ne fonctionne pas dans le useEffect ??
   const translation_day_and = t("day_and");
@@ -18,45 +20,59 @@ const Countdown = ({ secondsBeforeEnd }) => {
   // ---
 
   useEffect(() => {
-    setSeconds(secondsBeforeEnd);
+    setSecondsBfEnd(secondsBeforeEnd);
   }, [secondsBeforeEnd]);
+
+  useEffect(() => {
+    setSecondsBfStart(secondsBeforeStart);
+  }, [secondsBeforeStart]);
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
       setLoading(false);
-      if (seconds <= 0) {
-        setIsExpired(true);
-      } else {
-        setSeconds(seconds - 1);
+      setIsExpired(true);
+      setIsScheduled(false);
 
-        const dur = moment.duration(seconds, "seconds");
-        let time = "";
-
-        if (dur.days() === 1) time = `${dur.days()} ${translation_day_and} `;
-        if (dur.days() > 1) time = `${dur.days()} ${translation_days_and} `;
-
-        time += `${padLeft(dur.hours(), 2)}:${padLeft(
-          dur.minutes(),
-          2
-        )}:${padLeft(dur.seconds(), 2)}`;
-
-        setTimeLeft(time);
+      if(secondsBfStart > 0){
+        setSecondsBfStart(secondsBfStart - 1);
+        setIsScheduled(true);
         setIsExpired(false);
+        setTime(getTimeCountDown(secondsBfStart));
+      }else if(secondsBfEnd > 0){
+        setSecondsBfEnd(secondsBfEnd - 1);
+        setIsScheduled(false);
+        setIsExpired(false);
+        setTime(getTimeCountDown(secondsBfEnd));
       }
     }, 1000);
-
     return () => clearInterval(intervalCountdown);
-  }, [seconds]);
+  }, [secondsBfStart, secondsBfEnd]);
+
+  const getTimeCountDown = (seconds) => {
+    const dur = moment.duration(seconds, "seconds");
+    let time = "";
+
+    if (dur.days() === 1) time = `${dur.days()} ${translation_day_and} `;
+    if (dur.days() > 1) time = `${dur.days()} ${translation_days_and} `;
+
+    time += `${padLeft(dur.hours(), 2)}:${padLeft(
+      dur.minutes(),
+      2
+    )}:${padLeft(dur.seconds(), 2)}`;
+
+    return time;
+  }
+
   return (
     loading === false && (
-      <div className="countdown">
-        <span className="pr-1 d-lg-none d-xl-inline">{t("time_left")}</span>
+      <div className={isScheduled ? 'countdown-gray' : 'countdown'}>
+        <span className="pr-1 d-lg-none d-xl-inline">{isScheduled ? t("startIn") : t("time_left")}</span>
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}
         />
         <span className="pl-1">
-          {!isExpired && timeLeft}
+          {!isExpired && time}
           {isExpired && (
             <span className="text-danger">{t("countdown_over")}</span>
           )}
