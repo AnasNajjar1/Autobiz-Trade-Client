@@ -8,6 +8,7 @@ $danger: #d84c50;
 $success: #5cae5f;
 
 $am_gray: #9097ac;
+$am_gray_middle: #6c757d;
 $am_dark: #2d2d2d;
 
 $tooltip-bg: $am_dark;
@@ -1382,6 +1383,11 @@ footer {
   border-radius: 15px;
   color: white;
   position: relative;
+}
+
+.countdown-gray {
+  @extend .countdown;
+  background-color: $am_gray_middle;
 }
 
 .custom-checkbox {
