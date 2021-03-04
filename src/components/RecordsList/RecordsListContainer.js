@@ -31,7 +31,7 @@ import {
 } from "use-query-params";
 
 const RecordsListContainer = ({usercountry}) => {
-  const ItemsPerPage = 24;
+  const ItemsPerPage = 100;
 
   const sortLabelList = [
     "sort_sales_ending_soon",
