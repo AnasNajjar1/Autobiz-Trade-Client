@@ -59,8 +59,7 @@ export const renderValue = (key, value, lang) => {
     //€ values
     case "dpaProAmt":
     case "b2cMarketValue":
-      return `${parseInt(value).toLocaleString()} €`;
-
+      return value ? `${parseInt(value).toLocaleString()} €` : 'NA';
     //km values
     case "mileage":
     case "lastServicingKm":
