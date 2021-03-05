@@ -7,12 +7,11 @@ const padLeft = (nr, n, str) => {
   return Array(n - String(nr).length + 1).join(str || "0") + nr;
 };
 const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
-  const [secondsBfEnd, setSecondsBfEnd] = useState(null);
-  const [secondsBfStart, setSecondsBfStart] = useState(null);
+  const [seconds, setSeconds] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
   const [isScheduled, setIsScheduled] = useState(false);
-  const [time, setTime] = useState("");
+  const [timeLeft, setTimeLeft] = useState("");
 
   // Function t ne fonctionne pas dans le useEffect ??
   const translation_day_and = t("day_and");
@@ -20,33 +19,21 @@ const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
   // ---
 
   useEffect(() => {
-    setSecondsBfEnd(secondsBeforeEnd);
-  }, [secondsBeforeEnd]);
-
-  useEffect(() => {
-    setSecondsBfStart(secondsBeforeStart);
-  }, [secondsBeforeStart]);
+    secondsBeforeStart > 0 ? setSeconds(secondsBeforeStart) : setSeconds(secondsBeforeEnd);
+    setIsExpired(secondsBeforeEnd <= 0);
+    setIsScheduled(secondsBeforeStart > 0);
+  }, [secondsBeforeStart, secondsBeforeEnd]);
 
   useEffect(() => {
     const intervalCountdown = setInterval(() => {
       setLoading(false);
-      setIsExpired(true);
-      setIsScheduled(false);
-
-      if(secondsBfStart > 0){
-        setSecondsBfStart(secondsBfStart - 1);
-        setIsScheduled(true);
-        setIsExpired(false);
-        setTime(getTimeCountDown(secondsBfStart));
-      }else if(secondsBfEnd > 0){
-        setSecondsBfEnd(secondsBfEnd - 1);
-        setIsScheduled(false);
-        setIsExpired(false);
-        setTime(getTimeCountDown(secondsBfEnd));
+      if(!isExpired){
+        setSeconds(seconds - 1);
+        setTimeLeft(getTimeCountDown(seconds));
       }
     }, 1000);
     return () => clearInterval(intervalCountdown);
-  }, [secondsBfStart, secondsBfEnd]);
+  }, [seconds]);
 
   const getTimeCountDown = (seconds) => {
     const dur = moment.duration(seconds, "seconds");
@@ -72,7 +59,7 @@ const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
           className={isExpired ? "text-danger" : "text-success"}
         />
         <span className="pl-1">
-          {!isExpired && time}
+          {!isExpired && timeLeft}
           {isExpired && (
             <span className="text-danger">{t("countdown_over")}</span>
           )}
