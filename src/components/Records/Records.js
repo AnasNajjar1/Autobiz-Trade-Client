@@ -557,9 +557,10 @@ const subDamages = (items) => {
     if (i.damage_picture) damagesImage.push(i.damage_picture);
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
-  return items.map((i, key) => (
-    <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
-  ));
+  return items.map((i, key) => {
+    if(i.element !== 'motor_longeron')
+      return <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
+  });
 };
 
 const Damage = ({ i, index, damagesImage }) => {
