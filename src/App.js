@@ -120,7 +120,7 @@ class App extends Component {
                 )}
               />
               <Route
-                path="/register"
+                path="/register/:language"
                 render={(props) => (
                   <RegisterView {...props} entryPath={this.entryPath} />
                 )}

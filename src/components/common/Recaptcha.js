@@ -23,7 +23,7 @@ const Recaptcha = () => {
     <div className="text-center">
       <ReCAPTCHA
         sitekey={recaptchaAccess.siteKey}
-        class="g-recaptcha"
+        className="g-recaptcha"
         ref={(r) => setCaptchaRef(r)}
         onChange={(onChange, () => resetCaptcha())}
       />
