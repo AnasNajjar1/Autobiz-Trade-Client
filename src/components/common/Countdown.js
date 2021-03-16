@@ -33,21 +33,19 @@ const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
     secondsBeforeStart > 0 ? setSeconds(secondsBeforeStart) : setSeconds(secondsBeforeEnd);
   }, [secondsBeforeEnd, secondsBeforeStart]);
 
-  useEffect(()=>{
-    const intervalCountdown = setInterval(() => { //set countdown in between api calls
-      setLoading(false);
+  useEffect(() => {
+    setLoading(false);
+    setInterval(() => { //set countdown in between api calls
       if(!isExpired) setSeconds(s=>s - 1);
-      if(isScheduled) setSeconds(s=>s  + 1);
     }, 1000);
-    return () => clearInterval(intervalCountdown);
-  }, [isExpired, isScheduled, seconds])
+  }, [])
 
   const message = isScheduled ? t("startIn") : t("time_left")
 
   return (
     loading === false && (
-      <div className={isScheduled ? 'countdown-gray' : 'countdown'}>
-        <span className="pr-1 d-lg-none d-xl-inline">{message}</span>
+      <div className={isScheduled && !isExpired ? 'countdown-gray' : 'countdown'}>
+        {!isExpired && <span className="pr-1 d-lg-none d-xl-inline">{message}</span>}
         <FontAwesomeIcon
           icon={faClock}
           className={isExpired ? "text-danger" : "text-success"}
