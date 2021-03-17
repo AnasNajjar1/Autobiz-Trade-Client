@@ -1,31 +1,22 @@
-import React from "react";
+import React, { createRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { recaptchaAccess } from "../../config";
 
-const Recaptcha = () => {
-  let captcha;
+const Recaptcha = ({ setCaptchaToken }) => {
+  const recaptchaRef = createRef();
 
   const onChange = (value) => {
     console.log(value);
+    setCaptchaToken(value);
   };
 
-  const setCaptchaRef = (ref) => {
-    if (ref) {
-      return (captcha = ref);
-    }
-  };
-
-  const resetCaptcha = () => {
-    // maybe set it till after is submitted
-    captcha.reset();
-  };
   return (
     <div className="text-center">
       <ReCAPTCHA
-        sitekey={recaptchaAccess.siteKey}
         className="g-recaptcha"
-        ref={(r) => setCaptchaRef(r)}
-        onChange={(onChange, () => resetCaptcha())}
+        ref={recaptchaRef}
+        sitekey={recaptchaAccess.siteKey}
+        onChange={onChange}
       />
     </div>
   );

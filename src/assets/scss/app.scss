@@ -1723,9 +1723,9 @@ footer {
 
       div{
         padding: 50px 50px;
-        top: 0;
-        bottom:0;
         position: fixed;
+        max-width: inherit;
+        width: 100%;
         overflow-y:hidden;
         overflow-x:hidden;
       }
@@ -1747,20 +1747,17 @@ footer {
 
         .form-group {
           position: relative;
-
-          .icon-info {
-            position: absolute;
-            left: 16px;
-            top: 12px;
-            color: #324c89;
-          }
-
           button {
             background-color: #FF4E00;
             margin: 50px;
             padding: 10px 50px;
             @extend .border-0;
             border-radius: 0px;
+          }
+
+          label {
+            font-family: $font-weight-light;
+            font-size: 21px;
           }
 
           input[type=radio], input[type=checkbox] {
@@ -1772,6 +1769,11 @@ footer {
 
         .form-control {
           border-radius: 0px;
+        }
+
+        span{
+          color: #FF4E00;
+          font-weight: bold;
         }
       }
     }
