@@ -1,8 +1,11 @@
 $font-family-sans-serif: facit, "Helvetica Neue", Arial, sans-serif;
 $font-weight-semibold: facit_semibold, "Helvetica Neue", Arial, sans-serif;
+$font-weight-bold: facit_bold, "Helvetica Neue", Arial, sans-serif;
+$font-weight-light: facit_light, "Helvetica Neue", Arial, sans-serif;
 
 $body-bg: #f4f4f4;
 $blue: #324c89;
+$blue-register-form: #1D2B64;
 $light: white;
 $danger: #d84c50;
 $success: #5cae5f;
@@ -57,6 +60,22 @@ $input-border-color: #e5e5e7;
   src: url("../fonts/facit-semibold.eot?#iefix") format("embedded-opentype"),
     url("../fonts/facit-semibold.woff") format("woff"),
     url("../fonts/facit-semibold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "facit_bold";
+  src: url("../fonts/facit-bold.eot");
+  src: url("../fonts/facit-bold.eot?#iefix") format("embedded-opentype"),
+  url("../fonts/facit-bold.woff") format("woff"),
+  url("../fonts/facit-bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "facit_light";
+  src: url("../fonts/facit-light.eot");
+  src: url("../fonts/facit-light.eot?#iefix") format("embedded-opentype"),
+  url("../fonts/facit-light.woff") format("woff"),
+  url("../fonts/facit-light.ttf") format("truetype");
 }
 
 button[disabled] {
@@ -1151,7 +1170,7 @@ form.form-offer {
 
 .container-separator {
   background-color: white;
-  height: 60;
+  height: 60px;
   margin-top: -30px;
   border-radius: 60px;
   @extend .shadow-sm;
@@ -1679,6 +1698,134 @@ footer {
     }
   }
 }
+
+.page.page-register {
+  overflow-x: hidden;
+  .logo {
+    width: 200px;
+    @extend .mt-5;
+    @extend .mb-5;
+  }
+
+  .register-container {
+    .bloc-left {
+      color: $blue-register-form;
+
+      h1 {
+        font-family: $font-weight-bold;
+        font-size: 48px;
+        max-width: 400px;
+      }
+
+      h2 {
+        font-family: $font-family-sans-serif;
+        font-size: 36px;
+      }
+
+      p {
+        font-family: $font-weight-light;
+        font-size: 24px;
+      }
+
+      div{
+        padding: 50px 50px;
+        position: fixed;
+        max-width: inherit;
+        width: 100%;
+        overflow-y:hidden;
+        overflow-x:hidden;
+      }
+    }
+
+    .bloc-right {
+      padding: 20px 35px;
+      font-family: $font-weight-light;
+      background-color: $blue-register-form;
+      color: white;
+
+      h3 {
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        padding: 30px;
+
+        .form-group {
+          position: relative;
+          button {
+            background-color: #FF4E00;
+            margin: 50px;
+            padding: 10px 50px;
+            @extend .border-0;
+            border-radius: 0px;
+          }
+
+          label {
+            font-family: $font-weight-light;
+            font-size: 21px;
+          }
+
+          input[type=radio], input[type=checkbox] {
+            transform: scale(1.5);
+            margin-right: 20px;
+          }
+
+        }
+
+        .form-control {
+          border-radius: 0px;
+        }
+
+        span{
+          color: #FF4E00;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .g-recaptcha{
+    display: inline-block;
+  }
+
+  .validation-bloc{
+    text-align: center;
+    padding: 5% 10%;
+    color: white;
+    background-color: $blue-register-form;
+    height: 100vh;
+
+    p{
+      padding: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+      background-color: #FF4E00;
+      margin: 100px 50px;
+      padding: 10px 50px;
+      @extend .border-0;
+      border-radius: 0px;
+    }
+
+    .fa-exclamation-circle{
+      font-size: 5em;
+      color: white;
+    }
+  }
+}
+
+.vertical-align{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
 
 @import "carousel";
 @import "report";
