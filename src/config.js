@@ -1,7 +1,8 @@
 const ENV = process.env.REACT_APP_ENV;
 
 const apisB2bPlateform = {
-  dev: "http://localhost:4000",
+  local: "http://localhost:4000",
+  dev: "https://stg72-api-trade.shakazoola.com",
   staging: "https://stg72-api-trade.shakazoola.com",
   ppr: "https://ppr-api-trade.autobiz.com",
   prod: "https://api-trade.autobiz.com",
@@ -12,7 +13,8 @@ exports.link_new_password =
   "https://www.autobiz-market.com/fr/mot-de-passe-oublie";
 
 const identityPoolIds = {
-  dev: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
+  local: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
+  dev: "eu-west-1:f9823600-f4b5-4759-889d-1b02c431135a",
   staging: "eu-west-1:f9823600-f4b5-4759-889d-1b02c431135a",
   ppr : "eu-west-1:78e88d38-c70d-4ca3-8438-408ddb4aede7",
   prod: "eu-west-1:e8cbcb21-aa17-41e1-bdfc-58c09cb55566",
@@ -23,6 +25,7 @@ exports.identityPoolId = identityPoolIds[ENV];
 exports.region = "eu-west-1";
 
 const staticContents = {
+  local: "https://translations-host-dev.s3-eu-west-1.amazonaws.com/trade-app",
   dev: "https://translations-host-dev.s3-eu-west-1.amazonaws.com/trade-app",
   staging: "https://translations-host-dev.s3-eu-west-1.amazonaws.com/trade-app",
   ppr: "https://translations-host-prod.s3-eu-west-1.amazonaws.com/trade-app",
@@ -30,6 +33,7 @@ const staticContents = {
 };
 
 const staticImages = {
+  local: "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
   dev: "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
   staging: "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
   ppr: "https://b2b-pictures-prod.s3-eu-west-1.amazonaws.com",
@@ -42,6 +46,7 @@ exports.staticCache = "static-content";
 exports.staticFiles = { locale: "locale.json" };
 
 const contactEmails = {
+  local: "stg-support-autobizTrade@autobiz.com",
   dev: "stg-support-autobizTrade@autobiz.com",
   staging: "stg-support-autobizTrade@autobiz.com",
   ppr: "stg-support-autobizTrade@autobiz.com",
