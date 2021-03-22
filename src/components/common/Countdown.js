@@ -23,20 +23,25 @@ const getTimeCountDown = (seconds) => {
 }
 
 const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
+  const [secondsBS, setSecondsBS] = useState(secondsBeforeStart);
+  const [secondsBE, setSecondsBE] = useState(secondsBeforeEnd);
   const [seconds, setSeconds] = useState(null);
   const [loading, setLoading] = useState(true);
-  const isExpired = secondsBeforeEnd <= 0 || (seconds && seconds <= 0)
-  const isScheduled = secondsBeforeStart > 0 || (seconds && seconds < 0) //if sale not started yet
+  const isExpired = secondsBE <= 0;
+  const isScheduled = secondsBS > 0;
   const timeLeft = getTimeCountDown(seconds)
 
   useEffect(() => { //refresh countdown based on api return (every 5 sec we call api)
-    secondsBeforeStart > 0 ? setSeconds(secondsBeforeStart) : setSeconds(secondsBeforeEnd);
-  }, [secondsBeforeEnd, secondsBeforeStart]);
+    secondsBS > 0 ? setSeconds(secondsBS) : setSeconds(secondsBE);
+  }, [secondsBS, secondsBE]);
 
   useEffect(() => {
     setLoading(false);
     setInterval(() => { //set countdown in between api calls
-      if(!isExpired) setSeconds(s=>s - 1);
+      if(!isExpired) {
+        setSecondsBS(s=>s - 1);
+        setSecondsBE(s=>s - 1);
+      }
     }, 1000);
   }, [])
 
