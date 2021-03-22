@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import LanguagePicker from "../common/LanguagePicker";
 import { useUser } from "../../hooks/useUser";
 
 const Header = props => {
+  const history = useHistory();
   const { username } = useUser();
   const [logout, setLogout] = useState(false);
   const { path } = props.match
@@ -19,11 +20,16 @@ const Header = props => {
     return;
   };
 
+  const goBackEvent = (e) => {
+    e.preventDefault();
+    history.goBack();
+  };
+
   if (logout) return <Redirect to="/" />;
 
   return (
     <header>
-      {path === "/records/:refId" && <Link to="/records" className='left-col'>
+      {path === "/records/:refId" && <Link onClick={(e) => goBackEvent(e)} className='left-col'>
         <FontAwesomeIcon size="lg" icon={faArrowLeft} className='back-arrow'/>
       </Link>}
 
