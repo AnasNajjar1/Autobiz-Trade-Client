@@ -349,7 +349,6 @@ const Dealer = (props) => {
                 alt={dealer.name}
                 className="overflowed-image"
               />
-              <BrandsCarousel brands={dealer.brandsOnline} />
             </div>
           </Col>
         </Row>
