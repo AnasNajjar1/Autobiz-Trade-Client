@@ -65,3 +65,9 @@ exports.pdfLang = {
 exports.tagManagerArgs = {
   gtmId: "GTM-K4DKLSR",
 };
+
+const recaptchaAccess = {
+  siteKey : "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",
+  secretKey : "6LdS7mUaAAAAAM0aEdK_eqqZXoKTWKkO83MsvfTz"
+}
+exports.recaptchaAccess = recaptchaAccess;

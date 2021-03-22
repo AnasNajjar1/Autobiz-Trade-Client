@@ -300,7 +300,7 @@ const Dealer = (props) => {
                 </p>
               </div>
               <p className="text-primary my-3 font-italic small">
-                {t("online_offers:")} {dealer.count_vehicles}
+                {t("online_offers:")} {RecordsCount}
               </p>
             </div>
 
@@ -349,7 +349,6 @@ const Dealer = (props) => {
                 alt={dealer.name}
                 className="overflowed-image"
               />
-              <BrandsCarousel brands={dealer.brandsOnline} />
             </div>
           </Col>
         </Row>
