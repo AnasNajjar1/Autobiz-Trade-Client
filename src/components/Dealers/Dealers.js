@@ -300,7 +300,7 @@ const Dealer = (props) => {
                 </p>
               </div>
               <p className="text-primary my-3 font-italic small">
-                {t("online_offers:")} {RecordsCount}
+                {t("online_offers:")} {dealer.countVehicles}
               </p>
             </div>
 
