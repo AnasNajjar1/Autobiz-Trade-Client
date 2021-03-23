@@ -11,7 +11,7 @@ const Recaptcha = ({ setCaptchaToken }) => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center mt-5">
       <ReCAPTCHA
         className="g-recaptcha"
         ref={recaptchaRef}

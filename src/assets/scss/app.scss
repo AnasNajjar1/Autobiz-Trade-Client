@@ -1723,11 +1723,16 @@ footer {
 
       div{
         padding: 50px 50px;
-        position: fixed;
-        max-width: inherit;
         width: 100%;
         overflow-y:hidden;
         overflow-x:hidden;
+      }
+
+      @media (min-width:961px)  {
+        div{
+          position: fixed;
+          max-width: inherit;
+        }
       }
     }
 
@@ -1739,7 +1744,7 @@ footer {
 
       h3 {
         font-weight: bold;
-        margin-bottom: 20px;
+        margin: 20px 0px;
       }
 
       form {

@@ -180,14 +180,13 @@ const RegisterForm = ({
             </FormGroup>
           </Col>
         </Row>
-        <Row form></Row>
 
         <h3>{t("contactForm")}</h3>
         <Row form>
           <Col>
             <FormGroup>
               <Row>
-                <Col md={3} className="mt-2">
+                <Col md={2} className="mt-2">
                   <Label>{t("civilityForm")} *</Label>
                 </Col>
                 <Col md={2} className="mt-2">
@@ -195,24 +194,23 @@ const RegisterForm = ({
                     type="radio"
                     name="civility"
                     value="miss"
-                    ref={register({ required: "missingMandatoryFieldForm" })}
+                    ref={register({ required: t("missingMandatoryFieldForm") })}
                   />
                   <Label check>{t("missForm")}</Label>
                 </Col>
-                <Col md={2} className="mt-2" />
-                <Col md={5} className="mt-2">
+                <Col md={2} className="mt-2">
                   <input
                     type="radio"
                     name="civility"
                     value="mister"
-                    ref={register({ required: "missingMandatoryFieldForm" })}
+                    ref={register({ required: t("missingMandatoryFieldForm") })}
                   />
                   <Label check>{t("misterForm")}</Label>
                 </Col>
-                {errors.civility && (
-                  <span className="ml-3">{errors.civility.message}</span>
-                )}
               </Row>
+              {errors.civility && (
+                <p><span>{errors.civility.message}</span></p>
+              )}
             </FormGroup>
           </Col>
         </Row>
@@ -283,14 +281,13 @@ const RegisterForm = ({
               <input
                 name="phoneNumber"
                 type="text"
-                placeholder="+"
                 className={`form-control${
                   errors.phoneNumber ? " is-invalid" : ""
                 }`}
                 ref={register({
                   required: t("missingMandatoryFieldForm"),
                   pattern: {
-                    value: /^[+][0-9]{10,20}/i,
+                    value: /^\+?\d{10,20}$/i,
                     message: t("wrongFormatForm"),
                   },
                 })}
@@ -364,12 +361,12 @@ const RegisterForm = ({
           )}
         </FormGroup>
 
+        <Recaptcha setCaptchaToken={setCaptchaToken} />
         {formSubmitted && !captchaToken && (
           <p className="text-center">
             <span>{t("checkRecaptchaForm")}</span>
           </p>
         )}
-        <Recaptcha setCaptchaToken={setCaptchaToken} />
 
         <FormGroup className="text-center">
           <Button>
