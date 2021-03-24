@@ -314,7 +314,9 @@ const Dealer = (props) => {
                 <tbody>
                   {dealer.documentation.map((document, index) => (
                     <tr key={index}>
-                      <td>{t(document.title)}</td>
+                      <td className="title">
+                        <a href={document.pdf} target="_blank">{t(document.title)}</a>
+                      </td>
                       <td className="icon">
                         {document.text && (
                           <FontAwesomeIcon
