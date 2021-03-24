@@ -10,6 +10,7 @@ import flagEs from "./assets/img/flags/es.svg";
 import flagIt from "./assets/img/flags/it.svg";
 import flagPt from "./assets/img/flags/pt.svg";
 import flagEn from "./assets/img/flags/en.svg";
+import flagNl from "./assets/img/flags/nl.svg";
 
 export const dictionnary = {
   fr: translationsFr,
@@ -17,7 +18,8 @@ export const dictionnary = {
   es: translationsEs,
   it: false,
   pt: false,
-  en: false
+  en: false,
+  nl: false
 };
 export const flags = {
   fr: flagFr,
@@ -25,7 +27,8 @@ export const flags = {
   es: flagEs,
   it: flagIt,
   pt: flagPt,
-  en: flagEn
+  en: flagEn,
+  nl: flagNl
 };
 
 export const LanguageContext = React.createContext(
