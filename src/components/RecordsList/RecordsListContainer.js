@@ -524,7 +524,7 @@ const RecordsListContainer = ({usercountry}) => {
             </Alert>
           )}
 
-          {RecordsCount > 0 && (
+          {RecordsCount > 0 && !isFetching && (
             <>
               <Row>
                 <Col xs="12" md="8" lg="5" xl="4" className="order-md-2">
