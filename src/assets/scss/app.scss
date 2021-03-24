@@ -1618,12 +1618,19 @@ footer {
     color: $primary;
     text-align: center;
     img {
-      height: 16px;
+      height: 20px;
       cursor: pointer;
     }
     svg {
       cursor: pointer;
     }
+  }
+  td.title {
+    font-size: 0.9rem;
+  }
+  td.title a{
+    text-decoration: none;
+    color: inherit;
   }
 }
 
