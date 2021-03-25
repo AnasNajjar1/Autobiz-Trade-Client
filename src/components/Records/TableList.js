@@ -8,12 +8,12 @@ import Cookies from "js-cookie";
 
 //remove uncomplete data or unwanted data
 export function showableValue(key, value, lang) {
+  if (key === "b2cMarketValue" && value === 0) return true;
   if (value === undefined || value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
-  if (key === "b2cMarketValue" && value < 200) return false;
   if (key === "marketLink") return false;
   return true;
 }
@@ -59,7 +59,7 @@ export const renderValue = (key, value, lang) => {
     //€ values
     case "dpaProAmt":
     case "b2cMarketValue":
-      return `${parseInt(value).toLocaleString()} €`;
+      return value >= 0 && 200 >= value ? t("no_currency_value") : `${parseInt(value).toLocaleString()} €`;
 
     //km values
     case "mileage":
