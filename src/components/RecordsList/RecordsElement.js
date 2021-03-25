@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
+import { flags } from "../../language-context";
 
 const RecordsElement = (props) => {
   const { record } = props;
@@ -232,10 +233,11 @@ const RecordsElement = (props) => {
           </div>
 
           <CardFooter>
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-1" size="1x" />
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" size="1x" />
             {(pointofsale && (
               <>
-                {pointofsale.city} {pointofsale.zipCode} {pointofsale.country}
+                <img src={flags[pointofsale.country]} alt={pointofsale.country} className="mb-1" width="20px" />
+                <span className="ml-2">{pointofsale.city} {pointofsale.zipCode}</span>
               </>
             )) ||
               t("unknown_point_of_sale")}
