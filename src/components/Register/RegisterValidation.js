@@ -28,6 +28,8 @@ export const RegisterValidation = ({
               <p>{t("validationMessage1Form")}</p>
               <p>{t("validationMessage2Form")}</p>
               <p>{t("validationMessage3Form")}</p>
+              <p>{t("validationMessage4Form")}</p>
+              <p>{t("validationMessage5Form")}</p>
             </Fragment>
           ) : (
             <Fragment>

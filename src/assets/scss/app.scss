@@ -1783,6 +1783,10 @@ footer {
             margin-right: 20px;
           }
 
+          label.cgu {
+            font-size: 16px;
+          }
+
         }
 
         .form-control {
@@ -1793,6 +1797,10 @@ footer {
           color: #FF4E00;
           font-weight: bold;
         }
+      }
+
+      p.disclaimer-form{
+        margin-bottom: 2.5rem;
       }
     }
   }
