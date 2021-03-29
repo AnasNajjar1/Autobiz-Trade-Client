@@ -344,9 +344,9 @@ const RegisterForm = ({
           </Col>
         </Row>
 
-        <p className="mt-5">{t("disclaimerForm")}</p>
+        <p className="mt-5 disclaimer-form">{t("disclaimerForm")}</p>
         <FormGroup>
-          <Label check>
+          <Label check className="cgu">
             <input
               type="checkbox"
               name="checkBoxForm"
