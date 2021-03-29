@@ -22,7 +22,7 @@ const RecordsElement = (props) => {
   const { record } = props;
   const { vehicle } = record;
   const { pointofsale } = vehicle;
-  const { secondsBeforeEnd } = record;
+  const { secondsBeforeEnd, secondsBeforeStart } = record;
 
   let featuredPicture;
   if (vehicle && vehicle.featuredPicture) {
@@ -121,9 +121,7 @@ const RecordsElement = (props) => {
           <CardBody>
             <Row>
               <Col>
-                {secondsBeforeEnd && (
-                  <Countdown secondsBeforeEnd={secondsBeforeEnd} />
-                )}
+                <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
                 <Bookmark
                   scope="sale"
                   refId={record.uuid}
