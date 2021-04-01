@@ -43,7 +43,7 @@ export const RegisterValidation = ({
               <p>{t("errorMessageForm")}</p>
             </Fragment>
           )}
-          <Link to="/login" className="mt-5">
+          <Link to="/login">
             {t("homePageCtaForm")}
           </Link>
         </>

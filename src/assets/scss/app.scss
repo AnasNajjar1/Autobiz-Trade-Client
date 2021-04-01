@@ -1775,7 +1775,7 @@ footer {
 
           label {
             font-family: $font-weight-light;
-            font-size: 21px;
+            font-size: 16px;
           }
 
           input[type=radio], input[type=checkbox] {
@@ -1825,7 +1825,6 @@ footer {
       color: white;
       cursor: pointer;
       background-color: #FF4E00;
-      margin: 100px 50px;
       padding: 10px 50px;
       @extend .border-0;
       border-radius: 0px;
