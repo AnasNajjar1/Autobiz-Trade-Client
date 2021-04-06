@@ -493,6 +493,12 @@ const Auction = ({ refId, entryStockDate }) => {
             <Col xs="12">
               <p className="gray font-italic small">{closingMessage()}</p>
             </Col>
+            {
+              entryStockDate &&
+              <Col xs="12">
+                <span className="small">{t('entryStockDate')} : <b>{entryStockDate}</b></span>
+              </Col>
+            }
           </Row>
           {/* Auctions */}
           {isAuctionOpen && (
