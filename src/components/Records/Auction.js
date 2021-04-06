@@ -19,7 +19,7 @@ import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
-const Auction = ({ refId }) => {
+const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
   const [isScheduled, setIsScheduled] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -455,10 +455,11 @@ const Auction = ({ refId }) => {
       <div className="section radius mb-4 py-4">
         <div className="auction">
           <Row>
-            <Col xs="12" lg="7">
+            <Col xs="12" lg="6">
               <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
             </Col>
-            <Col xs="12" lg="5">
+            <Col xs="12" lg="6">
+              {entryStockDate && <span className="entry-stock-date">{t('entryStockDate')} : <b>{entryStockDate}</b></span>}
               {auctionReservePrice > 0 &&
                 auctionReservePriceIsReached === true && (
                   <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
