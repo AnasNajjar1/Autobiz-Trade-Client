@@ -15,6 +15,7 @@ export function showableValue(key, value, lang) {
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "marketLink") return false;
+  if (key === "vatDetails" && value === 'no') return false;
   return true;
 }
 
