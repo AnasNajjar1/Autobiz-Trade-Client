@@ -455,11 +455,10 @@ const Auction = ({ refId, entryStockDate }) => {
       <div className="section radius mb-4 py-4">
         <div className="auction">
           <Row>
-            <Col xs="12" lg="6">
+            <Col xs="12" lg="7">
               <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
             </Col>
-            <Col xs="12" lg="6" className="px-lg-0">
-              {entryStockDate && <span className="entry-stock-date">{t('entryStockDate')} : <b>{entryStockDate}</b></span>}
+            <Col xs="12" lg="5">
               {auctionReservePrice > 0 &&
                 auctionReservePriceIsReached === true && (
                   <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
@@ -493,6 +492,12 @@ const Auction = ({ refId, entryStockDate }) => {
             <Col xs="12">
               <p className="gray font-italic small">{closingMessage()}</p>
             </Col>
+            {
+              entryStockDate &&
+              <Col xs="12">
+                <span className="small">{t('entryStockDate')} : <b>{entryStockDate}</b></span>
+              </Col>
+            }
           </Row>
           {/* Auctions */}
           {isAuctionOpen && (
