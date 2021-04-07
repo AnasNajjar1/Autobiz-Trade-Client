@@ -21,6 +21,7 @@ import getTranslations from "./translations/services/getTranslations";
 import cacheStaticContent from "./translations/services/cacheStaticContent";
 import TagManager from "react-gtm-module";
 import { tagManagerArgs } from "./config";
+import RegisterView from "./views/RegisterView";
 
 Amplify.configure(awsconfig);
 TagManager.initialize(tagManagerArgs);
@@ -116,6 +117,12 @@ class App extends Component {
                 path="/login"
                 render={(props) => (
                   <LoginView {...props} entryPath={this.entryPath} />
+                )}
+              />
+              <Route
+                path="/register/:language"
+                render={(props) => (
+                  <RegisterView {...props} entryPath={this.entryPath} />
                 )}
               />
               <Redirect from="/" exact to="/records" />
