@@ -458,7 +458,7 @@ const Auction = ({ refId, entryStockDate }) => {
             <Col xs="12" lg="6">
               <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
             </Col>
-            <Col xs="12" lg="6">
+            <Col xs="12" lg="6" className="px-lg-0">
               {entryStockDate && <span className="entry-stock-date">{t('entryStockDate')} : <b>{entryStockDate}</b></span>}
               {auctionReservePrice > 0 &&
                 auctionReservePriceIsReached === true && (
