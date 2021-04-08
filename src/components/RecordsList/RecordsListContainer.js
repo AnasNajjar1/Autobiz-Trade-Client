@@ -51,7 +51,7 @@ const RecordsListContainer = ({usercountry}) => {
     mileageMin: "",
     mileageMax: "",
     supplyType: "STOCK",
-    country: usercountry,
+    country: [usercountry],
     zipCode: "",
     radius: 300,
     lat: "",
@@ -71,7 +71,7 @@ const RecordsListContainer = ({usercountry}) => {
     mileageMin: NumberParam,
     mileageMax: NumberParam,
     supplyType: StringParam,
-    country: StringParam,
+    country: ArrayParam,
     zipCode: StringParam,
     lat: StringParam,
     lng: StringParam,
@@ -202,7 +202,7 @@ const RecordsListContainer = ({usercountry}) => {
     };
 
     fetchRecords();
-  }, [query]);
+  }, [query, JSON.stringify(form.country)]);
 
   useEffect(() => {
     form.modelLabel = "";
@@ -219,7 +219,7 @@ const RecordsListContainer = ({usercountry}) => {
   }, [
     form.modelLabel,
     form.supplyType,
-    form.country,
+    JSON.stringify(form.country),
     form.radius,
     form.lat,
     form.lng,
@@ -231,7 +231,7 @@ const RecordsListContainer = ({usercountry}) => {
     form.lat = "";
     form.lng = "";
     setQuery(form);
-  }, [form.country]);
+  }, [JSON.stringify(form.country)]);
 
   // infinte scroll
 
