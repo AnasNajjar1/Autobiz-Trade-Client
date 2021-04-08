@@ -123,6 +123,8 @@ const Record = (props) => {
     fewImportantDatEquipment,
   } = rankedConstructorEquipments || [];
 
+  const entryStockDate = (vehicle.entryStockDate) ? moment(vehicle.entryStockDate.date).format("DD-MM-YYYY"): null;
+
   // TODO: move ownerShipDuration calculation to API
   try {
     if (gcDate) {
@@ -262,7 +264,7 @@ const Record = (props) => {
             )}
           </Col>
           <Col>
-            <Auction refId={props.refId} />
+            <Auction refId={props.refId} entryStockDate={ entryStockDate } />
             {record.comment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">

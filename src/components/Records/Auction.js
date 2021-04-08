@@ -19,7 +19,7 @@ import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
-const Auction = ({ refId }) => {
+const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
   const [isScheduled, setIsScheduled] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -492,6 +492,12 @@ const Auction = ({ refId }) => {
             <Col xs="12">
               <p className="gray font-italic small">{closingMessage()}</p>
             </Col>
+            {
+              entryStockDate &&
+              <Col xs="12">
+                <span className="small">{t('entryStockDate')} : <b>{entryStockDate}</b></span>
+              </Col>
+            }
           </Row>
           {/* Auctions */}
           {isAuctionOpen && (
