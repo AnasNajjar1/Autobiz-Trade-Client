@@ -110,7 +110,7 @@ const Record = (props) => {
     );
   }
 
-  const { vehicle } = record;
+  const { vehicle, supplyType } = record;
   const { pointofsale } = vehicle;
 
   let orderadminDetail = {};
@@ -123,7 +123,8 @@ const Record = (props) => {
     fewImportantDatEquipment,
   } = rankedConstructorEquipments || [];
 
-  const entryStockDate = (vehicle.entryStockDate) ? moment(vehicle.entryStockDate.date).format("DD-MM-YYYY"): null;
+  const entryStockDate = (supplyType === "OFFER_TO_PRIVATE" && vehicle.entryStockDate) ?
+    moment(vehicle.entryStockDate).format("DD-MM-YYYY") : null;
 
   // TODO: move ownerShipDuration calculation to API
   try {
@@ -161,7 +162,7 @@ const Record = (props) => {
             </small>
           </div>
           <div className="col text-right">
-            {record.supplyType === "OFFER_TO_PRIVATE" && (
+            {supplyType === "OFFER_TO_PRIVATE" && (
               <>
                 <img
                   alt={t("offerToPrivate")}
@@ -174,7 +175,7 @@ const Record = (props) => {
                 </Tooltip>
               </>
             )}
-            {record.supplyType === "STOCK" && (
+            {supplyType === "STOCK" && (
               <>
                 <FontAwesomeIcon
                   icon={faShoppingCart}
