@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment"
 
 const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
@@ -332,13 +333,13 @@ const Auction = ({ refId, entryStockDate }) => {
           invalid={!submissionIsValid && Boolean(userSubmissionAmout)}
           placeholder={`${t("make_a_free_submission")} (${t(
             "min"
-          )}  ${userInfo.minimalUserSubmission.toLocaleString()}€)`}
+          )}  ${userInfo.minimalUserSubmission.toLocaleString()}€) `}
         />
       </Col>
       <Col className="col-thin">
         {userInfo.bestUserSubmission > 0 && (
-          <div className="text-danger small text-left">
-            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} €{" "}
+          <div className="text-danger small text-left mt-2">
+            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} € ({moment(userInfo.bestUserSubmissionCreatedAt).format('DD/MM/YYYY HH:mm')})
           </div>
         )}
         <Button
