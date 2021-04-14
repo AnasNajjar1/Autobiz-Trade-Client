@@ -1814,7 +1814,7 @@ footer {
     padding: 5% 10%;
     color: white;
     background-color: $blue-register-form;
-    height: 100vh;
+    min-height: 100vh;
 
     p{
       padding: 10px;
@@ -1825,7 +1825,7 @@ footer {
       color: white;
       cursor: pointer;
       background-color: #FF4E00;
-      padding: 10px 50px;
+      padding: 10px 20px;
       @extend .border-0;
       border-radius: 0px;
     }
