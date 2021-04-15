@@ -4,6 +4,7 @@ import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import { API } from "aws-amplify";
+import _ from "lodash";
 
 const FilterGeoloc = ({
   country,
@@ -26,7 +27,21 @@ const FilterGeoloc = ({
   ];
 
   const handleChangeCountry = (e) => {
-    updateField(e);
+    const {name, value, checked} = e.target;
+    if(checked){
+      if(value === 'all'){
+        country = ["fr","es","de","pt","it"];
+      }else{
+        if(!country.includes(value)) country.push(value);
+      }
+    }else{
+      if(value === 'all'){
+        country = [];
+      }else{
+        country = _.filter(country, c => (c !== value));
+      } 
+    }
+    updateField({...e, target : { name, value : country} });
   };
 
   const handleChangeZipcode = (e) => {
@@ -37,7 +52,7 @@ const FilterGeoloc = ({
     try {
       const response = await API.post("b2bPlateform", `/geoloc/`, {
         body: {
-          country: countries.find((e) => e.code === country).name,
+          country: countries.find((e) => e.code === country[0]).name,
           zipCode,
         },
         response: true,
@@ -57,7 +72,7 @@ const FilterGeoloc = ({
       setErrorZipCode(false);
       setEnableRadius(false);
     } else if (
-      countries.find((e) => e.code === country).zipCodeRegex.exec(zipCode) !==
+      countries.find((e) => e.code === country[0]).zipCodeRegex.exec(zipCode) !==
       null
     ) {
       setErrorZipCode(false);
@@ -76,34 +91,42 @@ const FilterGeoloc = ({
   return (
     <>
       <FormGroup>
-        <Row>
-          <Col>
-            <Input
-              type="select"
-              name="country"
-              id="country"
-              value={country}
-              onChange={(e) => handleChangeCountry(e)}
-              className="mb-2"
-            >
-              <option value={"all"}>{t("all")}</option>
-              {Object.values(countries).map((c, i) => (
-                <option value={c.code} key={i}>
-                  {t(c.name)}
-                </option>
-              ))}
-            </Input>
-            <Label className="mini-label">{t("country")}</Label>
-          </Col>
-        </Row>
-        <div className={country === "all" ? "d-none" : ""}>
           <Row>
+            <Col>
+              <div className="form-check storage-bloc mb-2">
+                <input 
+                  type="checkbox"
+                  name="country"
+                  className="form-check-input"
+                  value="all"
+                  checked={country.length === 5}
+                  onClick={(e) => handleChangeCountry(e)}
+                /> {t("all")}
+                <br/>
+                {Object.values(countries).map((c, i) => (
+                  <>
+                    <input 
+                      key={i}
+                      type="checkbox"
+                      name="country"
+                      className="form-check-input"
+                      value={c.code}
+                      checked={country.includes(c.code) || country.length === 5}
+                      onClick={(e) => handleChangeCountry(e)}
+                    />  {t(c.name)} <br/>
+                  </>
+                ))}
+              </div>
+            </Col>
+          </Row>
+          <div className={country.length !== 1  ? "d-none" : ""}>
+          <Row className="mt-2">
             <Col>
               <Input
                 type="text"
                 name="zipCode"
                 id="zipCode"
-                disabled={country === "all"}
+                disabled={country.length === 5}
                 className={errorZipCode ? "is-invalid" : ""}
                 value={zipCode}
                 onChange={(e) => handleChangeZipcode(e)}

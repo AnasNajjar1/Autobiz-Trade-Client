@@ -83,7 +83,7 @@ const DealersListContainer = () => {
     list: "all",
     brandLabel: "",
     modelLabel: "",
-    country: "all",
+    country: ["fr","es","de","pt","it"],
     zipCode: "",
     radius: 300,
     lat: "",
@@ -96,7 +96,7 @@ const DealersListContainer = () => {
     list: StringParam,
     brandLabel: StringParam,
     modelLabel: StringParam,
-    country: StringParam,
+    country: ArrayParam,
     zipCpde: StringParam,
     radius: StringParam,
     lat: StringParam,
@@ -171,14 +171,14 @@ const DealersListContainer = () => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel, form.country, form.radius, form.lat, form.lng]);
+  }, [form.modelLabel, JSON.stringify(form.country), form.radius, form.lat, form.lng]);
 
   useEffect(() => {
     form.zipCode = "";
     form.lat = "";
     form.lng = "";
     setQuery(form);
-  }, [form.country]);
+  }, [JSON.stringify(form.country)]);
 
   // infinte scroll
   useEffect(() => {
