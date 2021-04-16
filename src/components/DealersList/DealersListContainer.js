@@ -24,7 +24,7 @@ import FilterBrands from "../RecordsList/FilterBrands";
 import FilterModels from "../RecordsList/FilterModels";
 import FilterGeoloc from "../RecordsList/FilterGeoloc";
 
-const DealersListContainer = () => {
+const DealersListContainer = ({usercountry}) => {
   const ItemsPerPage = 6;
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [modelLabels, setModelLabels] = useState([]);
@@ -83,7 +83,7 @@ const DealersListContainer = () => {
     list: "all",
     brandLabel: "",
     modelLabel: "",
-    country: ["fr","es","de","pt","it"],
+    country: [usercountry],
     zipCode: "",
     radius: 300,
     lat: "",
