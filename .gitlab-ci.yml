@@ -23,6 +23,7 @@ test_merge_master:
     - test_merge_master_to_this_branch
   except:
     - master
+  allow_failure : true
 
 refresh_cached_dependencies:
   stage: dependencies
