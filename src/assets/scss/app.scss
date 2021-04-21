@@ -1170,7 +1170,7 @@ form.form-offer {
 
 .container-separator {
   background-color: white;
-  height: 60px;
+  min-height: 60px;
   margin-top: -30px;
   border-radius: 60px;
   @extend .shadow-sm;
