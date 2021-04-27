@@ -34,7 +34,6 @@ class LoginForm extends Component {
       this.setState({ error: true });
     } else {
       this.setState({ loading: true });
-
       signInAutobiz(username, password)
         .then(() => this.props.history.push(this.props.entryPath))
         .catch((e) => this.setState({ error: true }))
@@ -86,7 +85,7 @@ class LoginForm extends Component {
           )}
 
           <FormGroup>
-            <Button color="primary" block>
+            <Button color="primary" disabled={this.state.loading} block>
               {this.state.loading && <Spinner size="sm" />}
               <Translate code="connect" />
             </Button>
