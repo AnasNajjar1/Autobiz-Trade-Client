@@ -18,7 +18,7 @@ import Cookies from "js-cookie";
 import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import moment from "moment"
+import moment from "moment";
 
 const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
@@ -339,7 +339,11 @@ const Auction = ({ refId, entryStockDate }) => {
       <Col className="col-thin">
         {userInfo.bestUserSubmission > 0 && (
           <div className="text-danger small text-left mt-2">
-            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} € ({moment(userInfo.bestUserSubmissionCreatedAt).format('DD/MM/YYYY HH:mm')})
+            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} € (
+            {moment(userInfo.bestUserSubmissionCreatedAt).format(
+              "DD/MM/YYYY HH:mm"
+            )}
+            )
           </div>
         )}
         <Button
@@ -457,7 +461,10 @@ const Auction = ({ refId, entryStockDate }) => {
         <div className="auction">
           <Row>
             <Col xs="12" lg="7">
-              <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
+              <Countdown
+                secondsBeforeStart={secondsBeforeStart}
+                secondsBeforeEnd={secondsBeforeEnd}
+              />
             </Col>
             <Col xs="12" lg="5">
               {auctionReservePrice > 0 &&
@@ -494,7 +501,11 @@ const Auction = ({ refId, entryStockDate }) => {
               <p className="gray font-italic small">{closingMessage()}</p>
             </Col>
             <Col xs="12">
-              { entryStockDate && <span className="small">{t('entryStockDate')} : <b>{entryStockDate}</b></span>}
+              {entryStockDate && (
+                <span className="small">
+                  {t("entryStockDate")} : <b>{entryStockDate}</b>
+                </span>
+              )}
             </Col>
           </Row>
           {/* Auctions */}
@@ -564,6 +575,21 @@ const Auction = ({ refId, entryStockDate }) => {
             )}
             {/* End Forms */}
           </div>
+          {isExpired === true && (
+            <div>
+              {" "}
+              {userInfo.bestUserSubmission > 0 && (
+                <div className="text-danger small text-left mt-2">
+                  {t("you_have_already_submitted")}{" "}
+                  {userInfo.bestUserSubmission} € (
+                  {moment(userInfo.bestUserSubmissionCreatedAt).format(
+                    "DD/MM/YYYY HH:mm"
+                  )}
+                  )
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
