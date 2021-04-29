@@ -40,6 +40,7 @@ import Bookmark from "../common/Bookmark";
 import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
 import { showWheelsImg } from "../../helper/Vehicle"
+import { orderGalleryPictures } from "../../helper/Vehicle";
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -113,7 +114,7 @@ const Record = (props) => {
 
   const { vehicle, supplyType } = record;
   const { pointofsale } = vehicle;
-
+  const gallery = orderGalleryPictures(vehicle.gallery);
   let orderadminDetail = {};
   let gcDate = _.get(vehicle, "administrativeDetails.gcDate", null);
 
@@ -124,8 +125,10 @@ const Record = (props) => {
     fewImportantDatEquipment,
   } = rankedConstructorEquipments || [];
 
-  const entryStockDate = (supplyType === "OFFER_TO_PRIVATE" && vehicle.entryStockDate) ?
-    moment(vehicle.entryStockDate).format("DD-MM-YYYY"): null;
+  const entryStockDate =
+    supplyType === "OFFER_TO_PRIVATE" && vehicle.entryStockDate
+      ? moment(vehicle.entryStockDate).format("DD-MM-YYYY")
+      : null;
 
   // TODO: move ownerShipDuration calculation to API
   try {
@@ -205,15 +208,16 @@ const Record = (props) => {
                 {vehicle.versionLabel && (
                   <div className="gray mb-1">{vehicle.versionLabel} * </div>
                 )}
-                {vehicle.gallery && <Carousel items={vehicle.gallery} />}
+                {gallery && <Carousel items={gallery} />}
               </div>
               <TagsProps
                 tags={[
                   {
                     label: "firstRegistrationDate",
-                    value: moment(vehicle.characteristics.firstRegistrationDate, "YYYY-MM-DD").format(
-                      "MM-YYYY"
-                    ),
+                    value: moment(
+                      vehicle.characteristics.firstRegistrationDate,
+                      "YYYY-MM-DD"
+                    ).format("MM-YYYY"),
                   },
                   {
                     label: "fuelLabel",
@@ -266,7 +270,7 @@ const Record = (props) => {
             )}
           </Col>
           <Col>
-            <Auction refId={props.refId} entryStockDate={ entryStockDate }/>
+            <Auction refId={props.refId} entryStockDate={entryStockDate} />
             {record.comment && (
               <div className="section radius mb-4 py-4">
                 <p className="gray">
@@ -567,8 +571,8 @@ const subDamages = (items, gallery) => {
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
   return items.map((i, key) => {
-    if(i.element !== 'motor_longeron')
-      return <Damage i={i} key={key} index={key} damagesImage={damagesImage} />
+    if (i.element !== "motor_longeron")
+      return <Damage i={i} key={key} index={key} damagesImage={damagesImage} />;
   });
 };
 
