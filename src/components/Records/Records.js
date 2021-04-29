@@ -39,6 +39,7 @@ import Parser from "html-react-parser";
 import Bookmark from "../common/Bookmark";
 import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
+import { showWheelsImg } from "../../helper/Vehicle"
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -480,6 +481,7 @@ const Record = (props) => {
                       {activeSubTab && (
                         <ShowDamages
                           data={_.get(sections, activeSubTab, null)}
+                          gallery={vehicle.gallery}
                         />
                       )}
                     </div>
@@ -535,10 +537,10 @@ const calculateOwnerShipDuration = (gcDate) => {
   return moment.duration(moment().diff(moment(gcDate))).asMilliseconds();
 };
 
-const ShowDamages = (data) => {
+const ShowDamages = ({data, gallery}) => {
   let res;
-  if (_.get(data, "data", null) !== null) {
-    res = Object.values(data).map((v) => iterateData(v));
+  if (data !== null ) {
+    res = iterateData(data, gallery);
   } else
     res = (
       <Col className="mt-5 text-center">
@@ -548,15 +550,19 @@ const ShowDamages = (data) => {
   return res;
 };
 
-const iterateData = (v) => {
+const iterateData = (v, gallery) => {
   let item = null;
-  item = subDamages(v);
+  item = subDamages(v, gallery);
   return item;
 };
 
-const subDamages = (items) => {
+const subDamages = (items, gallery) => {
   let damagesImage = [];
+
   items.forEach((i, key) => {
+    if( i.zone === "wheels" && ['replace', 'smart_rep'].includes(i.reconditionning)){
+      i.damage_picture = showWheelsImg(i.element, gallery)
+    }
     if (i.damage_picture) damagesImage.push(i.damage_picture);
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
   });
