@@ -391,7 +391,7 @@ const Record = (props) => {
                           <EquipmentList items={vehicle.declaredEquipments} />
                         </>
                       )}
-                    {vehicle.market && (
+                    {vehicle.market && false && (
                       <>
                         <div className="section-title">
                           <Row>
