@@ -39,7 +39,7 @@ import Parser from "html-react-parser";
 import Bookmark from "../common/Bookmark";
 import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
-import { showWheelsImg } from "../../helper/Vehicle"
+import { showWheelsImg } from "../../helper/Vehicle";
 import { orderGalleryPictures } from "../../helper/Vehicle";
 
 const Record = (props) => {
@@ -113,7 +113,7 @@ const Record = (props) => {
   }
 
   const { vehicle, supplyType } = record;
-  const { pointofsale } = vehicle;
+  const { pointofsale, market } = vehicle;
   const gallery = orderGalleryPictures(vehicle.gallery);
   let orderadminDetail = {};
   let gcDate = _.get(vehicle, "administrativeDetails.gcDate", null);
@@ -129,6 +129,14 @@ const Record = (props) => {
     supplyType === "OFFER_TO_PRIVATE" && vehicle.entryStockDate
       ? moment(vehicle.entryStockDate).format("DD-MM-YYYY")
       : null;
+
+  const displayMarketData =
+    _.filter(
+      _.filter(market, (v, k) => k !== "marketLink"),
+      (d) => d !== null
+    ).length !== 0
+      ? true
+      : false;
 
   // TODO: move ownerShipDuration calculation to API
   try {
@@ -391,7 +399,7 @@ const Record = (props) => {
                           <EquipmentList items={vehicle.declaredEquipments} />
                         </>
                       )}
-                    {vehicle.market && false && (
+                    {market && (
                       <>
                         <div className="section-title">
                           <Row>
@@ -401,20 +409,48 @@ const Record = (props) => {
                                 <Translate code="autobizMarketSource"></Translate>
                               </i>
                             </Col>
-                            <Col xs="12" md="6" className="section-title-link">
-                              <a
-                                href={vehicle.market.marketLink}
-                                target="_blank"
+                            {market.marketLink && (
+                              <Col
+                                xs="12"
+                                md="6"
+                                className="section-title-link"
                               >
-                                {`${t("market_link")} `}
-                                <FontAwesomeIcon icon={faExternalLinkAlt} />
-                              </a>
-                            </Col>
+                                <a href={market.marketLink} target="_blank">
+                                  {`${t("market_link")} `}
+                                  <FontAwesomeIcon icon={faExternalLinkAlt} />
+                                </a>
+                              </Col>
+                            )}
                           </Row>
                         </div>
-                        <TableList items={vehicle.market} />
+                        <div
+                          className={`list-table-default ${
+                            !displayMarketData && "list-table-empty"
+                          }`}
+                        >
+                          {displayMarketData ? (
+                            <>
+                              <TableList items={market} />
+                              {market.marketDataDate && (
+                                <div className="pb-2 px-4">
+                                  <small>
+                                    {t("dataDate")} :{" "}
+                                    {moment(market.marketDataDate).format(
+                                      "DD/MM/YYYY"
+                                    )}
+                                  </small>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-danger">
+                              {t("unavailableMarketData")}
+                            </span>
+                          )}
+                        </div>
                       </>
                     )}
+
                     {vehicle.history && (
                       <>
                         <div className="section-title">
@@ -541,9 +577,9 @@ const calculateOwnerShipDuration = (gcDate) => {
   return moment.duration(moment().diff(moment(gcDate))).asMilliseconds();
 };
 
-const ShowDamages = ({data, gallery}) => {
+const ShowDamages = ({ data, gallery }) => {
   let res;
-  if (data !== null ) {
+  if (data !== null) {
     res = iterateData(data, gallery);
   } else
     res = (
@@ -564,8 +600,11 @@ const subDamages = (items, gallery) => {
   let damagesImage = [];
 
   items.forEach((i, key) => {
-    if( i.zone === "wheels" && ['replace', 'smart_rep'].includes(i.reconditionning)){
-      i.damage_picture = showWheelsImg(i.element, gallery)
+    if (
+      i.zone === "wheels" &&
+      ["replace", "smart_rep"].includes(i.reconditionning)
+    ) {
+      i.damage_picture = showWheelsImg(i.element, gallery);
     }
     if (i.damage_picture) damagesImage.push(i.damage_picture);
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);

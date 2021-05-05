@@ -8,14 +8,19 @@ import Cookies from "js-cookie";
 
 //remove uncomplete data or unwanted data
 export function showableValue(key, value, lang) {
-  if (key === "b2cMarketValue" && value === 0) return true;
+  if (
+    ["b2cMarketValue", "standardMileage", "dpaProAmt"].includes(key) &&
+    Number(value) === 0
+  )
+    return true;
   if (value === undefined || value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
   if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
   if (key === "marketLink") return false;
-  if (key === "vatDetails" && value === 'no') return false;
+  if (key === "marketDataDate") return false;
+  if (key === "vatDetails" && value === "no") return false;
   return true;
 }
 
@@ -59,14 +64,25 @@ export const renderValue = (key, value, lang) => {
 
     //€ values
     case "dpaProAmt":
+      return value === null
+        ? t("no_value")
+        : `${parseInt(value).toLocaleString()} €`;
     case "b2cMarketValue":
-      return value >= 0 && 200 >= value ? t("no_currency_value") : `${parseInt(value).toLocaleString()} €`;
+      return value >= 0 && 200 >= value
+        ? t("no_value")
+        : `${parseInt(value).toLocaleString()} €`;
+
+    // salesSpeedName
+    case "salesSpeedName":
+      return value === "NA" ? t("no_value") : t(value);
 
     //km values
     case "mileage":
     case "lastServicingKm":
     case "standardMileage":
-      return `${parseInt(value).toLocaleString()} ${t("km")}`;
+      return value === 0
+        ? t("no_value")
+        : `${parseInt(value).toLocaleString()} ${t("km")}`;
 
     //date DD-MM-YYYY values
     case "gcDate":
@@ -85,7 +101,9 @@ export const renderValue = (key, value, lang) => {
       if (lang === "de") {
         literStr = `${parseFloat(value) * 1000} ${t("unit_ccm")}`;
       } else {
-        literStr = `${(Math.ceil(value*10)/10).toFixed(1)} ${t("unit_liter")}`;
+        literStr = `${(Math.ceil(value * 10) / 10).toFixed(1)} ${t(
+          "unit_liter"
+        )}`;
       }
       return literStr;
 

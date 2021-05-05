@@ -736,6 +736,19 @@ header {
   }
 }
 
+.list-table-default {
+  background-color: $card-cap-bg;
+  border-radius: 0.5em;
+}
+
+.list-table-empty {
+  padding: 5rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
 .wrapper {
   position: absolute;
   bottom: 46px;
