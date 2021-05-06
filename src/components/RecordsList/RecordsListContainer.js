@@ -35,8 +35,8 @@ const RecordsListContainer = ({usercountry}) => {
 
   const sortLabelList = [
     "sort_sales_ending_soon",
-    "sort_date_asc",
-    "sort_date_desc",
+    "selling_price_asc",
+    "selling_price_desc",
     "sort_mileage_asc",
     "sort_mileage_desc",
   ];
