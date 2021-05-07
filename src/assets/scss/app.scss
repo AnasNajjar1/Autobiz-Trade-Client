@@ -1861,5 +1861,13 @@ footer {
   margin-left: 15px;
 }
 
+.consent-choices{
+  position: fixed;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+}
+
 @import "carousel";
 @import "report";

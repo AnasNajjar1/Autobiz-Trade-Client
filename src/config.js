@@ -16,7 +16,7 @@ const identityPoolIds = {
   local: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
   dev: "eu-west-1:f9823600-f4b5-4759-889d-1b02c431135a",
   staging: "eu-west-1:f9823600-f4b5-4759-889d-1b02c431135a",
-  ppr : "eu-west-1:78e88d38-c70d-4ca3-8438-408ddb4aede7",
+  ppr: "eu-west-1:78e88d38-c70d-4ca3-8438-408ddb4aede7",
   prod: "eu-west-1:e8cbcb21-aa17-41e1-bdfc-58c09cb55566",
 };
 
@@ -67,6 +67,16 @@ exports.tagManagerArgs = {
 };
 
 const recaptchaAccess = {
-  siteKey : "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",
-}
+  siteKey: "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",
+};
 exports.recaptchaAccess = recaptchaAccess;
+
+exports.didomiConfig = {
+  apiKey: "cfad80dd-8fb6-43fa-a253-7156b52c2514",
+  noticeId: "ATZaMPw2",
+  config: {
+    app: {
+      name: "autobizTrade",
+    },
+  },
+};
