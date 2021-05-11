@@ -271,7 +271,6 @@ const Auction = ({ refId, entryStockDate }) => {
       )
     );
   }
-
   const immediatePurchaseForm = (
     <Row className="row-thin align-items-end mt-3">
       <Col className="col-thin">
@@ -293,7 +292,10 @@ const Auction = ({ refId, entryStockDate }) => {
         >
           <ModalBody>
             <p className="text-center">
-              {t("confirm_message_immediate_purchase")}
+              {t("confirm_message_immediate_purchase")}{" "}
+              <strong class="d-inline-block">
+                {immediatePurchasePrice.toLocaleString()}€
+              </strong>{" "}{t("confirm_message_immediate_purchase2")}
             </p>
           </ModalBody>
           <ModalFooter>
@@ -358,7 +360,12 @@ const Auction = ({ refId, entryStockDate }) => {
 
         <Modal isOpen={modalSubmission} toggle={toggleModalSubmission}>
           <ModalBody>
-            <p className="text-center">{t("submission_validation")}</p>
+            <p className="text-center">
+              {t("submission_validation")}{" "}
+              <strong class="d-inline-block">
+                {parseInt(userSubmissionAmout).toLocaleString()}€
+              </strong>{" "}{t("submission_validation_message2")}
+            </p>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -412,7 +419,13 @@ const Auction = ({ refId, entryStockDate }) => {
 
         <Modal isOpen={modalAuction} toggle={toggleModalAuction}>
           <ModalBody>
-            <p className="text-center">{t("confirm_message_offer")}</p>
+            <p className="text-center">
+              {t("confirm_message_offer")}{" "}
+              <strong class="d-inline-block">
+                {parseInt(userAuctionAmout).toLocaleString()}€
+              </strong>{" "}
+              {t("confirm_message_offer2")}
+            </p>
           </ModalBody>
           <ModalFooter>
             <Button
