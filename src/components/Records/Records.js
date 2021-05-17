@@ -69,16 +69,31 @@ const Record = (props) => {
   useEffect(() => {
     let ld = [];
 
-    if (record && record.vehicle && record.vehicle.damages) {
-      Object.values(record.vehicle.damages).map((v) => {
-        let isExist = _.get(ld, v.zone, null);
+    if (record && record.vehicle) {
+      if (record.vehicle.damages) {
+        Object.values(record.vehicle.damages).map((v) => {
+          let isExist = _.get(ld, v.zone, null);
 
-        if (isExist === null) {
-          ld[v.zone] = [v];
-        } else {
-          isExist.push(v);
+          if (isExist === null) {
+            ld[v.zone] = [v];
+          } else {
+            isExist.push(v);
+          }
+        });
+      }
+      // push technical check date to damages
+
+      if (
+        record.vehicle.servicing &&
+        record.vehicle.servicing.nextTechnicalCheckDate
+      ) {
+        const technicalCheckDate = {
+          damage: record.vehicle.servicing.nextTechnicalCheckDate,
+          element: "nextTechnicalCheckDate",
+          zone: "servicing",
         }
-      });
+        ld["servicing"] ? ld["servicing"].push(technicalCheckDate) : ld["servicing"] = [technicalCheckDate]
+      }
     }
     setSections(ld);
   }, [record]);
