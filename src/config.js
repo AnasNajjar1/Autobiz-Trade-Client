@@ -9,8 +9,15 @@ const apisB2bPlateform = {
 };
 exports.apiB2bPlateform = apisB2bPlateform[ENV];
 
-exports.link_new_password =
-  "https://www.autobiz-market.com/fr/mot-de-passe-oublie";
+exports.linkNewPassword = {
+  fr: "https://www.autobiz-market.com/fr/mot-de-passe-oublie",
+  it: "https://www.autobiz-market.com/it/password-dimenticata",
+  pt: "https://www.autobiz-market.com/pt/forgotpassword",
+  de: "https://www.autobiz-market.com/de/passwort-vergessen",
+  nl: "https://www.autobiz-market.com/fr/mot-de-passe-oublie",
+  en: "https://www.autobiz-market.com/fr/mot-de-passe-oublie",
+  es: "https://www.sistemavo.es/has-olvidado-tu-contrasena",
+};
 
 const identityPoolIds = {
   local: "eu-west-1:6505e22b-5315-4260-80d8-65550855378f",
@@ -65,6 +72,8 @@ exports.pdfLang = {
 exports.tagManagerArgs = {
   gtmId: "GTM-K4DKLSR",
 };
+
+exports.tradeHelpMail = "trade-help@autobiz.com";
 
 const recaptchaAccess = {
   siteKey: "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",

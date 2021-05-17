@@ -14,7 +14,6 @@ export const handleChangeLang = async (language) => {
 const LanguagePicker = () => {
   const languages = Object.keys(dictionnary);
   const appLanguage = Cookies.get("appLanguage");
-
   return (
     <ul className="languagepicker">
       <li key={appLanguage}>

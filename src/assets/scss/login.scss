@@ -1,0 +1,1112 @@
+.page.page-index {
+
+    .cta {
+        background-color: #ff4e00;
+        color: white;
+        font-size: 20px;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+        padding: 12px 30px;
+        text-align: center;
+    }
+
+    .cta:hover {
+        text-decoration: none;
+    }
+
+    .hp-section.login {
+        width: 100%;
+        padding-top: 30px;
+        background-image: linear-gradient(to right, black, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0)), url(../img/parkingBackground.jpeg);
+        background-repeat: no-repeat;
+        background-size: auto 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+
+        .language {
+            position: absolute;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            top: 10px;
+            right: calc((100vw - (87vw + 60px)) / 2);
+
+            img {
+                height: 25%;
+                margin-right: 10px;
+            }
+
+            select {
+                appearance:none;
+                -moz-appearance:none;
+                -webkit-appearance:none;
+                background: url(../img/language-arrow.png) no-repeat scroll right center transparent;
+                background-size: 13px 13px;
+                background-color: rgba(0, 0, 0, 0);
+                width: 105px;
+                color: white;
+                border: none;
+            }
+            
+            select::-ms-expand { display: none; }
+
+            select:focus {
+                outline: none;
+            }
+
+            select option {
+                color: black;
+            }
+        }
+
+        .introduction {
+            width: 42vw;
+            margin-right: 60px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+
+            img {
+                width: 450px;
+                margin-bottom: 40px;
+            }
+
+            h1 {
+                font-weight: bold;
+                font-size: 45px;
+                margin-bottom: 30px;
+            }
+
+            .pitch {
+                font-size: 30px;
+                font-weight: lighter;
+            }
+        }
+
+        .loginForm {
+            background-color: white;
+            max-height: 750px;
+            width: 45vw;
+            padding: 40px 40px;
+            margin-top: 5vh;
+            margin-bottom: 5vh;
+            border: 2px solid #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            .explanation {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .error {
+                width: 100%;
+                background-color: #E6E6E6;
+                text-align: center;
+                padding: 15px;
+                font-size: 17px;
+                margin-bottom: 20px;
+
+                .title {
+                    color: red;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                }
+                .text {
+                    margin: 0 20px;
+
+                    .break {
+                        display: none;
+                    }
+
+                    a{
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .passwordForgotten {
+                margin-top: 20px;
+                text-decoration: none;
+                border-bottom: 2px solid #000;
+                color: black;
+            }
+
+            .formSeparator {
+                width: 45vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 50px;
+                margin-bottom: 40px;
+
+                .line {
+                    width: 100%;
+                    border-bottom: 2px solid #000;
+                }
+
+                .name {
+                    width: 100px;
+                    position: absolute;
+                    font-size: 40px;
+                    font-weight: bold;
+                    background-color: white;
+                    text-align: center;
+                }
+            }
+
+            .cta {
+                width: 80%;
+                border: none;
+            }
+
+            .register {
+                text-decoration: none;
+                font-weight: bold;
+                text-align: center;
+                color: #ff4e00;
+                font-size: 20px;
+                border: 3px solid #ff4e00;
+                padding: 11px 0px;
+                width: 80%;
+            }
+
+            input {
+                width: 80%;
+                height: 50px;
+                margin-bottom: 2vh;
+            }
+
+            label {
+                font-size: 18px;
+                width: 80%;
+            }
+        }
+
+        @media(max-width: 1100px) {
+            .loginForm{
+                .error {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        @media(max-width: 1100px) {
+            .introduction {
+                img {
+                    width: 380px;
+                }
+            }
+        }
+
+        @media(max-width: 917px) {
+            .loginForm{
+                .error {
+                    font-size: 11px;
+                }
+            }
+        }
+
+        @media(max-width: 850px) {
+            flex-direction: column;
+            background-image: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0)), url(../img/parkingBackground.jpeg);
+            background-size: auto 100%;
+
+            .language {
+                right: 14vw;
+            }
+
+            .introduction {
+                align-items: center;
+                margin-top: 30px;
+                margin-right: 0px;
+                width: 83vw;
+
+                img {
+                    margin-bottom: 20px;
+                    margin-right: 8vw;
+                }
+
+                h1 {
+                    margin-bottom: 15px;
+                    text-align: center;
+                    width: 80%;
+                }
+
+                .pitch {
+                    display: none;
+                }
+            }
+
+            .loginForm {
+                width: 72vw;
+                margin-top: 5px;
+                padding: 20px 20px;
+
+                .explanation {
+                    margin-bottom: 8px;
+                }
+
+                .formSeparator {
+                    width: 72vw;
+                }
+
+                .register {
+                    font-size: 17px;
+                }
+
+                .error {
+                    font-size: 20px;
+                    width: 80%;
+
+                    .text {
+                        .break {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            @media(max-height: 725px) {
+                .introduction {
+                    img {
+                        margin-bottom: 12px;
+                        width: 280px;
+                    }
+
+                    h1 {
+                        font-size: 30px;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
+
+        @media(max-width: 779px) {
+            .introduction {
+                h1 {
+                    font-size: 35px;
+                }
+            }
+        }
+
+        @media(max-width: 702px) {
+            .loginForm {
+                .error {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        @media(max-width: 607px) {
+            .introduction {
+                h1 {
+                    font-size: 28px;
+                }
+            }
+        }
+
+        @media(max-width: 600px) {
+            .loginForm {
+                .error {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        @media(max-width: 541px) {
+            .loginForm {
+                .error {
+                    font-size: 10px;
+                }
+            }
+        }
+
+        @media(max-width: 520px) {
+            .introduction {
+                h1 {
+                    font-size: 25px;
+                }
+            }
+        }
+
+        @media(max-width: 450px) {
+            .language {
+                right: 5vw;
+            }
+
+            .introduction {
+                img {
+                    width: 300px;
+                }
+
+                h1 {
+                    font-size: 25px;
+                }
+            }
+
+            .loginForm {
+                width: 90vw;
+                margin-top: 10px;
+                padding: 20px 20px;
+
+                .formSeparator {
+                    width: 90vw;
+                }
+            
+                input {
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                label {
+                    width: 100%;
+                }
+
+                .cta {
+                    width: 100%;
+                }
+
+                .register {
+                    width: 100%;
+                    font-size: 20px;
+                    border: 2px solid #ff4e00;
+                }
+
+                .error {
+                    width: 100%;
+                    font-size: 14px;
+                }
+            }
+
+            @media(max-width: 375px) {
+                .loginForm {
+                    label {
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+
+                    input {
+                        height: 35px;
+                    }
+
+                    .cta {
+                        font-size: 17px;
+                        padding: 8px 30px;
+                    }
+
+                    .passwordForgotten {
+                        margin-top: 10px;
+                    }
+
+                    .register {
+                        font-size: 16px;
+                        padding: 8px 0px;
+                    }
+                }
+            }
+
+            @media(max-width: 434px) {
+                .introduction {
+                    h1 {
+                        font-size: 20px;
+                    }
+                }
+            }
+            
+            @media(max-width: 357px) {
+                .loginForm {
+                    .error {
+                        font-size: 10px;
+                        padding: 10px 5px;
+                        .text {
+                            margin: 0px 0px;
+                        }
+                    }
+                }
+            }
+
+            @media(max-width: 365px) {
+                .introduction {
+                    h1 {
+                        font-size: 18px;
+                    }
+                }
+            }
+
+            @media(max-height: 725px) {
+                .introduction {
+                    img {
+                        margin-bottom: 12px;
+                        width: 280px;
+                    }
+
+                    h1 {
+                        font-size: 20px;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
+
+        @media(max-width: 365px) {
+            .introduction {
+                img {
+                    width: 260px;
+                }
+            }
+            
+            @media(max-height: 725px) {
+                .introduction {
+                    img {
+                        margin-bottom: 12px;
+                        width: 280px;
+                    }
+
+                    h1 {
+                        font-size: 30px;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+
+            @media(max-height: 725px) {
+                .introduction {
+                    h1 {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+
+        @media(max-height: 800px) {
+            .loginForm {
+                padding: 20px 30px;
+
+                .formSeparator {
+                    margin-top: 30px;
+                    margin-bottom: 20px;
+                    .name {
+                        font-size: 25px;
+                    }
+                }
+            }
+        }
+
+        @media(max-height: 630px) {
+            .loginForm {
+                .explanation {
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+
+    .hp-section.presentation {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #007951;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+        color: white;
+        padding: 0px 3vw;
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 50px;
+            font-size: 50px;
+            font-weight: 500;
+        }
+
+        .blocks {
+            width: 100%;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: space-around;
+
+            .block {
+                width: 275px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                
+                h3 {
+                    height: 80px;
+                    text-align: center;
+                    font-family: facit_semibold, "Helvetica Neue", Arial, sans-serif;
+                    font-size: 22px;
+                    margin-top: 20px;
+                    margin-bottom: 10px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                img {
+                    height: 55px;
+                }
+
+                .content {
+                    text-align: center;
+                    font-size: 17px;
+                }
+            }
+        }
+
+        @media(max-width: 920px) {
+            .blocks{
+                .block {
+                    width: 175px;
+
+                    h3 {
+                        font-size: 22px;
+                    }
+                }
+            }
+        }
+
+        @media(max-width: 640px) {
+            .blocks {
+                flex-direction: column;
+                align-items: center;
+                
+                .block {
+                    width: 275px;
+
+                    h3 {
+                        font-size: 25px;
+                        min-height: 30px;
+                    }
+                }
+
+                .block:not(:last-child) {
+                    margin-bottom: 60px;
+                }
+            }
+        }
+
+        @media(max-width: 580px) {
+            h2 {
+                text-align: center;
+                font-size: 35px;
+            }
+        }
+
+        @media(max-height: 640px) {
+            h2 {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .hp-section.cars {
+        width: 100%;
+        height: 720px;
+        display: flex;
+        padding-top: 50px;
+        flex-direction: column;
+        align-items: center;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+
+        h1 {
+            text-align: center;
+            font-family: facit_semibold, "Helvetica Neue", Arial, sans-serif;
+            font-size: 50px;
+        }
+
+        .cta {
+            width: 360px;
+            font-size: 18px;
+        }
+
+        .customArrow {
+            transform: rotate(180deg);
+        }
+
+        .sliderContainer {
+            width: 1100px;
+            height: 500px;
+            margin-bottom: 10px;
+
+            .slick-slider {
+                width: 1100px;
+                height: 500px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .slick-list {
+                    width: 970px;
+                }
+
+                .slick-slide {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            .carCard > div {
+                width: 300px;
+                margin: 5px 5px;
+                border-radius: 7px;
+                box-shadow: 0px 3px 9px lightgrey;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .carCard {
+                width: 310px;
+                height: 470px;
+                
+                img {
+                    width: 300px;
+                    height: 190px;
+                    object-fit: cover;
+                    border-radius: 7px 7px 0px 0px;
+                }
+
+                .titleData {
+                    width: 100%;
+                    margin-top: 5px;
+                    padding: 0px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    font-family: facit_light, "Helvetica Neue", Arial, sans-serif;
+                    
+                    .title {
+                        font-size: 22px;
+                        margin-bottom: 5px;
+                    }
+
+                    .subTitle {
+                        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+                        font-size: 13px;
+                        min-height: 34px;
+                    }
+
+                    .priceContainer {
+                        display: flex;
+                        flex-direction: column;
+                        color: #007951;
+                        font-size: 13px;
+                        
+                        .price {
+                            margin-top: -3px;
+                            font-family: facit, "Helvetica Neue", Arial, sans-serif;
+                            color: black;
+                            font-size: 22px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                .complementaryData {
+                    width: 100%;
+                    padding: 0px 20px;
+                    margin-top: 15px;
+                    display: flex;
+                    flex-direction: column;
+    
+                    li {
+                        list-style: none;
+                        display: flex;
+                        justify-content: space-between;
+                        font-family: facit_light, "Helvetica Neue", Arial, sans-serif;
+                        font-size: 17px;
+
+                        .dataValue {
+                            font-family: facit, "Helvetica Neue", Arial, sans-serif;
+
+                        }
+                    }
+
+                    li:not(:last-child) {
+                        padding-bottom: 9px;
+                        margin-bottom: 9px;
+                        border-bottom: 1px solid lightgrey;
+                    }
+                }
+            }
+        }
+
+        @media(max-width: 1100px) {
+            .customArrow {
+                background-color: #e6e6e6;
+                box-shadow: 0px 0px 10px #00000033;
+                padding: 4px 5px;
+            }
+
+            .sliderContainer {
+                width: 100%;
+                height: 500px;
+                margin-bottom: 10px;
+
+                .slick-slider {
+                    width: 100%;
+
+                    .slick-list {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        @media(max-width: 867px) {
+            margin-bottom: 60px;
+        }
+
+        @media(max-width: 610px) {
+            height: auto;
+            margin-bottom: 45px;
+            padding-top: 15px;
+            h1 {
+                display: none;
+            }
+
+            .cta {
+                width: 270px;
+            }
+        }
+    }
+
+    .hp-section.car-dealer {
+        width: 100%;
+        display: flex;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+
+        .explanations {
+            width: 50%;
+            background-color: #e6e6e6;
+            padding: 30px 6vw 0px 8vw;
+            display: flex;
+            flex-direction: column;
+
+            h2 {
+                font-size: 40px;
+                font-family: facit_semibold, "Helvetica Neue", Arial, sans-serif;
+            }
+
+            h3 {
+                font-size: 25px;
+                margin-bottom: 25px;
+            }
+
+            .content {
+                font-size: 19px;
+                font-weight: 400;
+
+                b {
+                    font-weight: 600;
+                }
+            }
+
+            .cta {
+                width: 280px;
+                font-size: 18px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .img {
+            background-image: url("../img/dealerIllustration.png");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 50%;
+            height: auto;
+            object-fit: cover;
+        }
+ 
+        @media (max-width: 1208px) {
+            .explanations {
+                h2 {
+                    font-size: 36px;
+                }
+
+                h3 {
+                    font-size: 23px;
+                }
+
+                .content {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        @media (max-width: 1088px) {
+            .explanations {
+                h2 {
+                    font-size: 33px;
+                }
+
+                h3 {
+                    font-size: 23px;
+                }
+
+                .content {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        @media (max-width: 998px) {
+            .explanations {
+                h2 {
+                    font-size: 30px;
+                }
+
+                h3 {
+                    font-size: 21px;
+                }
+
+                .content {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        @media (max-width: 907px) {
+            .explanations {
+                h2 {
+                    font-size: 26px;
+                }
+
+                h3 {
+                    font-size: 21px;
+                }
+
+                .content {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        @media(max-width: 850px) {
+            flex-direction: column;
+
+            .img {
+                order: 1;
+                width: 100%;
+                min-height: 350px;
+            }
+
+            .explanations {
+                order: 2;
+                width: 100%;
+                padding: 30px 4vw 0px 4vw;
+                align-items: center;
+
+                h2 {
+                    width: 100%;
+                }
+
+                h3 {
+                    width: 100%;
+                }
+            }
+        }
+
+        @media(max-width:610px) {
+
+            .explanations {
+                justify-content: center;
+                padding: 20px 10vw 0px 10vw;
+
+                h2 {
+                    font-size: 35px;
+                    text-align: center;
+                }
+
+                h3 {
+                    font-size: 25px;
+                    text-align: center;
+                }
+
+                .content {
+                    text-align: center;
+                }
+
+                .cta {
+                    padding: 12px 0px;
+                    width: 100%;
+                }
+            }
+
+            .img {
+                order: 1;
+                max-width: 100%;
+                min-height: 300px;
+            }
+        }
+    }
+
+    .hp-section.stats {
+        width: 100%;
+        min-height: 410px;
+        color: white;
+        font-family: facit, "Helvetica Neue", Arial, sans-serif;
+        background-color: #151515;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        h2 {
+            font-family: facit_semibold, "Helvetica Neue", Arial, sans-serif;
+            font-size: 40px;
+            font-weight: 500;
+            margin: 5vh 5vh 8vh;
+        }
+
+        .blocks {
+            display: flex;
+            align-items: center;
+
+            .block {
+                width: 275px;
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .title {
+                    width: 100%;
+                    text-align: center;
+                    font-size: 32px;
+                    margin-bottom: 10px;
+                    font-weight: 300;
+
+                    b {
+                        font-weight: 600;
+                    }
+                }
+
+                .content {
+                    text-align: center;
+                    font-family: facit_light, "Helvetica Neue", Arial, sans-serif;
+                    font-size: 21px;
+                }
+            }
+
+            .block:not(:first-child) {
+                margin-left: 12px;
+                border-left: 1px solid #fff;
+                padding-left: 12px;
+            }
+        }
+
+        @media(max-width: 1150px) {
+            .blocks {
+                flex-wrap: wrap;
+                justify-content: center;
+                
+                .block {
+                    width: 50%;
+                    margin-bottom: 60px;
+                    
+                    .title {
+                        width: 275px;
+                    }
+
+                    .content {
+                        width: 275px;
+                    }
+                }
+
+                .block:not(:first-child) {
+                    margin-left: 0px;
+                    border: 0px;
+                    padding-left: 0px;
+                }
+            }
+        }
+
+        @media(max-width: 580px) {
+            text-align: center;
+            .blocks {
+                .block {
+                    width: 100%;
+                    height: auto;
+                    margin-bottom: 50px;
+                }
+            }
+        }
+    }
+
+    .hp-section.footer {
+        width: 100%;
+        height: 60px;
+        padding: 0px 7vw;
+        background-color: #151515;
+        font-family: facit_light, "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+        color: white;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        border-top: 2px solid #fff;
+
+        .legalMentions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            a {
+                height: 15px;
+                display: flex;
+                align-items: center;
+                color: inherit;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            a:not(:last-child) {
+                margin-right: 6px;
+                border-right: 1px solid #fff;
+                padding-right: 6px;
+            }
+        }
+
+        .copyright {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media(max-width: 850px) {
+            min-height: 140px;
+            height: auto;
+            flex-wrap: wrap;
+            justify-content: left;
+            padding: 30px;
+
+            .legalMentions {
+                justify-content: flex-start;
+                
+                a {
+                    margin-bottom: 25px;
+                }
+            }
+
+            .language {
+                height: 50px;
+                width: 100%;
+            }
+
+            .copyright {
+                margin-bottom: 25px;
+            }
+        }
+
+        @media(min-width: 680px) {
+            .copyright {
+                margin-left: 5px;
+            }
+        }
+    }
+}

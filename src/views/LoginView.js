@@ -1,30 +1,28 @@
-import React from "react";
-import { Container, Row, Col } from "reactstrap";
-import logo from "../assets/img/autobiz-trade.svg";
-import LoginForm from "../components/LoginForm/LoginForm";
-import { t } from "../components/common/Translate";
+import React, { useState } from "react";
+import LoginSection from "../components/Login/LoginSection";
+import PresentationSection from "../components/Login/PresentationSection";
+import CarsSection from "../components/Login/CarsSection";
+import CarDealerSection from "../components/Login/CarDealerSection";
+import StatsSection from "../components/Login/StatsSection";
+import Footer from "../components/Login/Footer";
+import Cookies from "js-cookie";
 
 const LoginView = (props) => {
+  const [appLanguage, setAppLanguage] = useState(Cookies.get("appLanguage"));
+
   return (
-    <>
-      <div className="page page-login">
-        <Container>
-          <Row>
-            <Col>
-              <div className="login-container">
-                <img alt="Autobiz Market" className="logo" src={logo} />
-                <LoginForm {...props} />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <div className="consent-choices">
-        <a href="javascript:Didomi.preferences.show()">
-          {t("Consent choices")}
-        </a>
-      </div>
-    </>
+    <div className="page page-index">
+      <LoginSection
+        {...props}
+        appLanguage={appLanguage}
+        setAppLanguage={setAppLanguage}
+      />
+      <PresentationSection />
+      <CarsSection appLanguage={appLanguage} />
+      <CarDealerSection appLanguage={appLanguage} />
+      <StatsSection />
+      <Footer didomi={props.didomi} appLanguage={appLanguage}/>
+    </div>
   );
 };
 
