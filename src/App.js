@@ -20,8 +20,9 @@ import Cookies from "js-cookie";
 import getTranslations from "./translations/services/getTranslations";
 import cacheStaticContent from "./translations/services/cacheStaticContent";
 import TagManager from "react-gtm-module";
-import { tagManagerArgs } from "./config";
+import { tagManagerArgs, didomiConfig } from "./config";
 import RegisterView from "./views/RegisterView";
+import { DidomiSDK } from "@didomi/react";
 
 Amplify.configure(awsconfig);
 TagManager.initialize(tagManagerArgs);
@@ -97,39 +98,52 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <LanguageContext.Provider value={this.state.language}>
-          <QueryParamProvider ReactRouterRoute={Route}>
-            <Switch>
-              <Route path="/reports/:lang/:refId" component={ReportsView} />
-              <AuthRequiredRoute
-                path="/records/:refId"
-                component={RecordsView}
-              />
-              <AuthRequiredRoute path="/records" component={RecordsListView} />
-              <AuthRequiredRoute
-                path="/dealers/:refId"
-                component={DealersView}
-              />
-              <AuthRequiredRoute path="/dealers" component={DealersListView} />
-              <AuthRequiredRoute path="/lists" component={ListsListView} />
-              <Route
-                path="/login"
-                render={(props) => (
-                  <LoginView {...props} entryPath={this.entryPath} />
-                )}
-              />
-              <Route
-                path="/register/:language"
-                render={(props) => (
-                  <RegisterView {...props} entryPath={this.entryPath} />
-                )}
-              />
-              <Redirect from="/" exact to="/records" />
-            </Switch>
-          </QueryParamProvider>
-        </LanguageContext.Provider>
-      </BrowserRouter>
+      <>
+        <BrowserRouter>
+          <LanguageContext.Provider value={this.state.language}>
+            <QueryParamProvider ReactRouterRoute={Route}>
+              <Switch>
+                <Route path="/reports/:lang/:refId" component={ReportsView} />
+                <AuthRequiredRoute
+                  path="/records/:refId"
+                  component={RecordsView}
+                />
+                <AuthRequiredRoute
+                  path="/records"
+                  component={RecordsListView}
+                />
+                <AuthRequiredRoute
+                  path="/dealers/:refId"
+                  component={DealersView}
+                />
+                <AuthRequiredRoute
+                  path="/dealers"
+                  component={DealersListView}
+                />
+                <AuthRequiredRoute path="/lists" component={ListsListView} />
+                <Route
+                  path="/login"
+                  render={(props) => (
+                    <LoginView {...props} entryPath={this.entryPath} />
+                  )}
+                />
+                <Route
+                  path="/register/:language"
+                  render={(props) => (
+                    <RegisterView {...props} entryPath={this.entryPath} />
+                  )}
+                />
+                <Redirect from="/" exact to="/records" />
+              </Switch>
+            </QueryParamProvider>
+          </LanguageContext.Provider>
+        </BrowserRouter>
+        <DidomiSDK
+          apiKey={didomiConfig.apiKey}
+          noticeId={didomiConfig.noticeId}
+          config={didomiConfig.config}
+        />
+      </>
     );
   }
 }
