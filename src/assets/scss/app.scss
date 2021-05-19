@@ -790,6 +790,8 @@ header {
     -webkit-column-break-inside: avoid;
     page-break-inside: avoid;
     break-inside: avoid;
+    text-indent: -13px;
+    padding-left: 0.8rem;
 
     .fa-circle {
       color: #65ac4e;
