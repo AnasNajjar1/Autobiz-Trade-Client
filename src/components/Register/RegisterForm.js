@@ -209,7 +209,9 @@ const RegisterForm = ({
                 </Col>
               </Row>
               {errors.civility && (
-                <p><span>{errors.civility.message}</span></p>
+                <p>
+                  <span>{errors.civility.message}</span>
+                </p>
               )}
             </FormGroup>
           </Col>
@@ -352,7 +354,11 @@ const RegisterForm = ({
               name="checkBoxForm"
               ref={register({ required: t("missingMandatoryFieldForm") })}
             />
-            * {t("checkBoxForm")}
+            * {t("checkBoxForm1")}{" "}
+            <a className="text-white" href={t("checkBoxForm4")} target="_blank">
+              <u>{t("checkBoxForm2")}</u>
+            </a>{" "}
+            {t("checkBoxForm3")}
           </Label>
           {errors.checkBoxForm && (
             <p>
