@@ -391,7 +391,8 @@ const Record = (props) => {
                   </Col>
                   <Col xs="12" md="6">
                     {vehicle.declaredEquipments &&
-                      vehicle.declaredEquipments.length > 0 && (
+                      vehicle.declaredEquipments.length > 0 &&
+                      vehicle.declaredEquipments.indexOf("") === -1 && (
                         <>
                           <div className="section-title">
                             <Translate code="declared_equiments"></Translate>
