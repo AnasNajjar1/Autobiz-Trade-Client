@@ -242,7 +242,7 @@ const presetOrderGallery = [
   {
     label: "servicing_manual_picture15",
     order: 50,
-  }
+  },
 ];
 
 export const orderGalleryPictures = (gallery) => {
@@ -265,3 +265,12 @@ export const orderGalleryPictures = (gallery) => {
   ).concat(disorderedGallery);
   return orderedGallery;
 };
+
+export const excludedMarketData = [
+  {
+    b2cMarketValue: 0,
+    dpaProAmt: 0,
+    salesSpeedName: "NA",
+    standardMileage: 0,
+  },
+];
