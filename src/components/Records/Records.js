@@ -39,8 +39,11 @@ import Parser from "html-react-parser";
 import Bookmark from "../common/Bookmark";
 import Tooltip from "../common/Tooltip";
 import "react-image-lightbox/style.css";
-import { showWheelsImg } from "../../helper/Vehicle";
-import { orderGalleryPictures } from "../../helper/Vehicle";
+import {
+  showWheelsImg,
+  orderGalleryPictures,
+  excludedMarketData,
+} from "../../helper/Vehicle";
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -135,8 +138,14 @@ const Record = (props) => {
       _.filter(market, (v, k) => k !== "marketLink"),
       (d) => d !== null
     ).length !== 0
-      ? true
+      ? _.some(
+          excludedMarketData,
+          _.omit(market, ["marketDataDate", "marketLink"])
+        )
+        ? false
+        : true
       : false;
+
 
   // TODO: move ownerShipDuration calculation to API
   try {
