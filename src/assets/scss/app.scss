@@ -1891,5 +1891,18 @@ footer {
   font-size: 0.85rem;
 }
 
+.date-picker-modal {
+  width: 100% !important;
+  border-radius: 2px;
+  border: 1px solid $am_gray_middle;
+}
+.download-offer {
+  font-size: 0.6rem;
+}
+
+.error-download-offer {
+  font-size: 0.8rem;
+}
+
 @import "carousel";
 @import "report";
