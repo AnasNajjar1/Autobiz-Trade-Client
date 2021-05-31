@@ -30,7 +30,7 @@ import {
   ArrayParam,
 } from "use-query-params";
 
-const RecordsListContainer = ({usercountry}) => {
+const RecordsListContainer = ({ usercountry }) => {
   const ItemsPerPage = 100;
 
   const sortLabelList = [
@@ -107,6 +107,7 @@ const RecordsListContainer = ({usercountry}) => {
   const [filters, setFilters] = useState([]);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const bodyPos = sessionStorage.getItem("scrollPos");
 
   const updateField = (e) => {
     const { name, value } = e.target;
@@ -236,6 +237,7 @@ const RecordsListContainer = ({usercountry}) => {
   // infinte scroll
 
   useEffect(() => {
+    window.scrollTo(0, bodyPos);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isFetching]);

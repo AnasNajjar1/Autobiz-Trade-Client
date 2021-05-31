@@ -34,9 +34,17 @@ const RecordsElement = (props) => {
 
   const { message } = record.userInfo;
 
+  const saveScrollPosition = () => {
+    sessionStorage.setItem("scrollPos", window.scrollY);
+  };
+
   return (
     <Col xs="12" lg="6" xl="6" className="mb-4">
-      <Link className="link-card" to={`/records/${record.uuid}`}>
+      <Link
+        className="link-card"
+        onClick={saveScrollPosition}
+        to={`/records/${record.uuid}`}
+      >
         <Card className="h-100">
           <div className="status">
             <Row>
@@ -122,7 +130,10 @@ const RecordsElement = (props) => {
           <CardBody>
             <Row>
               <Col>
-                <Countdown secondsBeforeStart={secondsBeforeStart} secondsBeforeEnd={secondsBeforeEnd} />
+                <Countdown
+                  secondsBeforeStart={secondsBeforeStart}
+                  secondsBeforeEnd={secondsBeforeEnd}
+                />
                 <Bookmark
                   scope="sale"
                   refId={record.uuid}
@@ -234,8 +245,15 @@ const RecordsElement = (props) => {
             <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" size="1x" />
             {(pointofsale && (
               <>
-                <img src={flags[pointofsale.country]} alt={pointofsale.country} className="mb-1" width="20px" />
-                <span className="ml-2">{pointofsale.city} {pointofsale.zipCode}</span>
+                <img
+                  src={flags[pointofsale.country]}
+                  alt={pointofsale.country}
+                  className="mb-1"
+                  width="20px"
+                />
+                <span className="ml-2">
+                  {pointofsale.city} {pointofsale.zipCode}
+                </span>
               </>
             )) ||
               t("unknown_point_of_sale")}
