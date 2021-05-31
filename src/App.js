@@ -14,7 +14,7 @@ import { QueryParamProvider } from "use-query-params";
 import moment from "moment";
 import Amplify from "aws-amplify";
 import awsconfig from "./aws-config";
-import AuthRequiredRoute from "./components/LoginForm/AuthRequiredRoute";
+import AuthRequiredRoute from "./components/Login/AuthRequiredRoute";
 import _ from "lodash";
 import Cookies from "js-cookie";
 import getTranslations from "./translations/services/getTranslations";
@@ -42,6 +42,7 @@ class App extends Component {
         pathname: window.location.pathname,
       };
     }
+    this.didomiObject = {};
   }
 
   changeLanguage = async (language) => {
@@ -96,6 +97,10 @@ class App extends Component {
     }
   };
 
+  onDidomiReady(didomi) {
+    this.didomiObject = didomi;
+  }
+
   render() {
     return (
       <>
@@ -124,7 +129,7 @@ class App extends Component {
                 <Route
                   path="/login"
                   render={(props) => (
-                    <LoginView {...props} entryPath={this.entryPath} />
+                    <LoginView {...props} entryPath={this.entryPath} didomi={this.didomiObject} />
                   )}
                 />
                 <Route
@@ -142,6 +147,7 @@ class App extends Component {
           apiKey={didomiConfig.apiKey}
           noticeId={didomiConfig.noticeId}
           config={didomiConfig.config}
+          onReady={this.onDidomiReady.bind(this)}
         />
       </>
     );

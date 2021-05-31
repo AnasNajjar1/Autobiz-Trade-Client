@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "reactstrap";
 import RegisterForm from "../components/Register/RegisterForm";
 import { t } from "../components/common/Translate";
-import Cookies from "js-cookie";
 import { RegisterValidation } from "../components/Register/RegisterValidation";
+import { handleChangeLang } from "../components/common/LanguagePicker";
+
 
 const RegisterView = ({ match }) => {
   const [language, setLanguage] = useState(null);
@@ -12,17 +13,11 @@ const RegisterView = ({ match }) => {
   const [registerFailed, setRegisterFailed] = useState(false);
 
   useEffect(() => {
-    handleChangeLang(match.params.language);
+    const uriLanguage = match.params.language;
+    setLanguage(uriLanguage);
+    handleChangeLang(uriLanguage)
   }, [match.params.language]);
 
-  const handleChangeLang = (language) => {
-    setLanguage(language);
-    Cookies.set("appLanguage", language, { expires: 365 });
-
-    window.dispatchEvent(
-      new CustomEvent("changeLanguage", { detail: { language } })
-    );
-  };
 
   return (
     <div className="page page-register">
