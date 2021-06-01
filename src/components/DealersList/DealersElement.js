@@ -8,6 +8,7 @@ import Bookmark from "../common/Bookmark";
 import { staticImagesUrl } from "../../config";
 
 import BrandsCarousel from "../common/BrandsCarousel";
+import { flags } from "../../language-context";
 const DealersElement = (props) => {
   const { dealer } = props;
 
@@ -61,12 +62,21 @@ const DealersElement = (props) => {
             </CardTitle>
           </CardBody>
           <CardFooter>
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-1" size="1x" />
-            {dealer.city === null &&
-            dealer.zipCode === null &&
-            dealer.country === null
-              ? t("unknown_point_of_sale")
-              : dealer.city + " " + dealer.zipCode + " " + t(dealer.country)}
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" size="1x" />
+            {(dealer && (
+              <>
+                <img
+                  src={flags[dealer.country]}
+                  alt={dealer.country}
+                  className="mb-1"
+                  width="20px"
+                />
+                <span className="ml-2">
+                  {dealer.city} {dealer.zipCode}
+                </span>
+              </>
+            )) ||
+              t("unknown_point_of_sale")}
           </CardFooter>
         </Card>
       </div>
