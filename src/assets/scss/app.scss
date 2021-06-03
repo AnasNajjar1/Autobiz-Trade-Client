@@ -1061,6 +1061,8 @@ header {
 
   .item {
     @extend .py-2;
+    text-indent: -19px;
+    padding-left: 0.8rem;
   }
 
   .fa-check-circle {
