@@ -94,8 +94,10 @@ const Record = (props) => {
           damage: record.vehicle.servicing.nextTechnicalCheckDate,
           element: "nextTechnicalCheckDate",
           zone: "servicing",
-        }
-        ld["servicing"] ? ld["servicing"].push(technicalCheckDate) : ld["servicing"] = [technicalCheckDate]
+        };
+        ld["servicing"]
+          ? ld["servicing"].push(technicalCheckDate)
+          : (ld["servicing"] = [technicalCheckDate]);
       }
     }
     setSections(ld);
@@ -160,7 +162,6 @@ const Record = (props) => {
         ? false
         : true
       : false;
-
 
   // TODO: move ownerShipDuration calculation to API
   try {
@@ -623,7 +624,8 @@ const iterateData = (v, gallery) => {
 
 const subDamages = (items, gallery) => {
   let damagesImage = [];
-
+  const customDamages = [];
+  const notCustomDamages = [];
   items.forEach((i, key) => {
     if (
       i.zone === "wheels" &&
@@ -633,7 +635,13 @@ const subDamages = (items, gallery) => {
     }
     if (i.damage_picture) damagesImage.push(i.damage_picture);
     if (i.damage_picture2) damagesImage.push(i.damage_picture2);
+
+    i.is_custom === 1 && i.custom_damage.length !== 0
+      ? customDamages.push(i)
+      : notCustomDamages.push(i);
   });
+  items = notCustomDamages.concat(customDamages);
+
   return items.map((i, key) => {
     if (i.element !== "motor_longeron")
       return <Damage i={i} key={key} index={key} damagesImage={damagesImage} />;
@@ -667,27 +675,6 @@ const Damage = ({ i, index, damagesImage }) => {
       key={i.element}
     >
       <div className="item">
-        {(i.is_custom == true && i.custom_damage !== "" && (
-          <>
-            <div className="label">
-              <FontAwesomeIcon icon={faExclamationCircle} />
-              {t("other_custom_damage")} {t("inFrench")}
-            </div>
-            <div className="value">{i.custom_damage}</div>
-          </>
-        )) || (
-          <>
-            <div className="label">{t(i.element)}</div>
-            <div className="value">
-              {typeof i.damage === "object" &&
-                i.damage.map((i, key) => {
-                  if (key < accidentDamage.length - 1) return `${t(i)}, `;
-                  else return `${t(i)}`;
-                })}
-              {typeof i.damage !== "object" && t(i.damage)}
-            </div>
-          </>
-        )}
         {popedUp && (
           <Lightbox
             mainSrc={
@@ -719,6 +706,30 @@ const Damage = ({ i, index, damagesImage }) => {
           <span onClick={() => togglePopup(i.damage_picture2)}>
             <img src={i.damage_picture2} className="damage-img" alt="" />
           </span>
+        )}
+        {(i.is_custom == true && i.custom_damage !== "" && (
+          <>
+            <div className="label">
+              <FontAwesomeIcon icon={faExclamationCircle} />
+              {t("other_custom_damage")} {t("inFrench")}
+            </div>
+            <div>
+              <span className="element">{t(i.element)}</span> :{" "}
+              <span className="value">{i.custom_damage}</span>
+            </div>
+          </>
+        )) || (
+          <>
+            <div className="label">{t(i.element)}</div>
+            <div className="value">
+              {typeof i.damage === "object" &&
+                i.damage.map((i, key) => {
+                  if (key < accidentDamage.length - 1) return `${t(i)}, `;
+                  else return `${t(i)}`;
+                })}
+              {typeof i.damage !== "object" && t(i.damage)}
+            </div>
+          </>
         )}
       </div>
     </div>
