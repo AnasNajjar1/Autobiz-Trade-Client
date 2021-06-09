@@ -289,7 +289,7 @@ const RegisterForm = ({
                 ref={register({
                   required: t("missingMandatoryFieldForm"),
                   pattern: {
-                    value: /^\+?\d{10,20}$/i,
+                    value: /^\+?\d{9,20}$/i,
                     message: t("wrongFormatForm"),
                   },
                 })}
