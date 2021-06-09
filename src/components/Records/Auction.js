@@ -74,7 +74,7 @@ const Auction = ({ refId, entryStockDate }) => {
       }
 
       if (scope === "submission" && submissionIsValid) {
-        handleSubmitSubmission(e);
+        setModalSubmission(true);
       }
     }
   };
