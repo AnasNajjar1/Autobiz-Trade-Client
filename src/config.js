@@ -89,3 +89,7 @@ exports.didomiConfig = {
     },
   },
 };
+
+exports.zendeskConfig = {
+  apiKey: "95647fe6-313e-48a9-97a8-e840b2c1a60e"
+}

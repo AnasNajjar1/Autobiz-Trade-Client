@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
@@ -15,14 +15,21 @@ import ExportFile from "../common/ExportFile";
 import ExportOffers from "../Offers/ExportOffers";
 import { exportOffersMapper } from "../../helper/Offer";
 import { isBrowser } from "react-device-detect";
+import { ZendeskAPI } from "react-zendesk";
 
 const Header = (props) => {
   const history = useHistory();
-  const { username, autobizUserId } = useUser();
+  const { username, autobizUserId, usercountry } = useUser();
   const [logout, setLogout] = useState(false);
   const { path } = props.match;
   const [allowExport, setAllowExport] = useState(false);
   const [offers, setOffers] = useState(null);
+
+  useEffect(() => {
+    usercountry !== "es"
+      ? ZendeskAPI("webWidget", "hide")
+      : ZendeskAPI("webWidget", "show");
+  });
 
   const signOut = async function () {
     await Auth.signOut();
