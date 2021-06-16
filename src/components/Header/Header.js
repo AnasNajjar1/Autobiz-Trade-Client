@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPowerOff, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faPowerOff,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/img/autobiz-trade.svg";
 import LanguagePicker from "../common/LanguagePicker";
 import { useUser } from "../../hooks/useUser";
+import ExportFile from "../common/ExportFile";
+import ExportOffers from "../Offers/ExportOffers";
+import { exportOffersMapper } from "../../helper/Offer";
+import { isBrowser } from "react-device-detect";
 
-const Header = props => {
+const Header = (props) => {
   const history = useHistory();
-  const { username } = useUser();
+  const { username, autobizUserId } = useUser();
   const [logout, setLogout] = useState(false);
-  const { path } = props.match
+  const { path } = props.match;
+  const [allowExport, setAllowExport] = useState(false);
+  const [offers, setOffers] = useState(null);
 
-  const signOut = async function() {
+  const signOut = async function () {
     await Auth.signOut();
     setLogout(true);
     return;
@@ -29,9 +39,15 @@ const Header = props => {
 
   return (
     <header>
-      {path === "/records/:refId" && <Link onClick={(e) => goBackEvent(e)} className='left-col'>
-        <FontAwesomeIcon size="lg" icon={faArrowLeft} className='back-arrow'/>
-      </Link>}
+      {path === "/records/:refId" && (
+        <Link onClick={(e) => goBackEvent(e)} className="left-col">
+          <FontAwesomeIcon
+            size="lg"
+            icon={faArrowLeft}
+            className="back-arrow"
+          />
+        </Link>
+      )}
 
       <Link to="/records">
         <img alt="autobizTrade" className="logo" src={logo} />
@@ -40,6 +56,15 @@ const Header = props => {
       <p className="tagline">Nicer people. Better cars.</p>
 
       <div className="right-col">
+        {isBrowser && (
+          <div className="d-none d-lg-inline-block mr-5">
+            <ExportOffers
+              setAllowExport={setAllowExport}
+              setOffers={setOffers}
+              userId={autobizUserId}
+            />
+          </div>
+        )}
         {(username && (
           <>
             <FontAwesomeIcon
@@ -54,6 +79,14 @@ const Header = props => {
         )) || <Spinner color="primary" size="sm" />}
         {LanguagePicker()}
       </div>
+      {allowExport && (
+        <ExportFile
+          fileName="offers"
+          datas={offers}
+          mappers={exportOffersMapper}
+          setAllowExport={setAllowExport}
+        />
+      )}
     </header>
   );
 };
