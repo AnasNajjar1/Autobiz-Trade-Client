@@ -26,7 +26,7 @@ const ExportFile = ({ fileName, datas, mappers, setAllowExport }) => {
             value={(col) => {
               let value = _.get(col, source, "");
               if (source === "createdAt")
-                value = moment(value).format("DD/MM/YYYY hh:mm:ss");
+                value = moment(value).format("DD/MM/YYYY HH:mm:ss");
               return value;
             }}
           />
