@@ -20,9 +20,10 @@ import Cookies from "js-cookie";
 import getTranslations from "./translations/services/getTranslations";
 import cacheStaticContent from "./translations/services/cacheStaticContent";
 import TagManager from "react-gtm-module";
-import { tagManagerArgs, didomiConfig } from "./config";
+import { tagManagerArgs, didomiConfig, zendeskConfig } from "./config";
 import RegisterView from "./views/RegisterView";
 import { DidomiSDK } from "@didomi/react";
+import Zendesk from "react-zendesk";
 
 Amplify.configure(awsconfig);
 TagManager.initialize(tagManagerArgs);
@@ -149,6 +150,7 @@ class App extends Component {
           config={didomiConfig.config}
           onReady={this.onDidomiReady.bind(this)}
         />
+        <Zendesk zendeskKey={zendeskConfig.apiKey} />
       </>
     );
   }

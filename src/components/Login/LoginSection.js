@@ -32,9 +32,8 @@ const LoginSection = ({ history, entryPath, appLanguage, setAppLanguage }) => {
 
   async function updateLanguage(e) {
     setFlagValue(e.target.value);
-    const selectedLang = e.target.options[e.target.selectedIndex].getAttribute(
-      "country"
-    );
+    const selectedLang =
+      e.target.options[e.target.selectedIndex].getAttribute("country");
     setAppLanguage(selectedLang);
     await handleChangeLang(selectedLang);
   }
