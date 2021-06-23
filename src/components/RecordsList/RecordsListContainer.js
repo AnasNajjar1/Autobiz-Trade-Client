@@ -155,13 +155,29 @@ const RecordsListContainer = ({ usercountry }) => {
   useEffect(() => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/filter`, {
+        queryStringParameters: {
+          filter: JSON.stringify({
+            list: form.list,
+            search: form.search,
+            supplyType: form.supplyType,
+            yearMecMin: form.yearMecMin,
+            yearMecMax: form.yearMecMax,
+            mileageMin: form.mileageMin,
+            mileageMax: form.mileageMax,
+            listId: form.listId,
+            country: form.country,
+            lat: form.lat,
+            lng: form.lng,
+            radius: form.radius,
+          }),
+        },
         response: true,
       });
       setFilters(result.data);
     };
 
     fetchRecords();
-  }, [form.supplyType]);
+  }, [query, JSON.stringify(form.country)]);
 
   useEffect(() => {
     const fetchRecords = async () => {

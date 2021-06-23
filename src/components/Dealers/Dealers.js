@@ -185,23 +185,28 @@ const Dealer = (props) => {
   }, [form.modelLabel, form.supplyType]);
 
   useEffect(() => {
-    if (dealer !== false) {
-      const fetchRecords = async () => {
-        const result = await API.get("b2bPlateform", `/filter`, {
-          queryStringParameters: {
-            filter: JSON.stringify({
-              pointOfSaleUuid: dealer.uuid,
-              supplyType: form.supplyType,
-            }),
-          },
-          response: true,
-        });
-        setFilters(result.data);
-      };
+    const fetchRecords = async () => {
+      const result = await API.get("b2bPlateform", `/filter`, {
+        queryStringParameters: {
+          filter: JSON.stringify({
+            search: form.search,
+            supplyType: form.supplyType,
+            brandLabel: form.brandLabel,
+            modelLabel: form.modelLabel,
+            yearMecMin: form.yearMecMin,
+            yearMecMax: form.yearMecMax,
+            mileageMin: form.mileageMin,
+            mileageMax: form.mileageMax,
+            pointOfSaleUuid: dealer ? dealer.uuid : null,
+          }),
+        },
+        response: true,
+      });
+      setFilters(result.data);
+    };
 
-      fetchRecords();
-    }
-  }, [dealer, form.supplyType]);
+    fetchRecords();
+  }, [dealer, query, JSON.stringify(form.country)]);
 
   useEffect(() => {
     if (dealer !== false) {
@@ -315,7 +320,9 @@ const Dealer = (props) => {
                   {dealer.documentation.map((document, index) => (
                     <tr key={index}>
                       <td className="title">
-                        <a href={document.pdf} target="_blank">{t(document.title)}</a>
+                        <a href={document.pdf} target="_blank">
+                          {t(document.title)}
+                        </a>
                       </td>
                       <td className="icon">
                         {document.text && (

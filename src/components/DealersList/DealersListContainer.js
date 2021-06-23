@@ -24,7 +24,7 @@ import FilterBrands from "../RecordsList/FilterBrands";
 import FilterModels from "../RecordsList/FilterModels";
 import FilterGeoloc from "../RecordsList/FilterGeoloc";
 
-const DealersListContainer = ({usercountry}) => {
+const DealersListContainer = ({ usercountry }) => {
   const ItemsPerPage = 6;
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [modelLabels, setModelLabels] = useState([]);
@@ -67,17 +67,6 @@ const DealersListContainer = ({usercountry}) => {
     setQuery(initialFormState);
   };
 
-  useEffect(() => {
-    const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/filter`, {
-        response: true,
-      });
-      setFilters(result.data);
-    };
-
-    fetchRecords();
-  }, []);
-
   const initialFormState = {
     search: "",
     list: "all",
@@ -117,6 +106,24 @@ const DealersListContainer = ({usercountry}) => {
     lng: query.lng || initialFormState.lng,
     range: query.range || initialFormState.range,
   });
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const result = await API.get("b2bPlateform", `/filter`, {
+        queryStringParameters: {
+          filter: JSON.stringify({
+            search: form.search,
+            list: form.list,
+            country: form.country,
+          }),
+        },
+        response: true,
+      });
+      setFilters(result.data);
+    };
+
+    fetchRecords();
+  }, [query, JSON.stringify(form.country)]);
   const [dealers, setDealers] = useState([]);
   const [DealersCount, setDealersCount] = useState([]);
   const [filters, setFilters] = useState([]);
@@ -171,7 +178,13 @@ const DealersListContainer = ({usercountry}) => {
 
   useEffect(() => {
     setQuery(form);
-  }, [form.modelLabel, JSON.stringify(form.country), form.radius, form.lat, form.lng]);
+  }, [
+    form.modelLabel,
+    JSON.stringify(form.country),
+    form.radius,
+    form.lat,
+    form.lng,
+  ]);
 
   useEffect(() => {
     form.zipCode = "";
