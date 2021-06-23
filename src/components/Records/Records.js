@@ -85,13 +85,14 @@ const Record = (props) => {
         });
       }
       // push technical check date to damages
-
       if (
         record.vehicle.servicing &&
         record.vehicle.servicing.nextTechnicalCheckDate
       ) {
         const technicalCheckDate = {
-          damage: record.vehicle.servicing.nextTechnicalCheckDate,
+          damage: moment(
+            record.vehicle.servicing.nextTechnicalCheckDate
+          ).format("MM-YYYY"),
           element: "nextTechnicalCheckDate",
           zone: "servicing",
         };
