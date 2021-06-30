@@ -512,12 +512,12 @@ const RecordsListContainer = ({ usercountry }) => {
                   }
                   value={form.list}
                 >
-                  <option></option>
                   <option value="all">{t("all_vehicles")}</option>
                   <option value="my_offers">{t("my_offers")}</option>
                   <option value="my_dealers">
                     {t("vehicles_from_my_dealers")}
                   </option>
+                  <option value="my_purchases">{t("my_purchases")}</option>
                 </select>
               </Col>
               <Col className="col-thin">
