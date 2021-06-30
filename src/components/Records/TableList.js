@@ -145,8 +145,6 @@ export const renderValue = (key, value, lang) => {
     case "servicingInBrandNetwork":
     case "vat":
     case "imported":
-    case "secondSetKey":
-    case "userManual":
     case "firstHand":
     case "metallic":
       if (value === true) {
@@ -157,6 +155,17 @@ export const renderValue = (key, value, lang) => {
         return "-";
       }
 
+    case "secondSetKey":
+    case "userManual":
+      if (value === "dnk") {
+        return t("dnk");
+      } else if (value === "true") {
+        return t("yes");
+      } else if (value === "false") {
+        return t("no");
+      } else {
+        return "-";
+      }
     //duration display
     case "ownershipDuration":
       return durationTranslate(value, ["y", "mo"], true, "and");
