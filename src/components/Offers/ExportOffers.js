@@ -15,12 +15,19 @@ import moment from "moment";
 import { API } from "aws-amplify";
 import { t } from "../common/Translate";
 import "react-datepicker/dist/react-datepicker.css";
+import * as Locale from "date-fns/locale";
+import Cookies from "js-cookie";
 
 const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
   let [startDate, setStartDate] = useState(null);
   let [endDate, setEndDate] = useState(null);
   const [modalDownloadOffers, setModalDownloadOffers] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const language = () => {
+    const appLanguage = Cookies.get("appLanguage");
+    return Locale[appLanguage] ? Locale[appLanguage] : Locale["enGB"];
+  };
 
   const toggleModalDownloadOffers = () =>
     setModalDownloadOffers(!modalDownloadOffers);
@@ -105,6 +112,7 @@ const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
               </Label>
               <br />
               <DatePicker
+                locale={language()}
                 selected={startDate}
                 onChange={(startDate) => {
                   setStartDate(startDate);
@@ -122,6 +130,7 @@ const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
                 </small>
               </Label>
               <DatePicker
+                locale={language()}
                 selected={endDate}
                 onChange={(endDate) => {
                   setEndDate(endDate);
