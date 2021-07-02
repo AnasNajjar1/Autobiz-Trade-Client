@@ -5,8 +5,18 @@ import { t } from "../common/Translate";
 import _ from "lodash";
 import Recaptcha from "../common/Recaptcha";
 import { useForm } from "react-hook-form";
-import CountryList from "react-select-country-list";
+
 import { API } from "aws-amplify";
+
+const allCountryList = {
+  fr: require("localized-countries/data/fr_FR.json"),
+  en: require("localized-countries/data/en_GB.json"),
+  it: require("localized-countries/data/it_IT.json"),
+  de: require("localized-countries/data/de_DE.json"),
+  nl: require("localized-countries/data/nl_NL.json"),
+  es: require("localized-countries/data/es_ES.json"),
+  pt: require("localized-countries/data/pt_PT.json"),
+};
 
 const RegisterForm = ({
   language,
@@ -36,6 +46,10 @@ const RegisterForm = ({
       setLoading(false);
     }
   };
+
+  const countryLanguage = allCountryList[language]
+    ? allCountryList[language]
+    : allCountryList["en"];
 
   return (
     <>
@@ -167,9 +181,9 @@ const RegisterForm = ({
                   <option value="" disabled selected>
                     &ndash;
                   </option>
-                  {_.map(CountryList().getData(), (country) => (
-                    <option key={country.label} value={country.label}>
-                      {country.label}
+                  {_.map(countryLanguage, (label, code) => (
+                    <option key={code} value={label}>
+                      {label}
                     </option>
                   ))}
                 </select>
@@ -355,7 +369,12 @@ const RegisterForm = ({
               ref={register({ required: t("missingMandatoryFieldForm") })}
             />
             * {t("checkBoxForm1")}{" "}
-            <a className="text-white" href={t("checkBoxForm4")} target="_blank">
+            <a
+              className="text-white"
+              href={t("checkBoxForm4")}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <u>{t("checkBoxForm2")}</u>
             </a>{" "}
             {t("checkBoxForm3")}
