@@ -34,6 +34,7 @@ const Header = (props) => {
   const signOut = async function () {
     await Auth.signOut();
     setLogout(true);
+    sessionStorage.removeItem("scrollPos");
     return;
   };
 

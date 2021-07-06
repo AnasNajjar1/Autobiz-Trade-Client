@@ -117,6 +117,7 @@ const RecordsListContainer = ({ usercountry }) => {
       [name]: value,
     };
     setValues(tmpForm);
+    sessionStorage.removeItem("scrollPos");
   };
 
   const updatePosition = (position) => {
@@ -135,11 +136,13 @@ const RecordsListContainer = ({ usercountry }) => {
   const showCustomList = (listName) => {
     form.list = listName;
     setQuery(form);
+    sessionStorage.removeItem("scrollPos");
   };
 
   const removeFilter = (target) => {
     form[target] = "";
     setQuery(form);
+    sessionStorage.removeItem("scrollPos");
   };
 
   const handleReset = () => {
