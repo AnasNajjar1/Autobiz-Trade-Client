@@ -12,11 +12,11 @@ import {
   Label,
 } from "reactstrap";
 import moment from "moment";
-import { API } from "aws-amplify";
 import { t } from "../common/Translate";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Locale from "date-fns/locale";
 import { getCurrentLanguage } from "../../language-context";
+import { Api } from "../../providers/Api";
 
 const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
   let [startDate, setStartDate] = useState(null);
@@ -44,21 +44,18 @@ const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
     startDate = startDate + " 00:00:00";
     endDate = endDate + " 23:59:59";
     try {
-      const result = await API.get("b2bPlateform", `/offer`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
-            createdAtInterval: [startDate, endDate],
-            userId,
-          }),
-          range: JSON.stringify([]),
-          sort: JSON.stringify(["id", "desc"]),
+      const params = {
+        filter: {
+          createdAtInterval: [startDate, endDate],
+          userId,
         },
-        response: true,
-      });
+        range: [],
+        sort: ["id", "desc"],
+      };
+      const result = await Api.request("GET", `/offer`, params);
       setOffers(result.data);
-    } catch (e) {
-      console.log(e);
-      setOffers([]);
+    } catch (err) {
+      console.log(err);
     }
     setAllowExport(true);
   };

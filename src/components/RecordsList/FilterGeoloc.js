@@ -3,8 +3,8 @@ import Translate, { t } from "../common/Translate";
 import { Row, Col, FormGroup, Input, Label } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrosshairs } from "@fortawesome/free-solid-svg-icons";
-import { API } from "aws-amplify";
 import _ from "lodash";
+import { Api } from "../../providers/Api";
 
 const FilterGeoloc = ({
   country,
@@ -51,13 +51,11 @@ const FilterGeoloc = ({
 
   const getPosition = async () => {
     try {
-      const response = await API.post("b2bPlateform", `/geoloc/`, {
-        body: {
-          country: countries.find((e) => e.code === country[0]).name,
-          zipCode,
-        },
-        response: true,
-      });
+      const data = {
+        country: countries.find((e) => e.code === country[0]).name,
+        zipCode,
+      };
+      const response = await Api.request("POST", `/geoloc/`, {}, data);
 
       updatePosition(response.data);
 

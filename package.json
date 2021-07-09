@@ -40,7 +40,8 @@
     "reactstrap": "^8.4.1",
     "shortid": "^2.2.15",
     "use-query-params": "^0.3.4",
-    "xlsx": "^0.17.0"
+    "xlsx": "^0.17.0",
+    "autobiz-auth": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

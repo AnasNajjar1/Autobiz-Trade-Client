@@ -6,10 +6,10 @@ import {
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
-import { API } from "aws-amplify";
 import { useQueryParams, ArrayParam } from "use-query-params";
 import ListsElement from "./ListsElement";
 import MenuSwitcher from "../common/MenuSwitcher";
+import { Api } from "../../providers/Api";
 
 const ListsListContainer = () => {
   const ItemsPerPage = 6;
@@ -33,24 +33,25 @@ const ListsListContainer = () => {
   useEffect(() => {
     const fetchLists = async () => {
       setIsFetching(true);
-      const result = await API.get("b2bPlateform", `/list`, {
-        queryStringParameters: {
+      try {
+        const params = {
           range: JSON.stringify(form.range),
-        },
-        response: true,
-      });
+        };
+        const result = await Api.request("GET", "/list", params);
+        const contentRange = result.headers["content-range"];
 
-      const contentRange = result.headers["content-range"];
-
-      if (result.data && result.data.length > 0) {
-        const contentRangeArray = contentRange.split("/");
-        setListsCount(contentRangeArray[1]);
-        setLists(result.data);
-      } else {
-        setListsCount(0);
-        setLists([]);
+        if (result.data && result.data.length > 0) {
+          const contentRangeArray = contentRange.split("/");
+          setListsCount(contentRangeArray[1]);
+          setLists(result.data);
+        } else {
+          setListsCount(0);
+          setLists([]);
+        }
+        setIsFetching(false);
+      } catch (e) {
+        console.log(e);
       }
-      setIsFetching(false);
     };
 
     fetchLists();
