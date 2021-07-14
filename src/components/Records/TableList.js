@@ -171,7 +171,13 @@ export const renderValue = (key, value, lang) => {
     case "ownershipDuration":
       return durationTranslate(value, ["y", "mo"], true, "and");
     default:
-      return t(String(value));
+      return _.isArray(value)
+        ? _.map(value, (val, index) =>
+            index === value.length - 1
+              ? `${t(String(val))}`
+              : `${t(String(val))}, `
+          )
+        : t(String(value));
   }
 };
 

@@ -17,20 +17,21 @@ $blue: #324c89;
 
   .page-footer,
   .page-footer-space {
-    padding: 15px 0;
+    padding: 12px 0;
   }
 
   .page-footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+    height: 42px;
     border-top: 1px solid black; /* for demo */
     background-color: $bg;
+    z-index: 999;
   }
 
   .page-header {
     position: fixed;
-    top: 0mm;
     width: 100%;
     border-bottom: 1px solid black; /* for demo */
     background-color: $bg;
@@ -60,20 +61,45 @@ $blue: #324c89;
     width: 100%;
   }
 
-  .page-header h1 {
-    font-size: 25px;
-    font-weight: bold;
-    margin: 0;
-    line-height: 1;
-  }
+  .page-header {
+    h1 {
+      font-size: 25px;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1;
 
-  .page-header .header-info {
-    border: 2px solid $grey;
-    padding: 5px 15px;
+      @media (max-width: 576px) {
+        margin-top: 20px;
+        font-size: 1rem;
+      }
+    }
+    .header-info {
+      border: 2px solid $grey;
+      padding: 5px 15px;
+      @media (max-width: 576px) {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+      }
+    }
   }
 
   table.gallery {
     width: 100%;
+    td {
+      padding: 1px;
+    }
+    div {
+      background-color: $greyLight;
+    }
+    img {
+      max-width: 50%;
+      max-height: 24vw;
+      display: block;
+      margin: auto;
+    }
+  }
+  table.galleryLabel {
+    width: 70%;
     td {
       padding: 1px;
     }
@@ -96,6 +122,10 @@ $blue: #324c89;
   }
 
   .vin-picture {
+    max-height: 24vw;
+    width: auto;
+  }
+  .motor-picture {
     max-height: 24vw;
     width: auto;
   }
@@ -140,8 +170,10 @@ $blue: #324c89;
   }
 
   .value {
-    text-align: center;
     font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.9rem;
   }
 
   .bg-greyLight {
@@ -201,6 +233,24 @@ $blue: #324c89;
       height: 100%;
       width: 50px;
       left: 0;
+    }
+  }
+
+  .download-report {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.6rem;
+
+    button {
+      color: white;
+      font-size: 1.2rem;
+      padding: 5px 8px;
+      font-weight: bold;
+      border-radius: 50%;
+      border-color: transparent;
+      background-color: $blue;
+      text-align: center;
+      cursor: pointer;
     }
   }
 }

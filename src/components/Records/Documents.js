@@ -9,7 +9,7 @@ import { pdfLang } from ".././../config";
 import _ from "lodash";
 import { getCurrentLanguage } from "../../language-context";
 
-const Documents = ({ items }) => {
+const Documents = ({ items, uuid }) => {
   const lang = getCurrentLanguage();
   const [popup, setPopup] = useState(false);
   const [link, setLink] = useState("");
@@ -23,41 +23,41 @@ const Documents = ({ items }) => {
 
   return (
     <div className="list-document">
-      {items.map((item, index) => (
-        <div className="cell" key={index}>
-          <div className="item">
-            {(["pdfReport", "certificate_of_non-pledge", "histovec"].includes(
-              item.title
-            ) && (
-              <a
-                href={`${item.link}?language=${_.get(
-                  pdfLang,
-                  lang,
-                  pdfLang["default"]
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={pdfIcon} alt="pdf" />
-                {t(item.title)}
-              </a>
-            )) || (
-              <a
-                _target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  setPopup(true);
-                  setLink(item.link);
-                }}
-              >
-                <img src={pdfIcon} alt="pdf" />
-                {t(item.title)}
-              </a>
-            )}
+      {items.map((item, index) => {
+        const itemLink =
+          item.title === "pdfReport"
+            ? `/reports/${uuid}`
+            : ["certificate_of_non-pledge", "histovec"].includes(item.title)
+            ? `${item.link}?language=${_.get(
+                pdfLang,
+                lang,
+                pdfLang["default"]
+              )}`
+            : "default";
+        return (
+          <div className="cell" key={index}>
+            <div className="item">
+              {itemLink !== "default" ? (
+                <a href={itemLink} target="_blank" rel="noopener noreferrer">
+                  <img src={pdfIcon} alt="pdf" />
+                  {t(item.title)}
+                </a>
+              ) : (
+                <a
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    setPopup(true);
+                    setLink(item.link);
+                  }}
+                >
+                  <img src={pdfIcon} alt="pdf" />
+                  {t(item.title)}
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
-
+        );
+      })}
       {popup && link && (
         <Lightbox
           mainSrc={link}

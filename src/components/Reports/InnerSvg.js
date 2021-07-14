@@ -6,8 +6,8 @@ export const InnerSvg = ({ damage }) => {
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
-      width="167px"
-      height="110px"
+      width="250px"
+      height="210px"
       viewBox="0 0 665.219 435.051"
       enableBackground="new 0 0 665.219 435.051"
     >
@@ -75,7 +75,7 @@ c0,1.003-0.01,2.049-0.461,2.946c-0.434,0.863-1.226,1.483-2.005,2.055C524.141,187
         />
         <path
           id="ard"
-          fill="#ffffff"
+          fill="#31A455"
           stroke="#31A455"
           strokeWidth="6"
           strokeMiterlimit="10"
