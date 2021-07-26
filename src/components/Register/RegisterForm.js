@@ -193,7 +193,7 @@ const RegisterForm = ({
                   <input
                     type="radio"
                     name="civility"
-                    value="miss"
+                    value={t("missForm")}
                     ref={register({ required: t("missingMandatoryFieldForm") })}
                   />
                   <Label check>{t("missForm")}</Label>
@@ -202,7 +202,7 @@ const RegisterForm = ({
                   <input
                     type="radio"
                     name="civility"
-                    value="mister"
+                    value={t("misterForm")}
                     ref={register({ required: t("missingMandatoryFieldForm") })}
                   />
                   <Label check>{t("misterForm")}</Label>
