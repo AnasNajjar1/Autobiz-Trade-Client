@@ -1,73 +1,84 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
+import { t as autobizTranslate } from "autobiz-translate";
 import humanizeDuration from "humanize-duration";
 import Cookies from "js-cookie";
-import { LanguageContext } from "../../language-context";
-
-class Translate extends React.Component {
+export default class Translate extends React.Component {
   render() {
-    if (!this.context[this.props.code]) {
-      return <React.Fragment>{this.props.code}</React.Fragment>;
-    }
-
-    const translated_string = replaceVarInTranslatedString(
-      this.context[this.props.code],
-      this.props
-    );
-
-    return <React.Fragment>{translated_string}</React.Fragment>;
+    const { code } = this.props;
+    if (!code || typeof code !== "string") return <>{code}</>;
+    const message = autobizTranslate(code, this.props);
+    if (message) return <>{message}</>;
+    return <>{code}</>;
   }
 }
 
-function replaceVarInTranslatedString(translated_string, props) {
-  const regex = /{(\S+?)\}/g;
-  const matches = translated_string.match(regex);
-
-  if (matches !== null) {
-    let propsName = "";
-    matches.forEach(element => {
-      propsName = element.replace("%{", "").replace("}", "");
-      if (props !== null && propsName in props)
-        translated_string = translated_string.replace(
-          element,
-          props[propsName]
-        );
-    });
-  }
-  return translated_string;
-}
-
-export function t(code, variables = null) {
-  const translation = LanguageContext._currentValue[code];
-  if (!translation) {
-    return code;
-  }
-
-  const translated_string = replaceVarInTranslatedString(
-    LanguageContext._currentValue[code],
-    variables
-  );
-
-  return translated_string;
-}
-
-export function durationTranslate(duration, units = ["y", "mo"], round = true, separator=","){
+export function durationTranslate(
+  duration,
+  units = ["y", "mo"],
+  round = true,
+  separator = ","
+) {
   let result = humanizeDuration(duration, {
     language: Cookies.get("appLanguage"),
     units,
     round,
-    fallbacks: ['en'] 
+    fallbacks: ["en"],
   });
-  if(separator !==","){
-    result = result.replace(",", " " + t(separator))
+  if (separator !== ",") {
+    result = result.replace(",", " " + t(separator));
   }
-  return result
-};
- 
+  return result;
+}
 
-Translate.contextType = LanguageContext;
-export default Translate;
+export function t(code, variables = null) {
+  if (!code || typeof code !== "string") return code;
+  const message = autobizTranslate(code, variables);
+  if (message) return message;
+  return code;
+}
+
+export function translateDate(date, format) {
+  date = moment(date);
+  if (!date.isValid()) return "";
+  return date.format(t(format));
+}
 
 Translate.propTypes = {
-  code: PropTypes.string.isRequired
+  code: PropTypes.objectOf(PropTypes.any).isRequired,
+  errors: PropTypes.string.isRequired,
 };
+Translate.defaultProps = {
+  errors: "",
+};
+// translate int
+export function tNum(int) {
+  if (typeof int === "number") return int.toLocaleString();
+  try {
+    int = parseInt(int, 10);
+    return int.toLocaleString();
+  } catch (e) {
+    //
+  }
+  return int;
+}
+
+// separateur millier
+export function numStr(a, b) {
+  if (typeof a !== "number") {
+    a = parseInt(a, 10);
+  }
+  a = `${a}`;
+  b = b || " ";
+  let c = "";
+  let d = 0;
+  while (a.match(/^0[0-9]/)) {
+    a = a.substr(1);
+  }
+  for (let i = a.length - 1; i >= 0; i -= 1) {
+    c = d !== 0 && d % 3 === 0 ? a[i] + b + c : a[i] + c;
+    d += 1;
+  }
+  return c;
+}
