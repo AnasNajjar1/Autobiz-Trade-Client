@@ -16,6 +16,7 @@ variables:
 
 before_script:
   - source ./.cicd_tools/tools.sh
+  - export NODE_OPTIONS="--max-old-space-size=8192"
 
 test_merge_master:
   stage: testing
@@ -107,7 +108,7 @@ build_stg:
   environment:
     name: staging
   tags:
-    - docker
+    - docker-16go
 
 deploy_staging:
   stage: deploy_stg
@@ -125,7 +126,7 @@ deploy_staging:
   dependencies:
     - build_stg
   tags:
-    - docker
+    - docker-16go
     
 build_ppr:
   stage: build_ppr
@@ -147,7 +148,7 @@ build_ppr:
   environment:
     name: ppr
   tags:
-    - docker
+    - docker-16go
 
 deploy_ppr:
   stage: deploy_ppr
@@ -164,7 +165,7 @@ deploy_ppr:
   dependencies: 
     - build_ppr
   tags:
-    - docker
+    - docker-16go
 
 build_prod:
   stage: build_prod
@@ -186,7 +187,7 @@ build_prod:
   environment:
     name: prod
   tags:
-    - docker
+    - docker-16go
 
 deploy_prod:
   stage: deploy_prod
@@ -203,4 +204,4 @@ deploy_prod:
   dependencies: 
     - build_prod
   tags:
-    - docker
+    - docker-16go
