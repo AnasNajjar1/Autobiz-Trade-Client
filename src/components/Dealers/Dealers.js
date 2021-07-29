@@ -206,7 +206,7 @@ const Dealer = (props) => {
     };
 
     fetchRecords();
-  }, [dealer, query, JSON.stringify(form.country)]);
+  }, [dealer, query]);
 
   useEffect(() => {
     if (dealer !== false) {

@@ -123,7 +123,7 @@ const DealersListContainer = ({ usercountry }) => {
     };
 
     fetchRecords();
-  }, [query, JSON.stringify(form.country)]);
+  }, [query]);
   const [dealers, setDealers] = useState([]);
   const [DealersCount, setDealersCount] = useState([]);
   const [filters, setFilters] = useState([]);

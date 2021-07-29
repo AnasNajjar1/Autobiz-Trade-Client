@@ -14,6 +14,7 @@ const FilterGeoloc = ({
   lng,
   updateField,
   updatePosition,
+  stockageNbr,
 }) => {
   const [errorZipCode, setErrorZipCode] = useState(false);
   const [enableRadius, setEnableRadius] = useState(false);
@@ -27,21 +28,21 @@ const FilterGeoloc = ({
   ];
 
   const handleChangeCountry = (e) => {
-    const {name, value, checked} = e.target;
-    if(checked){
-      if(value === 'all'){
-        country = ["fr","es","de","pt","it"];
-      }else{
-        if(!country.includes(value)) country.push(value);
+    const { name, value, checked } = e.target;
+    if (checked) {
+      if (value === "all") {
+        country = ["fr", "es", "de", "pt", "it"];
+      } else {
+        if (!country.includes(value)) country.push(value);
       }
-    }else{
-      if(value === 'all'){
+    } else {
+      if (value === "all") {
         country = [];
-      }else{
-        country = _.filter(country, c => (c !== value));
-      } 
+      } else {
+        country = _.filter(country, (c) => c !== value);
+      }
     }
-    updateField({...e, target : { name, value : country} });
+    updateField({ ...e, target: { name, value: country } });
   };
 
   const handleChangeZipcode = (e) => {
@@ -66,14 +67,14 @@ const FilterGeoloc = ({
       setErrorZipCode(true);
     }
   };
-
   useEffect(() => {
     if (zipCode === "") {
       setErrorZipCode(false);
       setEnableRadius(false);
     } else if (
-      countries.find((e) => e.code === country[0]).zipCodeRegex.exec(zipCode) !==
-      null
+      countries
+        .find((e) => e.code === country[0])
+        .zipCodeRegex.exec(zipCode) !== null
     ) {
       setErrorZipCode(false);
       setEnableRadius(true);
@@ -87,25 +88,30 @@ const FilterGeoloc = ({
   const handleChangeRadius = (e) => {
     updateField(e);
   };
-
   return (
     <>
       <FormGroup>
-          <Row>
-            <Col>
-              <div className="form-check storage-bloc mb-2">
-                <input 
-                  type="checkbox"
-                  name="country"
-                  className="form-check-input"
-                  value="all"
-                  checked={country.length === 5}
-                  onClick={(e) => handleChangeCountry(e)}
-                /> {t("all")}
-                <br/>
-                {Object.values(countries).map((c, i) => (
+        <Row>
+          <Col>
+            <div className="form-check storage-bloc mb-2">
+              <input
+                type="checkbox"
+                name="country"
+                className="form-check-input"
+                value="all"
+                checked={country.length === 5}
+                onClick={(e) => handleChangeCountry(e)}
+              />{" "}
+              {t("all")}
+              <br />
+              {Object.values(countries).map((c, i) => {
+                let number = _.find(
+                  stockageNbr,
+                  (nbr, country) => c.code === country
+                );
+                return (
                   <>
-                    <input 
+                    <input
                       key={i}
                       type="checkbox"
                       name="country"
@@ -113,13 +119,16 @@ const FilterGeoloc = ({
                       value={c.code}
                       checked={country.includes(c.code) || country.length === 5}
                       onClick={(e) => handleChangeCountry(e)}
-                    />  {t(c.name)} <br/>
+                    />
+                    {t(c.name)} {number && `(${number})`}
+                    <br />
                   </>
-                ))}
-              </div>
-            </Col>
-          </Row>
-          <div className={country.length !== 1  ? "d-none" : ""}>
+                );
+              })}
+            </div>
+          </Col>
+        </Row>
+        <div className={country.length !== 1 ? "d-none" : ""}>
           <Row className="mt-2">
             <Col>
               <Input

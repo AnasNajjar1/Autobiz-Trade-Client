@@ -105,6 +105,7 @@ const RecordsListContainer = ({ usercountry }) => {
   const [RecordsCount, setRecordsCount] = useState([]);
   const [modelLabels, setModelLabels] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [aggregation, setAggregation] = useState([]);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const bodyPos = sessionStorage.getItem("scrollPos");
@@ -154,7 +155,6 @@ const RecordsListContainer = ({ usercountry }) => {
     form.sortLabel = value;
     setQuery(form);
   };
-
   useEffect(() => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/filter`, {
@@ -180,7 +180,7 @@ const RecordsListContainer = ({ usercountry }) => {
     };
 
     fetchRecords();
-  }, [query, JSON.stringify(form.country)]);
+  }, [query]);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -222,7 +222,37 @@ const RecordsListContainer = ({ usercountry }) => {
     };
 
     fetchRecords();
-  }, [query, JSON.stringify(form.country)]);
+  }, [query]);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const result = await API.get("b2bPlateform", `/aggregations`, {
+        queryStringParameters: {
+          filter: JSON.stringify({
+            list: form.list,
+            search: form.search,
+            supplyType: form.supplyType,
+            brandLabel: form.brandLabel,
+            modelLabel: form.modelLabel,
+            yearMecMin: form.yearMecMin,
+            yearMecMax: form.yearMecMax,
+            mileageMin: form.mileageMin,
+            mileageMax: form.mileageMax,
+            listId: form.listId,
+            lat: form.lat,
+            lng: form.lng,
+            radius: form.radius,
+          }),
+        },
+        response: true,
+      });
+      setAggregation(result.data);
+    };
+
+    fetchRecords();
+  }, [query]);
+  const stockageNbr = aggregation.countries;
+  const countOfferToPrivate = aggregation.countOfferToPrivate;
 
   useEffect(() => {
     form.modelLabel = "";
@@ -276,7 +306,6 @@ const RecordsListContainer = ({ usercountry }) => {
       setIsFetching(true);
     }
   };
-
   return (
     <Container>
       <MenuSwitcher current="records" />
@@ -288,7 +317,7 @@ const RecordsListContainer = ({ usercountry }) => {
         <SupplyTypeSwitcher
           current={form.supplyType}
           updateField={updateField}
-          countOfferToPrivate={filters.countOfferToPrivate}
+          countOfferToPrivate={countOfferToPrivate}
         />
       </div>
 
@@ -332,7 +361,7 @@ const RecordsListContainer = ({ usercountry }) => {
                 <SupplyTypeSwitcher
                   current={form.supplyType}
                   updateField={updateField}
-                  countOfferToPrivate={filters.countOfferToPrivate}
+                  countOfferToPrivate={countOfferToPrivate}
                 />
               </div>
 
@@ -384,6 +413,7 @@ const RecordsListContainer = ({ usercountry }) => {
                 updateField={updateField}
                 updateSearch={updateSearch}
                 updatePosition={updatePosition}
+                stockageNbr={stockageNbr}
               />
               {filters.lists && (
                 <>
