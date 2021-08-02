@@ -32,7 +32,7 @@ class App extends Component {
     super();
 
     this.state = {
-      language: process.env.REACT_APP_LANG,
+      language: null,
       stage: process.env.REACT_APP_ENV === "prod" ? "prod" : "dev",
     };
     this.entryPath = {
@@ -98,51 +98,53 @@ class App extends Component {
     return (
       <>
         <BrowserRouter>
-          <TranslateProvider
-            projectName="trade-app"
-            stage={stage}
-            language={language}
-          >
-            <QueryParamProvider ReactRouterRoute={Route}>
-              <Switch>
-                <Route path="/reports/:lang/:refId" component={ReportsView} />
-                <AuthRequiredRoute
-                  path="/records/:refId"
-                  component={RecordsView}
-                />
-                <AuthRequiredRoute
-                  path="/records"
-                  component={RecordsListView}
-                />
-                <AuthRequiredRoute
-                  path="/dealers/:refId"
-                  component={DealersView}
-                />
-                <AuthRequiredRoute
-                  path="/dealers"
-                  component={DealersListView}
-                />
-                <AuthRequiredRoute path="/lists" component={ListsListView} />
-                <Route
-                  path="/login"
-                  render={(props) => (
-                    <LoginView
-                      {...props}
-                      entryPath={this.entryPath}
-                      didomi={this.didomiObject}
-                    />
-                  )}
-                />
-                <Route
-                  path="/register/:language"
-                  render={(props) => (
-                    <RegisterView {...props} entryPath={this.entryPath} />
-                  )}
-                />
-                <Redirect from="/" exact to="/records" />
-              </Switch>
-            </QueryParamProvider>
-          </TranslateProvider>
+          {language && (
+            <TranslateProvider
+              projectName="trade-app"
+              stage={stage}
+              language={language}
+            >
+              <QueryParamProvider ReactRouterRoute={Route}>
+                <Switch>
+                  <Route path="/reports/:lang/:refId" component={ReportsView} />
+                  <AuthRequiredRoute
+                    path="/records/:refId"
+                    component={RecordsView}
+                  />
+                  <AuthRequiredRoute
+                    path="/records"
+                    component={RecordsListView}
+                  />
+                  <AuthRequiredRoute
+                    path="/dealers/:refId"
+                    component={DealersView}
+                  />
+                  <AuthRequiredRoute
+                    path="/dealers"
+                    component={DealersListView}
+                  />
+                  <AuthRequiredRoute path="/lists" component={ListsListView} />
+                  <Route
+                    path="/login"
+                    render={(props) => (
+                      <LoginView
+                        {...props}
+                        entryPath={this.entryPath}
+                        didomi={this.didomiObject}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/register/:language"
+                    render={(props) => (
+                      <RegisterView {...props} entryPath={this.entryPath} />
+                    )}
+                  />
+                  <Redirect from="/" exact to="/records" />
+                </Switch>
+              </QueryParamProvider>
+            </TranslateProvider>
+          )}
         </BrowserRouter>
         <DidomiSDK
           apiKey={didomiConfig.apiKey}
