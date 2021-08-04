@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
@@ -15,7 +15,7 @@ import ExportFile from "../common/ExportFile";
 import ExportOffers from "../Offers/ExportOffers";
 import { exportOffersMapper } from "../../helper/Offer";
 import { isBrowser } from "react-device-detect";
-import { ZendeskAPI } from "react-zendesk";
+import { ZendeskDisplayer } from "../common/ZendeskDisplayer";
 
 const Header = (props) => {
   const history = useHistory();
@@ -24,12 +24,6 @@ const Header = (props) => {
   const { path } = props.match;
   const [allowExport, setAllowExport] = useState(false);
   const [offers, setOffers] = useState(null);
-
-  useEffect(() => {
-    usercountry !== "es"
-      ? ZendeskAPI("webWidget", "hide")
-      : ZendeskAPI("webWidget", "show");
-  });
 
   const signOut = async function () {
     await Auth.signOut();
@@ -46,56 +40,59 @@ const Header = (props) => {
   if (logout) return <Redirect to="/" />;
 
   return (
-    <header>
-      {path === "/records/:refId" && (
-        <Link onClick={(e) => goBackEvent(e)} className="left-col">
-          <FontAwesomeIcon
-            size="lg"
-            icon={faArrowLeft}
-            className="back-arrow"
-          />
-        </Link>
-      )}
-
-      <Link to="/records">
-        <img alt="autobizTrade" className="logo" src={logo} />
-      </Link>
-
-      <p className="tagline">Nicer People. Better cars!</p>
-
-      <div className="right-col">
-        {isBrowser && (
-          <div className="d-none d-lg-inline-block mr-5">
-            <ExportOffers
-              setAllowExport={setAllowExport}
-              setOffers={setOffers}
-              userId={autobizUserId}
-            />
-          </div>
-        )}
-        {(username && (
-          <>
+    <>
+      <ZendeskDisplayer language={usercountry} />
+      <header>
+        {path === "/records/:refId" && (
+          <Link onClick={(e) => goBackEvent(e)} className="left-col">
             <FontAwesomeIcon
-              icon={faUser}
-              size="sm"
-              className="d-none d-sm-inline"
+              size="lg"
+              icon={faArrowLeft}
+              className="back-arrow"
             />
-            <span className=" d-none d-sm-inline mx-2">{username}</span>
+          </Link>
+        )}
 
-            <FontAwesomeIcon icon={faPowerOff} onClick={() => signOut()} />
-          </>
-        )) || <Spinner color="primary" size="sm" />}
-        {LanguagePicker()}
-      </div>
-      {allowExport && (
-        <ExportFile
-          fileName="offers"
-          datas={offers}
-          mappers={exportOffersMapper}
-          setAllowExport={setAllowExport}
-        />
-      )}
-    </header>
+        <Link to="/records">
+          <img alt="autobizTrade" className="logo" src={logo} />
+        </Link>
+
+        <p className="tagline">Nicer People. Better cars!</p>
+
+        <div className="right-col">
+          {isBrowser && (
+            <div className="d-none d-lg-inline-block mr-5">
+              <ExportOffers
+                setAllowExport={setAllowExport}
+                setOffers={setOffers}
+                userId={autobizUserId}
+              />
+            </div>
+          )}
+          {(username && (
+            <>
+              <FontAwesomeIcon
+                icon={faUser}
+                size="sm"
+                className="d-none d-sm-inline"
+              />
+              <span className=" d-none d-sm-inline mx-2">{username}</span>
+
+              <FontAwesomeIcon icon={faPowerOff} onClick={() => signOut()} />
+            </>
+          )) || <Spinner color="primary" size="sm" />}
+          {LanguagePicker()}
+        </div>
+        {allowExport && (
+          <ExportFile
+            fileName="offers"
+            datas={offers}
+            mappers={exportOffersMapper}
+            setAllowExport={setAllowExport}
+          />
+        )}
+      </header>
+    </>
   );
 };
 

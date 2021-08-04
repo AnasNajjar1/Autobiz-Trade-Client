@@ -4,12 +4,12 @@ import Footer from "../components/Footer/Footer";
 import DealersListContainer from "../components/DealersList/DealersListContainer";
 import { useUser } from "../hooks/useUser";
 
-const DealersListView = props => {
-  const {usercountry} = useUser();
+const DealersListView = (props) => {
+  const { usercountry } = useUser();
   return (
     <div className="page page-dealer-list">
       <Header {...props} />
-      {usercountry && <DealersListContainer usercountry = {usercountry}/>}
+      {usercountry && <DealersListContainer usercountry={usercountry} />}
       <Footer />
     </div>
   );
