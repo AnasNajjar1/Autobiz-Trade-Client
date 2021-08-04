@@ -43,18 +43,23 @@ const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
     }
     startDate = startDate + " 00:00:00";
     endDate = endDate + " 23:59:59";
-    const result = await API.get("b2bPlateform", `/offer`, {
-      queryStringParameters: {
-        filter: JSON.stringify({
-          createdAtInterval: [startDate, endDate],
-          userId,
-        }),
-        range: JSON.stringify([]),
-        sort: JSON.stringify(["id", "desc"]),
-      },
-      response: true,
-    });
-    setOffers(result.data);
+    try {
+      const result = await API.get("b2bPlateform", `/offer`, {
+        queryStringParameters: {
+          filter: JSON.stringify({
+            createdAtInterval: [startDate, endDate],
+            userId,
+          }),
+          range: JSON.stringify([]),
+          sort: JSON.stringify(["id", "desc"]),
+        },
+        response: true,
+      });
+      setOffers(result.data);
+    } catch (e) {
+      console.log(e);
+      setOffers([]);
+    }
     setAllowExport(true);
   };
 

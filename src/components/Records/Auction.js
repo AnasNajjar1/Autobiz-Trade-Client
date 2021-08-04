@@ -355,7 +355,7 @@ const Auction = ({ refId, entryStockDate }) => {
           disabled={isExpired || !submissionIsValid || isScheduled}
           onClick={toggleModalSubmission}
         >
-          {t("submission")}
+          {t("makeSubmission")}
         </Button>
 
         <Modal isOpen={modalSubmission} toggle={toggleModalSubmission}>
