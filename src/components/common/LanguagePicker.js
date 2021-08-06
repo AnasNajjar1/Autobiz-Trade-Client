@@ -9,6 +9,11 @@ export const handleChangeLang = async (language) => {
   window.dispatchEvent(
     new CustomEvent("changeLanguage", { detail: { language } })
   );
+  window.location.replace(
+    `/${language}/${window.location.pathname.split("/").slice(2).join("/")}${
+      window.location.search
+    }`
+  );
 };
 
 const LanguagePicker = () => {

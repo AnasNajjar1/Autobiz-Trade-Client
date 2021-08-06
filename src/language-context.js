@@ -21,6 +21,9 @@ export const dictionnary = {
   en: false,
   nl: false,
 };
+
+export const languageList = ["fr", "de", "es", "it", "pt", "en", "nl"];
+
 export const flags = {
   fr: flagFr,
   de: flagDe,

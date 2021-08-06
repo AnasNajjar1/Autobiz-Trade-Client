@@ -125,7 +125,7 @@ const LoginSection = ({ history, entryPath, appLanguage, setAppLanguage }) => {
           <div className="line"></div>
           <div className="name">{t("or")}</div>
         </div>
-        <a className="register" href={`/register/${appLanguage}`}>
+        <a className="register" href={`/${appLanguage}/register`}>
           {t("freeSubscriptionCTA")}
         </a>
       </div>

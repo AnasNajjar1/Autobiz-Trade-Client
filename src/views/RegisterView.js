@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
 import RegisterForm from "../components/Register/RegisterForm";
 import { t } from "../components/common/Translate";
 import { RegisterValidation } from "../components/Register/RegisterValidation";
-import { handleChangeLang } from "../components/common/LanguagePicker";
 import Cookies from "js-cookie";
 import { ZendeskDisplayer } from "../components/common/ZendeskDisplayer";
 
-const RegisterView = ({ match }) => {
-  const [language, setLanguage] = useState(Cookies.get("appLanguage"));
+const RegisterView = () => {
+  const [language] = useState(Cookies.get("appLanguage"));
   const [loading, setLoading] = useState(false);
   const [validationBloc, setValidationBloc] = useState(false);
   const [registerFailed, setRegisterFailed] = useState(false);
-
-  useEffect(() => {
-    const uriLanguage = match.params.language;
-    setLanguage(uriLanguage);
-    handleChangeLang(uriLanguage);
-  }, [match.params.language]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./assets/scss/app.scss";
 import "./assets/scss/report.scss";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { dictionnary } from "./language-context";
+import { dictionnary, languageList } from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
@@ -38,15 +38,41 @@ class App extends Component {
     this.entryPath = {
       pathname: "/records",
     };
-    if (window.location.pathname !== "/login") {
-      this.entryPath = {
-        pathname: window.location.pathname,
-      };
-    }
+
     this.didomiObject = {};
   }
 
-  changeLanguage = async (language) => {
+  resetPathName = () => {
+    const splitPathName = window.location.pathname.split("/");
+    const splitPathLang = splitPathName[1];
+    if (!splitPathName.includes("login"))
+      this.entryPath = {
+        pathname: languageList.includes(splitPathLang)
+          ? splitPathName.slice(2).join("/")
+          : window.location.pathname,
+      };
+    if (languageList.includes(splitPathLang))
+      Cookies.set("appLanguage", splitPathLang, {
+        expires: 365,
+      });
+  };
+
+  changeLanguage = async (lang) => {
+    let language = process.env.REACT_APP_LANG;
+    if (Cookies.get("appLanguage")) {
+      language = Cookies.get("appLanguage");
+    } else {
+      let res = _.split(window.navigator.language, "-", 1);
+      if (dictionnary.hasOwnProperty(res[0])) language = res[0];
+      Cookies.set("appLanguage", language, { expires: 365 });
+    }
+    ["/login", "/register"].map((path) =>
+      window.location.pathname === path
+        ? window.location.replace(`${language}${path}`)
+        : ""
+    );
+
+    if (lang) language = lang;
     moment.locale(language);
     localStorage.removeItem("translation");
     const translation = await TranslateInstance.init(
@@ -66,18 +92,8 @@ class App extends Component {
   };
 
   componentWillMount() {
-    let language = process.env.REACT_APP_LANG;
-
-    if (Cookies.get("appLanguage")) {
-      language = Cookies.get("appLanguage");
-    } else {
-      let res = _.split(window.navigator.language, "-", 1);
-      if (dictionnary.hasOwnProperty(res[0])) language = res[0];
-      Cookies.set("appLanguage", language, { expires: 365 });
-    }
-
-    this.changeLanguage(language);
-
+    this.resetPathName();
+    this.changeLanguage();
     window.addEventListener("changeLanguage", this.handleChangeLanguage);
     window.addEventListener("storage", this.handleRefresh);
   }
@@ -97,8 +113,8 @@ class App extends Component {
     const { language, stage } = this.state;
     return (
       <>
-        <BrowserRouter>
-          {language && (
+        {language && (
+          <BrowserRouter exact basename={`/${language}`}>
             <TranslateProvider
               projectName="trade-app"
               stage={stage}
@@ -106,7 +122,7 @@ class App extends Component {
             >
               <QueryParamProvider ReactRouterRoute={Route}>
                 <Switch>
-                  <Route path="/reports/:lang/:refId" component={ReportsView} />
+                  <Route path="/reports/:refId" component={ReportsView} />
                   <AuthRequiredRoute
                     path="/records/:refId"
                     component={RecordsView}
@@ -125,6 +141,7 @@ class App extends Component {
                   />
                   <AuthRequiredRoute path="/lists" component={ListsListView} />
                   <Route
+                    exact
                     path="/login"
                     render={(props) => (
                       <LoginView
@@ -134,18 +151,13 @@ class App extends Component {
                       />
                     )}
                   />
-                  <Route
-                    path="/register/:language"
-                    render={(props) => (
-                      <RegisterView {...props} entryPath={this.entryPath} />
-                    )}
-                  />
+                  <Route exact path="/register" component={RegisterView} />
                   <Redirect from="/" exact to="/records" />
                 </Switch>
               </QueryParamProvider>
             </TranslateProvider>
-          )}
-        </BrowserRouter>
+          </BrowserRouter>
+        )}
         <DidomiSDK
           apiKey={didomiConfig.apiKey}
           noticeId={didomiConfig.noticeId}
