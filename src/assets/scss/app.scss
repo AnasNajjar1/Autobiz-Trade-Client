@@ -1908,5 +1908,12 @@ footer {
   font-size: 0.8rem;
 }
 
+.privacy-block {
+  h4 {
+    color: $blue;
+    font-weight: bolder;
+    margin-top: 1rem;
+  }
+}
 @import "carousel";
 @import "report";

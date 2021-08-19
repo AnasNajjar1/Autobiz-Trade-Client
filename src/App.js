@@ -12,6 +12,7 @@ import {
   defineCorrectLanguage,
   handleChangeLang,
   defineEntryPath,
+  didomiSetConfig,
 } from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
@@ -26,12 +27,14 @@ import awsconfig from "./aws-config";
 import AuthRequiredRoute from "./components/Login/AuthRequiredRoute";
 import _ from "lodash";
 import TagManager from "react-gtm-module";
-import { tagManagerArgs, didomiConfig, zendeskConfig } from "./config";
+import { tagManagerArgs, zendeskConfig, linkPrivacy } from "./config";
 import RegisterView from "./views/RegisterView";
 import { DidomiSDK } from "@didomi/react";
 import Zendesk from "react-zendesk";
 import { TranslateProvider } from "autobiz-translate";
 import Helmet from "./components/common/Helmet";
+import PrivacyPolicyView from "./views/PrivacyPolicyView";
+
 Amplify.configure(awsconfig);
 TagManager.initialize(tagManagerArgs);
 
@@ -44,6 +47,8 @@ const App = ({ entryPath }) => {
   const language = defineCorrectLanguage(languageUrl);
 
   if (language !== languageUrl) handleChangeLang(language);
+
+  const didomiConfig = didomiSetConfig(language);
 
   const onDidomiReady = (didomi) => {
     setDidomiObject(didomi);
@@ -82,6 +87,12 @@ const App = ({ entryPath }) => {
                 )}
               />
               <Route exact path="/register" component={RegisterView} />
+              <Route
+                path={`/${linkPrivacy[language]}`}
+                component={(props) => (
+                  <PrivacyPolicyView {...props} didomi={didomiObject} />
+                )}
+              />
               <Redirect from="/" exact to="/records" />
             </Switch>
           </QueryParamProvider>

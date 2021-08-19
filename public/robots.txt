@@ -1,0 +1,8 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /politique-de-protection-des-donnees
+Disallow: /politica-sulla-riservatezza
+Disallow: /datenschutzrichtlinie
+Disallow: /privacy-policy
+Disallow: /politica-de-confidencialidad
+Disallow: /politica-de-privacidade

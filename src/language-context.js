@@ -12,6 +12,7 @@ import flagIt from "./assets/img/flags/it.svg";
 import flagPt from "./assets/img/flags/pt.svg";
 import flagEn from "./assets/img/flags/en.svg";
 import flagNl from "./assets/img/flags/nl.svg";
+import { didomiConfig, linkPrivacy } from "./config";
 
 export const dictionnary = {
   fr: translationsFr,
@@ -118,4 +119,13 @@ export const defineEntryPath = () => {
       ? getCurrentPath()
       : getFullPath();
   return "/records";
+};
+
+export const didomiSetConfig = (language) => {
+  didomiConfig.config.app.privacyPolicyURL = `${window.location.host}/${language}/${linkPrivacy[language]}`;
+  didomiConfig.config.languages = {
+    enabled: [language],
+    default: language,
+  };
+  return didomiConfig;
 };
