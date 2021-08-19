@@ -1185,7 +1185,7 @@ form.form-offer {
   }
 
   .reseller-block {
-    font-size: 0.9em;
+    font-size: 0.7em;
     background-color: #e5e5e8;
     border-radius: 10px;
     padding: 10px 15px 10px 45px;
@@ -1193,6 +1193,7 @@ form.form-offer {
     background-image: url("../img/dealer-house.svg");
     background-repeat: no-repeat;
     background-position: left 10px top 15px;
+    line-height: 1.5;
     svg {
       height: 12px;
     }

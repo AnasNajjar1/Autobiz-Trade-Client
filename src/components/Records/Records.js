@@ -270,18 +270,27 @@ const Record = (props) => {
                   <div className="h3 text-center">
                     <Translate code="global_condition"></Translate>
                   </div>
+
                   <Grade letter={vehicle.profileBodyCosts} />
                 </Col>
                 {pointofsale && pointofsale.name !== null && (
                   <Col xs="12" sm="6" md="12" lg="6">
                     <div className="reseller-block">
+                      {pointofsale.company && (
+                        <>
+                          <strong>{t("company")} : </strong>
+                          {pointofsale.company}
+                          <br />
+                        </>
+                      )}
+                      <strong> {t("pointOfSales")} : </strong>
                       {pointofsale.name}
                       <br />
                       {pointofsale.zipCode} {pointofsale.city}
                       <br />
                       {t(pointofsale.country)}
-                      <br />
                       <a href={`/dealers/${pointofsale.uuid}`}>
+                        {" "}
                         <FontAwesomeIcon
                           icon={faExternalLinkAlt}
                           className="mr-1"
