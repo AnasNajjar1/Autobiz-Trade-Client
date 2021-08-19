@@ -34,7 +34,8 @@ const RecordsListContainer = ({ usercountry }) => {
   const ItemsPerPage = 100;
 
   const sortLabelList = [
-    "sort_sales_ending_soon",
+    "sort_sales_ending_soon_desc",
+    "sort_sales_ending_soon_asc",
     "selling_price_asc",
     "selling_price_desc",
     "sort_mileage_asc",
@@ -57,7 +58,7 @@ const RecordsListContainer = ({ usercountry }) => {
     lat: "",
     lng: "",
     listId: "",
-    sortLabel: "sort_sales_ending_soon",
+    sortLabel: "sort_sales_ending_soon_desc",
     range: [0, ItemsPerPage - 1],
   };
 
