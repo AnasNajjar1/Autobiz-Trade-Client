@@ -94,7 +94,6 @@ const isLanguageValid = (language) => languageList.includes(language);
 
 export const defineCorrectLanguage = (languageUrl) => {
   const language = selectRightLanguageToApply(languageUrl);
-  Cookies.set("applanguage", language);
   return language
 }
 
@@ -105,4 +104,5 @@ export const handleChangeLang = async (language) => {
       window.location.search
     }`
   );
+  Cookies.set("applanguage", language);
 };
