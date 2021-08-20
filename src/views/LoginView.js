@@ -1,30 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import LoginSection from "../components/Login/LoginSection";
 import PresentationSection from "../components/Login/PresentationSection";
 import CarsSection from "../components/Login/CarsSection";
 import CarDealerSection from "../components/Login/CarDealerSection";
 import StatsSection from "../components/Login/StatsSection";
 import Footer from "../components/Login/Footer";
-import Cookies from "js-cookie";
 import { ZendeskDisplayer } from "../components/common/ZendeskDisplayer";
+import { getCurrentLanguage } from "../language-context"
 
 const LoginView = (props) => {
-  const [appLanguage, setAppLanguage] = useState(Cookies.get("appLanguage"));
-
+  const currentLanguage = getCurrentLanguage()
   return (
     <>
-      <ZendeskDisplayer language={appLanguage} />
+      <ZendeskDisplayer language={currentLanguage} />
       <div className="page page-index">
         <LoginSection
           {...props}
-          appLanguage={appLanguage}
-          setAppLanguage={setAppLanguage}
         />
         <PresentationSection />
-        <CarsSection appLanguage={appLanguage} />
-        <CarDealerSection appLanguage={appLanguage} />
+        <CarsSection />
+        <CarDealerSection />
         <StatsSection />
-        <Footer didomi={props.didomi} appLanguage={appLanguage} />
+        <Footer didomi={props.didomi} />
       </div>
     </>
   );

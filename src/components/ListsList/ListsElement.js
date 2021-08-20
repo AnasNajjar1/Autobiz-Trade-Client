@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCarSide } from "@fortawesome/free-solid-svg-icons";
-import Cookies from "js-cookie";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 import BrandsCarousel from "../common/BrandsCarousel";
+import { getCurrentLanguage } from "../../language-context";
 
 const DealersElement = ({ list }) => {
-  const lang = Cookies.get("appLanguage");
+  const lang = getCurrentLanguage()
 
   let brands = [];
 

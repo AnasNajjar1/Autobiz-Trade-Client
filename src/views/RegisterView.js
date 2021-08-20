@@ -3,11 +3,11 @@ import { Row, Col } from "reactstrap";
 import RegisterForm from "../components/Register/RegisterForm";
 import { t } from "../components/common/Translate";
 import { RegisterValidation } from "../components/Register/RegisterValidation";
-import Cookies from "js-cookie";
 import { ZendeskDisplayer } from "../components/common/ZendeskDisplayer";
+import { getCurrentLanguage } from "../language-context";
 
 const RegisterView = () => {
-  const [language] = useState(Cookies.get("appLanguage"));
+  const language = getCurrentLanguage();
   const [loading, setLoading] = useState(false);
   const [validationBloc, setValidationBloc] = useState(false);
   const [registerFailed, setRegisterFailed] = useState(false);

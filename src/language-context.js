@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from "js-cookie";
 
 import translationsFr from "./translations/fr";
 import translationsDe from "./translations/de";
@@ -76,3 +77,32 @@ export const contactUsLink = {
 export const LanguageContext = React.createContext(
   dictionnary.fr // default value
 );
+
+
+const selectRightLanguageToApply = (languageUrl) => {
+  let language = languageUrl
+  if (isLanguageValid(language)) return language;
+  language = Cookies.get("applanguage");
+  if (isLanguageValid(language)) return language;
+  language = window.navigator.language?.slice(0, 2);
+  if (isLanguageValid(language)) return language;
+  return "en";
+};
+
+const isLanguageValid = (language) => languageList.includes(language);
+
+
+export const defineCorrectLanguage = (languageUrl) => {
+  const language = selectRightLanguageToApply(languageUrl);
+  Cookies.set("applanguage", language);
+  return language
+}
+
+export const getCurrentLanguage = () => window.location.pathname.split("/")[1];
+export const handleChangeLang = async (language) => {
+  window.location.replace(
+    `/${language}/${window.location.pathname.split("/").slice(2).join("/")}${
+      window.location.search
+    }`
+  );
+};

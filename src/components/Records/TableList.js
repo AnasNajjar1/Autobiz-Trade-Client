@@ -4,7 +4,7 @@ import { t, durationTranslate } from "../common/Translate";
 import Tooltip from "../common/Tooltip";
 import _ from "lodash";
 import moment from "moment";
-import Cookies from "js-cookie";
+import { getCurrentLanguage } from "../../language-context";
 
 //remove uncomplete data or unwanted data
 export function showableValue(key, value, lang) {
@@ -175,7 +175,7 @@ export const renderValue = (key, value, lang) => {
 };
 
 const TableList = ({ items }) => {
-  let lang = Cookies.get("appLanguage");
+  let lang = getCurrentLanguage()
   return (
     <div className="list-table">
       <Row>

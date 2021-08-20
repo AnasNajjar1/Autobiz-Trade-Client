@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import pdfIcon from "../../assets/img/ico-pdf.png";
 import { t } from "../common/Translate";
-import Cookies from "js-cookie";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
 import { pdfLang } from ".././../config";
 import _ from "lodash";
+import { getCurrentLanguage } from "../../language-context";
+
 const Documents = ({ items }) => {
-  const lang = Cookies.get("appLanguage");
+  const lang = getCurrentLanguage();
   const [popup, setPopup] = useState(false);
   const [link, setLink] = useState("");
   let angle = 0;

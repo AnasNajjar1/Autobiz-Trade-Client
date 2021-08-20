@@ -14,11 +14,11 @@ import {
   ModalFooter,
   Tooltip as RsTooltip,
 } from "reactstrap";
-import Cookies from "js-cookie";
 import Tooltip from "../common/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
+import { getCurrentLanguage } from "../../language-context";
 
 const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
@@ -43,7 +43,7 @@ const Auction = ({ refId, entryStockDate }) => {
 
   const second = 1000;
   const refreshTime = 5 * second;
-  const lang = Cookies.get("appLanguage");
+  const lang = getCurrentLanguage()
 
   const [userSubmissionAmout, setUserSubmissionAmout] = useState(false);
   const [submissionIsValid, setSubmissionIsValid] = useState(false);

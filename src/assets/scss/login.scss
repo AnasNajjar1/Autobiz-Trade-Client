@@ -7,6 +7,7 @@
         font-family: facit, "Helvetica Neue", Arial, sans-serif;
         padding: 12px 30px;
         text-align: center;
+        border: none;
     }
 
     .cta:hover {
@@ -160,7 +161,7 @@
 
             .cta {
                 width: 80%;
-                border: none;
+                border: none!important;
             }
 
             .register {
@@ -168,6 +169,7 @@
                 font-weight: bold;
                 text-align: center;
                 color: #ff4e00;
+                background-color: #fff;
                 font-size: 20px;
                 border: 3px solid #ff4e00;
                 padding: 11px 0px;

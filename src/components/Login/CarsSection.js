@@ -10,6 +10,7 @@ import Kia from "../../assets/img/cars/kia-ceed.jpg";
 import Peugeot from "../../assets/img/cars/peugeot-5008.jpg";
 import Peugeot_308 from "../../assets/img/cars/peugeot-308.jpg";
 import { t } from "../common/Translate";
+import { useHistory } from "react-router";
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;
@@ -65,7 +66,8 @@ const CustomSlide = (props) => {
   );
 };
 
-const CarsSection = ({ appLanguage }) => {
+const CarsSection = () => {
+  const history = useHistory();
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -175,6 +177,8 @@ const CarsSection = ({ appLanguage }) => {
     },
   ];
 
+  const handleGoToRegister = () => history.push("register");
+
   return (
     <div className="hp-section cars">
       <h1>{t("hpTitle5")}</h1>
@@ -185,9 +189,9 @@ const CarsSection = ({ appLanguage }) => {
           })}
         </Slider>
       </div>
-      <a className="cta" href={`/register/${appLanguage}`}>
+      <button className="cta" onClick={handleGoToRegister}>
         {t("accessAtStockCta")}
-      </a>
+      </button>
     </div>
   );
 };
