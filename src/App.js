@@ -8,7 +8,11 @@ import {
   Redirect,
   useParams,
 } from "react-router-dom";
-import { defineCorrectLanguage, handleChangeLang } from "./language-context";
+import {
+  defineCorrectLanguage,
+  handleChangeLang,
+  defineEntryPath,
+} from "./language-context";
 import LoginView from "./views/LoginView.js";
 import RecordsView from "./views/RecordsView.js";
 import RecordsListView from "./views/RecordsListView.js";
@@ -33,13 +37,9 @@ TagManager.initialize(tagManagerArgs);
 
 const stage = process.env.REACT_APP_ENV === "prod" ? "prod" : "dev";
 
-const App = () => {
+const App = ({ entryPath }) => {
   let { language: languageUrl } = useParams();
   const [didomiObject, setDidomiObject] = useState({});
-
-  const entryPath = {
-    pathname: "/records",
-  };
 
   const language = defineCorrectLanguage(languageUrl);
 
@@ -99,10 +99,18 @@ const App = () => {
   );
 };
 
-export default () => (
-  <BrowserRouter>
-    <Switch>
-      <Route path={["/:language", "/"]} component={App} />
-    </Switch>
-  </BrowserRouter>
-);
+export default () => {
+  const entryPath = {
+    pathname: defineEntryPath(),
+  };
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route
+          path={["/:language", "/"]}
+          component={() => <App entryPath={entryPath} />}
+        />
+      </Switch>
+    </BrowserRouter>
+  );
+};

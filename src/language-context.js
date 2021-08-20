@@ -78,9 +78,8 @@ export const LanguageContext = React.createContext(
   dictionnary.fr // default value
 );
 
-
 const selectRightLanguageToApply = (languageUrl) => {
-  let language = languageUrl
+  let language = languageUrl;
   if (isLanguageValid(language)) return language;
   language = Cookies.get("applanguage");
   if (isLanguageValid(language)) return language;
@@ -91,18 +90,32 @@ const selectRightLanguageToApply = (languageUrl) => {
 
 const isLanguageValid = (language) => languageList.includes(language);
 
-
 export const defineCorrectLanguage = (languageUrl) => {
   const language = selectRightLanguageToApply(languageUrl);
-  return language
-}
+  return language;
+};
 
 export const getCurrentLanguage = () => window.location.pathname.split("/")[1];
+
+export const getCurrentPath = () =>
+  `/${window.location.pathname.split("/").slice(2).join("/")}`;
+
+export const getCurentSearch = () => window.location.search;
+
+export const getFullPath = () => window.location.pathname;
+
 export const handleChangeLang = async (language) => {
-  window.location.replace(
-    `/${language}/${window.location.pathname.split("/").slice(2).join("/")}${
-      window.location.search
-    }`
-  );
+  const path = !languageList.includes(getCurrentLanguage())
+    ? getFullPath()
+    : getCurrentPath();
+  window.location.replace(`/${language}${path}${getCurentSearch()}`);
   Cookies.set("applanguage", language);
+};
+
+export const defineEntryPath = () => {
+  if (!getFullPath().split("/").includes("login"))
+    return languageList.includes(getCurrentLanguage())
+      ? getCurrentPath()
+      : getFullPath();
+  return "/records";
 };
