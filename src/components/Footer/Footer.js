@@ -1,10 +1,10 @@
 import React from "react";
 import Translate from "../common/Translate";
 import { contactEmail, staticImagesUrl } from "../../config";
-import Cookies from "js-cookie";
+import { getCurrentLanguage } from "../../language-context";
 
 const Footer = () => {
-  let lang = Cookies.get("appLanguage");
+  let lang = getCurrentLanguage();
 
   return (
     <footer>

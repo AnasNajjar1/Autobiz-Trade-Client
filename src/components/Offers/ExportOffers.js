@@ -16,7 +16,7 @@ import { API } from "aws-amplify";
 import { t } from "../common/Translate";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Locale from "date-fns/locale";
-import Cookies from "js-cookie";
+import { getCurrentLanguage } from "../../language-context";
 
 const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
   let [startDate, setStartDate] = useState(null);
@@ -25,7 +25,7 @@ const ExportOffers = ({ setAllowExport, setOffers, userId }) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const language = () => {
-    const appLanguage = Cookies.get("appLanguage");
+    const appLanguage = getCurrentLanguage()
     return Locale[appLanguage] ? Locale[appLanguage] : Locale["enGB"];
   };
 

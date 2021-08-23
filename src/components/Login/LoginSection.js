@@ -1,41 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/img/logo_autobiztrade.svg";
 import { linkNewPassword, tradeHelpMail } from "../../config";
 import { Auth, API } from "aws-amplify";
-import { handleChangeLang } from "../common/LanguagePicker";
-import { languages } from "../../language-context";
-import En from "../../assets/img/flags/en.svg";
+import {
+  getFlag,
+} from "../common/LanguagePicker";
+import { languages, getCurrentLanguage, handleChangeLang } from "../../language-context";
 import { t } from "../common/Translate";
 import _ from "lodash";
 import "../../assets/scss/login.scss";
+import { useHistory } from "react-router";
 
-const LoginSection = ({ history, entryPath, appLanguage, setAppLanguage }) => {
+const LoginSection = ({ entryPath }) => {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [flagValue, setFlagValue] = useState(En);
-  const languagePickerRef = useRef(undefined);
-
-  useEffect(() => {
-    for (let i = 0; i < languagePickerRef.current.options.length; i++) {
-      if (
-        appLanguage ===
-        languagePickerRef.current.options[i].getAttribute("country")
-      ) {
-        languagePickerRef.current.value =
-          languagePickerRef.current.options[i].value;
-        setFlagValue(languagePickerRef.current.options[i].value);
-      }
-    }
-  }, []);
 
   async function updateLanguage(e) {
-    setFlagValue(e.target.value);
-    const selectedLang =
-      e.target.options[e.target.selectedIndex].getAttribute("country");
-    setAppLanguage(selectedLang);
-    await handleChangeLang(selectedLang);
+    const selectedLang = e.target.value;
+    handleChangeLang(selectedLang);
   }
 
   const handleChange = () => {
@@ -67,22 +52,18 @@ const LoginSection = ({ history, entryPath, appLanguage, setAppLanguage }) => {
     }
   };
 
+  const handleGoToRegister = () => history.push("register");
+
+  const currentLanguage = getCurrentLanguage();
+
   return (
     <div className="hp-section login">
       <div className="language">
-        <img src={flagValue} alt="Country flag" />
-        <select
-          onChange={updateLanguage}
-          value={flagValue}
-          ref={languagePickerRef}
-        >
-          {_.map(languages, (trad, lang) => (
-            <option
-              key={lang}
-              country={lang}
-              value={require(`../../assets/img/flags/${lang}.svg`)}
-            >
-              {t(trad)}
+        <img src={getFlag(currentLanguage)} alt="Country flag" />
+        <select onChange={updateLanguage} value={currentLanguage}>
+          {Object.entries(languages).map(([lang, label]) => (
+            <option key={lang} value={lang}>
+              {t(label)}
             </option>
           ))}
         </select>
@@ -118,16 +99,19 @@ const LoginSection = ({ history, entryPath, appLanguage, setAppLanguage }) => {
         <button disabled={loading} className="cta" onClick={handleSubmit}>
           {t("connect")}
         </button>
-        <a className="passwordForgotten" href={linkNewPassword[appLanguage]}>
+        <a
+          className="passwordForgotten"
+          href={linkNewPassword[currentLanguage]}
+        >
           {t("forgot_password")}
         </a>
         <div className="formSeparator">
           <div className="line"></div>
           <div className="name">{t("or")}</div>
         </div>
-        <a className="register" href={`/register/${appLanguage}`}>
+        <button className="register" onClick={handleGoToRegister}>
           {t("freeSubscriptionCTA")}
-        </a>
+        </button>
       </div>
     </div>
   );

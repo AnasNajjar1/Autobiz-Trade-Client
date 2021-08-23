@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
-import Cookies from "js-cookie";
 import moment from "moment";
 import _ from "lodash";
 import { API } from "aws-amplify";
@@ -44,6 +43,7 @@ import {
   orderGalleryPictures,
   excludedMarketData,
 } from "../../helper/Vehicle";
+import { getCurrentLanguage } from "../../language-context";
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -52,7 +52,7 @@ const Record = (props) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("1");
   const [activeSubTab, setActiveSubTab] = useState("servicing");
-  const appLanguage = Cookies.get("appLanguage");
+  const appLanguage = getCurrentLanguage()
 
   useEffect(() => {
     const fetchRecord = async () => {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { t as autobizTranslate } from "autobiz-translate";
 import humanizeDuration from "humanize-duration";
-import Cookies from "js-cookie";
+import { getCurrentLanguage } from "../../language-context";
 export default class Translate extends React.Component {
   render() {
     const { code } = this.props;
@@ -21,7 +21,7 @@ export function durationTranslate(
   separator = ","
 ) {
   let result = humanizeDuration(duration, {
-    language: Cookies.get("appLanguage"),
+    language: getCurrentLanguage(),
     units,
     round,
     fallbacks: ["en"],
