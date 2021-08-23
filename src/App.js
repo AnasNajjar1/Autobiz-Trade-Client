@@ -31,7 +31,7 @@ import RegisterView from "./views/RegisterView";
 import { DidomiSDK } from "@didomi/react";
 import Zendesk from "react-zendesk";
 import { TranslateProvider } from "autobiz-translate";
-
+import Helmet from "./components/common/Helmet";
 Amplify.configure(awsconfig);
 TagManager.initialize(tagManagerArgs);
 
@@ -48,7 +48,6 @@ const App = ({ entryPath }) => {
   const onDidomiReady = (didomi) => {
     setDidomiObject(didomi);
   };
-
   return (
     <>
       <BrowserRouter exact basename={`/${language}`}>
@@ -95,6 +94,7 @@ const App = ({ entryPath }) => {
         onReady={onDidomiReady}
       />
       <Zendesk zendeskKey={zendeskConfig.apiKey} />
+      <Helmet language={language}/>
     </>
   );
 };
