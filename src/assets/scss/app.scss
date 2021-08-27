@@ -604,6 +604,8 @@ header {
         position: absolute;
         z-index: 1;
         color: $body-bg;
+        width: 100%;
+        left:0;
         text-transform: uppercase;
         font-size: 4rem;
         overflow: hidden;
