@@ -276,3 +276,5 @@ export const excludedMarketData = [
 ];
 
 export const excludedKeyPoint = ["imported"];
+
+export const excludedEquipments = ["none"];
