@@ -416,7 +416,7 @@ const RecordsListContainer = ({ usercountry }) => {
                 updatePosition={updatePosition}
                 stockageNbr={stockageNbr}
               />
-              {filters.lists && (
+              {false && (
                 <>
                   <p className="section-title">
                     <Translate code="lists" />
