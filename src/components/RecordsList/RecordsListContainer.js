@@ -354,6 +354,9 @@ const RecordsListContainer = ({ usercountry }) => {
             className={`${menuMobileOpen === false ? "d-none" : ""} d-md-block`}
           >
             <Section>
+              <FormActions reset={handleReset} />
+            </Section>
+            <Section>
               <div className="d-none d-md-block">
                 <p className="section-title">
                   <Translate code="offer_type" />
@@ -428,9 +431,6 @@ const RecordsListContainer = ({ usercountry }) => {
                   />
                 </>
               )}
-            </Section>
-            <Section>
-              <FormActions reset={handleReset} />
             </Section>
           </div>
         </div>
