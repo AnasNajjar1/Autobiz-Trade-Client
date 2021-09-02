@@ -42,7 +42,8 @@ const ExportFile = ({ fileName, datas, mappers, setAllowExport }) => {
       value = moment(value).format("DD/MM/YYYY HH:mm:ss");
     if (source === "sale.vehicle.entryStockDate")
       value = value ? moment(value).format("DD/MM/YYYY") : "-";
-    if (["sale.supplyType", "offerType"].includes(source)) value = t(value);
+    if (["sale.supplyType", "offerType", "winnerSale"].includes(source))
+      value = t(value);
     return value === null ? "" : value;
   };
 

@@ -12,5 +12,6 @@ export const exportOffersMapper = {
   mileage: "sale.vehicle.mileage",
   expectedEntryStockDate: "sale.vehicle.entryStockDate",
   timeOfTheOffer: "createdAt",
+  winnerSale: "winnerSale",
   pointOfSale: "sale.vehicle.pointofsale.name",
 };
