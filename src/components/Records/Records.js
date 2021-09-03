@@ -32,6 +32,7 @@ import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
 import UlList from "./UlList.js";
+import UlListEquipment from "./UlListEquipment.js";
 import { BrowserView, MobileView } from "react-device-detect";
 import Lightbox from "react-image-lightbox";
 import Parser from "html-react-parser";
@@ -44,6 +45,7 @@ import {
   excludedMarketData,
 } from "../../helper/Vehicle";
 import { getCurrentLanguage } from "../../language-context";
+import { orderedConstructorEquipments } from "../../helper/Equipments";
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -52,7 +54,7 @@ const Record = (props) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("1");
   const [activeSubTab, setActiveSubTab] = useState("servicing");
-  const appLanguage = getCurrentLanguage()
+  const appLanguage = getCurrentLanguage();
 
   useEffect(() => {
     const fetchRecord = async () => {
@@ -141,10 +143,13 @@ const Record = (props) => {
 
   const { rankedConstructorEquipments } = vehicle || {};
   const {
-    veryImportantDatEquipment,
-    importantDatEquipment,
-    fewImportantDatEquipment,
-  } = rankedConstructorEquipments || [];
+    outsideEquipment,
+    interiorEquipment,
+    entertainmentEquipment,
+    comfortEquipment,
+    safetyEquipment,
+    noEquipments,
+  } = orderedConstructorEquipments(rankedConstructorEquipments);
 
   const entryStockDate =
     supplyType === "OFFER_TO_PRIVATE" && vehicle.entryStockDate
@@ -504,7 +509,7 @@ const Record = (props) => {
                       </>
                     )}
                   </Col>
-                  {vehicle.rankedConstructorEquipments && (
+                  {!noEquipments && (
                     <>
                       <Col xs="12">
                         <hr className="my-3" />
@@ -517,29 +522,46 @@ const Record = (props) => {
                           </i>
                         </div>
                       </Col>
-                      <Col xs="12" lg="6">
-                        {veryImportantDatEquipment && (
-                          <UlList
-                            items={veryImportantDatEquipment}
-                            title={t("veryImportantDatEquipment")}
+                      {!!interiorEquipment.length && (
+                        <Col xs="12" lg="6">
+                          <UlListEquipment
+                            items={interiorEquipment}
+                            title={t("interiorEquipment")}
+                          />{" "}
+                        </Col>
+                      )}
+                      {!!outsideEquipment.length && (
+                        <Col xs="12" lg="6">
+                          <UlListEquipment
+                            items={outsideEquipment}
+                            title={t("exteriorEquipment")}
                           />
-                        )}
-
-                        {importantDatEquipment && (
-                          <UlList
-                            items={importantDatEquipment}
-                            title={t("importantDatEquipment")}
+                        </Col>
+                      )}
+                      {!!comfortEquipment.length && (
+                        <Col xs="12" lg="6">
+                          <UlListEquipment
+                            items={comfortEquipment}
+                            title={t("comfortEquipment")}
                           />
-                        )}
-                      </Col>
-                      <Col xs="12" lg="6">
-                        {fewImportantDatEquipment && (
-                          <UlList
-                            items={fewImportantDatEquipment}
-                            title={t("fewImportantDatEquipment")}
+                        </Col>
+                      )}
+                      {!!entertainmentEquipment.length && (
+                        <Col xs="12" lg="6">
+                          <UlListEquipment
+                            items={entertainmentEquipment}
+                            title={t("entertainmentEquipment")}
                           />
-                        )}
-                      </Col>
+                        </Col>
+                      )}
+                      {!!safetyEquipment.length && (
+                        <Col xs="12" lg="6">
+                          <UlListEquipment
+                            items={safetyEquipment}
+                            title={t("securityEquipment")}
+                          />
+                        </Col>
+                      )}
                     </>
                   )}
                 </Row>
