@@ -37,12 +37,13 @@ const Countdown = ({ secondsBeforeStart, secondsBeforeEnd }) => {
 
   useEffect(() => {
     setLoading(false);
-    setInterval(() => { //set countdown in between api calls
+    const interval = setInterval(() => { //set countdown in between api calls
       if(!isExpired) {
         setSecondsBS(s=>s - 1);
         setSecondsBE(s=>s - 1);
       }
     }, 1000);
+    return () => clearInterval(interval)
   }, [])
 
   const message = isScheduled ? t("startIn") : t("time_left")
