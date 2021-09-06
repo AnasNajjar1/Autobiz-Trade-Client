@@ -274,3 +274,5 @@ export const excludedMarketData = [
     standardMileage: 0,
   },
 ];
+
+export const excludedKeyPoint = ["imported"];
