@@ -13,13 +13,14 @@ export function showableValue(key, value, lang) {
     Number(value) === 0
   )
     return true;
+  if (
+    ["marketLink", "marketDataDate", "distributionBelt", "origin"].includes(key)
+  )
+    return false;
   if (value === undefined || value === null || value === "") return false;
   if (typeof value === "object" && _.isEmpty(value)) return false;
   if (key === "fiscal" && lang !== "fr") return false;
-  if (key === "origin") return false;
   if (key === "power" && renderValue("power", value, lang) === "") return false;
-  if (key === "marketLink") return false;
-  if (key === "marketDataDate") return false;
   if (key === "vatDetails" && value === "no") return false;
   return true;
 }
@@ -175,7 +176,7 @@ export const renderValue = (key, value, lang) => {
 };
 
 const TableList = ({ items }) => {
-  let lang = getCurrentLanguage()
+  let lang = getCurrentLanguage();
   return (
     <div className="list-table">
       <Row>
