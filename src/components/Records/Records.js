@@ -42,6 +42,7 @@ import {
   showWheelsImg,
   orderGalleryPictures,
   excludedMarketData,
+  excludedKeyPoint,
 } from "../../helper/Vehicle";
 import { getCurrentLanguage } from "../../language-context";
 
@@ -52,7 +53,7 @@ const Record = (props) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("1");
   const [activeSubTab, setActiveSubTab] = useState("servicing");
-  const appLanguage = getCurrentLanguage()
+  const appLanguage = getCurrentLanguage();
 
   useEffect(() => {
     const fetchRecord = async () => {
@@ -350,7 +351,11 @@ const Record = (props) => {
                 <div className="h2 mb-4 text-center">
                   <Translate code="key_points"></Translate>
                 </div>
-                <CheckList items={vehicle.keyPoints} />
+                <CheckList
+                  items={vehicle.keyPoints.filter(
+                    (kp) => !excludedKeyPoint.includes(kp)
+                  )}
+                />
               </div>
             )}
             {vehicle.documents && <Documents items={vehicle.documents} />}
