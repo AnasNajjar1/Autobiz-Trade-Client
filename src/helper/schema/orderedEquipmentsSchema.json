@@ -1,0 +1,410 @@
+{
+    "1": {
+        "key": "climatisationManuelle",
+        "rank": 2
+    },
+    "2": {
+        "key": "boiteDeVitesseAutomatique",
+        "rank": 0
+    },
+    "3": {
+        "key": "climatisationAutomatiqueAvantOuArriere",
+        "rank": 4
+    },
+    "4": {
+        "key": "pharesXenonOuLedOuHalogenes",
+        "rank": 2
+    },
+    "5": {
+        "key": "vitresElectriquesAvantOuArriere",
+        "rank": 2
+    },
+    "6": {
+        "key": "lecteurEtChargeurCd",
+        "rank": 3
+    },
+    "7": {
+        "key": "kitMainsLibresBluetooth",
+        "rank": 3
+    },
+    "8": {
+        "key": "navigateurGps",
+        "rank": 3
+    },
+    "9": {
+        "key": "ordinateurDeBord",
+        "rank": 3
+    },
+    "10": {
+        "key": "radarDeRecul",
+        "rank": 4
+    },
+    "11": {
+        "key": "radioLecteurCd",
+        "rank": 3
+    },
+    "12": {
+        "key": "materielHifiHautDeGammeLecteurCd",
+        "rank": 3
+    },
+    "13": {
+        "key": "priseUsbPriseIPod",
+        "rank": 4
+    },
+    "14": {
+        "key": "fermetureCentraliseeDesPortes",
+        "rank": 4
+    },
+    "15": {
+        "key": "retroviseursElectriques",
+        "rank": 4
+    },
+    "16": {
+        "key": "retroviseursRabattablesElectriquement",
+        "rank": 4
+    },
+    "17": {
+        "key": "jantesAluminium",
+        "rank": 1
+    },
+    "18": {
+        "key": "kitAntiCrevaison",
+        "rank": 5
+    },
+    "19": {
+        "key": "peintureMat",
+        "rank": 1
+    },
+    "20": {
+        "key": "peintureMetalliseeOuNacree",
+        "rank": 1
+    },
+    "21": {
+        "key": "roueDeSecoursGalette",
+        "rank": 5
+    },
+    "22": {
+        "key": "roueDeSecours",
+        "rank": 5
+    },
+    "23": {
+        "key": "siegesCuir",
+        "rank": 2
+    },
+    "24": {
+        "key": "siegesChauffants",
+        "rank": 4
+    },
+    "25": {
+        "key": "siegesElectriques",
+        "rank": 4
+    },
+    "26": {
+        "key": "siegesSport",
+        "rank": 4
+    },
+    "27": {
+        "key": "banquetteArriereRabattable",
+        "rank": 2
+    },
+    "28": {
+        "key": "fixationsIsofixAuxPlacesArrieresOuSurSiegePassagerAvant",
+        "rank": 2
+    },
+    "29": {
+        "key": "3EmeRangeeDeSiegesOu2SiegesArriereSupplementaires",
+        "rank": 2
+    },
+    "30": {
+        "key": "cameraDeRecul",
+        "rank": 5
+    },
+    "31": {
+        "key": "toitPanoramique",
+        "rank": 4
+    },
+    "32": {
+        "key": "toitOuvrant",
+        "rank": 4
+    },
+    "33": {
+        "key": "directionAssistee",
+        "rank": 4
+    },
+    "34": {
+        "key": "affichageTeteHaute",
+        "rank": 4
+    },
+    "35": {
+        "key": "regulateurDeVitesse",
+        "rank": 4
+    },
+    "36": {
+        "key": "systemeStopStart",
+        "rank": 4
+    },
+    "37": {
+        "key": "volantCuir",
+        "rank": 2
+    },
+    "38": {
+        "key": "volantMultifonctions",
+        "rank": 4
+    },
+    "39": {
+        "key": "systeme4RouesDirectrices",
+        "rank": 0
+    },
+    "40": {
+        "key": "systeme4RouesMotrices",
+        "rank": 0
+    },
+    "41": {
+        "key": "abs",
+        "rank": 5
+    },
+    "42": {
+        "key": "airbagsFrontaux",
+        "rank": 5
+    },
+    "43": {
+        "key": "airbagsLateraux",
+        "rank": 5
+    },
+    "44": {
+        "key": "airbagPassager",
+        "rank": 5
+    },
+    "45": {
+        "key": "systemeDAlarme",
+        "rank": 5
+    },
+    "46": {
+        "key": "systemeDeControleDesAnglesMorts",
+        "rank": 5
+    },
+    "47": {
+        "key": "pharesAntibrouillard",
+        "rank": 5
+    },
+    "48": {
+        "key": "antidemarrageElectronique",
+        "rank": 5
+    },
+    "49": {
+        "key": "systemeDAntivol",
+        "rank": 5
+    },
+    "50": {
+        "key": "crochetAttelage",
+        "rank": 1
+    },
+    "51": {
+        "key": "barresDeToit",
+        "rank": 4
+    },
+    "52": {
+        "key": "demarrageSansCle",
+        "rank": 4
+    },
+    "53": {
+        "key": "correcteurElectroniqueDeTrajectoireAntipatinage",
+        "rank": 5
+    },
+    "54": {
+        "key": "filtreAParticules",
+        "rank": 0
+    },
+    "55": {
+        "key": "capteurFranchissementInvolontaireDeLigne",
+        "rank": 5
+    },
+    "56": {
+        "key": "freinsCarboneCeramique",
+        "rank": 5
+    },
+    "57": {
+        "key": "aideAuFreinageDUrgence",
+        "rank": 5
+    },
+    "58": {
+        "key": "systemeDvd",
+        "rank": 3
+    },
+    "59": {
+        "key": "systemeDeVisionNocturne",
+        "rank": 4
+    },
+    "60": {
+        "key": "systemeDAssistanceAuStationnement",
+        "rank": 4
+    },
+    "61": {
+        "key": "pharesDirectionnelsOuAdaptatifs",
+        "rank": 4
+    },
+    "62": {
+        "key": "allumageDesPharesAutomatiques",
+        "rank": 4
+    },
+    "63": {
+        "key": "porteLateraleCoulissante",
+        "rank": 4
+    },
+    "64": {
+        "key": "2PortesLateralesCoulissantes",
+        "rank": 1
+    },
+    "65": {
+        "key": "capteurPluie",
+        "rank": 4
+    },
+    "66": {
+        "key": "suspensionsPneumatiques",
+        "rank": 4
+    },
+    "67": {
+        "key": "tunerTelevision",
+        "rank": 3
+    },
+    "68": {
+        "key": "vitresTeinteesAvantOuArriere",
+        "rank": 1
+    },
+    "69": {
+        "key": "climatisationGenerale",
+        "rank": 4
+    },
+    "70": {
+        "key": "systemeDAideAuStationnement",
+        "rank": 5
+    },
+    "71": {
+        "key": "systemeAudioGeneral",
+        "rank": 3
+    },
+    "72": {
+        "key": "accoudoirCentralArriere",
+        "rank": 2
+    },
+    "73": {
+        "key": "accoudoirCentralAvant",
+        "rank": 2
+    },
+    "74": {
+        "key": "afficheurMultifonctionCouleur",
+        "rank": 3
+    },
+    "75": {
+        "key": "afficheurMultifonctionMonochromeOuCouleur",
+        "rank": 3
+    },
+    "76": {
+        "key": "afficheurMultifonctionMonochrome",
+        "rank": 3
+    },
+    "77": {
+        "key": "airbagGenou",
+        "rank": 5
+    },
+    "78": {
+        "key": "antenneDePavillonDeToit",
+        "rank": 1
+    },
+    "79": {
+        "key": "appuieLombairesSurSiegeSALArriere",
+        "rank": 4
+    },
+    "80": {
+        "key": "appuieLombairesSurSiegeSALAvant",
+        "rank": 4
+    },
+    "81": {
+        "key": "appuieTetesSurSiegeSALArriere",
+        "rank": 4
+    },
+    "82": {
+        "key": "appuieTetesSurSiegeSALAvant",
+        "rank": 4
+    },
+    "83": {
+        "key": "chassisEtOuSuspensionsSport",
+        "rank": 0
+    },
+    "84": {
+        "key": "colonneDeDirectionVolantDeDirectionReglable",
+        "rank": 4
+    },
+    "85": {
+        "key": "commandeVocale",
+        "rank": 4
+    },
+    "86": {
+        "key": "aideAuDemarrageEnCote",
+        "rank": 5
+    },
+    "87": {
+        "key": "aideALAccesEasyEntryAccesPlusLargeEtConfortableAuxSiegesArrieresDansVehiculesA2Portieres",
+        "rank": 4
+    },
+    "88": {
+        "key": "essuieVitreArriere",
+        "rank": 1
+    },
+    "89": {
+        "key": "feuStop",
+        "rank": 5
+    },
+    "90": {
+        "key": "interieurCuirIntegralOuPartiel",
+        "rank": 2
+    },
+    "91": {
+        "key": "jantesEnToleOuEnAcierEtPasEnAlliageOuEnAlu",
+        "rank": 1
+    },
+    "92": {
+        "key": "lavePharesLaveProjecteurs",
+        "rank": 1
+    },
+    "93": {
+        "key": "packFumeur",
+        "rank": 4
+    },
+    "94": {
+        "key": "siegeSIndividuelSALArriere",
+        "rank": 2
+    },
+    "95": {
+        "key": "siegesTissuVeloursAlcantaraTissuTissuSimiliCuir",
+        "rank": 2
+    },
+    "96": {
+        "key": "finition",
+        "rank": 1
+    },
+    "97": {
+        "key": "nbDePortes",
+        "rank": 1
+    },
+    "98": {
+        "key": "pneu",
+        "rank": 1
+    },
+    "99": {
+        "key": "documentationDeBord",
+        "rank": 2
+    },
+    "100": {
+        "key": "driving_school",
+        "rank": 0
+    },
+    "101": {
+        "key": "pack",
+        "rank": 0
+    },
+    "102": {
+        "key": "taxi",
+        "rank": 0
+    }
+}
