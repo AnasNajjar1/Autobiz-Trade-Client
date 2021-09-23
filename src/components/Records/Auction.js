@@ -43,7 +43,7 @@ const Auction = ({ refId, entryStockDate }) => {
 
   const second = 1000;
   const refreshTime = 5 * second;
-  const lang = getCurrentLanguage()
+  const lang = getCurrentLanguage();
 
   const [userSubmissionAmout, setUserSubmissionAmout] = useState(false);
   const [submissionIsValid, setSubmissionIsValid] = useState(false);
@@ -295,7 +295,8 @@ const Auction = ({ refId, entryStockDate }) => {
               {t("confirm_message_immediate_purchase")}{" "}
               <strong class="d-inline-block">
                 {immediatePurchasePrice.toLocaleString()}€
-              </strong>{" "}{t("confirm_message_immediate_purchase2")}
+              </strong>{" "}
+              {t("confirm_message_immediate_purchase2")}
             </p>
           </ModalBody>
           <ModalFooter>
@@ -340,12 +341,15 @@ const Auction = ({ refId, entryStockDate }) => {
       </Col>
       <Col className="col-thin">
         {userInfo.bestUserSubmission > 0 && (
-          <div className="text-danger small text-left mt-2">
-            {t("you_have_already_submitted")} {userInfo.bestUserSubmission} € (
-            {moment(userInfo.bestUserSubmissionCreatedAt).format(
-              "DD/MM/YYYY HH:mm"
-            )}
-            )
+          <div className="text-success small text-left mt-2">
+            <b>
+              {t("you_have_already_submitted")}{" "}
+              {userInfo.bestUserSubmission.toLocaleString()} € (
+              {moment(userInfo.bestUserSubmissionCreatedAt).format(
+                "DD/MM/YYYY HH:mm"
+              )}
+              )
+            </b>
           </div>
         )}
         <Button
@@ -364,7 +368,8 @@ const Auction = ({ refId, entryStockDate }) => {
               {t("submission_validation")}{" "}
               <strong class="d-inline-block">
                 {parseInt(userSubmissionAmout).toLocaleString()}€
-              </strong>{" "}{t("submission_validation_message2")}
+              </strong>{" "}
+              {t("submission_validation_message2")}
             </p>
           </ModalBody>
           <ModalFooter>
@@ -592,13 +597,15 @@ const Auction = ({ refId, entryStockDate }) => {
             <div>
               {" "}
               {userInfo.bestUserSubmission > 0 && (
-                <div className="text-danger small text-left mt-2">
-                  {t("you_have_already_submitted")}{" "}
-                  {userInfo.bestUserSubmission} € (
-                  {moment(userInfo.bestUserSubmissionCreatedAt).format(
-                    "DD/MM/YYYY HH:mm"
-                  )}
-                  )
+                <div className="text-success small text-left mt-2">
+                  <b>
+                    {t("you_have_already_submitted")}{" "}
+                    {userInfo.bestUserSubmission.toLocaleString()} € (
+                    {moment(userInfo.bestUserSubmissionCreatedAt).format(
+                      "DD/MM/YYYY HH:mm"
+                    )}
+                    )
+                  </b>
                 </div>
               )}
             </div>
