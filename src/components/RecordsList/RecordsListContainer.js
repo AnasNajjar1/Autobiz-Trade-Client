@@ -17,6 +17,7 @@ import FilterYears from "./FilterYears";
 import FilterKilometers from "./FilterKilometers";
 import FilterGeoloc from "./FilterGeoloc";
 import FilterLists from "./FilterLists";
+import FilterSaleType from "./FilterSaleType";
 import Sort from "./Sort.js";
 import { API } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
@@ -52,6 +53,7 @@ const RecordsListContainer = ({ usercountry }) => {
     mileageMin: "",
     mileageMax: "",
     supplyType: "STOCK",
+    saleTypeAccept: "",
     country: [usercountry],
     zipCode: "",
     radius: 300,
@@ -72,6 +74,7 @@ const RecordsListContainer = ({ usercountry }) => {
     mileageMin: NumberParam,
     mileageMax: NumberParam,
     supplyType: StringParam,
+    saleTypeAccept: StringParam,
     country: ArrayParam,
     zipCode: StringParam,
     lat: StringParam,
@@ -92,6 +95,7 @@ const RecordsListContainer = ({ usercountry }) => {
     mileageMin: query.mileageMin || initialFormState.mileageMin,
     mileageMax: query.mileageMax || initialFormState.mileageMax,
     supplyType: query.supplyType || initialFormState.supplyType,
+    saleTypeAccept: query.saleTypeAccept || initialFormState.saleTypeAccept,
     country: query.country || initialFormState.country,
     zipCode: query.zipCode || initialFormState.zipCode,
     radius: query.radius || initialFormState.radius,
@@ -109,8 +113,9 @@ const RecordsListContainer = ({ usercountry }) => {
   const [aggregation, setAggregation] = useState([]);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const bodyPos = sessionStorage.getItem("scrollPos");
+  const [oldSaleTypeAccept, setOldSaleTypeAccept] = useState(null);
 
+  const bodyPos = sessionStorage.getItem("scrollPos");
   const updateField = (e) => {
     const { name, value } = e.target;
 
@@ -120,6 +125,19 @@ const RecordsListContainer = ({ usercountry }) => {
     };
     setValues(tmpForm);
     sessionStorage.removeItem("scrollPos");
+  };
+
+  const updateSupplyType = (e) => {
+    const tmpForm = {
+      ...form,
+      supplyType: e.target.value,
+      saleTypeAccept: oldSaleTypeAccept,
+    };
+
+    if (e.target.value === "OFFER_TO_PRIVATE") {
+      tmpForm.saleTypeAccept = "";
+    }
+    setValues(tmpForm);
   };
 
   const updatePosition = (position) => {
@@ -156,6 +174,7 @@ const RecordsListContainer = ({ usercountry }) => {
     form.sortLabel = value;
     setQuery(form);
   };
+
   useEffect(() => {
     const fetchRecords = async () => {
       const result = await API.get("b2bPlateform", `/filter`, {
@@ -170,6 +189,7 @@ const RecordsListContainer = ({ usercountry }) => {
             mileageMax: form.mileageMax,
             listId: form.listId,
             country: form.country,
+            saleTypeAccept: form.saleTypeAccept,
             lat: form.lat,
             lng: form.lng,
             radius: form.radius,
@@ -201,6 +221,7 @@ const RecordsListContainer = ({ usercountry }) => {
             mileageMin: form.mileageMin,
             mileageMax: form.mileageMax,
             listId: form.listId,
+            saleTypeAccept: form.saleTypeAccept,
             country: form.country,
             lat: form.lat,
             lng: form.lng,
@@ -239,6 +260,7 @@ const RecordsListContainer = ({ usercountry }) => {
             yearMecMax: form.yearMecMax,
             mileageMin: form.mileageMin,
             mileageMax: form.mileageMax,
+            saleTypeAccept: form.saleTypeAccept,
             listId: form.listId,
             lat: form.lat,
             lng: form.lng,
@@ -252,6 +274,7 @@ const RecordsListContainer = ({ usercountry }) => {
 
     if (Object.values(query).find((e) => e)) fetchRecords();
   }, [query]);
+
   const stockageNbr = aggregation.countries;
   const countOfferToPrivate = aggregation.countOfferToPrivate;
 
@@ -266,10 +289,12 @@ const RecordsListContainer = ({ usercountry }) => {
   }, [form.brandLabel]);
 
   useEffect(() => {
+    if (form.supplyType === "STOCK") setOldSaleTypeAccept(form.saleTypeAccept);
     setQuery(form);
   }, [
     form.modelLabel,
     form.supplyType,
+    form.saleTypeAccept,
     JSON.stringify(form.country),
     form.radius,
     form.lat,
@@ -317,7 +342,7 @@ const RecordsListContainer = ({ usercountry }) => {
         </p>
         <SupplyTypeSwitcher
           current={form.supplyType}
-          updateField={updateField}
+          updateField={updateSupplyType}
           countOfferToPrivate={countOfferToPrivate}
         />
       </div>
@@ -359,16 +384,26 @@ const RecordsListContainer = ({ usercountry }) => {
             <Section>
               <div className="d-none d-md-block">
                 <p className="section-title">
-                  <Translate code="offer_type" />
+                  <Translate code="salesType" />
                 </p>
 
                 <SupplyTypeSwitcher
                   current={form.supplyType}
-                  updateField={updateField}
+                  updateField={updateSupplyType}
                   countOfferToPrivate={countOfferToPrivate}
                 />
               </div>
-
+              {form.supplyType === "STOCK" && (
+                <>
+                  <p className="section-title">
+                    <Translate code="offer_type" />
+                  </p>
+                  <FilterSaleType
+                    value={form.saleTypeAccept}
+                    updateField={updateField}
+                  />
+                </>
+              )}
               <p className="section-title">
                 <Translate code="brand_and_model" />
               </p>
