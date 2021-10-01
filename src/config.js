@@ -2,7 +2,7 @@ const ENV = process.env.REACT_APP_ENV;
 
 const apisB2bPlateform = {
   local: "http://localhost:4000",
-  dev: "https://stg72-api-trade.shakazoola.com",
+  dev: "https://dev-api-trade.shakazoola.com",
   staging: "https://stg72-api-trade.shakazoola.com",
   ppr: "https://ppr-api-trade.autobiz.com",
   prod: "https://api-trade.autobiz.com",
