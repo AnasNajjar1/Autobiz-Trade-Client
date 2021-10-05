@@ -19,11 +19,14 @@ import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import { getCurrentLanguage } from "../../language-context";
 import { Api } from "../../providers/Api";
+import * as workerTimers from "worker-timers";
 
 const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
   const [isScheduled, setIsScheduled] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [secondsBeforeEnd, setSecondsBeforeEnd] = useState(0);
+  const [secondsBeforeStart, setSecondsBeforeStart] = useState(0);
 
   const [tooltipReservePrice, settooltipReservePrice] = useState(false);
 
@@ -114,7 +117,12 @@ const Auction = ({ refId, entryStockDate }) => {
 
     const putAuction = async () => {
       try {
-        const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
+        const result = await Api.request(
+          "POST",
+          `/sale/${refId}/offer`,
+          {},
+          postData
+        );
         setSale(result.data);
       } catch (e) {
         alert(e);
@@ -138,7 +146,12 @@ const Auction = ({ refId, entryStockDate }) => {
 
       const putAuction = async () => {
         try {
-          const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
+          const result = await Api.request(
+            "POST",
+            `/sale/${refId}/offer`,
+            {},
+            postData
+          );
           setSale(result.data);
         } catch (e) {
           alert(e);
@@ -163,7 +176,12 @@ const Auction = ({ refId, entryStockDate }) => {
 
       const putAuction = async () => {
         try {
-          const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
+          const result = await Api.request(
+            "POST",
+            `/sale/${refId}/offer`,
+            {},
+            postData
+          );
           setSale(result.data);
         } catch (e) {
           alert(e);
@@ -177,6 +195,8 @@ const Auction = ({ refId, entryStockDate }) => {
     console.log("fetching");
     try {
       const result = await Api.request("GET", `/sale/${refId}/info`);
+      setSecondsBeforeStart(result.data.secondsBeforeStart);
+      setSecondsBeforeEnd(result.data.secondsBeforeEnd);
 
       if (result.data.secondsBeforeEnd > 0) {
         setIsExpired(false);
@@ -198,12 +218,12 @@ const Auction = ({ refId, entryStockDate }) => {
 
   useEffect(() => {
     fetchSale();
-    const intervalRefresh = setInterval(() => {
+    const intervalRefresh = workerTimers.setInterval(() => {
       if (!isExpired) {
         fetchSale();
       }
     }, refreshTime);
-    return () => clearInterval(intervalRefresh);
+    return () => workerTimers.clearInterval(intervalRefresh);
   }, [refId, isExpired]);
 
   const closingMessage = () => {
@@ -225,8 +245,6 @@ const Auction = ({ refId, entryStockDate }) => {
   const endDateTime = new Date(sale.endDateTime);
 
   const {
-    secondsBeforeEnd = 0,
-    secondsBeforeStart = 0,
     isAuctionOpen,
     isSubmissionOpen,
     isImmediatePurchaseOpen,

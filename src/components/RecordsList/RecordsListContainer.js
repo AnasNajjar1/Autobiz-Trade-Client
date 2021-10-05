@@ -246,7 +246,6 @@ const RecordsListContainer = ({ usercountry }) => {
         console.log(e);
       }
     };
-
     if (Object.values(query).find((e) => e)) fetchRecords();
   }, [query]);
 
