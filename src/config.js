@@ -93,3 +93,12 @@ exports.didomiConfig = {
 exports.zendeskConfig = {
   apiKey: "95647fe6-313e-48a9-97a8-e840b2c1a60e",
 };
+
+exports.linkPrivacy = {
+  fr: "politique-de-protection-des-donnees",
+  it: "politica-sulla-riservatezza",
+  de: "datenschutzrichtlinie",
+  en: "privacy-policy",
+  es: "politica-de-confidencialidad",
+  pt: "politica-de-privacidade",
+};

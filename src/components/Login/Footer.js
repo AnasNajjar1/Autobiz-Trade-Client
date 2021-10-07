@@ -1,6 +1,11 @@
 import React from "react";
 import { t } from "../common/Translate";
-import { termsOfUseLink, contactUsLink, getCurrentLanguage } from "../../language-context";
+import {
+  termsOfUseLink,
+  contactUsLink,
+  getCurrentLanguage,
+} from "../../language-context";
+import { linkPrivacy } from "../../config";
 
 const Footer = ({ didomi }) => {
   const currentLanguage = getCurrentLanguage();
@@ -14,7 +19,7 @@ const Footer = ({ didomi }) => {
         <a href={contactUsLink[currentLanguage]} target="_blank">
           {t("contactUsHp")}
         </a>
-        <a>{t("confidentialityHp")}</a>
+        <a href={linkPrivacy[currentLanguage]}>{t("confidentialityHp")}</a>
         <a onClick={() => openPreferences()}>{t("Consent choices")}</a>
         <a href={termsOfUseLink[currentLanguage]} target="_blank">
           {t("termsOfUseHp")}
