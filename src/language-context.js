@@ -46,11 +46,11 @@ export const languages = {
 };
 
 export const corporateSiteLink = {
-  fr: "https://corporate.autobiz.com/contact",
-  en: "https://corporate.autobiz.com/en/contact",
-  es: "https://corporate.autobiz.com/es/contactos",
+  fr: "https://office.autobiz.com/contact/",
+  en: "https://corporate.autobiz.com/en/contact-us",
+  es: "https://office.autobiz.com/es/contacto/",
   pt: "https://corporate.autobiz.com/pt/contactos",
-  it: "https://corporate.autobiz.com/it/contatti",
+  it: "https://office.autobiz.com/it/contatti/",
   de: "https://corporate.autobiz.com/de/kontakt",
   nl: "https://corporate.autobiz.com/nl/contact",
 };

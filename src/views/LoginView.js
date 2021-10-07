@@ -6,20 +6,18 @@ import CarDealerSection from "../components/Login/CarDealerSection";
 import StatsSection from "../components/Login/StatsSection";
 import Footer from "../components/Login/Footer";
 import { ZendeskDisplayer } from "../components/common/ZendeskDisplayer";
-import { getCurrentLanguage } from "../language-context"
+import { getCurrentLanguage } from "../language-context";
 
 const LoginView = (props) => {
-  const currentLanguage = getCurrentLanguage()
+  const currentLanguage = getCurrentLanguage();
   return (
     <>
       <ZendeskDisplayer language={currentLanguage} />
       <div className="page page-index">
-        <LoginSection
-          {...props}
-        />
+        <LoginSection {...props} />
         <PresentationSection />
         <CarsSection />
-        <CarDealerSection />
+        <CarDealerSection appLanguage={currentLanguage} />
         <StatsSection />
         <Footer didomi={props.didomi} />
       </div>
