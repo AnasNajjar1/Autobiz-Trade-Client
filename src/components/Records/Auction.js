@@ -193,16 +193,6 @@ const Auction = ({ refId, entryStockDate }) => {
     }
   };
 
-  useEffect(() => {
-    fetchSale();
-    const intervalRefresh = setInterval(() => {
-      if (!isExpired) {
-        fetchSale();
-      }
-    }, refreshTime);
-    return () => clearInterval(intervalRefresh);
-  }, [refId, isExpired]);
-
   const fetchSale = async () => {
     console.log("fetching");
     try {
@@ -227,6 +217,16 @@ const Auction = ({ refId, entryStockDate }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchSale();
+    const intervalRefresh = setInterval(() => {
+      if (!isExpired) {
+        fetchSale();
+      }
+    }, refreshTime);
+    return () => clearInterval(intervalRefresh);
+  }, [refId, isExpired]);
 
   const closingMessage = () => {
     let message = "";
@@ -260,6 +260,7 @@ const Auction = ({ refId, entryStockDate }) => {
     auctionReservePriceIsReached,
     bestOffer,
     userInfo,
+    isOwner,
   } = sale;
 
   if (_.isEmpty(sale)) {
@@ -277,7 +278,7 @@ const Auction = ({ refId, entryStockDate }) => {
         <Button
           color="primary"
           block
-          disabled={isExpired || isScheduled}
+          disabled={isExpired || isScheduled || isOwner}
           onClick={toggleModalImmediatePurchase}
         >
           {t("immediate_purchase")}{" "}
@@ -331,7 +332,7 @@ const Auction = ({ refId, entryStockDate }) => {
           name="user-submission"
           value={userSubmissionAmout}
           onChange={handleChangeSubmission}
-          disabled={isExpired}
+          disabled={isExpired || isOwner}
           onKeyPress={(e) => handleKeyPress(e, "submission")}
           invalid={!submissionIsValid && Boolean(userSubmissionAmout)}
           placeholder={`${t("make_a_free_submission")} (${t(
@@ -400,6 +401,7 @@ const Auction = ({ refId, entryStockDate }) => {
     <Row className="row-thin align-items-end mb-3">
       <Col xs={12} className="col-thin">
         <Input
+          disabled={isOwner}
           type="number"
           name="user-offer"
           className="mb-2"
@@ -416,7 +418,7 @@ const Auction = ({ refId, entryStockDate }) => {
         <Button
           color="primary"
           block
-          disabled={!auctionIsValid || isScheduled}
+          disabled={!auctionIsValid || isScheduled || isOwner}
           onClick={toggleModalAuction}
         >
           {t("make_an_offer")}
