@@ -5,8 +5,8 @@ import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
-import CarouselRecordsElement from "./CarouselRecordsElement";
 import moment from "moment";
+import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 import iconCockadeRed from "../../assets/img/cockade-red.svg";
 import {
   faShoppingCart,
@@ -17,14 +17,22 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
-import { orderGalleryPictures } from "../../helper/Vehicle";
 import { flags } from "../../language-context";
-import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
-const RecordsElement = ({ record }) => {
-  const { vehicle, secondsBeforeEnd, secondsBeforeStart } = record;
-  const { message } = record.userInfo;
+
+const RecordsElement = (props) => {
+  const { record } = props;
+  const { vehicle } = record;
   const { pointofsale } = vehicle;
-  const pictures = orderGalleryPictures(vehicle.gallery);
+  const { secondsBeforeEnd, secondsBeforeStart } = record;
+
+  let featuredPicture;
+  if (vehicle && vehicle.featuredPicture) {
+    featuredPicture = vehicle.featuredPicture;
+  } else {
+    featuredPicture = defaultFrontPicture;
+  }
+
+  const { message } = record.userInfo;
 
   const saveScrollPosition = () => {
     sessionStorage.setItem("scrollPos", window.scrollY);
@@ -111,15 +119,11 @@ const RecordsElement = ({ record }) => {
               </div>
             )}
 
-            {pictures.length > 0 ? (
-              <CarouselRecordsElement pictures={pictures} vehicle={vehicle} />
-            ) : (
-              <img
-                className="card-img-top"
-                src={defaultFrontPicture}
-                alt={vehicle.brandLabel + " " + vehicle.modelLabel}
-              />
-            )}
+            <img
+              className="card-img-top"
+              src={featuredPicture}
+              alt={vehicle.brandLabel + " " + vehicle.modelLabel}
+            />
             <RecordsElementGrade grade={vehicle.profileBodyCosts} />
           </div>
 
