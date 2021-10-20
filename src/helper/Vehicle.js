@@ -278,3 +278,13 @@ export const excludedMarketData = [
 export const excludedKeyPoint = ["imported"];
 
 export const excludedEquipments = ["none"];
+
+export const listZone = [
+  "servicing",
+  "wheels",
+  "body",
+  "inner",
+  "road_test",
+  "motor",
+  "crash"
+];
