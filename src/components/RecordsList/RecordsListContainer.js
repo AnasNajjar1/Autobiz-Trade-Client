@@ -180,7 +180,7 @@ const RecordsListContainer = ({ usercountry }) => {
       setFilters(result.data);
     };
 
-    fetchRecords();
+    if (Object.values(query).find((e) => e)) fetchRecords();
   }, [query]);
 
   useEffect(() => {
@@ -222,7 +222,7 @@ const RecordsListContainer = ({ usercountry }) => {
       setIsFetching(false);
     };
 
-    fetchRecords();
+    if (Object.values(query).find((e) => e)) fetchRecords();
   }, [query]);
 
   useEffect(() => {
@@ -250,7 +250,7 @@ const RecordsListContainer = ({ usercountry }) => {
       setAggregation(result.data);
     };
 
-    fetchRecords();
+    if (Object.values(query).find((e) => e)) fetchRecords();
   }, [query]);
   const stockageNbr = aggregation.countries;
   const countOfferToPrivate = aggregation.countOfferToPrivate;
