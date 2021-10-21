@@ -5,6 +5,7 @@ import { Row, Col, Card, CardBody, CardTitle, CardFooter } from "reactstrap";
 import RecordsElementGrade from "./RecordsElementGrade.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "../common/Countdown";
+import { CarouselRecordsElement } from "./CarouselRecordsElement";
 import moment from "moment";
 import defaultFrontPicture from "../../assets/img/default-front-vehicle-picture.png";
 import iconCockadeRed from "../../assets/img/cockade-red.svg";
@@ -18,11 +19,13 @@ import {
 import _ from "lodash";
 import Bookmark from "../common/Bookmark";
 import { flags } from "../../language-context";
+import { orderGalleryPictures } from "../../helper/Vehicle";
 
 const RecordsElement = (props) => {
   const { record } = props;
   const { vehicle } = record;
   const { pointofsale } = vehicle;
+  const pictures = orderGalleryPictures(vehicle.gallery);
   const { secondsBeforeEnd, secondsBeforeStart } = record;
 
   let featuredPicture;
@@ -119,11 +122,15 @@ const RecordsElement = (props) => {
               </div>
             )}
 
-            <img
-              className="card-img-top"
-              src={featuredPicture}
-              alt={vehicle.brandLabel + " " + vehicle.modelLabel}
-            />
+            {pictures.length > 0 ? (
+              <CarouselRecordsElement pictures={pictures} vehicle={vehicle} />
+            ) : (
+              <img
+                className="card-img-top"
+                src={defaultFrontPicture}
+                alt={vehicle.brandLabel + " " + vehicle.modelLabel}
+              />
+            )}
             <RecordsElementGrade grade={vehicle.profileBodyCosts} />
           </div>
 
