@@ -66,7 +66,10 @@ exports.pdfLang = {
   fr: "fr",
   de: "de",
   es: "es",
-  default: "fr",
+  it: "it",
+  pt: "pt",
+  en: "en",
+  default: "en",
 };
 
 exports.tagManagerArgs = {
