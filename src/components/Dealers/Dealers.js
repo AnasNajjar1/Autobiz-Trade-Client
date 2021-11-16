@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
-import { API } from "aws-amplify";
 import {
   Container,
   Row,
@@ -32,6 +31,7 @@ import FormActions from "../RecordsList/FormActions";
 import Parser from "html-react-parser";
 import { staticImagesUrl } from "../../config";
 import Bookmark from "../common/Bookmark";
+import { Api } from "../../providers/Api";
 
 const Dealer = (props) => {
   const [dealer, setDealer] = useState(false);
@@ -52,14 +52,7 @@ const Dealer = (props) => {
   useEffect(() => {
     const fetchDealer = async () => {
       try {
-        const result = await API.get(
-          "b2bPlateform",
-          `/pointOfSale/${props.refId}`,
-          {
-            response: true,
-          }
-        );
-
+        const result = await Api.request("GET", `/pointOfSale/${props.refId}`);
         setDealer(result.data);
         setLoading(false);
       } catch (error) {
@@ -185,37 +178,40 @@ const Dealer = (props) => {
   }, [form.modelLabel, form.supplyType]);
 
   useEffect(() => {
-    const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/filter`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
-            search: form.search,
-            supplyType: form.supplyType,
-            brandLabel: form.brandLabel,
-            modelLabel: form.modelLabel,
-            yearMecMin: form.yearMecMin,
-            yearMecMax: form.yearMecMax,
-            mileageMin: form.mileageMin,
-            mileageMax: form.mileageMax,
-            pointOfSaleUuid: dealer ? dealer.uuid : null,
-          }),
-        },
-        response: true,
-      });
-      setFilters(result.data);
-    };
-
-    fetchRecords();
+    if (dealer !== false) {
+      const fetchRecords = async () => {
+        try {
+          const params = {
+            filter: {
+              search: form.search,
+              supplyType: form.supplyType,
+              brandLabel: form.brandLabel,
+              modelLabel: form.modelLabel,
+              yearMecMin: form.yearMecMin,
+              yearMecMax: form.yearMecMax,
+              mileageMin: form.mileageMin,
+              mileageMax: form.mileageMax,
+              pointOfSaleUuid: dealer ? dealer.uuid : null,
+            },
+          };
+          const result = await Api.request("GET", "/filter", params);
+          setFilters(result.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchRecords();
+    }
   }, [dealer, query]);
 
   useEffect(() => {
     if (dealer !== false) {
       const fetchRecords = async () => {
         setIsFetching(true);
-        const result = await API.get("b2bPlateform", `/sale`, {
-          queryStringParameters: {
+        try {
+          const params = {
             range: JSON.stringify(form.range),
-            filter: JSON.stringify({
+            filter: {
               search: form.search,
               supplyType: form.supplyType,
               brandLabel: form.brandLabel,
@@ -225,21 +221,23 @@ const Dealer = (props) => {
               mileageMin: form.mileageMin,
               mileageMax: form.mileageMax,
               pointOfSaleUuid: dealer.uuid,
-            }),
-          },
-          response: true,
-        });
+            },
+          };
+          const result = await Api.request("GET", `/sale`, params);
 
-        const contentRange = result.headers["content-range"];
-        if (result.data && result.data.length > 0) {
-          const contentRangeArray = contentRange.split("/");
-          setRecordsCount(contentRangeArray[1]);
-          setRecords(result.data);
-        } else {
-          setRecordsCount(0);
-          setRecords([]);
+          const contentRange = result.headers["content-range"];
+          if (result.data && result.data.length > 0) {
+            const contentRangeArray = contentRange.split("/");
+            setRecordsCount(contentRangeArray[1]);
+            setRecords(result.data);
+          } else {
+            setRecordsCount(0);
+            setRecords([]);
+          }
+          setIsFetching(false);
+        } catch (err) {
+          console.log(err);
         }
-        setIsFetching(false);
       };
 
       fetchRecords();

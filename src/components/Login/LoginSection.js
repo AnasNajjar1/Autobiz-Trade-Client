@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../../assets/img/logo_autobiztrade.svg";
 import { linkNewPassword, tradeHelpMail } from "../../config";
-import { Auth, API } from "aws-amplify";
 import {
   getFlag,
 } from "../common/LanguagePicker";
@@ -9,6 +8,7 @@ import { languages, getCurrentLanguage, handleChangeLang } from "../../language-
 import { t } from "../common/Translate";
 import _ from "lodash";
 import "../../assets/scss/login.scss";
+import { Auth } from "../../providers/Auth";
 import { useHistory } from "react-router";
 
 const LoginSection = ({ entryPath }) => {
@@ -44,10 +44,9 @@ const LoginSection = ({ entryPath }) => {
       setError(true);
     } else {
       setLoading(true);
-
-      signInAutobiz(username, password)
+      Auth.login(username, password)
         .then(() => history.push(entryPath))
-        .catch((e) => setError(true))
+        .catch(() => setError(true))
         .finally(() => setLoading(false));
     }
   };
@@ -118,61 +117,3 @@ const LoginSection = ({ entryPath }) => {
 };
 
 export default LoginSection;
-
-async function signInAutobiz(username, password) {
-  const authAutobiz = await API.post("b2bPlateform", "/auth", {
-    body: { username, password },
-  });
-
-  // To derive necessary data from the provider
-  const {
-    token, // the token you get from the provider
-    domain,
-    expiresIn,
-    user,
-    identity_id,
-  } = authAutobiz;
-  return Auth.federatedSignIn(
-    domain,
-    {
-      token,
-      identity_id, // Optional
-      expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
-    },
-    user
-  )
-    .then((cred) => {
-      // If success, you will get the AWS credentials
-      return Auth.currentAuthenticatedUser();
-    })
-    .then((user) => {
-      // If success, the user object you passed in Auth.federatedSignIn
-      return user;
-    })
-    .catch((e) => {
-      console.log("error", e.message);
-    });
-}
-
-async function refreshToken() {
-  // refresh the token here and get the new token info
-  // ......
-  const authAutobiz = await API.post("b2bPlateform", "/auth/refresh");
-  const {
-    token, // the token you get from the provider
-    expiresIn,
-    identity_id,
-  } = authAutobiz;
-
-  return {
-    token, // the token from the provider
-    expires_at: expiresIn * 1000 + new Date().getTime(), // the expiration timestamp
-    identity_id, // optional, the identityId for the credentials
-  };
-}
-
-Auth.configure({
-  refreshHandlers: {
-    developer: refreshToken(),
-  },
-});

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 import Countdown from "../common/Countdown";
-import { API } from "aws-amplify";
 import _ from "lodash";
 import {
   Row,
@@ -19,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import { getCurrentLanguage } from "../../language-context";
+import { Api } from "../../providers/Api";
 
 const Auction = ({ refId, entryStockDate }) => {
   const [isExpired, setIsExpired] = useState();
@@ -114,11 +114,7 @@ const Auction = ({ refId, entryStockDate }) => {
 
     const putAuction = async () => {
       try {
-        const result = await API.post("b2bPlateform", `/sale/${refId}/offer`, {
-          body: postData,
-          response: true,
-        });
-
+        const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
         setSale(result.data);
       } catch (e) {
         alert(e);
@@ -142,15 +138,7 @@ const Auction = ({ refId, entryStockDate }) => {
 
       const putAuction = async () => {
         try {
-          const result = await API.post(
-            "b2bPlateform",
-            `/sale/${refId}/offer`,
-            {
-              body: postData,
-              response: true,
-            }
-          );
-
+          const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
           setSale(result.data);
         } catch (e) {
           alert(e);
@@ -175,15 +163,7 @@ const Auction = ({ refId, entryStockDate }) => {
 
       const putAuction = async () => {
         try {
-          const result = await API.post(
-            "b2bPlateform",
-            `/sale/${refId}/offer`,
-            {
-              body: postData,
-              response: true,
-            }
-          );
-
+          const result = await Api.request("POST", `/sale/${refId}/offer`, {}, postData);
           setSale(result.data);
         } catch (e) {
           alert(e);
@@ -196,9 +176,7 @@ const Auction = ({ refId, entryStockDate }) => {
   const fetchSale = async () => {
     console.log("fetching");
     try {
-      const result = await API.get("b2bPlateform", `/sale/${refId}/info`, {
-        response: true,
-      });
+      const result = await Api.request("GET", `/sale/${refId}/info`);
 
       if (result.data.secondsBeforeEnd > 0) {
         setIsExpired(false);

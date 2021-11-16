@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarFull } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarEmpty } from "@fortawesome/free-regular-svg-icons";
-import { API } from "aws-amplify";
+import { Api } from "../../providers/Api";
 
 const Bookmark = ({ scope, refId, bookmarked }) => {
   const [isBookmarked, setIsBookmarked] = useState(bookmarked);
@@ -19,16 +19,12 @@ const Bookmark = ({ scope, refId, bookmarked }) => {
 
   const putVehicleInBookmark = async () => {
     try {
-      let myInit = {
-        body: {
-          favorite: !isBookmarked,
-        },
-        response: true,
+      const data = {
+        favorite: !isBookmarked,
       };
-      await API.post("b2bPlateform", `/bookmark/${scope}/${refId}/`, myInit);
-      return;
-    } catch (e) {
-      //console.log("dossier ", refId, " n'est pas ton Bookmark", e);
+      await Api.request("POST", `/bookmark/${scope}/${refId}/`, {}, data);
+    } catch (err) {
+      console.log(err);
     }
   };
 

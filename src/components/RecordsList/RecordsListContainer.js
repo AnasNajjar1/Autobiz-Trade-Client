@@ -19,7 +19,6 @@ import FilterGeoloc from "./FilterGeoloc";
 import FilterLists from "./FilterLists";
 import FilterSaleType from "./FilterSaleType";
 import Sort from "./Sort.js";
-import { API } from "aws-amplify";
 import RecordsElement from "./RecordsElement";
 import FilterTag from "./FilterTag";
 import Section from "./Section";
@@ -30,6 +29,7 @@ import {
   StringParam,
   ArrayParam,
 } from "use-query-params";
+import { Api } from "../../providers/Api";
 
 const RecordsListContainer = ({ usercountry }) => {
   const ItemsPerPage = 100;
@@ -177,9 +177,9 @@ const RecordsListContainer = ({ usercountry }) => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/filter`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
+      try {
+        const params = {
+          filter: {
             list: form.list,
             search: form.search,
             supplyType: form.supplyType,
@@ -193,11 +193,13 @@ const RecordsListContainer = ({ usercountry }) => {
             lat: form.lat,
             lng: form.lng,
             radius: form.radius,
-          }),
-        },
-        response: true,
-      });
-      setFilters(result.data);
+          },
+        };
+        const result = await Api.request("GET", `/filter`, params);
+        setFilters(result.data);
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     if (Object.values(query).find((e) => e)) fetchRecords();
@@ -206,11 +208,11 @@ const RecordsListContainer = ({ usercountry }) => {
   useEffect(() => {
     const fetchRecords = async () => {
       setIsFetching(true);
-      const result = await API.get("b2bPlateform", `/sale`, {
-        queryStringParameters: {
+      try {
+        const params = {
           sortLabel: form.sortLabel,
           range: JSON.stringify(form.range),
-          filter: JSON.stringify({
+          filter: {
             list: form.list,
             search: form.search,
             supplyType: form.supplyType,
@@ -226,21 +228,23 @@ const RecordsListContainer = ({ usercountry }) => {
             lat: form.lat,
             lng: form.lng,
             radius: form.radius,
-          }),
-        },
-        response: true,
-      });
+          },
+        };
+        const result = await Api.request("GET", `/sale`, params);
 
-      const contentRange = result.headers["content-range"];
-      if (result.data && result.data.length > 0) {
-        const contentRangeArray = contentRange.split("/");
-        setRecordsCount(contentRangeArray[1]);
-        setRecords(result.data);
-      } else {
-        setRecordsCount(0);
-        setRecords([]);
+        const contentRange = result.headers["content-range"];
+        if (result.data && result.data.length > 0) {
+          const contentRangeArray = contentRange.split("/");
+          setRecordsCount(contentRangeArray[1]);
+          setRecords(result.data);
+        } else {
+          setRecordsCount(0);
+          setRecords([]);
+        }
+        setIsFetching(false);
+      } catch (e) {
+        console.log(e);
       }
-      setIsFetching(false);
     };
 
     if (Object.values(query).find((e) => e)) fetchRecords();
@@ -248,27 +252,24 @@ const RecordsListContainer = ({ usercountry }) => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/aggregations`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
-            list: form.list,
-            search: form.search,
-            supplyType: form.supplyType,
-            brandLabel: form.brandLabel,
-            modelLabel: form.modelLabel,
-            yearMecMin: form.yearMecMin,
-            yearMecMax: form.yearMecMax,
-            mileageMin: form.mileageMin,
-            mileageMax: form.mileageMax,
-            saleTypeAccept: form.saleTypeAccept,
-            listId: form.listId,
-            lat: form.lat,
-            lng: form.lng,
-            radius: form.radius,
-          }),
+      const params = {
+        filter: {
+          list: form.list,
+          search: form.search,
+          supplyType: form.supplyType,
+          brandLabel: form.brandLabel,
+          modelLabel: form.modelLabel,
+          yearMecMin: form.yearMecMin,
+          yearMecMax: form.yearMecMax,
+          mileageMin: form.mileageMin,
+          mileageMax: form.mileageMax,
+          listId: form.listId,
+          lat: form.lat,
+          lng: form.lng,
+          radius: form.radius,
         },
-        response: true,
-      });
+      };
+      const result = await Api.request("GET", `/aggregations`, params);
       setAggregation(result.data);
     };
 

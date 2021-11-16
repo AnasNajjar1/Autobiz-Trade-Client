@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Translate, { t } from "../common/Translate";
 import moment from "moment";
 import _ from "lodash";
-import { API } from "aws-amplify";
 import {
   Container,
   Row,
@@ -31,7 +30,6 @@ import CheckList from "./CheckList.js";
 import Documents from "./Documents.js";
 import TableList from "./TableList.js";
 import EquipmentList from "./EquipmentList.js";
-import UlList from "./UlList.js";
 import UlListEquipment from "./UlListEquipment.js";
 import { BrowserView, MobileView } from "react-device-detect";
 import Lightbox from "react-image-lightbox";
@@ -47,6 +45,7 @@ import {
 } from "../../helper/Vehicle";
 import { getCurrentLanguage } from "../../language-context";
 import { orderedConstructorEquipments } from "../../helper/Equipments";
+import { Api } from "../../providers/Api";
 
 const Record = (props) => {
   const [record, setRecord] = useState([]);
@@ -60,9 +59,7 @@ const Record = (props) => {
   useEffect(() => {
     const fetchRecord = async () => {
       try {
-        const result = await API.get("b2bPlateform", `/sale/${props.refId}`, {
-          response: true,
-        });
+        const result = await Api.request("GET", `/sale/${props.refId}`);
         setRecord(result.data);
         setLoading(false);
       } catch (error) {

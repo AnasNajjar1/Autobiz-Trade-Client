@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
 import { Spinner } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,6 +15,8 @@ import ExportOffers from "../Offers/ExportOffers";
 import { exportOffersMapper } from "../../helper/Offer";
 import { isBrowser } from "react-device-detect";
 import { ZendeskDisplayer } from "../common/ZendeskDisplayer";
+import { Auth } from "../../providers/Auth";
+import clearAuthData from "../../providers/Auth/clearAuthData";
 
 const Header = (props) => {
   const history = useHistory();
@@ -26,10 +27,11 @@ const Header = (props) => {
   const [offers, setOffers] = useState(null);
 
   const signOut = async function () {
-    await Auth.signOut();
-    setLogout(true);
-    sessionStorage.removeItem("scrollPos");
-    return;
+    const loggedOut = await Auth.logout();
+    if (loggedOut) {
+      await clearAuthData();
+      setLogout(true);
+    }
   };
 
   const goBackEvent = (e) => {

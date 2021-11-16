@@ -8,7 +8,6 @@ import {
   faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 import Translate, { t } from "../common/Translate";
-import { API } from "aws-amplify";
 import {
   useQueryParams,
   NumberParam,
@@ -23,6 +22,7 @@ import FilterSearch from "../RecordsList/FilterSearch";
 import FilterBrands from "../RecordsList/FilterBrands";
 import FilterModels from "../RecordsList/FilterModels";
 import FilterGeoloc from "../RecordsList/FilterGeoloc";
+import { Api } from "../../providers/Api";
 
 const DealersListContainer = ({ usercountry }) => {
   const ItemsPerPage = 6;
@@ -109,17 +109,19 @@ const DealersListContainer = ({ usercountry }) => {
 
   useEffect(() => {
     const fetchRecords = async () => {
-      const result = await API.get("b2bPlateform", `/filter`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
+      try {
+        const params = {
+          filter: {
             search: form.search,
             list: form.list,
             country: form.country,
-          }),
-        },
-        response: true,
-      });
-      setFilters(result.data);
+          },
+        };
+        const result = await Api.request("GET", "/filter", params);
+        setFilters(result.data);
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     fetchRecords();
@@ -133,34 +135,34 @@ const DealersListContainer = ({ usercountry }) => {
   useEffect(() => {
     const fetchDealers = async () => {
       setIsFetching(true);
-      const result = await API.get("b2bPlateform", `/pointOfSale`, {
-        queryStringParameters: {
-          filter: JSON.stringify({
-            search: form.search,
-            list: form.list,
-            modelLabel: form.modelLabel,
-            country: form.country,
-            radius: form.radius,
-            lat: form.lat,
-            lng: form.lng,
-            brandLabel: form.brandLabel,
-          }),
-          range: JSON.stringify(form.range),
+      const params = {
+        filter: {
+          search: form.search,
+          list: form.list,
+          modelLabel: form.modelLabel,
+          country: form.country,
+          radius: form.radius,
+          lat: form.lat,
+          lng: form.lng,
+          brandLabel: form.brandLabel,
         },
-        response: true,
-      });
-
-      const contentRange = result.headers["content-range"];
-
-      if (result.data && result.data.length > 0) {
-        const contentRangeArray = contentRange.split("/");
-        setDealersCount(contentRangeArray[1]);
-        setDealers(result.data);
-      } else {
-        setDealersCount(0);
-        setDealers([]);
+        range: JSON.stringify(form.range),
+      };
+      try {
+        const result = await Api.request("GET", "/pointOfSale", params);
+        const contentRange = result.headers["content-range"];
+        if (result.data && result.data.length > 0) {
+          const contentRangeArray = contentRange.split("/");
+          setDealersCount(contentRangeArray[1]);
+          setDealers(result.data);
+        } else {
+          setDealersCount(0);
+          setDealers([]);
+        }
+        setIsFetching(false);
+      } catch (err) {
+        console.log(err);
       }
-      setIsFetching(false);
     };
 
     fetchDealers();

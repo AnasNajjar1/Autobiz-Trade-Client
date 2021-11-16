@@ -105,3 +105,11 @@ exports.linkPrivacy = {
   es: "politica-de-confidencialidad",
   pt: "politica-de-privacidade",
 };
+
+const domains = {
+  local: "localhost",
+  staging: ".shakazoola.com",
+  prod: ".autobiz.com",
+};
+
+exports.domain = domains[ENV];

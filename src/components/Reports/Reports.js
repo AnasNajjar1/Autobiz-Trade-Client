@@ -3,7 +3,6 @@ import { t } from "../common/Translate";
 
 import { Row, Col } from "reactstrap";
 import _ from "lodash";
-import { API } from "aws-amplify";
 import logo from "../../assets/img/autobiz-trade.svg";
 import { showableValue, renderValue, renderLabel } from "../Records/TableList";
 import EquipmentList from "../Records/EquipmentList.js";
@@ -20,16 +19,17 @@ import {
 import { BodySvg } from "./BodySvg";
 import { InnerSvg } from "./InnerSvg";
 import { WheelsSvg } from "./WheelsSvg";
+import { Api } from "../../providers/Api";
 
 const Report = (props) => {
   const [record, setRecord] = useState([]);
 
   const fetchRecord = async () => {
     try {
-      return await API.get("b2bPlateform", `/sale/${props.refId}`, {
-        response: true,
-      });
-    } catch (error) {}
+      return await Api.request("GET", `/sale/${props.refId}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
