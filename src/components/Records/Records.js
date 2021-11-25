@@ -42,6 +42,7 @@ import {
   orderGalleryPictures,
   excludedMarketData,
   excludedKeyPoint,
+  listZone,
 } from "../../helper/Vehicle";
 import { getCurrentLanguage } from "../../language-context";
 import { orderedConstructorEquipments } from "../../helper/Equipments";
@@ -99,6 +100,18 @@ const Record = (props) => {
         ld["servicing"]
           ? ld["servicing"].push(technicalCheckDate)
           : (ld["servicing"] = [technicalCheckDate]);
+      }
+
+      if (record.vehicle.frevo?.reconditioningCostsMerchant) {
+        const reconditioningCostsMerchant = {
+          damage: `${record.vehicle.frevo.reconditioningCostsMerchant.toLocaleString()} €`,
+          element: "reconditioningCostsMerchant",
+          zone: "frevo",
+        };
+        ld["frevo"]
+          ? ld["frevo"].push(reconditioningCostsMerchant)
+          : (ld["frevo"] = [reconditioningCostsMerchant]);
+        listZone.push("frevo");
       }
     }
     setSections(ld);
@@ -771,16 +784,6 @@ const Damage = ({ i, index, damagesImage }) => {
 };
 
 const ListZones = ({ activeSubTab, setActiveSubTab }) => {
-  const listZone = [
-    "servicing",
-    "wheels",
-    "body",
-    "inner",
-    "road_test",
-    "motor",
-    "crash",
-  ];
-
   return (
     <div className="list-zone">
       <div className="item">
