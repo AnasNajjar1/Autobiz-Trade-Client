@@ -140,6 +140,8 @@ const RecordsElement = (props) => {
                 <Countdown
                   secondsBeforeStart={secondsBeforeStart}
                   secondsBeforeEnd={secondsBeforeEnd}
+                  precision="minutes"
+                  refresh
                 />
                 <Bookmark
                   scope="sale"
