@@ -148,6 +148,14 @@ const Record = (props) => {
 
   const { vehicle, supplyType } = record;
   const { pointofsale, market } = vehicle;
+  const {
+    commentsInt,
+    comments,
+    paymentDeadline,
+    paymentDeadlineInt,
+    pickupDeadline,
+    pickupDeadlineInt,
+  } = pointofsale;
   const gallery = orderGalleryPictures(vehicle.gallery);
   let orderadminDetail = {};
   let gcDate = _.get(vehicle, "administrativeDetails.gcDate", null);
@@ -617,21 +625,77 @@ const Record = (props) => {
                 <TabPane tabId="3">
                   <Row className="bordered-row">
                     <Col md="4">
-                      <div className="h2 mb-3">{t("payment_deadline")}</div>
-                      {(pointofsale.paymentDeadline &&
-                        Parser(pointofsale.paymentDeadline)) ||
-                        t("no_informations")}
+                      <div className="h2 mb-3">
+                        <p>
+                          {t("payment_deadline")}{" "}
+                          {paymentDeadlineInt &&
+                            appLanguage !==
+                              paymentDeadlineInt?.sourceLanguage && (
+                              <span>{t("translated")}</span>
+                            )}
+                        </p>
+                      </div>
+                      {(paymentDeadlineInt?.sourceLanguage === appLanguage &&
+                        Parser(paymentDeadline)) ||
+                        (paymentDeadlineInt?.translation[appLanguage] &&
+                          Parser(
+                            paymentDeadlineInt?.translation[appLanguage]
+                          )) ||
+                        t("no_informations")}{" "}
+                      {paymentDeadlineInt &&
+                        paymentDeadlineInt.sourceLanguage !== appLanguage && (
+                          <p className="gray small mt-2">
+                            ({t("original")}){Parser(paymentDeadline)}
+                          </p>
+                        )}
                     </Col>
                     <Col md="4">
-                      <div className="h2 mb-3">{t("pickup_deadline")}</div>
-                      {(pointofsale.pickupDeadline &&
-                        Parser(pointofsale.pickupDeadline)) ||
+                      <div className="h2 mb-3">
+                        <p>
+                          {t("pickup_deadline")}{" "}
+                          {pickupDeadlineInt &&
+                            appLanguage !==
+                              pickupDeadlineInt?.sourceLanguage && (
+                              <span>{t("translated")}</span>
+                            )}
+                        </p>
+                      </div>
+                      {(pickupDeadlineInt?.sourceLanguage === appLanguage &&
+                        Parser(pickupDeadline)) ||
+                        (pickupDeadlineInt?.translation[appLanguage] &&
+                          Parser(
+                            pickupDeadlineInt?.translation[appLanguage]
+                          )) ||
                         t("no_informations")}
+                      {pickupDeadlineInt &&
+                        pickupDeadlineInt?.sourceLanguage !== appLanguage && (
+                          <p className="gray small mt-2">
+                            ({t("original")}){Parser(pickupDeadline)}
+                          </p>
+                        )}
                     </Col>
                     <Col md="4">
-                      <div className="h2 mb-3">{t("comments")}</div>
-                      {(pointofsale.comments && Parser(pointofsale.comments)) ||
+                      <div className="h2 mb-3">
+                        <p>
+                          {t("comments")}{" "}
+                          {commentsInt &&
+                            appLanguage !== commentsInt?.sourceLanguage && (
+                              <span>{t("translated")}</span>
+                            )}
+                        </p>
+                      </div>
+                      {(commentsInt &&
+                        commentsInt?.sourceLanguage === appLanguage &&
+                        Parser(comments)) ||
+                        (commentsInt?.translation[appLanguage] &&
+                          Parser(commentsInt?.translation[appLanguage])) ||
                         t("no_informations")}
+                      {commentsInt &&
+                        commentsInt?.sourceLanguage !== appLanguage && (
+                          <p className="gray small mt-2">
+                            ({t("original")}){Parser(comments)}
+                          </p>
+                        )}
                     </Col>
                   </Row>
                 </TabPane>
