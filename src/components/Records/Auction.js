@@ -192,7 +192,6 @@ const Auction = ({ refId, entryStockDate }) => {
   };
 
   const fetchSale = async () => {
-    console.log("fetching");
     try {
       const result = await Api.request("GET", `/sale/${refId}/info`);
       setSecondsBeforeStart(result.data.secondsBeforeStart);
@@ -216,6 +215,7 @@ const Auction = ({ refId, entryStockDate }) => {
     }
   };
 
+  /*eslint-disable */
   useEffect(() => {
     fetchSale();
     const intervalRefresh = workerTimers.setInterval(() => {
@@ -224,7 +224,8 @@ const Auction = ({ refId, entryStockDate }) => {
       }
     }, refreshTime);
     return () => workerTimers.clearInterval(intervalRefresh);
-  }, [refId, isExpired]);
+  }, [isExpired, refreshTime]);
+  /*eslint-enable */
 
   const closingMessage = () => {
     let message = "";
@@ -480,6 +481,8 @@ const Auction = ({ refId, entryStockDate }) => {
               <Countdown
                 secondsBeforeStart={secondsBeforeStart}
                 secondsBeforeEnd={secondsBeforeEnd}
+                precision="seconds"
+                refresh
               />
             </Col>
             <Col xs="12" lg="5">
