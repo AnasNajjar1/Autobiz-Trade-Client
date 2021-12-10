@@ -471,7 +471,8 @@ const Auction = ({ refId, entryStockDate }) => {
   if (userInfo.success === false) {
     messageClass = "text-danger";
   }
-
+const {message} = userInfo;
+  console.log("render",{secondsBeforeEnd, isExpired,message,userInfo})
   if (userInfo)
     return (
       <div className="section radius mb-4 py-4">
