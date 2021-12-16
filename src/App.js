@@ -32,7 +32,7 @@ import RegisterView from "./views/RegisterView";
 import { DidomiSDK } from "@didomi/react";
 import Zendesk from "react-zendesk";
 import { TranslateProvider } from "autobiz-translate";
-import Helmet from "./components/common/Helmet";
+import HelmetComponent from "./components/common/Helmet";
 import PrivacyPolicyView from "./views/PrivacyPolicyView";
 
 Amplify.configure(awsconfig);
@@ -55,6 +55,7 @@ const App = ({ entryPath }) => {
   };
   return (
     <>
+      <HelmetComponent language={language}/>
       <BrowserRouter exact basename={`/${language}`}>
         <TranslateProvider
           projectName="trade-app"
@@ -105,7 +106,6 @@ const App = ({ entryPath }) => {
         onReady={onDidomiReady}
       />
       <Zendesk zendeskKey={zendeskConfig.apiKey} />
-      <Helmet language={language}/>
     </>
   );
 };
