@@ -57,9 +57,6 @@ const getTimeCountDown = (seconds, precision) => {
 
   return time;
 };
-const tStartIn = t("startIn");
-const tTimeLeft = t("time_left");
-
 
 const Countdown = ({ secondsBeforeStart, secondsBeforeEnd, precision, refresh }) => {
   const [seconds, setSeconds] = useState({bs : secondsBeforeStart, be: secondsBeforeEnd})
@@ -95,7 +92,7 @@ const Countdown = ({ secondsBeforeStart, secondsBeforeEnd, precision, refresh })
         className={isScheduled && !isExpired ? "countdown-gray" : "countdown"}
       >
         {!isExpired && (
-          <span className="pr-1 d-lg-none d-xl-inline">{isScheduled ? tStartIn : tTimeLeft}</span>
+          <span className="pr-1 d-lg-none d-xl-inline">{isScheduled ? t("startIn") : t("time_left")}</span>
         )}
         <FontAwesomeIcon
           icon={faClock}
