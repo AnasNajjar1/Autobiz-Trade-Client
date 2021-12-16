@@ -5,13 +5,6 @@ const HelmetComponent = ({ language }) => {
   return (
     <Helmet
       htmlAttributes={{ lang: language }}
-      title={t("title_meta_data")}
-      meta={[
-        {
-          name: `description`,
-          content: t("description_meta_data"),
-        },
-      ]}
       link={[
         {
           rel: "canonical",
