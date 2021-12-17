@@ -28,6 +28,7 @@ import {
   NumberParam,
   StringParam,
   ArrayParam,
+  DelimitedNumericArrayParam
 } from "use-query-params";
 import { Api } from "../../providers/Api";
 
@@ -82,7 +83,7 @@ const RecordsListContainer = ({ usercountry }) => {
     radius: NumberParam,
     listId: NumberParam,
     sortLabel: StringParam,
-    range: ArrayParam,
+    range: DelimitedNumericArrayParam,
   });
 
   const [form, setValues] = useState({
