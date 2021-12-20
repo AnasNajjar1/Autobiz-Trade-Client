@@ -275,7 +275,7 @@ export const excludedMarketData = [
   },
 ];
 
-export const excludedKeyPoint = ["imported"];
+export const excludedKeyPoint = ["imported", "fewCosts"];
 
 export const excludedEquipments = ["none"];
 
@@ -286,5 +286,5 @@ export const listZone = [
   "inner",
   "road_test",
   "motor",
-  "crash"
+  "crash",
 ];
