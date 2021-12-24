@@ -8,11 +8,13 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
+    "autobiz-auth": "^1.0.7",
     "autobiz-translate": "^1.0.13",
     "aws-amplify": "^1.1.38",
     "aws-amplify-react": "^2.4.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "gatsby-plugin-react-helmet": "^5.3.0",
     "html-react-parser": "^0.10.3",
     "humanize-duration": "^3.22.0",
     "js-cookie": "^2.2.1",
@@ -40,16 +42,15 @@
     "reactstrap": "^8.4.1",
     "shortid": "^2.2.15",
     "use-query-params": "^0.3.4",
-    "autobiz-auth": "^1.0.7",
     "worker-timers": "^7.0.41",
     "xlsx": "^0.17.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  },  
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -66,6 +67,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^12.1.2"
+    "@testing-library/react": "^12.1.2",
+    "react-app-rewired": "^2.1.8",
+    "workbox-build": "^6.4.2"
   }
 }
