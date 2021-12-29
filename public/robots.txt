@@ -6,3 +6,4 @@ Disallow: /datenschutzrichtlinie
 Disallow: /privacy-policy
 Disallow: /politica-de-confidencialidad
 Disallow: /politica-de-privacidade
+Disallow: *.pdf
