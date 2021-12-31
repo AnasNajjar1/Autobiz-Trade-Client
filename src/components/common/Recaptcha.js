@@ -2,8 +2,7 @@ import React, { createRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { recaptchaAccess } from "../../config";
 
-const Recaptcha = ({ setCaptchaToken }) => {
-  const recaptchaRef = createRef();
+const Recaptcha = ({ setCaptchaToken, reference }) => {
 
   const onChange = (value) => {
     console.log(value);
@@ -11,11 +10,11 @@ const Recaptcha = ({ setCaptchaToken }) => {
   };
 
   return (
-    <div className="text-center mt-5">
+    <div className="text-center">
       <ReCAPTCHA
         className="g-recaptcha"
-        ref={recaptchaRef}
-        sitekey={recaptchaAccess.siteKey}
+        ref={reference ? reference : createRef()}
+        sitekey={recaptchaAccess.siteKeyVisible}
         onChange={onChange}
       />
     </div>
