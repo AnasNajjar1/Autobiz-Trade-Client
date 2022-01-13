@@ -29,8 +29,11 @@ const Auction = ({ refId, entryStockDate }) => {
   const [secondsBeforeStart, setSecondsBeforeStart] = useState(0);
 
   const [tooltipReservePrice, settooltipReservePrice] = useState(false);
+  const [tooltipNoReservePrice, settooltipNoReservePrice] = useState(false);
 
   const toggleReservePrice = () => settooltipReservePrice(!tooltipReservePrice);
+  const toggleNoReservePrice = () =>
+    settooltipNoReservePrice(!tooltipNoReservePrice);
 
   const [sale, setSale] = useState({});
 
@@ -41,9 +44,9 @@ const Auction = ({ refId, entryStockDate }) => {
   const toggleModalAuction = () => setModalAuction(!modalAuction);
 
   const [modalImmediatePurchase, setModalImmediatePurchase] = useState(false);
+
   const toggleModalImmediatePurchase = () =>
     setModalImmediatePurchase(!modalImmediatePurchase);
-
   const second = 1000;
   const refreshTime = 5 * second;
   const lang = getCurrentLanguage();
@@ -471,8 +474,8 @@ const Auction = ({ refId, entryStockDate }) => {
   if (userInfo.success === false) {
     messageClass = "text-danger";
   }
-const {message} = userInfo;
-  console.log("render",{secondsBeforeEnd, isExpired,message,userInfo})
+  const { message } = userInfo;
+  console.log("render", { secondsBeforeEnd, isExpired, message, userInfo });
   if (userInfo)
     return (
       <div className="section radius mb-4 py-4">
@@ -487,36 +490,54 @@ const {message} = userInfo;
               />
             </Col>
             <Col xs="12" lg="5">
-              {auctionReservePrice > 0 &&
-                auctionReservePriceIsReached === true && (
+              {auctionReservePrice ? (
+                auctionReservePriceIsReached ? (
                   <p className="text-success blink text-lg-right text-nowrap small mt-2 mt-lg-0">
                     <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
                     {t("reservePriceReached")}
                   </p>
-                )}
-
-              {isAuctionOpen &&
-                auctionReservePrice > 0 &&
-                auctionReservePriceIsReached === false && (
+                ) : (
+                  isAuctionOpen && (
+                    <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
+                      <span
+                        className="price-info reserve"
+                        href="#"
+                        id="tooltipReservePrice"
+                      >
+                        {t("reservePrice")}
+                      </span>
+                      <RsTooltip
+                        placement="top-end"
+                        isOpen={tooltipReservePrice}
+                        target="tooltipReservePrice"
+                        toggle={toggleReservePrice}
+                      >
+                        {t("reservePriceLegend")}
+                      </RsTooltip>
+                    </p>
+                  )
+                )
+              ) : (
+                isAuctionOpen && (
                   <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
                     <span
-                      className="reserve-price-info"
+                      className="price-info no-reserve"
                       href="#"
-                      id="tooltipReservePrice"
+                      id="tooltipNoReservePrice"
                     >
-                      {t("reservePrice")}
+                      {t("noReservePrice")}
                     </span>
-
                     <RsTooltip
                       placement="top-end"
-                      isOpen={tooltipReservePrice}
-                      target="tooltipReservePrice"
-                      toggle={toggleReservePrice}
+                      isOpen={tooltipNoReservePrice}
+                      target="tooltipNoReservePrice"
+                      toggle={toggleNoReservePrice}
                     >
-                      {t("reservePriceLegend")}
+                      {t("noReservePriceLegend")}
                     </RsTooltip>
                   </p>
-                )}
+                )
+              )}
             </Col>
             <Col xs="12">
               <p className="gray font-italic small">{closingMessage()}</p>

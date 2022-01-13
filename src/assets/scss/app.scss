@@ -1713,15 +1713,21 @@ footer {
   }
 }
 
-.reserve-price-info {
-  border: 1px solid $danger;
-  color: $danger;
+.price-info {
   font-size: 12.8px;
   font-weight: bold;
   padding: 5px 10px;
   cursor: default;
   border-radius: $border-radius;
   animation: blinker 1.5s linear infinite;
+  &.reserve {
+    border: 1px solid $danger;
+    color: $danger;
+  }
+  &.no-reserve {
+    border: 1px solid $warning;
+    color: $warning;
+  }
 }
 
 .bordered-row {
