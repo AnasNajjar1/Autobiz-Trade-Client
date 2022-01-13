@@ -220,6 +220,11 @@ const RecordsElement = (props) => {
                           )}
                         </>
                       )}
+                      {record.acceptSubmission && (
+                        <p className="text-right small mb-2">
+                          {t("submission")}
+                        </p>
+                      )}
                     </>
                   )}
                 </Col>
