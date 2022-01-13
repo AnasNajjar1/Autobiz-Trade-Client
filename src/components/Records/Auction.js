@@ -495,7 +495,8 @@ const {message} = userInfo;
                   </p>
                 )}
 
-              {auctionReservePrice > 0 &&
+              {isAuctionOpen &&
+                auctionReservePrice > 0 &&
                 auctionReservePriceIsReached === false && (
                   <p className="text-lg-right text-nowrap small mt-2 mt-lg-0">
                     <span
