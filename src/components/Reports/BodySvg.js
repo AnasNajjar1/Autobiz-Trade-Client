@@ -6,8 +6,8 @@ export const BodySvg = ({ damage }) => {
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
-      width="176.5px"
-      height="191.5px"
+      width="250px"
+      height="250px"
       viewBox="0 0 706 766"
       enableBackground="new 0 0 706 766"
     >
@@ -80,8 +80,12 @@ C281.952,527.552,282.311,527.362,282.773,527.259z"
       />
       <path
         id="coffre"
-        fill="#ffffff"
-        stroke="#D6EDDD"
+        fill={
+          damage && (damage.body_rear_hatchback || damage.body_rear_trunk_floor)
+            ? "#31A455"
+            : "#ffffff"
+        }
+        stroke="#31A455"
         strokeWidth="6"
         strokeMiterlimit="10"
         d="M267.97,611.845

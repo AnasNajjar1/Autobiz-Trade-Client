@@ -381,7 +381,7 @@ const Record = (props) => {
                 />
               </div>
             )}
-            {vehicle.documents && <Documents items={vehicle.documents} />}
+            {vehicle.documents && <Documents items={vehicle.documents} uuid={record.uuid} />}
           </Col>
         </Row>
       </Container>

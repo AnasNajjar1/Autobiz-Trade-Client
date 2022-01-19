@@ -5,8 +5,8 @@ export const WheelsSvg = ({ damage }) => {
       version="1.1"
       x="0px"
       y="0px"
-      width="180px"
-      height="201.1px"
+      width="250px"
+      height="250.1px"
       viewBox="0 75.336 540 603.592"
       enableBackground="new 0 75.336 540 603.592"
     >
