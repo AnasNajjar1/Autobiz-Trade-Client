@@ -2,7 +2,7 @@ import AutobizAuth from "autobiz-auth";
 import AuthClass from "./Auth";
 import { apiB2bPlateform, domain } from "../../config";
 
-const isDevLocalhost = Boolean(
+export const isDevLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
     window.location.hostname === "[::1]" ||

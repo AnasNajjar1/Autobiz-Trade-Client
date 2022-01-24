@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
 import ListsListContainer from "../components/ListsList/ListsListContainer";
 
 const ListsListView = (props) => {
@@ -8,7 +7,6 @@ const ListsListView = (props) => {
     <div className="page page-dealer-list">
       <Header {...props} />
       <ListsListContainer />
-      <Footer />
     </div>
   );
 };

@@ -23,11 +23,19 @@ import FilterBrands from "../RecordsList/FilterBrands";
 import FilterModels from "../RecordsList/FilterModels";
 import FilterGeoloc from "../RecordsList/FilterGeoloc";
 import { Api } from "../../providers/Api";
+import { isBrowser } from "react-device-detect";
+import ExportOffers from "../Offers/ExportOffers";
+import { useUser } from "../../hooks/useUser";
+import { exportOffersMapper } from "../../helper/Offer";
+import ExportFile from "../common/ExportFile";
 
 const DealersListContainer = ({ usercountry }) => {
   const ItemsPerPage = 6;
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [modelLabels, setModelLabels] = useState([]);
+  const [allowExport, setAllowExport] = useState(false);
+  const [offers, setOffers] = useState(null);
+  const { autobizUserId } = useUser();
 
   let history = useHistory();
 
@@ -220,7 +228,18 @@ const DealersListContainer = ({ usercountry }) => {
 
   return (
     <Container>
-      <MenuSwitcher current="dealers" />
+      <div className="menu-switcher-container">
+        <MenuSwitcher current="dealers" />
+        {isBrowser && (
+          <div className="d-none d-lg-inline-block ml-3 mb-3">
+            <ExportOffers
+              setAllowExport={setAllowExport}
+              setOffers={setOffers}
+              userId={autobizUserId}
+            />
+          </div>
+        )}
+      </div>
       <hr />
       <Row>
         <div className="search-record-nav">
@@ -370,6 +389,14 @@ const DealersListContainer = ({ usercountry }) => {
           )}
         </Col>
       </Row>
+      {allowExport && (
+        <ExportFile
+          fileName="offers"
+          datas={offers}
+          mappers={exportOffersMapper}
+          setAllowExport={setAllowExport}
+        />
+      )}
     </Container>
   );
 };

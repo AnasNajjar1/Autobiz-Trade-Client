@@ -28,9 +28,14 @@ import {
   NumberParam,
   StringParam,
   ArrayParam,
-  DelimitedNumericArrayParam
+  DelimitedNumericArrayParam,
 } from "use-query-params";
 import { Api } from "../../providers/Api";
+import { isBrowser } from "react-device-detect";
+import ExportOffers from "../Offers/ExportOffers";
+import { useUser } from "../../hooks/useUser";
+import { exportOffersMapper } from "../../helper/Offer";
+import ExportFile from "../common/ExportFile";
 
 const RecordsListContainer = ({ usercountry }) => {
   const ItemsPerPage = 100;
@@ -115,6 +120,9 @@ const RecordsListContainer = ({ usercountry }) => {
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [oldSaleTypeAccept, setOldSaleTypeAccept] = useState(null);
+  const [allowExport, setAllowExport] = useState(false);
+  const [offers, setOffers] = useState(null);
+  const { autobizUserId } = useUser();
 
   const bodyPos = sessionStorage.getItem("scrollPos");
   const updateField = (e) => {
@@ -335,8 +343,18 @@ const RecordsListContainer = ({ usercountry }) => {
   };
   return (
     <Container>
-      <MenuSwitcher current="records" />
-
+      <div className="menu-switcher-container">
+        <MenuSwitcher current="records" />
+        {isBrowser && (
+          <div className="d-none d-lg-inline-block ml-3 mb-3">
+            <ExportOffers
+              setAllowExport={setAllowExport}
+              setOffers={setOffers}
+              userId={autobizUserId}
+            />
+          </div>
+        )}
+      </div>
       <div className="d-md-none text-center">
         <p className="section-title">
           <Translate code="offer_type" />
@@ -648,6 +666,14 @@ const RecordsListContainer = ({ usercountry }) => {
           )}
         </Col>
       </Row>
+      {allowExport && (
+        <ExportFile
+          fileName="offers"
+          datas={offers}
+          mappers={exportOffersMapper}
+          setAllowExport={setAllowExport}
+        />
+      )}
     </Container>
   );
 };

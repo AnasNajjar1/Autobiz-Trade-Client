@@ -1,30 +1,19 @@
 import React, { useState } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { Spinner } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUser,
-  faPowerOff,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import logo from "../../assets/img/autobiz-trade.svg";
-import LanguagePicker from "../common/LanguagePicker";
-import { useUser } from "../../hooks/useUser";
-import ExportFile from "../common/ExportFile";
-import ExportOffers from "../Offers/ExportOffers";
-import { exportOffersMapper } from "../../helper/Offer";
-import { isBrowser } from "react-device-detect";
+import { Redirect, useHistory } from "react-router-dom";
 import { ZendeskDisplayer } from "../common/ZendeskDisplayer";
-import { Auth } from "../../providers/Auth";
+import { AutobizNavBar } from "autobiz-strap";
+import { Auth, isDevLocalhost } from "../../providers/Auth";
 import clearAuthData from "../../providers/Auth/clearAuthData";
+import { getCurrentLanguage } from "../../language-context";
+import { contactEmail, staticImagesUrl } from "../../config";
+import { t } from "autobiz-translate";
+import LanguageSwitcher from "../common/LanguageSwitcher";
 
-const Header = (props) => {
+const Header = () => {
   const history = useHistory();
-  const { username, autobizUserId, usercountry } = useUser();
   const [logout, setLogout] = useState(false);
-  const { path } = props.match;
-  const [allowExport, setAllowExport] = useState(false);
-  const [offers, setOffers] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const appUrl = `http://${window.location.host}${window.location.pathname}`;
 
   const signOut = async function () {
     const loggedOut = await Auth.logout();
@@ -41,10 +30,52 @@ const Header = (props) => {
 
   if (logout) return <Redirect to="/" />;
 
+  const { firstname, lastname, country, email } = Auth.currentUser();
+  const currentLanguage = getCurrentLanguage();
+  const apps = Auth.currentUserOtherApps(currentLanguage);
+  const appTrade = Auth.getTradeApp(currentLanguage);
+
   return (
-    <>
-      <ZendeskDisplayer language={usercountry} />
-      <header>
+    <div className="autobiz-nav-bar">
+      <ZendeskDisplayer language={country} />
+      <AutobizNavBar
+        brand="autobizTrade"
+        brandLink={isDevLocalhost ? appUrl : appTrade?.link}
+        lang={currentLanguage}
+        maxWidth={1120}
+        menu={{
+          apps,
+          help: [
+            {
+              name: <div className="title">{t("contact_us")}</div>,
+              onClick: () => (window.location.href = "mailto:" + contactEmail),
+            },
+            {
+              name: <div className="title">{t("terms_of_use")}</div>,
+              onClick: () =>
+                window.open(
+                  `${staticImagesUrl}/cgu/cgu-${currentLanguage.toLowerCase()}.pdf`,
+                  "_blank"
+                ),
+            },
+          ],
+          languages: [
+            {
+              name: <LanguageSwitcher isOpen={isOpen} setIsOpen={setIsOpen} />,
+              onClick: () => setIsOpen(!isOpen),
+            },
+          ],
+          user: {
+            firstName: firstname,
+            lastName: lastname,
+            country: country,
+            email: email,
+            logout: () => signOut(),
+          },
+        }}
+      />
+
+      {/* <header>
         {path === "/records/:refId" && (
           <Link onClick={(e) => goBackEvent(e)} className="left-col">
             <FontAwesomeIcon
@@ -93,8 +124,8 @@ const Header = (props) => {
             setAllowExport={setAllowExport}
           />
         )}
-      </header>
-    </>
+      </header> */}
+    </div>
   );
 };
 

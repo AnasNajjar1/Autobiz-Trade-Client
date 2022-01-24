@@ -1921,5 +1921,42 @@ footer {
     margin-top: 1rem;
   }
 }
+
+.menu-switcher-container {
+  display: flex;
+  align-items: center;
+  @include media-breakpoint-down(sm) {
+    justify-content: center;
+  }
+}
+
+.autobiz-nav-bar {
+  margin-bottom: 5rem;
+}
+
+.isLink {
+  text-decoration: none !important;
+
+  .title:hover {
+    text-decoration: underline !important;
+  }
+
+  .icon-flag {
+    width: 1.25rem;
+  }
+
+  .menu-container {
+    position: absolute;
+    top: 98px;
+    right: 0;
+    background-color: #eff3ff;
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+}
+
 @import "carousel";
 @import "report";

@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
 import Dealer from "../components/Dealers/Dealers";
 import { t } from "../components/common/Translate";
 import { Container } from "reactstrap";
@@ -26,7 +25,6 @@ const DealersListView = (props) => {
         <hr />
       </Container>
       <Dealer refId={props.match.params.refId} />
-      <Footer />
     </div>
   );
 };

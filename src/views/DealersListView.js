@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
 import DealersListContainer from "../components/DealersList/DealersListContainer";
 import { useUser } from "../hooks/useUser";
 
@@ -10,7 +9,6 @@ const DealersListView = (props) => {
     <div className="page page-dealer-list">
       <Header {...props} />
       {usercountry && <DealersListContainer usercountry={usercountry} />}
-      <Footer />
     </div>
   );
 };

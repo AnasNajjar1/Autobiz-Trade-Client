@@ -4,7 +4,7 @@ export default class AuthClass {
   }
 
   async login(username, password) {
-    await this.auth.login(username, password);
+    await this.auth.login(username, password, "autobizTrade", true);
   }
 
   async refreshToken() {
@@ -36,6 +36,21 @@ export default class AuthClass {
   currentUser() {
     if (!this.token()) return {};
     return this.auth.currentUser(this.token());
+  }
+
+  currentUserApps(language) {
+    if (!this.token()) return [];
+    return this.auth.getUserApps(this.token(), language);
+  }
+
+  currentUserOtherApps(language) {
+    const apps = this.currentUserApps(language);
+    return apps.filter((app) => app.name !== "autobizTrade");
+  }
+
+  getTradeApp(language) {
+    const apps = this.currentUserApps(language);
+    return apps.find((app) => app.name === "autobizTrade");
   }
 
   tokenData() {
