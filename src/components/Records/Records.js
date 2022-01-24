@@ -43,6 +43,7 @@ import {
   excludedMarketData,
   excludedKeyPoint,
   listZone,
+  contentIsNull,
 } from "../../helper/Vehicle";
 import { getCurrentLanguage } from "../../language-context";
 import { orderedConstructorEquipments } from "../../helper/Equipments";
@@ -381,7 +382,9 @@ const Record = (props) => {
                 />
               </div>
             )}
-            {vehicle.documents && <Documents items={vehicle.documents} uuid={record.uuid} />}
+            {vehicle.documents && (
+              <Documents items={vehicle.documents} uuid={record.uuid} />
+            )}
           </Col>
         </Row>
       </Container>
@@ -443,14 +446,15 @@ const Record = (props) => {
                         <TableList items={vehicle.characteristics} />
                       </>
                     )}
-                    {vehicle.administrativeDetails && (
-                      <>
-                        <div className="section-title">
-                          <Translate code="administrative_details"></Translate>
-                        </div>
-                        <TableList items={vehicle.administrativeDetails} />
-                      </>
-                    )}
+                    {vehicle.administrativeDetails &&
+                      contentIsNull(vehicle.administrativeDetails) && (
+                        <>
+                          <div className="section-title">
+                            <Translate code="administrative_details"></Translate>
+                          </div>
+                          <TableList items={vehicle.administrativeDetails} />
+                        </>
+                      )}
                   </Col>
                   <Col xs="12" md="6">
                     {vehicle.declaredEquipments &&
@@ -523,7 +527,7 @@ const Record = (props) => {
                         <TableList items={vehicle.history} />
                       </>
                     )}
-                    {vehicle.servicing && (
+                    {vehicle.servicing && contentIsNull(vehicle.servicing) && (
                       <>
                         <div className="section-title">
                           <Translate code="servicing"></Translate>
