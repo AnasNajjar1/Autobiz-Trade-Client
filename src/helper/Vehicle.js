@@ -288,3 +288,7 @@ export const listZone = [
   "motor",
   "crash",
 ];
+
+export const contentIsNull = (content) => {
+  return _.find(content, (element) => element);
+};
