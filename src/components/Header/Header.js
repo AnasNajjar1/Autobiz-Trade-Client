@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { ZendeskDisplayer } from "../common/ZendeskDisplayer";
 import { AutobizNavBar } from "autobiz-strap";
-import { Auth, isDevLocalhost } from "../../providers/Auth";
+import { Auth } from "../../providers/Auth";
 import clearAuthData from "../../providers/Auth/clearAuthData";
 import { getCurrentLanguage } from "../../language-context";
 import { contactEmail, staticImagesUrl } from "../../config";
@@ -33,14 +33,13 @@ const Header = () => {
   const { firstname, lastname, country, email } = Auth.currentUser();
   const currentLanguage = getCurrentLanguage();
   const apps = Auth.currentUserOtherApps(currentLanguage);
-  const appTrade = Auth.getTradeApp(currentLanguage);
 
   return (
     <div className="autobiz-nav-bar">
       <ZendeskDisplayer language={country} />
       <AutobizNavBar
         brand="autobizTrade"
-        brandLink={isDevLocalhost ? appUrl : appTrade?.link}
+        brandLink={appUrl}
         lang={currentLanguage}
         maxWidth={1120}
         menu={{
