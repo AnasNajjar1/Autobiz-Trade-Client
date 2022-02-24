@@ -79,7 +79,8 @@ exports.tagManagerArgs = {
 exports.tradeHelpMail = "trade-help@autobiz.com";
 
 const recaptchaAccess = {
-  siteKey: "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",
+  siteKeyVisible: "6LdS7mUaAAAAAI-qKAvB0WoIRnGfqfXaaBiOdSKr",
+  siteKeyInvisible: "6LeUv_UdAAAAAMAOPBg9tuc27JsNZGwaaBCq_Q1s",
 };
 exports.recaptchaAccess = recaptchaAccess;
 

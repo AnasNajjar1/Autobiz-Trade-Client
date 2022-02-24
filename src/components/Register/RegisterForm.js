@@ -385,13 +385,14 @@ const RegisterForm = ({
             </p>
           )}
         </FormGroup>
-
-        <Recaptcha setCaptchaToken={setCaptchaToken} />
-        {formSubmitted && !captchaToken && (
-          <p className="text-center">
-            <span>{t("checkRecaptchaForm")}</span>
-          </p>
-        )}
+        <div className="mt-5">
+          <Recaptcha setCaptchaToken={setCaptchaToken} />
+          {formSubmitted && !captchaToken && (
+            <p className="text-center">
+              <span>{t("checkRecaptchaForm")}</span>
+            </p>
+          )}
+        </div>
 
         <FormGroup className="text-center">
           <Button>

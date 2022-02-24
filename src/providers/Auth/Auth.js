@@ -3,8 +3,14 @@ export default class AuthClass {
     this.auth = authInstanceProvider;
   }
 
-  async login(username, password) {
-    await this.auth.login(username, password, "autobizTrade", true);
+  async login(username, password, recaptchaToken) {
+    await this.auth.login(
+      username,
+      password,
+      "autobizTrade",
+      true,
+      recaptchaToken
+    );
   }
 
   async refreshToken() {

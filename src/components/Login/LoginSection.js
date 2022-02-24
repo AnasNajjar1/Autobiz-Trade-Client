@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../assets/img/logo_autobiztrade.svg";
 import { linkNewPassword, tradeHelpMail } from "../../config";
+import { getFlag } from "../common/LanguagePicker";
 import {
-  getFlag,
-} from "../common/LanguagePicker";
-import { languages, getCurrentLanguage, handleChangeLang } from "../../language-context";
+  languages,
+  getCurrentLanguage,
+  handleChangeLang,
+} from "../../language-context";
 import { t } from "../common/Translate";
 import _ from "lodash";
 import "../../assets/scss/login.scss";
-import { Auth } from "../../providers/Auth";
 import { useHistory } from "react-router";
+import Recaptcha from "../common/Recaptcha";
+import InvisibleRecaptcha from "../common/InvisibleRecaptcha";
+import { Auth } from "../../providers/Auth";
 
 const LoginSection = ({ entryPath }) => {
   const history = useHistory();
@@ -17,6 +21,12 @@ const LoginSection = ({ entryPath }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [authTries, setAuthTries] = useState(0);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [needValidateCaptcha, setNeedValidateCaptcha] = useState(false);
+  const [size, setSize] = useState("invisible");
+
+  const recaptchaRef = useRef();
 
   async function updateLanguage(e) {
     const selectedLang = e.target.value;
@@ -37,24 +47,47 @@ const LoginSection = ({ entryPath }) => {
     handleChange();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (username === "" || password === "") {
       setError(true);
     } else {
-      setLoading(true);
-      Auth.login(username, password)
-        .then(() => history.push(entryPath))
-        .catch(() => setError(true))
-        .finally(() => setLoading(false));
+      if (authTries < 3 && recaptchaRef?.current) {
+        await recaptchaRef.current.reset();
+        const token = await recaptchaRef.current.executeAsync();
+        proceedAuthentification(token);
+      } else if (authTries >= 3 && captchaToken) {
+        proceedAuthentification();
+      } else {
+        setNeedValidateCaptcha(true);
+      }
     }
+  };
+
+  useEffect(() => {
+    authTries >= 3 ? setSize("normal") : setSize("invisible");
+  }, [authTries]);
+
+  const proceedAuthentification = (token = captchaToken) => {
+    setLoading(true);
+    Auth.login(username, password, token)
+      .then(() => {
+        setNeedValidateCaptcha(false);
+        setAuthTries(0);
+        history.push(entryPath);
+      })
+      .catch((err) => {
+        setError(true);
+        setAuthTries(authTries + 1);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleGoToRegister = () => history.push("register");
 
   const currentLanguage = getCurrentLanguage();
-
   return (
     <div className="hp-section login">
       <div className="language">
@@ -95,7 +128,22 @@ const LoginSection = ({ entryPath }) => {
           type="password"
           onChange={handlePasswordChange}
         />
-        <button disabled={loading} className="cta" onClick={handleSubmit}>
+        {size === "normal" ? (
+          <Recaptcha setCaptchaToken={setCaptchaToken} />
+        ) : (
+          <InvisibleRecaptcha reference={recaptchaRef} />
+        )}
+        {needValidateCaptcha && !captchaToken && (
+          <p className="text-center text-danger">
+            <span>{t("checkRecaptchaForm")}</span>
+          </p>
+        )}
+        <button
+          disabled={loading}
+          className="cta"
+          onClick={handleSubmit}
+          style={{ marginTop: 10 }}
+        >
           {t("connect")}
         </button>
         <a
