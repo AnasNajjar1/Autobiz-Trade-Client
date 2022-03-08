@@ -203,7 +203,7 @@ export const customReportGalleryDamages = (damages) => {
   let wheelsDamagesGallery = {};
   let roadTestDamagesGallery = {};
   // Map on car damages
-
+if (damages) {
   damages.map((e) => {
     const carElements = ["wheels", "road_test", "motor", "body", "inner"];
     carElements.map((elem) => {
@@ -250,7 +250,7 @@ export const customReportGalleryDamages = (damages) => {
       )
     )
       generalCosts[e.element] = e.damage;
-  });
+  })};
 
   return {
     generalCosts,
