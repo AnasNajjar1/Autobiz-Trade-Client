@@ -8,7 +8,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "autobiz-auth": "^1.1.55",
+    "autobiz-auth": "^1.1.64",
     "autobiz-strap": "^0.1.28",
     "autobiz-translate": "^1.0.13",
     "aws-amplify": "^1.1.38",

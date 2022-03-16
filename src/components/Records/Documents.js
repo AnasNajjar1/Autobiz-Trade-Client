@@ -25,9 +25,12 @@ const Documents = ({ items, uuid }) => {
     <div className="list-document">
       {items.map((item, index) => {
         const itemLink =
-          item.title === "pdfReport"
-            ? `/reports/${uuid}`
-            : ["certificate_of_non-pledge", "histovec"].includes(item.title)
+          // item.title === "pdfReport"
+          // ? `/reports/${item.link}`
+          // :
+          ["certificate_of_non-pledge", "histovec", "pdfReport"].includes(
+            item.title
+          )
             ? `${item.link}?language=${_.get(
                 pdfLang,
                 lang,
