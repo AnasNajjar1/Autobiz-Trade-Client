@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../assets/img/logo_autobiztrade.svg";
 import { linkNewPassword, tradeHelpMail } from "../../config";
 import { getFlag } from "../common/LanguagePicker";
+import ForgottenPasswordModal  from "./ForgottenPasswordModal";
 import {
   languages,
   getCurrentLanguage,
@@ -19,6 +20,7 @@ const LoginSection = ({ entryPath }) => {
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [authTries, setAuthTries] = useState(0);
@@ -33,6 +35,10 @@ const LoginSection = ({ entryPath }) => {
     handleChangeLang(selectedLang);
   }
 
+  const handleToggle = () => {
+    setOpen(!open);
+  }
+  
   const handleChange = () => {
     setError(false);
   };
@@ -146,12 +152,16 @@ const LoginSection = ({ entryPath }) => {
         >
           {t("connect")}
         </button>
-        <a
+        <div
           className="passwordForgotten"
-          href={linkNewPassword[currentLanguage]}
+          onClick={handleToggle}
         >
           {t("forgot_password")}
-        </a>
+        </div>
+        <ForgottenPasswordModal
+          toggle={open}
+          handleToggle={handleToggle}
+        />
         <div className="formSeparator">
           <div className="line"></div>
           <div className="name">{t("or")}</div>

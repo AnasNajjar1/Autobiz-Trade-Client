@@ -113,4 +113,14 @@ const domains = {
   prod: ".autobiz.com",
 };
 
+exports.languages = {
+  fr: 'FR',
+  de: 'DE',
+  es: 'ES',
+  it: 'IT',
+  en: 'EN',
+  pt: 'PT',
+  nl: 'NL'
+}
+
 exports.domain = domains[ENV];
