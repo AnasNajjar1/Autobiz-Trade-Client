@@ -13,7 +13,7 @@ const Header = () => {
   const history = useHistory();
   const [logout, setLogout] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const appUrl = `http://${window.location.host}${window.location.pathname}`;
+  const appUrl = `http://${window.location.host}`;
 
   const signOut = async function () {
     const loggedOut = await Auth.logout();
