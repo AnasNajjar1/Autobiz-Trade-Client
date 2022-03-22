@@ -1,10 +1,10 @@
-import clearAuthData from "../Auth/clearAuthData";
-
 export default class ApiClass {
   auth;
+  tokenExpired;
 
   constructor(authApi) {
     this.auth = authApi;
+    this.tokenExpired = sessionStorage.getItem("tokenExpired") || 0;
   }
 
   async request(method, endpoint, params = {}, data = {}, headers = {}) {
@@ -12,22 +12,16 @@ export default class ApiClass {
       return await this.auth.request(method, endpoint, data, params, headers);
     } catch (error) {
       if (error.response?.status === 403) {
-        try {
-          await this.auth.refreshToken();
-          return await this.auth.request(
-            method,
-            endpoint,
-            data,
-            params,
-            headers
-          );
-        } catch {
-          await clearAuthData();
-          window.location.reload();
-        }
+        this.setTokenExpired();
+        await this.auth.refreshToken();
+        if (this.tokenExpired <= 1) window.location.reload();
       }
 
       throw Error(error.response ? error.response?.data?.message : error);
     }
+  }
+
+  setTokenExpired() {
+    sessionStorage.setItem("tokenExpired", this.tokenExpired + 1);
   }
 }
