@@ -4,15 +4,16 @@ import { domain } from "../../config";
 export default async function clearAuthData() {
   try {
     Object.keys(localStorage).forEach((key) => {
-      if (!key.includes("translation", "didomi_token"))
+      if (!["translation", "didomi_token"].includes(key))
         localStorage.removeItem(key);
     });
     Object.keys(sessionStorage).forEach((key) => {
       sessionStorage.removeItem(key);
     });
     Object.entries(Cookies.get()).forEach(([key]) => {
-      if (!key.includes("appLanguage", "didomi_token"))
-        document.cookie = `${key}=; domain=${domain}; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+      if (!["appLanguage", "didomi_token"].includes(key)){
+        document.cookie = `${key}=;domain=${domain};path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+      }
     });
     return "success";
   } catch (e) {

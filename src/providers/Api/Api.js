@@ -15,8 +15,12 @@ export default class ApiClass {
     } catch (error) {
       if (error.response?.status === 403) {
         this.setTokenExpired();
-        await this.auth.refreshToken();
-        this.tokenExpired <= 1 ? window.location.reload() : clearAuthData();
+        await this.auth.refreshToken().then(() => {
+          if (this.tokenExpired > 1) {
+            clearAuthData();
+          }
+          window.location.reload();
+        });
       }
 
       throw Error(error.response ? error.response?.data?.message : error);
