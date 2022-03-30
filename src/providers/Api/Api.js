@@ -1,3 +1,5 @@
+import clearAuthData from "../Auth/clearAuthData";
+
 export default class ApiClass {
   auth;
   tokenExpired;
@@ -13,8 +15,12 @@ export default class ApiClass {
     } catch (error) {
       if (error.response?.status === 403) {
         this.setTokenExpired();
-        await this.auth.refreshToken();
-        if (this.tokenExpired <= 1) window.location.reload();
+        await this.auth.refreshToken().then(() => {
+          if (this.tokenExpired > 1) {
+            clearAuthData();
+          }
+          window.location.reload();
+        });
       }
 
       throw Error(error.response ? error.response?.data?.message : error);
@@ -22,6 +28,6 @@ export default class ApiClass {
   }
 
   setTokenExpired() {
-    sessionStorage.setItem("tokenExpired", this.tokenExpired + 1);
+    sessionStorage.setItem("tokenExpired", parseInt(this.tokenExpired) + 1);
   }
 }
